@@ -173,6 +173,12 @@ ul.why li i{flex:none;min-width:24px;height:24px;border-radius:12px;display:grid
 .undo span{flex:1}.undo button{color:var(--lime);font-weight:800;min-height:40px;padding:0 12px}
 .cheat{border-color:rgba(125,211,90,.5);background:linear-gradient(135deg,#f2fbec,#fff 65%)}
 .afig{display:block;height:auto}
+.wbars{display:flex;align-items:flex-end;gap:6px;position:relative;margin-top:12px;padding-bottom:22px}
+.wcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.wcol i{width:100%;max-width:36px;border-radius:10px 10px 4px 4px;transition:height .6s cubic-bezier(.2,1.2,.4,1)}
+.wv{font-size:11px;font-weight:700;color:var(--ink);margin-bottom:3px;white-space:nowrap}
+.wd{position:absolute;bottom:-22px;font-size:12px;color:var(--mute)}.wd.on{color:var(--mango-d);font-weight:800}
+.wgl{position:absolute;inset-inline:0;border-top:2px dashed var(--mute);opacity:.6;pointer-events:none;z-index:1}.wgl span{position:absolute;top:-18px;inset-inline-start:0;font-size:11px;color:var(--mute);background:var(--card);padding:0 4px}
 .hide{display:none!important}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -759,7 +765,7 @@ next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2
 user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',
 cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
-note:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',noteOff:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="2"/></svg>',foot:'<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="8" cy="7" rx="3" ry="4.5"/><ellipse cx="16" cy="13" rx="3" ry="4.5"/><circle cx="8" cy="14.5" r="1.6"/><circle cx="16" cy="20.5" r="1.6"/></svg>',copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></svg>',chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg>',trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/></svg>',pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"/></svg>',fire:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-3 2-4 2-7 2 1 3 3 3 3s1-4 0-7z"/></svg>',drop:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s7 8 7 13a7 7 0 0 1-14 0c0-5 7-13 7-13z"/></svg>',moon:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 15A8 8 0 0 1 9 4a8 8 0 1 0 11 11z"/></svg>',book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM19 19v2H6"/></svg>',
+note:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',noteOff:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="2"/></svg>',foot:'<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="8" cy="7" rx="3" ry="4.5"/><ellipse cx="16" cy="13" rx="3" ry="4.5"/><circle cx="8" cy="14.5" r="1.6"/><circle cx="16" cy="20.5" r="1.6"/></svg>',copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></svg>',chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg>',trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/></svg>',chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20V11M12 20V5M19 20v-6M3 20h18"/></svg>',pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"/></svg>',fire:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-3 2-4 2-7 2 1 3 3 3 3s1-4 0-7z"/></svg>',drop:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s7 8 7 13a7 7 0 0 1-14 0c0-5 7-13 7-13z"/></svg>',moon:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 15A8 8 0 0 1 9 4a8 8 0 1 0 11 11z"/></svg>',book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM19 19v2H6"/></svg>',
 plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'};
 
 /* אבוקי — הקמע */
@@ -910,6 +916,7 @@ ${S.fast.start?`<div style="text-align:center"><button class="chipf" data-a="tab
 <div class="bubble">${avoki(mood)}<span>${msg}</span></div></div>
 <div class="wrap"><div class="quick"><button class="qa" data-a="photo" style="color:var(--pink)">${IC.cam}<span>צלם צלחת</span></button><button class="qa" data-a="tell" style="color:var(--gold)">${IC.chat}<span>ספר מה אכלת</span></button><button class="qa" data-a="water" data-ml="250" style="color:var(--blue)">${IC.drop}<span>שתיתי כוס</span></button><button class="qa" data-a="tab" data-t="fast" style="color:var(--lime)">${IC.moon}<span>${S.fast.start?'בצום':'התחל צום'}</span></button></div>
 <div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
+<button class="btn ghost full" data-a="weekGo" style="margin-top:12px">${IC.chart} סיכום שבועי: קלוריות, צעדים ומים</button>
 ${stepsCard(day)}
 ${isT?questCard(day)+cheatCard()+lessonCard():''}
 ${ds?`<div class="card" style="display:flex;align-items:center;gap:12px"><div class="sticker ${grade(ds)[1]}">${ds}</div><div><b>ציון היום: ${grade(ds)[0]}</b><div class="small muted">ממוצע ציוני הארוחות, משוקלל לפי קלוריות</div></div></div>`:''}
@@ -938,11 +945,21 @@ ${eta2?`<div class="small" style="margin-top:8px;opacity:.85">לפי השקיל�
 <div class="card"><h2>התקציב שלי</h2><div class="statgrid"><div class="stat"><small>תקציב יומי</small><b>${c.budget} קק״ל</b></div><div class="stat"><small>שריפה יומית משוערת</small><b>${r0(c.tdee)} קק״ל</b></div>
 <div class="stat"><small>חילוף חומרים במנוחה</small><b>${r0(c.bmr)} קק״ל</b></div><div class="stat"><small>BMI</small><b>${r1(c.bmi)}</b> <span class="small muted">${bmiTxt}</span></div></div>
 ${c.floored?`<p class="small muted">התקציב לא יורד מתחת ל-${p.sex==='m'?1500:1200} קק״ל ביום, כדי לשמור על בריאות ואנרגיה. לכן הקצב בפועל איטי מעט מהקצב שבחרת.</p>`:''}<p class="small muted">חישוב לפי נוסחת מיפלין–סן ז׳ור. כל קילו שומן ≈ 7,700 קק״ל.</p></div>
-<div class="card"><h2>השבוע שלי</h2><div class="week"><div class="ln" style="bottom:${c.budget/mx*120+22}px"></div>
-${wk.map(d=>{const x=S.days[d]||{};return `<div class="col"><i class="${x.k>(x.b||c.budget)+50?'over':''}" style="height:${(x.k||0)/mx*120}px"></i>${heDate(d,{weekday:'narrow'})}</div>`}).join('')}</div>
-<p class="small muted" style="margin:6px 0 0">הקו המקווקו = התקציב היומי. ירוק = בתוך התקציב.</p></div>
+${weekCard()}
 <div class="card"><h2>הישגים ורמות</h2><div class="btns"><button class="btn ghost" data-a="tab" data-t="awards">${IC.trophy}לכל ההישגים</button></div></div>${updCard()}<div class="card"><h2>גיבוי</h2><p class="small muted" style="margin-top:0">${db?'הנתונים נשמרים בענן בחשבון שלך ומסתנכרנים בין מכשירים.':'הנתונים נשמרים במכשיר הזה.'} אפשר גם להעתיק גיבוי.</p>
 <div class="btns"><button class="btn ghost" data-a="backup">גיבוי ושחזור</button></div></div>${credit()}</div>`}
+function weekCard(){const off=V.wk||0,m=V.wm||'k',c=calc(),end=addDays(today(),-7*off),days=Array.from({length:7},(_,i)=>addDays(end,i-6));
+ const M={k:['קלוריות','קק״ל',x=>x.k||0,x=>(x.b||c.budget)+cheatBonus(x.d),'var(--mango)','var(--pink)',(v,g)=>v<=g+50],st:['צעדים','צעדים',x=>x.st||0,()=>stepGoal(),'var(--lime)','#a8e3d3',(v,g)=>v>=g],w:['מים','ליטר',x=>(x.w||0)/1000,x=>(x.wg||waterGoal())/1000,'var(--blue)','#9fd2ff',(v,g)=>v>=g]}[m];
+ const rows=days.map(d=>{const x=Object.assign({d},S.days[d]||{});return{d,v:M[2](x),g:M[3](x),has:!!S.days[d]}}),mx=Math.max(...rows.map(r=>Math.max(r.v,r.g)))*1.12||1;
+ const fmt=v=>m==='w'?r1(v):r0(v).toLocaleString('he-IL'),act=rows.filter(r=>r.v>0),avg=act.length?act.reduce((a,r)=>a+r.v,0)/act.length:0,hit=rows.filter(r=>r.v>0&&M[6](r.v,r.g)).length,tot=rows.reduce((a,r)=>a+r.v,0);
+ const H=150,gl=rows[6].g;
+ return `<div class="card" id="weekCard"><h2>סיכום שבועי<span class="sp"></span><button class="mb" data-a="wk" data-d="1" aria-label="שבוע קודם">${IC.prev}</button><button class="mb" data-a="wk" data-d="-1" aria-label="שבוע הבא" ${off?'':'disabled style="opacity:.35"'}>${IC.next}</button></h2>
+<div class="small muted" style="margin:-6px 0 8px">${heDate(days[0],{day:'numeric',month:'numeric'})} – ${heDate(days[6],{day:'numeric',month:'numeric'})}${off?'':' · 7 הימים האחרונים'} · יעד יומי: <b>${fmt(gl)}</b> ${M[1]}</div>
+<div class="seg">${[['k','קלוריות'],['st','צעדים'],['w','מים']].map(([k,n])=>`<button data-a="wm" data-m="${k}" class="${k===m?'on':''}">${n}</button>`).join('')}</div>
+<div class="wbars" style="height:${H+44}px"><div class="wgl" style="bottom:${gl/mx*H+22}px"></div>
+${rows.map(r=>{const ok=M[6](r.v,r.g),h=Math.max(r.v>0?4:2,r.v/mx*H);return `<div class="wcol"><span class="wv">${r.v>0?fmt(r.v):''}</span><i style="height:${h}px;background:${r.v>0?(ok?M[4]:M[5]):'var(--line)'}"></i><span class="wd ${r.d===today()?'on':''}">${heDate(r.d,{weekday:'short'}).replace("יום ","")}</span></div>`}).join('')}</div>
+<div class="statgrid" style="margin-top:12px;grid-template-columns:repeat(3,minmax(0,1fr))"><div class="stat"><small>ממוצע יומי</small><b>${fmt(avg)}</b></div><div class="stat"><small>ימים ביעד</small><b>${hit}/7</b></div><div class="stat"><small>סה״כ בשבוע</small><b>${fmt(tot)}</b></div></div>
+<p class="small muted" style="margin:8px 0 0">${m==='k'?'בצבע: בתוך התקציב · ורוד: מעל התקציב':m==='st'?'ירוק: הגעת ליעד הצעדים':'כחול מלא: הגעת ליעד המים'}. הקו המקווקו מסמן את היעד.</p></div>`}
 function drawWeight(){const s=$('#wSvg');if(!s)return;const draw=()=>{const W=s.clientWidth,H=s.clientHeight;if(!W)return;const p=S.profile,c=calc();
  const w=S.weights.slice().sort((a,b)=>a.d<b.d?-1:1);const d0=w.length?w[0].d:today();const eta=c.weeks?addDays(today(),Math.ceil(c.weeks*7)):today();
  const dEnd=eta>today()?eta:addDays(today(),7);const span=Math.max(7,diffDays(d0,dEnd));const vals=w.map(x=>x.w).concat([p.goal,p.w0]);const lo=Math.min(...vals)-1,hi=Math.max(...vals)+1;
@@ -1259,7 +1276,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=7;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=8;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -1440,6 +1457,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  stepsGo:()=>{const el=$('#stepsCard');if(el)el.scrollIntoView({behavior:'smooth',block:'center'})},
  cheat:openCheat,
  cheatPick:b=>{if(cheatUsedOn())return;const o=CHEAT[+b.dataset.i];const it=cheatItems(o);S.cheat.used[wkKey(today())]=today();V.date=today();const h=new Date().getHours(),m=h<11?'b':h<17?'l':'d';addEntries(m,it);award('ch:'+wkKey(today()),15,'פינוק מתוכנן');saveState();closeSheet();render();toast('בתיאבון! '+o[0]);confetti()},
+ wm:b=>{V.wm=b.dataset.m;const el=$('#weekCard');if(el)el.outerHTML=weekCard()},wk:b=>{V.wk=Math.max(0,(V.wk||0)+ +b.dataset.d);const el=$('#weekCard');if(el)el.outerHTML=weekCard()},weekGo:()=>{V.tab='goals';render();setTimeout(()=>{const el=$('#weekCard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)},
  updCheck:()=>updCheck(false),updHtml:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.updateHtml(UPD_BASE+'index.html',i.html)}catch(e){}},updApk:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){}},
  tracker:openTracker,tabata:openTabata,
  trkT:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{ti:+b.dataset.i});openTracker()},trkM:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{min:+b.dataset.m});openTracker()},
