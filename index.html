@@ -947,7 +947,7 @@ function viewGoals(){const p=S.profile,c=calc(),tr=trend();const done=Math.max(0
 <div class="prog"><i style="width:${done*100}%"></i></div><div class="small" style="display:flex;justify-content:space-between"><span>התחלה ${r1(p.w0)}</span><span>עכשיו ${r1(c.w)}</span><span>יעד ${r1(p.goal)}</span></div>
 ${eta2?`<div class="small" style="margin-top:8px;opacity:.85">לפי השקילות בפועל (${r1(tr)} ק״ג לשבוע): ${heDate(eta2,{day:'numeric',month:'long',year:'numeric'})}</div>`:''}</div>
 <div class="card"><h2>שקילה <span class="sp"></span></h2><div class="step"><input type="number" id="wIn" inputmode="decimal" step="0.1" value="${r1(c.w)}" aria-label="משקל בק״ג"><button class="btn" data-a="weigh" style="width:auto;flex:none">שמור</button></div>
-<div class="fig" id="wFig" style="margin-top:12px"><svg id="wSvg"></svg></div></div>
+<div class="fig" id="wFig" style="margin-top:12px"><svg id="wSvg"></svg></div>${c.w>p.w0&&diffDays(p.start||today(),today())<=21?`<p class="small" style="color:var(--pink);margin:6px 0 0">המשקל גבוה ממשקל ההתחלה (${r1(p.w0)}). אם משקל ההתחלה הוזן בהערכה, <button class="small" data-a="fixW0" style="color:var(--mango-d);text-decoration:underline;min-height:32px">קבע את ${r1(c.w)} כמשקל ההתחלתי</button>.</p>`:''}</div>
 <div class="card"><h2>התקציב שלי</h2><div class="statgrid"><div class="stat"><small>תקציב יומי</small><b>${c.budget} קק״ל</b></div><div class="stat"><small>שריפה יומית משוערת</small><b>${r0(c.tdee)} קק״ל</b></div>
 <div class="stat"><small>חילוף חומרים במנוחה</small><b>${r0(c.bmr)} קק״ל</b></div><div class="stat"><small>BMI</small><b>${r1(c.bmi)}</b> <span class="small muted">${bmiTxt}</span></div></div>
 ${c.floored?`<p class="small muted">התקציב לא יורד מתחת ל-${p.sex==='m'?1500:1200} קק״ל ביום, כדי לשמור על בריאות ואנרגיה. לכן הקצב בפועל איטי מעט מהקצב שבחרת.</p>`:''}<p class="small muted">חישוב לפי נוסחת מיפלין–סן ז׳ור. כל קילו שומן ≈ 7,700 קק״ל.</p></div>
@@ -1305,7 +1305,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=11;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=12;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -1400,6 +1400,7 @@ function openProfile(){const p=S.profile||{name:'עמיר',sex:'m',age:'',h:'',w
 <label class="f"><span>מין</span><div class="seg" data-g="sex">${[['m','זכר'],['f','נקבה']].map(([k,n])=>`<button type="button" data-a="pick1" data-v="${k}" class="${p.sex===k?'on':''}">${n}</button>`).join('')}</div></label>
 <div class="grid2"><label class="f"><span>גיל</span><input type="number" name="age" inputmode="numeric" min="14" max="99" value="${p.age}" required></label><label class="f"><span>גובה (ס״מ)</span><input type="number" name="h" inputmode="numeric" min="120" max="230" value="${p.h}" required></label>
 <label class="f"><span>משקל נוכחי (ק״ג)</span><input type="number" name="w" inputmode="decimal" step="0.1" min="35" max="300" value="${w}" required></label><label class="f"><span>משקל יעד (ק״ג)</span><input type="number" name="goal" inputmode="decimal" step="0.1" min="35" max="300" value="${p.goal}" required></label></div>
+${S.profile?`<label class="f"><span>משקל התחלתי (ממנו נמדדת ההתקדמות)</span><input type="number" name="w0" inputmode="decimal" step="0.1" min="35" max="300" value="${S.profile.w0}"></label><label class="small" style="display:flex;gap:8px;align-items:center;margin-top:6px;min-height:40px"><input type="checkbox" id="w0same" style="width:22px;height:22px"> להתחיל מחדש מהמשקל הנוכחי</label>`:''}
 <label class="f"><span>רמת פעילות</span><select name="act">${ACTS.map(([v,n,d])=>`<option value="${v}" ${+p.act===v?'selected':''}>${n} — ${d}</option>`).join('')}</select></label>
 <label class="f"><span>קצב ירידה בשבוע</span><div class="seg" data-g="pace">${PACES.map(([v,n])=>`<button type="button" data-a="pick1" data-v="${v}" class="${+p.pace===v?'on':''}">${n}<br><span class="small">${v} ק״ג</span></button>`).join('')}</div></label>
 <label class="f"><span>יעד צעדים יומי</span><select name="sg">${[5000,6000,7000,8000,10000,12000,15000].map(v=>`<option value="${v}" ${v===S.set.stepGoal?'selected':''}>${v.toLocaleString('he-IL')}</option>`).join('')}</select></label>
@@ -1409,8 +1410,8 @@ function openProfile(){const p=S.profile||{name:'עמיר',sex:'m',age:'',h:'',w
  $('#pf').addEventListener('submit',ev=>{ev.preventDefault();const f=new FormData(ev.target),g=k=>{const b=document.querySelector(`[data-g="${k}"] .on`);return b?b.dataset.v:null};
   const np={name:String(f.get('name')).trim()||'חבר',sex:g('sex')||'m',age:+f.get('age'),h:+f.get('h'),goal:+f.get('goal'),act:+f.get('act'),pace:+(g('pace')||.5)};const w=+f.get('w');
   const minW=18.5*(np.h/100)**2;if(np.goal<minW){$('#perr').textContent=`היעד נמוך מדי לגובה שלך. המשקל הבריא המינימלי הוא כ-${r1(minW)} ק״ג.`;return}
-  if(np.goal>w){$('#perr').textContent='משקל היעד צריך להיות נמוך מהמשקל הנוכחי (או שווה לו).';return}
-  S.set.stepGoal=+f.get('sg')||8000;S.cheat.day=+f.get('cd');const first=!S.profile;np.w0=first?w:S.profile.w0;np.start=first?today():S.profile.start;S.profile=np;
+  if(np.goal>w){$('#perr').textContent='משקל היעד צריך להיות נמוך מהמשקל הנוכחי (או שווה לו).';return}if(!first&&$('#w0same')&&$('#w0same').checked){S.weights=[]}
+  S.set.stepGoal=+f.get('sg')||8000;S.cheat.day=+f.get('cd');const first=!S.profile;np.w0=first?w:(($('#w0same')&&$('#w0same').checked)?w:(+f.get('w0')||S.profile.w0));np.start=first?today():S.profile.start;S.profile=np;
   const t=today();S.weights=S.weights.filter(x=>x.d!==t);S.weights.push({d:t,w});saveState();closeSheet();if(first){toast('ברוך הבא, '+np.name+'!');confetti()}setTimeout(syncSteps,300);checkBadges();saveState();render()})}
 
 function openEx(){openSheet(`${shTop('הוספת פעילות')}<label class="f"><span>סוג פעילות</span><select id="exT">${EXS.map((e,i)=>`<option value="${i}">${e[0]}</option>`).join('')}</select></label>
@@ -1488,6 +1489,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  cheat:openCheat,
  cheatPick:b=>{if(cheatUsedOn())return;const o=CHEAT[+b.dataset.i];const it=cheatItems(o);S.cheat.used[wkKey(today())]=today();V.date=today();const h=new Date().getHours(),m=h<11?'b':h<17?'l':'d';addEntries(m,it);award('ch:'+wkKey(today()),15,'פינוק מתוכנן');saveState();closeSheet();render();toast('בתיאבון! '+o[0]);confetti()},
  mo:b=>{V.mo=Math.min(0,(V.mo||0)+ +b.dataset.d);const el=$('#monthCard');if(el)el.outerHTML=monthCard()},calDay:b=>{V.date=b.dataset.d;V.tab='today';render();scrollTo(0,0)},calGo:()=>{V.tab='goals';render();setTimeout(()=>{const el=$('#monthCard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)},
+ fixW0:()=>{const w=curW();S.profile.w0=w;S.profile.start=today();S.weights=S.weights.filter(x=>x.d===today());saveState();render();toast('משקל ההתחלה עודכן ל-'+r1(w)+' ק״ג')},
  wm:b=>{V.wm=b.dataset.m;const el=$('#weekCard');if(el)el.outerHTML=weekCard()},wk:b=>{V.wk=Math.max(0,(V.wk||0)+ +b.dataset.d);const el=$('#weekCard');if(el)el.outerHTML=weekCard()},weekGo:()=>{V.tab='goals';render();setTimeout(()=>{const el=$('#weekCard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)},
  updCheck:()=>updCheck(false),updHtml:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.updateHtml(i.url||UPD_BASE+'index.html',i.html)}catch(e){}},updApk:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){}},
  tracker:openTracker,tabata:openTabata,
