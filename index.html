@@ -1319,8 +1319,8 @@ function updCard(){if(!isApk())return `<div class="card"><h2>עדכונים</h2>
  else if(i)body='<p class="small" style="color:var(--mango-d);margin:0">יש לך את הגרסה האחרונה.</p>';
  return `<div class="card" id="updCard"><h2>עדכונים<span class="sp"></span><span class="small muted">אפליקציה ${v.apk} · תוכן ${v.html}</span></h2>${body}<div class="btns"><button class="btn ghost full" data-a="updCheck">חפש עדכון</button></div></div>`}
 function rUpd(){const el=$('#updCard');if(el)el.outerHTML=updCard()}
-function updCheck(quiet){if(!isApk()||UPD_BASE.indexOf('__')===0)return;UPD.quiet=!!quiet;if(!quiet){UPD.st='checking';rUpd()}try{KalilNative.checkUpdate(UPD_BASE+'version.json')}catch(e){UPD.st='err';rUpd()}}
-window.__upd=(err,txt)=>{if(err){UPD.st=UPD.quiet?'':'err';rUpd();return}try{UPD.info=JSON.parse(txt);UPD.st=''}catch(e){UPD.st='err'}rUpd();const v=appVer(),i=UPD.info;
+function updCheck(quiet){if(!isApk()||UPD_BASE.indexOf('__')===0)return;UPD.quiet=!!quiet;if(!quiet){UPD.st='checking';rUpd()}try{KalilNative.checkUpdate('https://api.github.com/repos/amirevgi32-cell/kalil-app/contents/version.json?ref=main')}catch(e){UPD.st='err';rUpd()}}
+window.__upd=(err,txt)=>{if(err){UPD.st=UPD.quiet?'':'err';rUpd();return}try{let j=JSON.parse(txt);if(j&&j.content)j=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g,'')))));UPD.info=j;UPD.st=''}catch(e){UPD.st='err'}rUpd();const v=appVer(),i=UPD.info;
  if(i&&(i.apk>v.apk||i.html>v.html)){showUndoMsg('יש עדכון חדש לקליל! מסך "מטרות" ← עדכונים');S.updSeen=today();saveState()}else if(!UPD.quiet)toast('יש לך את הגרסה האחרונה')};
 window.__updErr=e=>{UPD.st='err';rUpd();toast('העדכון נכשל. נסה שוב')};
 setTimeout(()=>{if(isApk()&&S.lastUpdCheck!==today()){S.lastUpdCheck=today();saveState();updCheck(true)}},4000);
