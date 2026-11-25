@@ -1224,10 +1224,10 @@ ${rows.map(([m,n])=>`<button class="hopt ${H.min===m?'on':''}" data-a="hMin" dat
 <div class="card" style="margin-top:12px;padding:12px 14px"><b>ספירת צעדים מדויקת</b>${hasNative()&&nativePerm()?'<p class="small" style="margin:4px 0 0;color:var(--mango-d)">הצעדים נספרים בפועל על ידי חיישן הצעדים של הטלפון. שים את הטלפון בכיס או החזק אותו ביד.</p>'
  :hasNative()?'<p class="small muted" style="margin:4px 0 6px">כדי לספור כל צעד אמיתי, צריך לאשר לקליל גישה לחיישן הצעדים.</p><button class="btn full" data-a="stepPerm">הפעל ספירה מדויקת</button>'
  :'<p class="small muted" style="margin:4px 0 0">הצעדים נספרים לפי תנועת הטלפון. שים אותו בכיס או החזק אותו ביד.</p>'}
-<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:6px;min-height:40px"><input type="checkbox" id="hTime" ${(S.homePref||{}).mode==='time'?'checked':''} style="width:22px;height:22px"> הטלפון לא עליי (ספירה משוערת לפי זמן)</label></div>
+<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:6px;min-height:40px"><input type="checkbox" id="hTime" ${(S.homePref||{}).mode==='time'?'checked':''} style="width:22px;height:22px"> הטלפון לא עליי (ספירה משוערת שמרנית: כ-80 צעדים בדקה)</label></div>
 <label class="small" style="display:flex;gap:8px;align-items:center;margin-top:10px;min-height:40px"><input type="checkbox" id="hBeat" ${H.beat?'checked':''} style="width:22px;height:22px"> ביט שמכתיב קצב טוב (100 צעדים בדקה)</label>
 <div class="btns"><button class="btn full hbtn" data-a="homeGo">${IC.play} יאללה!</button></div>`)}
-const HM={seg:[],i:0,left:0,run:false,t:0,steps:0,base:-1,fact:0,bonus:false,mode:'time',mot:0,last:0,idle:0};
+const TIME_F=.8;const HM={seg:[],i:0,left:0,run:false,t:0,steps:0,base:-1,fact:0,bonus:false,mode:'time',mot:0,last:0,idle:0};
 const PED={on:false,f:9.8,up:false,t:0,ok:false};
 function pedH(e){const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;PED.ok=true;const m=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);PED.f=PED.f*.8+m*.2;const now=Date.now();
  if(!PED.up&&PED.f>11.2&&now-PED.t>280){PED.up=true;PED.t=now;if(HM.run&&HM.mode==='motion')HM.mot++}else if(PED.up&&PED.f<10.2)PED.up=false}
@@ -1240,7 +1240,7 @@ function buildHome(min){const seed=pd(today()).getDate(),mv=HMOVES.slice(seed%3)
  if(min>1)seg.push({m:['march','שחרור: צעידה איטית','מורידים קצב ונושמים עמוק.',90],sec:60});return seg}
 function openHome(){const H=S.homePref||{min:10,beat:true};HM.seg=buildHome(H.min);HM.i=0;HM.left=HM.seg[0].sec;HM.steps=0;HM.sens=0;HM.base=sensorNow();HM.mode=(S.homePref||{}).mode==='time'?'time':stepMode();HM.mot=0;HM.last=0;HM.idle=0;if(HM.mode==='motion')pedStart();HM.run=true;HM.fact=0;HM.min=H.min;HM.startDay=today();
  const ch=hs().chal;HM.bonus=!!(ch&&ch.d===today());if(H.beat)beatStart();showHome();clearInterval(HM.t);HM.t=setInterval(homeTick,1000)}
-function showHome(){const s=HM.seg[HM.i],nx=HM.seg[HM.i+1],tot=HM.seg.reduce((a,x)=>a+x.sec,0),done=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(s.sec-HM.left),goal=HM.min*100,R=46,C=2*Math.PI*R,p=Math.min(1,HM.steps/goal),day=getDayLocal(today());
+function showHome(){const s=HM.seg[HM.i],nx=HM.seg[HM.i+1],tot=HM.seg.reduce((a,x)=>a+x.sec,0),done=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(s.sec-HM.left),goal=HM.min*(HM.mode==='time'?80:100),R=46,C=2*Math.PI*R,p=Math.min(1,HM.steps/goal),day=getDayLocal(today());
  openSheet(`<div class="sh-top"><h3>${s.sprint?'האצה קלה':'צעדה בבית'}</h3><button class="x" data-a="homeEnd" aria-label="סיום">${IC.x}</button></div>
 <div class="hstage ${s.sprint?'spr':''}"><div class="fring" style="width:min(220px,58vw);margin:0 auto"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="7"/><circle id="hArc" cx="50" cy="50" r="${R}" fill="none" stroke="#ff8a65" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 50 50)"/></svg>
 <div class="c"><span class="small muted">צעדים</span><span class="t" id="hSt" style="color:var(--pink)">${Math.round(HM.steps).toLocaleString('he-IL')}</span><span class="small muted">${HM.mode==='time'?'משוער · ':'נמדד · '}יעד ≈${goal.toLocaleString('he-IL')}</span></div></div>
@@ -1254,10 +1254,10 @@ function showHome(){const s=HM.seg[HM.i],nx=HM.seg[HM.i+1],tot=HM.seg.reduce((a,
 <div class="btns"><button class="btn" data-a="homePause" id="hPB">${HM.run?'השהה':'המשך'}</button><button class="btn ghost" data-a="homeBeat">${SND.beat?'כבה ביט':'הפעל ביט'}</button><button class="btn lime" data-a="homeEnd">סיים</button></div>`)}
 function homeTick(){if(!$('#hT')){return}if(!HM.run)return;const s=HM.seg[HM.i];HM.left--;
  const n=sensorNow();if(HM.base>=0&&n>=HM.base)HM.sens=n-HM.base;
- if(HM.mode==='sensor')HM.steps=HM.sens;else if(HM.mode==='motion')HM.steps=HM.mot;else HM.steps+=s.m[3]/60;
+ if(HM.mode==='sensor')HM.steps=HM.sens;else if(HM.mode==='motion')HM.steps=HM.mot;else HM.steps+=s.m[3]*TIME_F/60;
  if(HM.mode!=='time'){if(Math.round(HM.steps)===HM.last)HM.idle++;else{HM.idle=0;HM.last=Math.round(HM.steps)}const ih=$('#hIdle');if(ih)ih.classList.toggle('hide',HM.idle<12)}
  if(HM.mode==='motion'&&HM.idle>=20&&!PED.ok&&HM.steps===0){HM.mode='time';toast('הטלפון לא מודד תנועה כאן. עברתי לספירה משוערת לפי זמן')}
- const goal=HM.min*100,C=2*Math.PI*46;$('#hT').textContent=fmtS(HM.left);$('#hSt').textContent=Math.round(HM.steps).toLocaleString('he-IL');$('#hArc').setAttribute('stroke-dasharray',C*Math.min(1,HM.steps/goal)+' '+C);
+ const goal=HM.min*(HM.mode==='time'?80:100),C=2*Math.PI*46;$('#hT').textContent=fmtS(HM.left);$('#hSt').textContent=Math.round(HM.steps).toLocaleString('he-IL');$('#hArc').setAttribute('stroke-dasharray',C*Math.min(1,HM.steps/goal)+' '+C);
  const tot=HM.seg.reduce((a,x)=>a+x.sec,0),done=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(s.sec-HM.left);$('#hP').style.width=done/tot*100+'%';
  if(done%45===0){HM.fact++;const f=$('#hF');if(f)f.textContent=HFACTS[HM.fact%HFACTS.length]}
  if(HM.left<=3&&HM.left>0)beep(false);
@@ -1423,7 +1423,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=14;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=15;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
