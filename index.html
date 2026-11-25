@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eefaf6">
+<title>קליל – ירידה במשקל</title>
+
+<style>@font-face{font-family:'Rubik';src:url(fonts/rubik-hebrew-400-normal.woff2) format('woff2');font-weight:400 500;font-display:swap}@font-face{font-family:'Rubik';src:url(fonts/rubik-latin-400-normal.woff2) format('woff2');font-weight:400 500;font-display:swap}@font-face{font-family:'Rubik';src:url(fonts/rubik-hebrew-700-normal.woff2) format('woff2');font-weight:600 800;font-display:swap}@font-face{font-family:'Rubik';src:url(fonts/rubik-latin-700-normal.woff2) format('woff2');font-weight:600 800;font-display:swap}@font-face{font-family:'Secular One';src:url(fonts/secular-one-hebrew-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}@font-face{font-family:'Secular One';src:url(fonts/secular-one-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
+/* VOICE: arcade coach — loud, glowing, rewarding every tap
+   IDEA: a neon arcade cabinet: every log is a coin, every meal gets a score sticker
+   PICTURE: the glowing calorie ring with Avoki inside; a water bottle that sloshes
+   COLOUR and TYPE: night #2f3a3d, turquoise #2ec4a0, neon pink #ff8a65, lime #7dd35a; Secular One + Rubik
+   LAYOUT: phone app — glowing hero, chunky 3D buttons, quest cards, bottom tab bar */
+:root{color-scheme:light;--bg:#ffffff;--card:#ffffff;--card2:#f2f8f6;--ink:#2f3a3d;--mute:#76878a;--line:#e2ebe8;
+--mango:#2ec4a0;--mango-d:#169a7e;--mango2:#e2f7f0;--pink:#ff8a65;--pink2:#fff0ea;
+--lime:#7dd35a;--lime2:#eef8e8;--red:#ef5b5b;--red2:#fdeaea;--blue:#4aa8ff;--blue2:#e8f3ff;--gold:#f6b93b;
+--sh:0 6px 22px rgba(40,90,80,.09);--disp:'Secular One',Rubik,sans-serif}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-tap-highlight-color:transparent;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Rubik,system-ui,sans-serif;overflow-x:clip}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.app{max-width:560px;margin:0 auto;padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+.hero{background:radial-gradient(circle at 10% 0%,rgba(255,138,101,.22),transparent 50%),radial-gradient(circle at 95% 40%,rgba(46,196,160,.25),transparent 55%),#eefaf6;padding:calc(14px + env(safe-area-inset-top)) 18px 24px;border-radius:0 0 34px 34px;position:relative;overflow:hidden}
+.hero::after{display:none;content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.5) 1px,transparent 1.5px);background-size:46px 46px;opacity:.12;pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.top{display:flex;align-items:center;gap:10px}
+.top h1{font:26px/1 var(--disp);margin:0;flex:1;background:linear-gradient(90deg,var(--mango),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+.ib{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(47,58,61,.08);color:var(--ink)}
+.ib svg{width:22px;height:22px}
+.datebar{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;font-weight:500}
+.datebar .ib{width:40px;height:40px;background:transparent}
+.ringwrap{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin-top:4px}
+.ring{position:relative;width:min(220px,54vw);aspect-ratio:1}
+.ring svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ring .glow{filter:drop-shadow(0 0 6px currentColor)}
+.ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .big{font:clamp(38px,11vw,52px)/1 var(--disp)}
+.ring .lbl{font-size:14px;color:var(--mute)}
+.side{text-align:center;font-size:13px;color:var(--mute)}.side b{display:block;font:24px/1.2 var(--disp);color:var(--ink)}
+.bubble{display:flex;align-items:center;gap:10px;background:rgba(47,58,61,.08);border:1px solid rgba(47,58,61,.08);border-radius:18px;padding:8px 12px;margin-top:14px;font-size:15px}
+.bubble svg{flex:none;width:48px;height:48px;animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px) rotate(-3deg)}}
+.chipf svg{width:16px;height:16px}
+.chipf.stpill{background:var(--mango2);color:var(--mango-d);border-color:rgba(46,196,160,.45);font-size:15px;padding:6px 14px}.chipf.stpill b{font:18px var(--disp)}
+.chipf{display:inline-flex;align-items:center;gap:6px;background:var(--pink2);color:var(--pink);border:1px solid rgba(255,138,101,.4);border-radius:20px;padding:4px 12px;font-weight:700;font-size:14px;margin-top:8px}
+.wrap{padding:0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--sh);padding:16px;margin-top:14px}
+.card h2{font:20px/1.2 var(--disp);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.card h2 .sp{flex:1}
+.macros{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mac{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px 12px}
+.mac small{color:var(--mute);font-size:13px;display:block}.mac b{font:19px var(--disp)}
+.bar{height:8px;border-radius:9px;background:rgba(47,58,61,.08);overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;border-radius:9px;box-shadow:0 0 10px currentColor}
+.quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.qa{background:var(--card2);border-radius:20px;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px;font-weight:700;box-shadow:0 5px 0 #d6e3df;min-height:84px;justify-content:center}
+.qa:active{transform:translateY(4px);box-shadow:0 1px 0 #d6e3df}
+.qa svg{width:30px;height:30px}
+.meal .row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.meal .row:first-of-type{border-top:0}
+.row .nm{flex:1}.row .nm small{display:block;color:var(--mute);font-size:13px}
+.kc{font:17px var(--disp);white-space:nowrap}
+.del{width:36px;height:36px;border-radius:12px;color:var(--mute);display:grid;place-items:center}
+.del svg{width:18px;height:18px}
+.sticker{min-width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:20px var(--disp);transform:rotate(-8deg);flex:none}
+.sticker.s{min-width:42px;height:42px;font-size:16px}
+.g1{background:var(--lime);color:#2f3a3d;box-shadow:0 0 16px rgba(125,211,90,.55)}.g2{background:var(--gold);color:#2f3a3d;box-shadow:0 0 16px rgba(246,185,59,.5)}
+.g3{background:var(--pink);color:#fff;box-shadow:0 0 16px rgba(255,138,101,.55)}.g4{background:var(--red);color:#fff;box-shadow:0 0 16px rgba(239,91,91,.5)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:16px;font-weight:700;background:var(--mango-d);color:#fff;box-shadow:0 4px 0 #0f7a63;transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #0f7a63}
+.btn.ghost{background:var(--mango2);color:var(--mango-d);box-shadow:0 4px 0 #d6e3df}
+.btn.pink{background:var(--pink);color:#fff;box-shadow:0 4px 0 #e0663f}
+.btn.lime{background:var(--lime);color:#2f3a3d;box-shadow:0 4px 0 #5aa83c}
+.btn.full{width:100%}.btn svg{width:20px;height:20px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btns .btn{flex:1;padding:0 10px;white-space:nowrap}
+.muted{color:var(--mute)}.small{font-size:13px}
+.bottle{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:center}
+.bottle svg{width:110px;height:180px}
+.wave{animation:wv 3s linear infinite}@keyframes wv{to{transform:translateX(-80px)}}
+.wbig{font:34px/1 var(--disp);color:var(--blue)}
+.tabs{position:fixed;inset:auto 0 0 0;background:rgba(255,255,255,.96);box-shadow:0 -4px 18px rgba(40,90,80,.08);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:20}
+.tabs .in{display:flex;width:100%;max-width:560px;align-items:center}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--mute);min-height:52px;justify-content:center}
+.tab svg{width:24px;height:24px}.tab.on{color:var(--mango-d);font-weight:700}.tab.on svg{filter:drop-shadow(0 0 6px var(--mango))}
+.fab{width:64px;height:64px;border-radius:22px;background:var(--pink);color:#fff;display:grid;place-items:center;margin-top:-32px;box-shadow:0 0 24px rgba(255,138,101,.6),0 5px 0 #e0663f}
+.fab:active{transform:translateY(3px)}
+.fab svg{width:32px;height:32px}
+.sheet{position:fixed;inset:0;background:rgba(30,55,50,.35);z-index:40;display:none;align-items:flex-end;justify-content:center}
+.sheet.open{display:flex}
+.sheet-in{background:var(--bg);border:1px solid var(--line);border-bottom:0;width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:28px 28px 0 0;padding:16px 16px calc(24px + env(safe-area-inset-bottom));animation:up .28s cubic-bezier(.2,1.4,.4,1)}
+@keyframes up{from{transform:translateY(60px);opacity:.3}}
+.sh-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}.sh-top h3{flex:1;margin:0;font:22px var(--disp)}
+.x{width:44px;height:44px;border-radius:14px;background:var(--card);display:grid;place-items:center}.x svg{width:20px;height:20px}
+input[type=text],input[type=number],input[type=search],input[type=time],select,textarea{width:100%;min-height:48px;border-radius:14px;border:2px solid var(--line);background:var(--card);padding:10px 14px;font-size:16px}
+input:focus,select:focus,textarea:focus{border-color:var(--mango);outline:0;box-shadow:0 0 0 4px var(--mango2)}
+label.f{display:block;margin-top:12px;font-weight:500}label.f span{display:block;font-size:14px;margin-bottom:4px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0;scrollbar-width:none}
+.chip{flex:none;min-height:38px;padding:0 14px;border-radius:20px;background:var(--card);border:2px solid var(--line);font-size:14px;font-weight:500}
+.chip.on{background:var(--mango-d);color:#fff;border-color:var(--mango-d)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}.seg button{flex:1 1 auto;min-height:44px;border-radius:14px;background:var(--card);border:2px solid var(--line);padding:4px 10px;font-size:14px}
+.seg button.on{border-color:var(--mango);background:var(--mango2);color:var(--mango-d);font-weight:700}
+.food{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--line);width:100%;text-align:start;min-height:56px}
+.dot{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:0 0 8px currentColor}
+.food .nm{flex:1}.food small{display:block;color:var(--mute);font-size:13px}
+.step{display:flex;align-items:center;gap:8px}.step button{width:48px;height:48px;border-radius:14px;background:var(--card);border:2px solid var(--line);font-size:22px;font-weight:700}
+.step .btn{width:auto;height:auto;border:0;font-size:16px;padding:0 20px;background:var(--mango-d);color:#fff}
+.step input{text-align:center;font:22px var(--disp)}
+.nut{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.nut div{background:var(--card);border-radius:14px;padding:8px;text-align:center}.nut b{display:block;font:20px var(--disp)}.nut small{color:var(--mute);font-size:13px}
+.kbig{font:50px/1 var(--disp);color:var(--mango-d);text-shadow:0 0 18px rgba(46,196,160,.5)}
+ul.why{list-style:none;padding:0;margin:8px 0}ul.why li{display:flex;gap:8px;padding:6px 0;align-items:flex-start}
+ul.why li i{flex:none;min-width:24px;height:24px;border-radius:12px;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800;margin-top:1px;padding:0 4px;transform:none}
+.statgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{background:var(--card2);border-radius:16px;padding:12px}.stat small{color:var(--mute);display:block;font-size:13px}.stat b{font:22px var(--disp);white-space:nowrap}
+.goalhero{color:#fff;background:linear-gradient(135deg,#2ec4a0,#169a7e);border:0;border-radius:24px;padding:18px;margin-top:14px;box-shadow:0 0 30px rgba(255,138,101,.2)}
+.goalhero .d{font:clamp(30px,8vw,40px)/1.1 var(--disp);margin:4px 0;color:#fff}.goalhero .prog{background:rgba(255,255,255,.3)}.goalhero .prog i{background:#fff;box-shadow:none}
+.prog{height:14px;border-radius:9px;background:rgba(47,58,61,.08);overflow:hidden;margin:12px 0 6px}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--mango),var(--lime));border-radius:9px;box-shadow:0 0 12px var(--lime)}
+.fig{position:relative;height:220px}.fig svg{direction:ltr;position:absolute;inset:0;width:100%;height:100%}
+.week{display:flex;align-items:flex-end;gap:6px;height:150px;position:relative;padding-top:10px}
+.week .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;font-size:12px;color:var(--mute)}
+.week .col i{width:100%;max-width:34px;border-radius:9px 9px 4px 4px;background:var(--mango);min-height:3px;box-shadow:0 0 10px rgba(46,196,160,.4)}
+.week .col i.over{background:var(--pink)}
+.week .ln{position:absolute;inset-inline:0;border-top:2px dashed var(--lime);pointer-events:none;opacity:.7}
+.badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.bd{background:var(--card2);border-radius:18px;padding:12px 6px;text-align:center;font-size:13px;color:var(--mute)}
+.bd svg{width:54px;height:54px;display:block;margin:0 auto 6px}.bd b{display:block;font-size:14px;color:var(--ink)}
+.bd.off{opacity:.4;filter:grayscale(1)}
+.bd:not(.off) svg{filter:drop-shadow(0 0 8px rgba(246,185,59,.6))}
+.lvl{display:flex;align-items:center;gap:14px}
+.credit{text-align:center;color:var(--mute);font-size:13px;margin:22px 14px 8px}
+.credit b{color:var(--pink)}
+.toast{position:fixed;top:calc(16px + env(safe-area-inset-top));inset-inline:0;margin:auto;width:max-content;max-width:90vw;background:var(--ink);color:#fff;padding:10px 18px;border-radius:20px;font-weight:800;z-index:60;transition:.3s cubic-bezier(.2,1.5,.4,1);opacity:0;transform:translateY(-30px) scale(.8);pointer-events:none;box-shadow:0 0 24px rgba(125,211,90,.6)}
+.toast.on{opacity:1;transform:none}
+#cf{position:fixed;inset:0;pointer-events:none;z-index:70;width:100%;height:100%}
+.empty{color:var(--mute);font-size:14px;padding:6px 0}
+.ex{border-color:rgba(74,168,255,.35)}
+.lesson{background:linear-gradient(135deg,#fff1ea,#ffffff 65%);border:1px solid rgba(255,138,101,.45);box-shadow:0 0 26px rgba(255,138,101,.18)}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:12px;background:var(--pink2);color:var(--pink)}
+.quest{display:flex;align-items:center;gap:10px;padding:8px 0}
+.quest .ck{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none;font-weight:800;color:#2f3a3d}
+.quest.done .ck{background:var(--lime);border-color:var(--lime);box-shadow:0 0 12px rgba(125,211,90,.6)}
+.quest.done .qt{text-decoration:line-through;color:var(--mute)}
+.quest .xp{font-size:13px;color:var(--gold);font-weight:700}
+.opt{display:block;width:100%;text-align:start;padding:12px 14px;border-radius:14px;background:var(--card2);border:2px solid var(--line);margin-top:8px;font-weight:500;min-height:48px}
+.opt.ok{border-color:var(--lime);background:var(--lime2)}.opt.no{border-color:var(--red);background:var(--red2)}
+.fring{position:relative;width:min(260px,70vw);aspect-ratio:1;margin:8px auto 0}
+.fring svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.fring .t{font:clamp(36px,11vw,48px)/1 var(--disp);direction:ltr}
+.stage{display:flex;gap:10px;padding:8px 0;align-items:flex-start;opacity:.45}
+.stage.on{opacity:1}.stage.now{opacity:1}
+.stage .sd{width:14px;height:14px;border-radius:50%;background:var(--line);flex:none;margin-top:5px}
+.stage.on .sd{background:var(--mango);box-shadow:0 0 10px var(--mango)}.stage.now .sd{background:var(--pink);box-shadow:0 0 14px var(--pink);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{transform:scale(1.4)}}
+.photo{width:100%;max-height:240px;object-fit:cover;border-radius:18px;display:block}
+.ai-row{display:grid;grid-template-columns:minmax(0,1fr) 84px auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.ai-row input{min-height:42px;padding:6px 8px;text-align:center}
+.spin{width:34px;height:34px;border-radius:50%;border:4px solid var(--mango2);border-top-color:var(--mango);animation:sp 1s linear infinite;margin:0 auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+.pop{animation:pop .4s cubic-bezier(.2,1.8,.4,1)}@keyframes pop{from{transform:scale(.6)}}
+.traybar{position:sticky;bottom:calc(-24px - env(safe-area-inset-bottom));background:var(--bg);padding:10px 0 calc(10px + env(safe-area-inset-bottom));margin-top:6px}
+.row button.nm{display:block;text-align:start;padding:4px 0;min-height:44px;flex:1}
+.mscore{display:flex;flex-direction:column;align-items:flex-start;width:100%;text-align:start;background:var(--mango2);border-radius:14px;padding:8px 12px;margin-top:10px;min-height:44px}.mscore b{color:var(--mango-d)}.mscore span{font-size:13px;color:var(--mute)}
+.card.mini{padding:10px 16px}.card.mini h2{margin:0}
+.mb{width:44px;height:44px;border-radius:14px;background:var(--mango2);color:var(--mango-d);display:grid;place-items:center}.mb svg{width:20px;height:20px}
+.food{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--line);width:100%}
+.fpick{flex:1;display:flex;align-items:center;gap:10px;text-align:start;min-height:52px;padding:6px 4px}.fpick .nm{flex:1}.fpick small{display:block;color:var(--mute);font-size:13px}
+.qplus{width:44px;height:44px;border-radius:50%;background:var(--mango-d);color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 3px 0 #0f7a63}.qplus svg{width:20px;height:20px}
+.undo{position:fixed;inset-inline:16px;bottom:calc(84px + env(safe-area-inset-bottom));margin:auto;max-width:520px;background:var(--ink);color:#fff;border-radius:16px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:10px;z-index:55;box-shadow:var(--sh)}
+.undo span{flex:1}.undo button{color:var(--lime);font-weight:800;min-height:40px;padding:0 12px}
+.cheat{border-color:rgba(125,211,90,.5);background:linear-gradient(135deg,#f2fbec,#fff 65%)}
+.afig{display:block;height:auto}
+.hide{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<nav class="tabs"><div class="in">
+ <button class="tab on" data-a="tab" data-t="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>היום</button>
+ <button class="tab" data-a="tab" data-t="fast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 15A8 8 0 0 1 9 4a8 8 0 1 0 11 11z"/></svg>צום</button>
+ <button class="fab" data-a="add" aria-label="הוספת מאכל"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+ <button class="tab" data-a="tab" data-t="fit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/></svg>כושר</button>
+ <button class="tab" data-a="tab" data-t="goals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>מטרות</button>
+</div></nav>
+<div class="sheet" id="sheet"><div class="sheet-in" id="sheetIn"></div></div>
+<div class="toast" id="toast"></div>
+<canvas id="cf"></canvas>
+<input type="file" id="pic" accept="image/*" capture="environment" class="hide"><input type="file" id="lbl" accept="image/*" class="hide"><div id="undo" class="undo hide"><span id="undoT"></span><button data-a="undo">ביטול</button></div>
+<script>
+{
+/* ===== מאגר מאכלים: שם|קטגוריה|קק"ל|חלבון|פחמימה|שומן|סיבים|סוכר (ל-100 גרם)|גרם לכוס|גרם ליחידה|שם יחידה ===== */
+const RAW=`מלפפון|veg|15|0.7|3.6|0.1|0.5|1.7|120|150|מלפפון
+עגבנייה|veg|18|0.9|3.9|0.2|1.2|2.6|180|120|עגבנייה
+עגבניות שרי|veg|18|0.9|3.9|0.2|1.2|2.6|150|15|עגבניית שרי
+גזר|veg|41|0.9|9.6|0.2|2.8|4.7|128|70|גזר
+פלפל אדום|veg|31|1|6|0.3|2.1|4.2|150|150|פלפל
+פלפל ירוק|veg|20|0.9|4.6|0.2|1.7|2.4|150|150|פלפל
+חסה|veg|15|1.4|2.9|0.2|1.3|0.8|50||
+כרוב|veg|25|1.3|5.8|0.1|2.5|3.2|90||
+כרובית|veg|25|1.9|5|0.3|2|1.9|107||
+ברוקולי|veg|34|2.8|6.6|0.4|2.6|1.7|91||
+קישוא|veg|17|1.2|3.1|0.3|1|2.5|124|200|קישוא
+חציל|veg|25|1|5.9|0.2|3|3.5|82|450|חציל
+חציל קלוי/במנגל|veg|35|1|7|0.3|3.4|4|200||
+בצל|veg|40|1.1|9.3|0.1|1.7|4.2|160|110|בצל
+בצל מטוגן|veg|160|1.5|12|12|2|5|150||
+שום|veg|149|6.4|33|0.5|2.1|1|136|4|שן
+תרד|veg|23|2.9|3.6|0.4|2.2|0.4|30||
+פטריות|veg|22|3.1|3.3|0.3|1|2|70|18|פטרייה
+סלק|veg|43|1.6|9.6|0.2|2.8|6.8|136|80|סלק
+תירס|veg|86|3.3|19|1.4|2.7|6.3|154|90|קלח
+אפונה ירוקה|veg|81|5.4|14|0.4|5.7|5.7|145||
+שעועית ירוקה|veg|31|1.8|7|0.2|2.7|3.3|110||
+סלרי|veg|16|0.7|3|0.2|1.6|1.3|100|40|גבעול
+צנונית|veg|16|0.7|3.4|0.1|1.6|1.9|116|5|צנונית
+דלעת|veg|26|1|6.5|0.1|0.5|2.8|116||
+כרישה|veg|61|1.5|14|0.3|1.8|3.9|89||
+פטרוזיליה/כוסברה|veg|36|3|6.3|0.8|3.3|0.9|60||
+סלט ירקות קצוץ (בלי שמן)|veg|20|0.9|4|0.2|1.2|2.5|150||
+סלט ירקות עם שמן זית|veg|70|0.9|4|5.5|1.2|2.5|150||
+מלפפון חמוץ|veg|12|0.5|2.3|0.3|1.2|1.1||65|מלפפון
+זיתים|veg|145|1|3.8|15|3.3|0|135|4|זית
+בטטה אפויה|veg|90|2|21|0.2|3.3|6.5|200|150|בטטה
+תפוח אדמה מבושל|veg|87|1.9|20|0.1|1.8|0.9|156|150|תפוח אדמה
+אבוקדו|veg|160|2|8.5|14.7|6.7|0.7|150|150|אבוקדו שלם
+תפוח עץ|fruit|52|0.3|14|0.2|2.4|10.4|125|180|תפוח
+בננה|fruit|89|1.1|23|0.3|2.6|12.2|150|120|בננה
+תפוז|fruit|47|0.9|12|0.1|2.4|9.4|180|150|תפוז
+קלמנטינה|fruit|53|0.8|13|0.3|1.8|10.6|195|75|קלמנטינה
+אגס|fruit|57|0.4|15|0.1|3.1|9.8|140|180|אגס
+ענבים|fruit|69|0.7|18|0.2|0.9|15.5|150|5|ענב
+אבטיח|fruit|30|0.6|7.6|0.2|0.4|6.2|152|280|פלח
+מלון|fruit|34|0.8|8.2|0.2|0.9|7.9|160|150|פלח
+תותים|fruit|32|0.7|7.7|0.3|2|4.9|150|12|תות
+אוכמניות|fruit|57|0.7|14.5|0.3|2.4|10|148||
+מנגו|fruit|60|0.8|15|0.4|1.6|13.7|165|300|מנגו
+אננס|fruit|50|0.5|13|0.1|1.4|9.9|165||
+אפרסק/נקטרינה|fruit|39|0.9|9.5|0.3|1.5|8.4|155|150|יחידה
+שזיף|fruit|46|0.7|11.4|0.3|1.4|9.9|165|65|שזיף
+קיווי|fruit|61|1.1|14.7|0.5|3|9|180|75|קיווי
+רימון (גרעינים)|fruit|83|1.7|18.7|1.2|4|13.7|174||
+אפרסמון|fruit|70|0.6|18.6|0.2|3.6|12.5||170|אפרסמון
+תמר מג'הול|fruit|277|1.8|75|0.2|6.7|66||24|תמר
+תאנה|fruit|74|0.8|19|0.3|2.9|16||50|תאנה
+אשכולית|fruit|42|0.8|10.7|0.1|1.6|6.9|230|250|אשכולית
+דובדבנים|fruit|63|1.1|16|0.2|2.1|12.8|154|8|דובדבן
+ליצ'י|fruit|66|0.8|16.5|0.4|1.3|15|190|10|ליצ'י
+צימוקים|fruit|299|3.1|79|0.5|3.7|59|145||
+משמש מיובש|fruit|241|3.4|63|0.5|7.3|53|130|8|יחידה
+תמרים מיובשים|fruit|282|2.5|75|0.4|8|63|147|8|תמר
+לחם לבן|bread|266|8.9|49|3.2|2.7|5||30|פרוסה
+לחם מלא|bread|247|13|41|3.4|7|6||30|פרוסה
+לחם קל|bread|225|11|35|3|9|3||20|פרוסה
+לחם שיפון|bread|259|8.5|48|3.3|5.8|3.9||32|פרוסה
+פיתה|bread|275|9.1|55.7|1.2|2.2|1.3||90|פיתה
+פיתה מקמח מלא|bread|262|9.8|55|2.6|7.4|0.8||80|פיתה
+לאפה|bread|280|8|55|3|2|2||130|לאפה
+חלה|bread|300|9|52|6|2|6||40|פרוסה
+בייגל|bread|257|10|50|1.6|2.1|5||100|בייגל
+לחמנייה|bread|280|9|50|4.5|2.5|5||60|לחמנייה
+באגט|bread|270|9|52|2|2.5|4||30|פרוסה
+טורטייה|bread|310|8|52|7.5|3.5|2||45|טורטייה
+פריכיות אורז|bread|387|8|81|2.8|4.2|0.9||9|פריכית
+קרקרים|bread|430|10|70|12|3|5||5|קרקר
+קרואסון|bread|406|8.2|45.8|21|2.6|11||60|קרואסון
+אורז לבן מבושל|grain|130|2.7|28|0.3|0.4|0|158||
+אורז מלא מבושל|grain|112|2.3|23.5|0.8|1.8|0.3|195||
+פסטה מבושלת|grain|158|5.8|31|0.9|1.8|0.6|140||
+פסטה מלאה מבושלת|grain|149|6|30|1.7|3.9|0.8|140||
+קוסקוס מבושל|grain|112|3.8|23|0.2|1.4|0.1|157||
+בורגול מבושל|grain|83|3.1|18.6|0.2|4.5|0.1|182||
+קינואה מבושלת|grain|120|4.4|21.3|1.9|2.8|0.9|185||
+פתיתים מבושלים|grain|150|5|30|1|1.5|0.5|160||
+שיבולת שועל (יבשה)|grain|389|16.9|66|6.9|10.6|1|80||
+דייסת שיבולת שועל במים|grain|71|2.5|12|1.5|1.7|0.3|234||
+גרנולה|grain|471|10|64|20|7|24|120||
+קורנפלקס|grain|357|7.5|84|0.4|3.3|10|28||
+כריות ממולאות (דגני בוקר)|grain|440|7|70|15|3|30|40||
+פופקורן ביתי|snack|387|13|78|4.5|14.5|0.9|8||
+פירה|grain|113|2|17|4.2|1.5|1.5|210||
+צ'יפס|fast|312|3.4|41|15|3.8|0.3||120|מנה בינונית
+תפוחי אדמה בתנור (עם שמן)|grain|150|2.5|22|6|2.2|1|150||
+מג'דרה|dish|160|6|25|4|4|1|200||
+חזה עוף צלוי|prot|165|31|0|3.6|0|0|140|150|חזה
+פרגית צלויה|prot|209|26|0|10.9|0|0||90|פרגית
+שניצל עוף מטוגן|prot|260|22|14|13|0.8|0.5||120|שניצל
+שניצל עוף אפוי|prot|200|24|12|6|0.8|0.5||110|שניצל
+שוק עוף צלוי (בלי עור)|prot|172|28|0|5.7|0|0||100|שוק
+כנפיים צלויות|prot|254|24|0|17|0|0||35|כנף
+חזה הודו צלוי|prot|147|30|0|2|0|0|140||
+פסטרמה הודו|prot|105|18|3|2|0|2||20|פרוסה
+נקניקייה|prot|220|13|4|17|0|1||45|נקניקייה
+בשר בקר טחון 20% מבושל|prot|250|26|0|15.5|0|0|140||
+קציצות בקר|prot|240|18|8|15|0.5|1||60|קציצה
+סטייק אנטריקוט|prot|291|24|0|21|0|0||250|סטייק
+סינטה/פילה|prot|200|28|0|9.5|0|0||200|סטייק
+המבורגר (קציצה בלבד)|prot|254|26|0|17|0|0||150|קציצה
+קבב|prot|270|16|5|21|0.5|1||60|קבב
+כבד עוף|prot|167|24.5|0.9|6.5|0|0|140||
+שווארמה (בשר בלבד)|prot|220|24|2|13|0|0|140||
+סלמון אפוי|prot|206|22|0|12.4|0|0||150|נתח
+טונה בשמן (מסוננת)|prot|198|29|0|8.2|0|0||80|קופסה
+טונה במים|prot|116|25.5|0|0.8|0|0||80|קופסה
+אמנון/דניס אפוי|prot|128|26|0|2.7|0|0||150|פילה
+סרדינים בשמן|prot|208|25|0|11.5|0|0||90|קופסה
+שרימפס|prot|99|24|0.2|0.3|0|0|145||
+טופו|prot|144|15.8|2.8|8.7|2.3|0.6|250||
+ביצה קשה|egg|155|12.6|1.1|10.6|0|1.1||50|ביצה
+ביצה מטוגנת|egg|196|13.6|0.8|15|0|0.4||55|ביצה
+חביתה|egg|190|13|1|15|0|0.5||110|חביתה (2 ביצים)
+חלבון ביצה|egg|52|11|0.7|0.2|0|0.7||33|חלבון
+קוטג' 5%|dairy|96|11|1.5|5|0|1.5|225|250|גביע
+קוטג' 3%|dairy|77|11.5|2|3|0|2|225|250|גביע
+גבינה לבנה 5%|dairy|98|9|4|5|0|4|240|250|גביע
+גבינה לבנה 9%|dairy|130|8.5|3.5|9|0|3.5|240|250|גביע
+גבינה צהובה 28%|dairy|350|26|1|28|0|0||20|פרוסה
+גבינה צהובה 9%|dairy|205|30|1|9|0|0||20|פרוסה
+בולגרית 5%|dairy|115|16|1|5|0|1||30|קובייה
+בולגרית/פטה 24%|dairy|264|14|4|21|0|4||30|קובייה
+לבנה 5%|dairy|95|7|4|5|0|4|240||
+גבינת שמנת|dairy|300|6|3|30|0|3|232||
+מוצרלה|dairy|280|22|2|21|0|1|113||
+פרמזן מגורר|dairy|392|35.8|3.2|25.8|0|0.8|80||
+חלב 3%|dairy|60|3.3|4.8|3|0|4.8|244||
+חלב 1%|dairy|42|3.4|5|1|0|5|244||
+משקה סויה/שקדים|dairy|35|2|2|2|0.4|1|240||
+יוגורט 3%|dairy|61|3.5|4.7|3.3|0|4.7|245|200|גביע
+יוגורט יווני 0%|dairy|59|10|3.6|0.4|0|3.2|245|150|גביע
+מעדן חלבון|dairy|70|10|6|1|0|5||200|גביע
+מילקי|dairy|145|3|22|5|0|19||100|גביע
+אשל/לבן|dairy|56|3.3|4.5|2.8|0|4.5|244|200|גביע
+חמאה|fat|717|0.9|0.1|81|0|0.1|227|10|קוביית חמאה
+שמנת חמוצה 15%|dairy|162|3|4|15|0|4|230||
+שמנת מתוקה 32%|dairy|300|2|3|32|0|3|238||
+גלידה|sweet|207|3.5|24|11|0.7|21|132|70|כדור
+חומוס (ממרח)|leg|260|7|13|20|6|1|240||
+גרגירי חומוס מבושלים|leg|164|8.9|27.4|2.6|7.6|4.8|164||
+עדשים מבושלות|leg|116|9|20|0.4|7.9|1.8|198||
+שעועית לבנה מבושלת|leg|139|9.7|25|0.4|6.3|0.3|179||
+שעועית אדומה מבושלת|leg|127|8.7|22.8|0.5|6.4|0.3|177||
+אדממה|leg|121|11.9|8.9|5.2|5.2|2.2|155||
+פול מבושל|leg|110|7.6|19.7|0.4|5.4|1.8|170||
+טחינה גולמית|leg|595|17|21|54|9|0.5|240||
+טחינה מוכנה|leg|280|8|10|25|4.5|0.3|240||
+פלאפל|leg|333|13.3|31.8|17.8|4.9|0||17|כדור
+שקדים|nut|579|21|22|50|12.5|4.4|143|1.2|שקד
+אגוזי מלך|nut|654|15|14|65|6.7|2.6|117|4|חצי אגוז
+קשיו|nut|553|18|30|44|3.3|6|137|1.5|אגוז
+בוטנים קלויים|nut|585|24|21.5|49.7|8|4.2|146||
+פיסטוקים|nut|560|20|27.5|45|10.6|7.7|123||
+גרעיני חמנייה קלופים|nut|584|21|20|51|8.6|2.6|140||
+גרעינים שחורים|nut|557|28|15|47|4|0|108||
+חמאת בוטנים|nut|588|25|20|50|6|9|258||
+זרעי צ'יה|nut|486|17|42|31|34|0|192||
+זרעי פשתן טחונים|nut|534|18|29|42|27|1.5|112||
+שמן זית|fat|884|0|0|100|0|0|216||
+שמן קנולה/צמחי|fat|884|0|0|100|0|0|218||
+ספריי שמן (שפריץ)|fat|884|0|0|100|0|0||0.3|שפריץ
+מיונז|fat|680|1|0.6|75|0|0.6|220||
+מיונז לייט|fat|300|0.5|8|30|0|3|240||
+קטשופ|fat|112|1.2|26|0.1|0.3|22|240||
+חרדל|fat|66|4|5.8|3.3|3.3|0.9|250||
+רוטב סויה|fat|53|8|4.9|0.6|0.8|0.4|255||
+רוטב עגבניות|fat|29|1.3|6|0.2|1.5|4|245||
+פסטו|fat|400|5|4|40|1.5|1|240||
+רוטב לסלט (שמן ולימון)|fat|450|0|3|48|0|2|240||
+חומץ בלסמי|fat|88|0.5|17|0|0|15|255||
+סחוג|fat|160|2|6|14|2|2|240||
+עמבה|fat|70|0.5|15|1|1.5|10|240||
+סילאן|sweet|290|1.5|72|0.2|1.5|65|330||
+דבש|sweet|304|0.3|82|0|0.2|82|339||
+ריבה|sweet|250|0.4|62|0.1|1|48|320||
+סוכר|sweet|387|0|100|0|0|100|200||
+ממרח שוקולד-אגוזים|sweet|539|6.3|57.5|31|3.4|56.3|300||
+קפה שחור/אספרסו|drink|2|0.3|0|0|0|0|240|60|כוס קטנה
+הפוך|drink|45|2.5|3.6|2.3|0|3.6|240|300|כוס
+תה|drink|1|0|0.2|0|0|0|240||
+מים|drink|0|0|0|0|0|0|240||
+מיץ תפוזים טבעי|drink|45|0.7|10.4|0.2|0.2|8.4|248||
+קולה|drink|42|0|10.6|0|0|10.6|240|330|פחית
+קולה זירו/דיאט|drink|0.3|0|0|0|0|0|240|330|פחית
+לימונדה|drink|40|0|10|0|0|9.5|240||
+שוקו|drink|80|3.3|11|2.5|0.5|10|240||
+שייק פירות|drink|60|1|14|0.3|1.5|11|240||
+בירה|drink|43|0.5|3.6|0|0|0|240|330|בקבוק
+יין|drink|85|0.1|2.6|0|0|0.6|240|150|כוס יין
+אבקת חלבון|prot|380|78|8|5|1|4||30|סקופ
+במבה|snack|538|15.9|39|35|3.6|2|60|25|שקית קטנה
+ביסלי|snack|488|9.5|64|21.6|3|4|60|70|שקית
+תפוצ'יפס|snack|536|7|53|35|4.8|0.3|30|50|שקית
+שוקולד חלב|sweet|535|7.7|59|30|3.4|52||5|קובייה
+שוקולד מריר 70%|sweet|598|7.8|46|43|11|24||5|קובייה
+וופלים|sweet|520|6|65|26|1.5|35||9|וופל
+עוגיות שוקולד צ'יפס|sweet|488|5|64|24|2.4|36||15|עוגייה
+עוגת שמרים|sweet|380|6|52|16|1.5|22||60|פרוסה
+עוגת שוקולד|sweet|371|5|51|17|2|36||80|פרוסה
+רוגלך|sweet|430|6|50|22|1.5|22||25|רוגלך
+בורקס גבינה|fast|350|9|30|21|1|2||120|בורקס
+בורקס תפוחי אדמה|fast|330|6|33|19|1.5|1||120|בורקס
+סופגנייה|sweet|340|6|44|16|1|20||90|סופגנייה
+קרמבו|sweet|410|3|60|17|1|52||26|קרמבו
+ארטיק קרח|sweet|80|0|20|0|0|18||70|ארטיק
+חטיף חלבון|snack|380|20|40|14|6|15||40|חטיף
+חטיף דגנים|snack|400|6|68|12|4|28||25|חטיף
+סוכריות גומי|sweet|340|6|77|0|0|47||3|סוכרייה
+חלבה|sweet|516|12.5|56|29|4.5|48||50|פרוסה
+שקשוקה|dish|110|6|6|7|1.5|4||300|מנה (2 ביצים)
+פלאפל בפיתה|dish|200|6|24|9|4|2||350|מנה
+שווארמה בפיתה|dish|220|13|20|10|2|2||380|מנה
+סביח בפיתה|dish|210|6|22|11|3|3||380|מנה
+צלחת חומוס (מסעדה)|dish|240|8|17|16|6|1||300|צלחת
+ג'חנון|dish|400|6|40|23|1.5|3||150|ג'חנון
+מלאווח|dish|375|6|40|21|1.5|2||160|מלאווח
+קובה מטוגנת|dish|260|10|25|13|2|1||60|קובה
+מרק עוף|dish|30|2.5|2.5|1.2|0.6|1|245|350|קערה
+מרק עדשים|dish|70|4.5|10|1.5|3|1.5|245|350|קערה
+מרק ירקות|dish|35|1.2|6|0.8|1.5|2.5|245|350|קערה
+חמין|dish|160|9|15|7|3.5|1|220|300|מנה
+פסטה ברוטב עגבניות|dish|130|4|22|3|2|3|220|300|צלחת
+פסטה ברוטב שמנת|dish|200|6|22|10|1|2|220|300|צלחת
+פשטידת ירקות|dish|180|7|10|12|1.5|2||150|פרוסה
+פלפל ממולא|dish|120|5|14|5|2|3||250|פלפל
+לביבות|dish|270|4|28|16|2.5|1||50|לביבה
+קציצות דגים ברוטב|dish|140|12|6|7|1|3||80|קציצה
+עוף בתנור עם תפוחי אדמה|dish|180|15|10|9|1|1||350|מנה
+עוף מוקפץ עם אורז|dish|160|9|20|5|1.5|4||400|מנה
+סלט טונה (עם מיונז)|dish|190|14|3|14|0.5|1|205||
+סלט ביצים|dish|210|9|2|19|0|1|220||
+טבולה|dish|120|2.5|14|6.5|3|1.5|160||
+סלט חצילים במיונז|dish|200|1.5|7|19|3|3|240||
+מטבוחה|dish|100|1.5|8|7|2|5|240||
+קולסלאו|dish|150|1|12|11|2|9|120||
+טוסט גבינה|dish|300|12|30|14|2|4||130|טוסט
+כריך גבינה וירקות|dish|190|9|25|6|3|3||150|כריך
+פנקייק|dish|227|6.4|28|10|0.9|6||40|פנקייק
+פיצה|fast|266|11|33|10|2.3|3.6||110|משולש
+המבורגר בלחמנייה|fast|250|13|24|11|1.5|5||220|המבורגר
+סושי|fast|145|5|27|1.8|1|5||25|יחידה
+נאגטס עוף|fast|296|15|16|19|1|0.5||17|נאגט
+מלח|spice|0|0|0|0|0|0|288||
+פלפל שחור|spice|251|10|64|3.3|25|0.6|110||
+פפריקה מתוקה|spice|282|14|54|13|35|10|110||
+פפריקה חריפה|spice|282|14|54|13|35|10|110||
+כמון|spice|375|18|44|22|11|2.3|100||
+כורכום|spice|312|9.7|67|3.3|23|3.2|110||
+קינמון|spice|247|4|81|1.2|53|2.2|125||
+זעתר|spice|276|9|45|9|30|2|90||
+סומק|spice|240|4|50|5|28|0|110||
+אורגנו|spice|265|9|69|4.3|42|4|50||
+בזיליקום יבש|spice|233|23|48|4|38|1.7|45||
+שום גבישי|spice|331|17|73|0.8|9|2.4|130||
+אבקת בצל|spice|341|10|79|1|15|7|110||
+ג'ינג'ר טחון|spice|335|9|72|4.2|14|3.4|90||
+ג'ינג'ר טרי|spice|80|1.8|18|0.8|2|1.7|96||
+צ'ילי גרוס|spice|318|12|57|17|27|10|90||
+קארי|spice|325|14|58|14|53|2.8|100||
+הל|spice|311|11|68|6.7|28|0|100||
+חוואייג'|spice|320|12|55|10|30|2|100||
+בהרט|spice|300|10|55|9|30|2|100||
+כוסברה טחונה|spice|298|12|55|18|42|0|80||
+רוזמרין יבש|spice|331|5|64|15|43|0|60||
+טימין יבש|spice|276|9|64|7.4|37|1.7|70||
+אגוז מוסקט|spice|525|6|49|36|21|3|110||
+תמצית וניל|spice|288|0|13|0|0|13|208||
+אבקת קקאו|spice|228|20|58|14|37|1.8|86||
+אבקת מרק עוף|spice|250|10|35|8|0|5|130||
+ממתיק (סוכרזית)|spice|0|0|0|0|0|0||1|טבלית
+שמיר טרי|veg|43|3.5|7|1.1|2.1|0|9||
+נענע טרייה|veg|44|3.3|8.4|0.7|6.8|0|50||
+מיץ לימון|fat|22|0.4|6.9|0.2|0.3|2.5|244||
+חומץ|fat|18|0|0|0|0|0|240||
+רוטב צ'ילי מתוק|fat|200|0.5|48|0.5|1|42|280||
+רוטב חריף (סריראצ'ה)|fat|93|1.9|19|0.9|2.2|15|250||
+טבסקו|fat|12|1.3|0.8|0.8|0.6|0.1|240||
+רוטב ברביקיו|fat|172|0.8|41|0.6|0.9|33|280||
+רוטב טריאקי|fat|89|5.9|15.6|0|0.1|14|275||
+רוטב אלף האיים|fat|380|1|15|35|0.5|12|250||
+צזיקי|dairy|95|4|4|7|0.3|3|240||
+מרגרינה|fat|717|0.2|0.7|80|0|0|227||
+שמן קוקוס|fat|862|0|0|100|0|0|218||
+גהי|fat|876|0.3|0|99.5|0|0|205||
+פלפל ירוק חריף|veg|40|2|9.5|0.2|1.5|5.1|90|15|פלפל
+פלפל אדום חריף (צ'ילי)|veg|40|1.9|8.8|0.4|1.5|5.3|90|15|פלפל
+חלפיניו|veg|29|0.9|6.5|0.4|2.8|4.1|90|14|פלפל
+פלפל צהוב|veg|27|1|6.3|0.2|0.9|5|150|180|פלפל
+פלפל קלוי|veg|30|1|6|0.3|1.9|4|150||
+פלפל חריף כבוש|veg|27|0.9|5.5|0.4|1.5|3|135|10|פלפל
+עגבניות מיובשות|veg|258|14|56|3|12|38|54||
+עגבניות מרוסקות (קופסה)|veg|32|1.6|7.3|0.3|1.9|4.4|245||
+רסק עגבניות|veg|82|4.3|19|0.5|4.1|12|262||
+קולורבי|veg|27|1.7|6.2|0.1|3.6|2.6|135|150|קולורבי
+שומר|veg|31|1.2|7.3|0.2|3.1|3.9|87||
+ארטישוק|veg|47|3.3|10.5|0.2|5.4|1|168|120|ארטישוק
+אספרגוס|veg|20|2.2|3.9|0.1|2.1|1.9|134|16|גבעול
+כרוב אדום|veg|31|1.4|7.4|0.2|2.1|3.8|89||
+כרוב ניצנים|veg|43|3.4|9|0.3|3.8|2.2|88|19|יחידה
+קייל|veg|35|2.9|4.4|1.5|4.1|1|21||
+רוקט|veg|25|2.6|3.7|0.7|1.6|2|20||
+חסה ערבית|veg|17|1.2|3.3|0.3|2.1|1.2|47||
+נבטים|veg|30|3|5.9|0.2|1.8|4.1|104||
+בצל ירוק|veg|32|1.8|7.3|0.2|2.6|2.3|100|15|גבעול
+בצל סגול|veg|40|1.1|9.3|0.1|1.7|4.2|160|110|בצל
+לפת|veg|28|0.9|6.4|0.1|1.8|3.8|130||
+במיה|veg|33|1.9|7.5|0.2|3.2|1.5|100||
+סלק מבושל|veg|44|1.7|10|0.2|2|8|170|80|סלק
+תירס משומר|veg|67|2.3|14|0.7|2|4.5|165||
+אפונה וגזר קפואים|veg|53|3.2|10|0.4|3.5|3.5|134||
+ירקות קפואים מעורבים|veg|65|2.9|13|0.2|4|3|135||
+כרוב כבוש|veg|19|0.9|4.3|0.1|2.9|1.8|142||
+זיתים שחורים|veg|115|0.8|6|10.7|3.2|0|135|4|זית
+צנון|veg|18|0.6|4.1|0.1|1.6|2.5|116||
+תפוח אדמה אפוי|veg|93|2.5|21|0.1|2.2|1.2|122|170|תפוח אדמה
+חציל מטוגן|dish|200|1.2|8|18|3|3|100||
+פטריות מוקפצות|dish|70|3|4|5|1.5|2|156||
+פטל|fruit|52|1.2|12|0.7|6.5|4.4|123||
+חמוציות מיובשות|fruit|308|0.1|83|1.1|5.3|65|120||
+תאנים מיובשות|fruit|249|3.3|64|0.9|9.8|48|149|8|תאנה
+שזיפים מיובשים|fruit|240|2.2|64|0.4|7.1|38|174|9|שזיף
+קוקוס טרי|fruit|354|3.3|15|33|9|6.2|80||
+פפאיה|fruit|43|0.5|11|0.3|1.7|7.8|145||
+גויאבה|fruit|68|2.6|14|1|5.4|8.9|165|55|גויאבה
+פסיפלורה|fruit|97|2.2|23|0.7|10.4|11|236|18|פסיפלורה
+משמש|fruit|48|1.4|11|0.4|2|9.2|155|35|משמש
+פומלה|fruit|38|0.8|9.6|0|1|7|190||
+לימון|fruit|29|1.1|9.3|0.3|2.8|2.5|212|60|לימון
+שסק|fruit|47|0.4|12|0.2|1.7|10|149|20|שסק
+סלט פירות|fruit|50|0.6|13|0.2|1.5|10|160||
+פירות יער קפואים|fruit|50|0.8|12|0.4|4|7|140||
+מיץ ענבים|drink|60|0.4|15|0.1|0.2|14|253||
+מיץ תפוחים|drink|46|0.1|11|0.1|0.2|9.6|248||
+מיץ גזר|drink|40|0.9|9.3|0.1|0.8|3.9|236||
+לחם כוסמין|bread|250|10|44|3|6|3||30|פרוסה
+לחם מחמצת|bread|260|9|51|2|2.5|2||35|פרוסה
+מצה|bread|395|10|84|1.4|3.5|0.3||28|מצה
+לחמניית המבורגר|bread|279|9|50|4.6|2|6||55|לחמנייה
+בייגלה ירושלמי|bread|290|9|55|4|2|5||110|בייגלה
+ג'בטה|bread|271|9|50|3.6|2|1.5||80|ג'בטה
+טורטייה מלאה|bread|290|9|45|7.5|7|2||45|טורטייה
+לחוח|bread|200|6|40|1.5|2|2||100|לחוח
+קובנה|bread|340|7|45|15|2|4||120|פרוסה
+כוסמת מבושלת|grain|92|3.4|20|0.6|2.7|0.9|168||
+אטריות אורז מבושלות|grain|108|1.8|24|0.2|1|0|176||
+נודלס מבושלים|grain|138|4.5|25|2|1.2|0.4|160||
+ניוקי|grain|133|3|29|0.3|1.5|1|180||
+פירורי לחם|grain|395|13|72|5.3|4.5|6|108||
+קמח לבן|grain|364|10|76|1|2.7|0.3|125||
+קמח מלא|grain|340|13|72|2.5|10.7|0.4|120||
+דגני סובין|grain|330|11|70|2.5|15|17|30||
+מוזלי|grain|370|10|66|6|8|22|85||
+אורז בסמטי מבושל|grain|121|3.5|25|0.4|0.4|0|158||
+דייסת שיבולת שועל בחלב|grain|90|4|13|2.5|1.6|4|240||
+אורז עם ירקות|dish|135|2.8|26|2.5|1|1|180||
+אורז מוקפץ|dish|174|4|25|6.2|1|0.5|170||
+צ'יפס בטטה|fast|260|2|35|12|4|8||120|מנה
+פופקורן מיקרוגל|snack|500|8|58|28|10|1|8||
+חזה עוף מבושל|prot|151|29|0|3|0|0|140||
+חזה עוף מוקפץ|prot|180|28|1|7|0|0|140||
+כרעיים עוף בתנור (עם עור)|prot|232|24|0|14.5|0|0||200|כרעיים
+עוף צלוי עם עור|prot|239|27|0|13.6|0|0|140||
+כבד בקר|prot|191|29|5.1|5.3|0|0|140||
+קציצות עוף|prot|200|20|7|10|0.5|1||50|קציצה
+פילה בקלה/מוסר|prot|105|23|0|0.9|0|0||150|פילה
+סלמון מעושן|prot|117|18|0|4.3|0|0||25|פרוסה
+לברק אפוי|prot|140|23|0|5|0|0||250|דג
+הרינג|prot|260|14|5|20|0|5||30|חתיכה
+קלמרי מטוגן|prot|175|18|8|7.5|0|0|140||
+בשר בקר צלוי|prot|220|28|0|12|0|0|140||
+אסאדו|prot|380|20|0|33|0|0||300|מנה
+קבב עוף|prot|190|18|4|11|0.3|0.5||60|קבב
+מעורב ירושלמי|prot|240|20|2|17|0|0||200|מנה
+סלמי|prot|380|22|2|31|0|1||10|פרוסה
+פסטרמה בקר|prot|140|21|2|5|0|1||20|פרוסה
+שניצל תירס|prot|220|12|20|10|4|2||100|שניצל
+טמפה|prot|192|20|7.6|11|0|0|166||
+סייטן|prot|140|25|6|2|1|1|140||
+המבורגר טבעוני|prot|220|17|8|13|3|1||113|קציצה
+גפילטע פיש|prot|84|9|7|2|0|3||70|פרוסה
+ביצה עלומה|egg|143|12.6|0.7|9.5|0|0.4||50|ביצה
+חביתת ירק|egg|170|11|3|12.5|0.6|1||130|חביתה
+ביצים מקושקשות|egg|170|11|1.8|13|0|1.4|220||
+ריקוטה|dairy|174|11|3|13|0|0.3|246||
+קשקבל|dairy|360|25|1|28|0|0||20|פרוסה
+גבינת עזים|dairy|264|18|0|21|0|0||30|פרוסה
+צפתית 5%|dairy|125|15|1.5|5|0|1||30|פרוסה
+גבינת שמנת 5%|dairy|110|9|5|5|0|5|240||
+שמנת לבישול 15%|dairy|160|3|4|15|0|4|240||
+משקה חלבון|drink|60|8|5|1|0|4|240|330|בקבוק
+משקה שקדים לא ממותק|drink|15|0.6|0.6|1.2|0.2|0|240||
+אפונה יבשה מבושלת|leg|118|8.3|21|0.4|8.3|2.9|196||
+שעועית שחורה מבושלת|leg|132|8.9|23.7|0.5|8.7|0.3|172||
+מאש מבושל|leg|105|7|19|0.4|7.6|2|202||
+סויה מבושלת|leg|172|18|8.4|9|6|3|172||
+אגוזי לוז|nut|628|15|17|61|9.7|4.3|135||
+פקאן|nut|691|9.2|14|72|9.6|4|99||
+אגוזי ברזיל|nut|659|14|12|67|7.5|2.3|133|5|אגוז
+מקדמיה|nut|718|7.9|14|76|8.6|4.6|134||
+גרעיני דלעת|nut|559|30|11|49|6|1.4|129||
+שומשום|nut|573|18|23|50|12|0.3|144||
+מיקס אגוזים|nut|607|20|21|54|7|4|140||
+חמאת שקדים|nut|614|21|19|56|10|4.4|250||
+מיקס אגוזים ופירות יבשים|nut|462|14|45|29|5|30|150||
+קוקוס טחון|nut|660|6.9|24|65|16|7.4|93||
+קפה עם חלב|drink|25|1.2|2|1.2|0|2|240|240|כוס
+לאטה|drink|54|3|5|2.4|0|5|240|350|כוס
+משקה אנרגיה|drink|45|0|11|0|0|11|240|250|פחית
+משקה מוגז ממותק|drink|40|0|10|0|0|10|240|330|פחית
+סודה|drink|0|0|0|0|0|0|240||
+מים בטעמים|drink|20|0|5|0|0|5|240|500|בקבוק
+תה קר ממותק|drink|30|0|8|0|0|8|240|500|בקבוק
+קומבוצ'ה|drink|13|0|3|0|0|2|240||
+וודקה|drink|231|0|0|0|0|0||30|צ'ייסר
+וויסקי|drink|250|0|0|0|0|0||30|כוסית
+ערק|drink|230|0|0|0|0|0||30|כוסית
+קוקטייל|drink|150|0|15|0|0|14|240||
+סחלב|drink|100|3|17|2.5|0|12|240|250|כוס
+מרק כתום|dish|45|1|8|1.2|1.8|3.5|245|350|קערה
+מרק פטריות בשמנת|dish|60|1.5|5|4|0.5|2|245|350|קערה
+מרק תימני|dish|70|6|3|4|0.5|1|245|400|קערה
+מרק אפונה|dish|75|5|12|1|3|2|245|350|קערה
+מרק עוף עם קניידלך|dish|60|3|7|2.3|0.5|1|245|400|קערה
+אפרופו|snack|495|6.5|62|24|3|2|30|50|שקית
+דוריטוס|snack|500|7|63|25|4|3|30|70|שקית
+תפוצ'יפס אפוי|snack|430|6|72|13|5|4|30|50|שקית
+בייגלה (חטיף)|snack|380|10|80|3|3|2|60||
+פופקורן מתוק|snack|430|4|78|12|5|40|10||
+שוקולד לבן|sweet|539|6|59|32|0|59||5|קובייה
+חטיף שוקולד|sweet|450|4|70|17|1|60||50|חטיף
+פסק זמן|sweet|540|7|56|32|3|44||45|חטיף
+קרואסון שוקולד|sweet|420|7|46|23|2|18||75|קרואסון
+דונאט|sweet|421|5|50|23|1.5|22||60|דונאט
+מאפין|sweet|380|5|52|17|1.5|28||110|מאפין
+עוגת גבינה|sweet|321|5.5|25|22|0.4|21||110|פרוסה
+עוגיות חמאה|sweet|500|6|65|24|1.5|22||10|עוגייה
+ביסקוויט פתי בר|sweet|430|7|75|11|2.5|23||6|ביסקוויט
+מרציפן|sweet|450|9|58|21|4|50||10|כדור
+באקלווה|sweet|430|6|45|25|2|25||30|חתיכה
+כנאפה|sweet|380|8|42|20|1|25||150|מנה
+מלבי|sweet|130|3|22|3.3|0|18||150|גביע
+פודינג|sweet|120|3|20|3|0|17||115|גביע
+וופל בלגי|sweet|290|8|33|14|1|10||80|וופל
+קרפ מתוק|sweet|300|6|40|13|1.5|20||150|קרפ
+ארטיק שמנת|sweet|260|3|27|16|1|23||70|ארטיק
+סורבה|sweet|130|0.5|32|0.1|1|28|190||
+גלידת יוגורט|sweet|160|3.5|30|3|0|25|170||
+ריבה דלת סוכר|sweet|120|0.4|30|0|1|25|320||
+קציצות ברוטב עגבניות|dish|180|12|8|11|1|3||70|קציצה
+שניצל בפיתה|dish|260|13|28|11|2|2||350|מנה
+שווארמה בלאפה|dish|220|13|22|9|2|2||500|מנה
+סמבוסק|fast|340|8|35|19|2|1||90|סמבוסק
+קוגל תפוחי אדמה|dish|200|3|25|10|2|1||120|פרוסה
+קוגל אטריות|dish|240|5|35|9|1|15||120|פרוסה
+חריימה|dish|150|16|4|8|1|2||200|מנה
+מוסקה|dish|140|7|9|8.5|2|3||300|מנה
+לזניה|dish|165|9|14|8|1.5|3||300|מנה
+מקרוני וגבינה|dish|165|7|20|6.5|1|2|200|300|צלחת
+ספגטי בולונז|dish|135|7|17|4.5|1.5|3||350|צלחת
+ריזוטו|dish|150|3.5|22|5|0.5|0.5|200|300|צלחת
+פסטה פסטו|dish|260|7|28|13|2|1||300|צלחת
+סלט קיסר|dish|190|7|7|15|1.5|1.5||250|קערה
+סלט יווני|dish|110|3.5|5|8.5|1.5|3||250|קערה
+סלט קינואה|dish|140|4|18|6|3|3|170||
+סלט עדשים|dish|130|7|17|4|6|2|200||
+סלט גזר מרוקאי|dish|80|1|10|4|2.5|6|130||
+עלי גפן ממולאים|dish|180|3|20|10|3|2||25|יחידה
+חביתה בלחמנייה|dish|260|11|25|13|1.5|3||200|כריך
+כבד קצוץ|dish|220|11|5|17|0.5|2|220||
+חציל בטחינה|dish|150|3|8|12|4|3|200||
+מסבחה|dish|230|9|15|15|6|1|240|300|צלחת
+קוסקוס עם עוף וירקות|dish|150|10|18|4|2|2||400|צלחת
+פאד תאי|dish|180|8|25|6|1.5|5||350|צלחת
+עוף בקארי עם אורז|dish|160|9|18|6|1.5|2||400|מנה
+טוסט צרפתי|dish|230|8|25|11|1|8||100|פרוסה
+יוגורט עם גרנולה ופירות|dish|130|5|20|3.5|2|12|245||
+פיצה עם תוספות|fast|280|12|31|12|2|3||130|משולש
+ניגירי סלמון|fast|150|6|25|2.5|0.5|5||40|יחידה
+בוריטו|fast|210|9|25|8|3|1.5||300|בוריטו
+טאקו|fast|220|9|20|11|2.5|1.5||100|טאקו
+לבנה 3%|dairy|72|6|4.5|3|0|4.5|240||
+לבנה 9%|dairy|125|5.5|4|9|0|4|240||
+קוטג' 1%|dairy|62|11|2|1|0|2|225|250|גביע
+קוטג' 9%|dairy|130|10|2|9|0|2|225|250|גביע
+גבינה לבנה 0%|dairy|58|10|4|0.2|0|4|240|250|גביע
+גבינה לבנה 3%|dairy|80|9.5|4|3|0|4|240|250|גביע
+יוגורט 0%|dairy|40|4.5|5.5|0.1|0|5.5|245|200|גביע
+יוגורט 1.5%|dairy|50|4|5|1.5|0|5|245|200|גביע
+יוגורט יווני 2%|dairy|73|9|4|2|0|4|245|150|גביע
+יוגורט יווני 10%|dairy|133|5|4|10|0|4|245|150|גביע
+יוגורט פירות|dairy|95|3.5|15|2.5|0.3|14|245|150|גביע
+חלב 2%|dairy|50|3.3|4.8|2|0|4.8|244||
+לבן/אשל 1.5%|dairy|45|3.3|4.5|1.5|0|4.5|244|200|גביע
+בולגרית 16%|dairy|210|15|2|16|0|2||30|קובייה
+צפתית 9%|dairy|165|15|1.5|9|0|1||30|פרוסה
+גבינה צהובה 15%|dairy|265|30|1|15|0|0||20|פרוסה
+גבינה צהובה 22%|dairy|315|27|1|22|0|0||20|פרוסה
+גבינת שמנת 16%|dairy|200|7|4|16|0|4|232||
+שמנת חמוצה 9%|dairy|115|3.3|4.5|9|0|4.5|230||
+שמנת חמוצה 27%|dairy|265|2.5|3|27|0|3|230||
+שמנת מתוקה 38%|dairy|350|2|3|38|0|3|238||
+בשר בקר טחון 5% מבושל|prot|160|27|0|5.5|0|0|140||
+בשר בקר טחון 15% מבושל|prot|230|25|0|14|0|0|140||`;
+
+const CATS={veg:'ירקות',fruit:'פירות',bread:'לחמים',grain:'דגנים',prot:'בשר ודגים',egg:'ביצים',dairy:'חלבי',leg:'קטניות',nut:'אגוזים',fat:'שמנים ורטבים',drink:'משקאות',sweet:'מתוקים',snack:'חטיפים',dish:'מנות',fast:'מזון מהיר',spice:'תבלינים',mine:'שלי'};
+const FOODS=RAW.trim().split('\n').map((l,i)=>{const a=l.split('|');return{id:'f'+i,n:a[0],cat:a[1],k:+a[2],p:+a[3],c:+a[4],f:+a[5],fi:+a[6],s:+a[7],cup:+a[8]||0,pc:+a[9]||0,pcn:a[10]||''}});
+const MEALS=[['b','ארוחת בוקר'],['l','ארוחת צהריים'],['d','ארוחת ערב'],['s','נשנושים']];
+const ACTS=[[1.2,'יושבני','עבודה משרדית, כמעט בלי ספורט'],[1.375,'קל','1–3 אימונים בשבוע'],[1.55,'בינוני','3–5 אימונים בשבוע'],[1.725,'גבוה','6–7 אימונים בשבוע'],[1.9,'ספורטאי','עבודה פיזית + אימונים']];
+const PACES=[[0.25,'רגוע'],[0.5,'מומלץ'],[0.75,'נמרץ'],[1,'מהיר']];
+const EXS=[['הליכה רגילה',3.5],['הליכה מהירה',4.8],['ריצה קלה',8],['ריצה מהירה',11],['אופניים',7],['שחייה',7],['אימון כוח',5],['אימון HIIT',8],['יוגה',2.5],['פילאטיס',3],['ריקוד',5],['כדורגל',7],['כדורסל',6.5],['טניס/פאדל',7],['עליית מדרגות',8],['עבודות בית',3.3]];
+const LEVELS=[['גרעין',0],['נבט',60],['שתיל',160],['עלה',320],['ענף',550],['עץ צעיר',850],['עץ',1250],['חורשה',1800],['יער',2500],['אגדה',3400]];
+const TIPS=['חצי צלחת ירקות בכל ארוחה = יותר נפח, פחות קלוריות.','כוס מים לפני הארוחה עוזרת להרגיש שובע מהר יותר.','חלבון בכל ארוחה שומר על שובע ועל השרירים.','10 דקות הליכה אחרי ארוחה עושות פלאים לסוכר בדם.','שינה של 7 שעות ומעלה מפחיתה רעב ונשנושים.','כף שמן זית = כ-120 קק"ל. מודדים בכפית, לא "בעין".','לאכול לאט: למוח לוקח כ-20 דקות לקלוט שובע.','נשנוש מתוכנן (פרי + יוגורט) עדיף על נשנוש מקרי.','לא צריך להיות מושלם — צריך להיות עקבי.','שוקלים פעם בשבוע באותה שעה, בבוקר, אחרי שירותים.'];
+
+const LESSONS=[
+{g:'מים',t:'מה המים עושים לגוף',b:['כ-60% ממשקל הגוף של אדם בוגר הם מים. הם מווסתים את חום הגוף, מובילים חומרים מזינים לתאים ועוזרים לכליות לפנות פסולת.','כבר חוסר נוזלים קל, של 1–2% ממשקל הגוף, יכול לפגוע בריכוז ובמצב הרוח ולגרום לעייפות ולכאבי ראש.','לפעמים תחושת "רעב" היא בעצם צמא. לפני נשנוש, נסה כוס מים וחכה כמה דקות.'],q:'כמה אחוזים ממשקל הגוף של מבוגר הם מים?',o:['כ-20%','כ-40%','כ-60%','כ-90%'],a:2,x:'כ-60%. אצל תינוקות האחוז גבוה עוד יותר.'},
+{g:'צום לסירוגין',t:'מה זה צום לסירוגין?',b:['צום לסירוגין קובע מתי אוכלים, לא רק מה אוכלים. השיטה הנפוצה היא 16:8: 16 שעות צום ו-8 שעות של חלון אכילה.','מחקרים מראים שהשיטה מורידה במשקל בערך כמו דיאטה רגילה עם אותה כמות קלוריות. היתרון: לרבים קל יותר לאכול פחות כשחלון האכילה מוגדר.','בזמן הצום מותר לשתות מים, קפה שחור ותה בלי סוכר.'],q:'בשיטת 16:8, כמה שעות ביום פתוח חלון האכילה?',o:['16','12','8','4'],a:2,x:'8 שעות אכילה ו-16 שעות צום.'},
+{g:'צום לסירוגין',t:'מה קורה בגוף בזמן צום',b:['בשעות הראשונות אחרי ארוחה הגוף משתמש בסוכר מהאוכל. רמת האינסולין עולה ואז יורדת בהדרגה.','אחרי כ-12 שעות מאגרי הגליקוגן (סוכר שנאגר בכבד) מצטמצמים, והגוף משתמש יותר ויותר בשומן כדלק.','אחרי 16 שעות ומעלה הכבד מייצר יותר קטונים מהשומן. הזמנים משתנים מאדם לאדם, לפי מה שאכלת ולפי הפעילות שלך.'],q:'איך נקרא הסוכר שהגוף אוגר בכבד ובשרירים?',o:['גליקוגן','קטון','כולסטרול','אינסולין'],a:0,x:'גליקוגן. כשהוא מתרוקן, הגוף פונה יותר לשומן.'},
+{g:'צום לסירוגין',t:'למי צום לא מתאים',b:['צום לסירוגין לא מתאים לכולם: נשים בהריון או מניקות, בני נוער מתחת לגיל 18, ומי שיש או היתה לו הפרעת אכילה.','מי שמטופל בתרופות לסוכרת או ללחץ דם צריך להתייעץ עם רופא לפני שמתחיל, כי הצום עלול לגרום לירידה מסוכנת בסוכר.','אם בזמן צום יש סחרחורת, חולשה קיצונית או דפיקות לב, מפסיקים ואוכלים.'],q:'מה עושים אם מרגישים סחרחורת חזקה באמצע צום?',o:['ממשיכים עד הסוף','שותים קפה','מפסיקים את הצום ואוכלים','עושים אימון'],a:2,x:'הבריאות קודמת לכל יעד. אפשר לנסות שוב מחר עם צום קצר יותר.'},
+{g:'שובע',t:'חלבון: הסוד של השובע',b:['חלבון הוא אב המזון המשביע ביותר. הוא מאט את התרוקנות הקיבה ומשפיע על הורמוני הרעב.','לגוף "עולה" יותר אנרגיה לעכל חלבון: כ-20–30% מהקלוריות שלו נשרפות בעיכול, לעומת כ-5–10% בפחמימות.','בירידה במשקל, חלבון גם עוזר לשמור על השרירים.'],q:'איזה אב מזון דורש הכי הרבה אנרגיה לעיכול?',o:['שומן','פחמימה','חלבון','סוכר'],a:2,x:'חלבון. לכן כדאי שיהיה בכל ארוחה.'},
+{g:'שובע',t:'סיבים תזונתיים',b:['סיבים נמצאים בירקות, בפירות, בקטניות ובדגנים מלאים. הם מוסיפים נפח בלי הרבה קלוריות ומאטים את ספיגת הסוכר.','ההמלצה היא כ-25 גרם סיבים ביום לנשים וכ-38 לגברים. רוב האנשים אוכלים בערך חצי מזה.','כשמעלים סיבים, מעלים גם שתייה. אחרת עלולה להיות נפיחות.'],q:'כמה גרם סיבים מומלץ לגבר ביום?',o:['כ-5','כ-15','כ-38','כ-100'],a:2,x:'כ-38 גרם לגברים וכ-25 לנשים.'},
+{g:'שינה',t:'שינה ותיאבון',b:['שינה קצרה משבשת את הורמוני הרעב: הגרלין, שמגביר רעב, עולה, והלפטין, שמאותת שובע, יורד.','אחרי לילה קצר נוטים לאכול יותר, ובמיוחד מאכלים מתוקים ושמנים.','7–9 שעות שינה הן חלק מהתוכנית לירידה במשקל, לא פחות מהתזונה.'],q:'איזה הורמון מגביר את תחושת הרעב?',o:['לפטין','גרלין','אינסולין','מלטונין'],a:1,x:'גרלין, "הורמון הרעב". הוא עולה כשלא ישנים מספיק.'},
+{g:'שתייה',t:'קלוריות נוזליות',b:['קלוריות משתייה כמעט לא משביעות. הגוף לא "סופר" אותן כמו אוכל.','פחית קולה (330 מ״ל) מכילה כ-35 גרם סוכר, כמעט 9 כפיות.','החלפה של משקה ממותק אחד ביום במים או במשקה בלי סוכר חוסכת כ-1,000 קלוריות בשבוע.'],q:'כמה כפיות סוכר יש בערך בפחית קולה?',o:['2','5','9','15'],a:2,x:'כ-35 גרם סוכר, כמעט 9 כפיות.'},
+{g:'משקל',t:'למה המשקל קופץ',b:['המשקל יכול לזוז 1–2 ק״ג ביום אחד בגלל מים, לא בגלל שומן.','מלח גורם לגוף לאגור מים, וכל גרם פחמימה שנאגר כגליקוגן קושר בערך 3 גרם מים.','לכן מסתכלים על המגמה לאורך שבועות, לא על יום אחד. שקילה פעם בשבוע, באותה שעה, נותנת תמונה מדויקת יותר.'],q:'למה המשקל יכול לעלות קילו אחרי ארוחה מלוחה?',o:['כי נוסף קילו שומן','בגלל אגירת מים','בגלל השרירים','זה לא אפשרי'],a:1,x:'אגירת מים. כדי לעלות קילו שומן צריך עודף של כ-7,700 קלוריות.'},
+{g:'תנועה',t:'NEAT: השריפה הנסתרת',b:['NEAT היא האנרגיה שנשרפת בכל תנועה שאינה אימון: הליכה, עמידה, סידורים ומדרגות.','ההבדל ב-NEAT בין אנשים יכול להגיע למאות קלוריות ביום.','צעדים פשוטים: לדבר בטלפון בהליכה, לעלות במדרגות, לחנות רחוק יותר וללכת 10 דקות אחרי כל ארוחה.'],q:'מה מהבאים נחשב NEAT?',o:['אימון בחדר כושר','עלייה במדרגות','שינה','אכילה'],a:1,x:'כל תנועה יומיומית נספרת.'},
+{g:'מתמטיקה של אוכל',t:'כמה קלוריות בכל גרם',b:['חלבון ופחמימה: 4 קלוריות לגרם. שומן: 9 קלוריות לגרם. אלכוהול: 7 קלוריות לגרם.','לכן כף שמן זית (כ-14 גרם) שווה כ-120 קלוריות, יותר מתפוח שלם.','שומן בריא חשוב, אבל כדאי למדוד אותו בכפית ולא לשפוך "בעין".'],q:'כמה קלוריות יש בגרם שומן?',o:['4','7','9','12'],a:2,x:'9 קלוריות לגרם, יותר מפי שניים מחלבון או מפחמימה.'},
+{g:'סוכר',t:'סוכר נסתר',b:['ארגון הבריאות העולמי ממליץ שסוכר מוסף יהיה פחות מ-10% מהקלוריות היומיות, ועדיף פחות מ-5%.','סוכר מסתתר ברטבים, ביוגורטים בטעמים, בדגני בוקר ובמשקאות "בריאים".','טריק: קוראים את התווית. 4 גרם סוכר הם כפית.'],q:'כמה גרם סוכר יש בערך בכפית?',o:['1','4','10','20'],a:1,x:'כ-4 גרם. יוגורט עם 16 גרם סוכר = 4 כפיות.'},
+{g:'הרגלים',t:'לאכול לאט',b:['למוח לוקח כ-20 דקות לקבל את אותות השובע מהקיבה.','מי שאוכל מהר מספיק לאכול הרבה לפני שהוא מרגיש שבע.','נסה להניח את המזלג בין ביסים, ללעוס היטב ולאכול בלי מסך.'],q:'כמה זמן לוקח בערך לאותות השובע להגיע למוח?',o:['2 דקות','20 דקות','שעתיים','יום'],a:1,x:'כ-20 דקות. לכן כדאי לחכות לפני מנה שנייה.'},
+{g:'תנועה',t:'אימון כוח בירידה במשקל',b:['כשמורידים משקל, חלק מהירידה עלול להיות שריר ולא רק שומן.','אימוני כוח 2–3 פעמים בשבוע, יחד עם מספיק חלבון, עוזרים לשמור על השרירים.','שריר שומר על חילוף החומרים ועל המראה, וגם מחזק עצמות.'],q:'מה עוזר לשמור על שריר בזמן דיאטה?',o:['לדלג על ארוחות','אימוני כוח וחלבון','רק ריצות ארוכות','לשתות פחות'],a:1,x:'אימוני כוח וחלבון: שומרים על השריר ומורידים שומן.'},
+{g:'שתייה',t:'מים לפני הארוחה',b:['במחקר מוכר, מבוגרים ששתו כחצי ליטר מים לפני כל ארוחה ירדו מעט יותר במשקל מקבוצה שלא שתתה.','המים ממלאים חלק מהקיבה ועוזרים להרגיש שובע מוקדם יותר.','הרגל קל: כוס גדולה של מים לפני כל ארוחה.'],q:'כמה מים שתו המשתתפים לפני כל ארוחה במחקר?',o:['כוס קטנה של 100 מ״ל','כחצי ליטר','2 ליטר','בכלל לא'],a:1,x:'כחצי ליטר, שתי כוסות.'},
+{g:'צום לסירוגין',t:'מה מותר לשתות בצום',b:['בזמן צום מותר לשתות מים, מים מוגזים, קפה שחור ותה בלי סוכר.','גם כמות קטנה של חלב או סוכר "שוברת" את הצום מבחינת קלוריות.','שתייה מרובה בזמן צום עוזרת להפחית רעב וכאבי ראש.'],q:'מה מהבאים לא שובר צום?',o:['קפה עם סוכר','מיץ תפוזים','תה בלי סוכר','שוקו'],a:2,x:'תה בלי סוכר, מים וקפה שחור הם בסדר גמור.'},
+{g:'צום לסירוגין',t:'איך בוחרים שיטת צום',b:['מתחילים בקטן: 12:12 (למשל מ-20:00 עד 8:00) כמעט טבעי לכל אחד.','אחרי שבוע–שבועיים אפשר לעבור ל-14:10 ואז ל-16:8.','שיטות קיצוניות כמו 20:4 או ארוחה אחת ביום לא מתאימות לכולם, וקשה לקבל בהן מספיק חלבון וסיבים.'],q:'באיזו שיטה מומלץ להתחיל?',o:['ארוחה אחת ביום','20:4','12:12','צום של 3 ימים'],a:2,x:'12:12: קל, טבעי ובונה הרגל.'},
+{g:'קפאין',t:'כמה קפה זה יותר מדי?',b:['למבוגרים בריאים, עד כ-400 מ״ג קפאין ביום נחשב בטוח, בערך 3–4 כוסות קפה.','קפה שחור כמעט בלי קלוריות. הקלוריות מגיעות מחלב, מסוכר ומסירופים.','קפאין אחרי הצהריים עלול לפגוע בשינה, וזה משפיע על הרעב למחרת.'],q:'כמה קפאין ביום נחשב בטוח למבוגר בריא?',o:['עד 100 מ״ג','עד 400 מ״ג','עד 1,500 מ״ג','אין הגבלה'],a:1,x:'עד כ-400 מ״ג, כ-3–4 כוסות קפה.'},
+{g:'משקל',t:'פלטו: כשהמשקל נתקע',b:['כשיורדים במשקל, הגוף צורך פחות אנרגיה, ולכן אותו תפריט מוריד פחות.','לפני שמשנים משהו, בודקים שהרישום מדויק: שמנים, רטבים ונשנושים קטנים.','מעדכנים את המשקל באפליקציה כדי לחשב מחדש את התקציב, מוסיפים צעדים ומתאזרים בסבלנות. לפעמים זו רק אגירת מים.'],q:'למה הירידה מאטה עם הזמן?',o:['כי הגוף קטן וצורך פחות אנרגיה','כי מים משמינים','בגלל הקפה','זה לא קורה'],a:0,x:'גוף קל יותר שורף פחות. לכן מעדכנים משקל ותקציב.'},
+{g:'צלחת',t:'שיטת הצלחת',b:['חצי צלחת ירקות, רבע חלבון, רבע פחמימה, ומעט שומן בריא.','השיטה מאפשרת לאכול צלחת מלאה ומשביעה בלי לספור כל גרם.','כשמחליפים פחמימה לבנה במלאה, מקבלים יותר סיבים ויותר שובע.'],q:'איזה חלק מהצלחת צריך להיות ירקות?',o:['רבע','חצי','שליש','מעט מאוד'],a:1,x:'חצי צלחת ירקות: נפח גדול, מעט קלוריות.'},
+{g:'שתייה',t:'גם תה ומרק נחשבים?',b:['כל הנוזלים נספרים: מים, תה, קפה ומרק, וגם מים ממזון כמו מלפפון ואבטיח.','סימן פשוט לשתייה מספקת: שתן בהיר.','בחום, באימון ובזמן צום צריך לשתות יותר.'],q:'מה סימן טוב לשתייה מספקת?',o:['שתן בהיר','צמא תמידי','שתן כהה','כאב ראש'],a:0,x:'שתן בהיר-צהבהב מעיד על שתייה טובה.'}];
+LESSONS.push({g:'כושר',t:'חזרה לכושר אחרי הפסקה',b:['אחרי הפסקה ארוכה הגוף צריך כמה שבועות להסתגל. השרירים מתחזקים מהר יחסית, אבל גידים ומפרקים לאט יותר.','לכן מתחילים בעצימות נמוכה ומעלים בהדרגה, בערך 10% בשבוע.','כאב שרירים קל יום-יומיים אחרי אימון הוא נורמלי. כאב חד במפרק הוא סימן לעצור.'],q:'בכמה כדאי להעלות עומס אימונים כל שבוע?',o:['פי 2','בערך 10%','50%','לא להעלות אף פעם'],a:1,x:'בערך 10% בשבוע: מתקדמים בלי פציעות.'},
+{g:'כושר',t:'מבחן הדיבור',b:['איך יודעים שהקצב האירובי נכון? עם מבחן הדיבור.','אם אפשר לדבר במשפטים אבל לא לשיר, זו עצימות בינונית: מצוינת לשריפת שומן ולבריאות הלב.','אם אי אפשר להוציא יותר מכמה מילים, זו עצימות גבוהה. מתאימה רק להאצות קצרות.'],q:'מה סימן לעצימות בינונית?',o:['אפשר לשיר','אפשר לדבר אבל לא לשיר','אי אפשר לדבר בכלל','לא מזיעים'],a:1,x:'מדברים כן, שרים לא. זו בדיוק העצימות הבינונית.'},
+{g:'כושר',t:'למה כוח ואירובי ביחד',b:['אירובי, כמו הליכה, שורף קלוריות בזמן הפעילות ומחזק את הלב.','אימון כוח בונה שריר, ושריר שורף אנרגיה גם במנוחה ושומר על הגוף כשמורידים משקל.','השילוב של שניהם מוריד יותר שומן ושומר יותר שריר מכל אחד לבד.'],q:'מה היתרון המיוחד של אימון כוח בדיאטה?',o:['שורף הכי הרבה קלוריות בזמן האימון','שומר על השריר ועל חילוף החומרים','מחליף שתייה','אין יתרון'],a:1,x:'הוא שומר על השריר, ולכן חילוף החומרים לא יורד.'},
+{g:'הרגלים',t:'ארוחת פינוק: מותר?',b:['ארוחת פינוק מתוכננת פעם בשבוע יכולה לעזור להתמיד, כי הדיאטה לא מרגישה כמו עונש.','הכלל: ארוחה אחת ולא יום שלם, בכמות שהוגדרה מראש, ונהנים בלי רגשות אשמה.','ארוחה של כ-800 קק״ל פעם בשבוע כמעט לא משפיעה על הירידה, כל עוד שאר השבוע מתנהל כרגיל.'],q:'מה הכלל החשוב בארוחת פינוק?',o:['יום שלם של חופש','ארוחה אחת, מתוכננת ובכמות מוגדרת','לפצות בצום של יומיים','לאכול עד שמרגישים רע'],a:1,x:'ארוחה אחת, מתוכננת ובכמות מוגדרת, ואז חוזרים לשגרה.'});
+const FPLANS=[[12,'12:12','מתחילים'],[14,'14:10','קליל'],[16,'16:8','הכי פופולרי'],[18,'18:6','מתקדמים'],[20,'20:4','לוחמים'],[23,'23:1','ארוחה אחת']];
+const STAGES=[[0,'עיכול','הגוף עדיין משתמש באנרגיה מהארוחה האחרונה.'],[4,'האינסולין יורד','הסוכר והאינסולין מתייצבים, והגוף מתחיל לפנות למאגרים.'],[12,'מעבר לשומן','מאגרי הגליקוגן מצטמצמים והגוף משתמש יותר בשומן כדלק.'],[16,'שריפת שומן מוגברת','רמת הקטונים בדם מתחילה לעלות בהדרגה.'],[18,'קטוזיס קל','אצל רבים הקטונים כבר עולים בבירור. שתה הרבה מים.'],[24,'צום ארוך','צום של יותר מיממה רק בתיאום עם רופא.']];
+const WMSG=['גלאגלאג!','הכליות מוחאות כפיים','לגימה של אלופים','הגוף אומר תודה','עוד כוס, עוד ניצחון'];
+
+/* ===== כלי עזר ===== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const r0=x=>Math.round(x||0),r1=x=>Math.round((x||0)*10)/10;
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today=()=>ymd(new Date());
+const pd=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const addDays=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return ymd(d)};
+const diffDays=(a,b)=>Math.round((pd(b)-pd(a))/864e5);
+const heDate=(s,o)=>pd(s).toLocaleDateString('he-IL',o||{weekday:'long',day:'numeric',month:'long'});
+const norm=s=>s.replace(/["'׳״\-\/()]/g,' ').replace(/\s+/g,' ').trim();
+const ls={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const IC={trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg>',prev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>',
+user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',
+cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+note:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',noteOff:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V6l11-2v12" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="2"/></svg>',foot:'<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="8" cy="7" rx="3" ry="4.5"/><ellipse cx="16" cy="13" rx="3" ry="4.5"/><circle cx="8" cy="14.5" r="1.6"/><circle cx="16" cy="20.5" r="1.6"/></svg>',copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></svg>',chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg>',trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/></svg>',pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"/></svg>',fire:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-3 2-4 2-7 2 1 3 3 3 3s1-4 0-7z"/></svg>',drop:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s7 8 7 13a7 7 0 0 1-14 0c0-5 7-13 7-13z"/></svg>',moon:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 15A8 8 0 0 1 9 4a8 8 0 1 0 11 11z"/></svg>',book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM19 19v2H6"/></svg>',
+plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'};
+
+/* אבוקי — הקמע */
+function avoki(mood){const m=mood||'happy';
+const mouth=m==='wow'?'<ellipse cx="50" cy="63" rx="5" ry="6" fill="#4a2a12"/>':m==='sad'?'<path d="M42 66q8-7 16 0" stroke="#4a2a12" stroke-width="3" fill="none" stroke-linecap="round"/>':'<path d="M41 60q9 9 18 0" stroke="#4a2a12" stroke-width="3" fill="none" stroke-linecap="round"/>';
+return `<svg viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="94" rx="24" ry="4" fill="rgba(0,0,0,.15)"/><path d="M50 6C32 6 20 30 16 52c-5 26 12 40 34 40s39-14 34-40C80 30 68 6 50 6z" fill="#3f7d2a"/><path d="M50 13c-14 0-24 21-27 40-4 21 9 32 27 32s31-11 27-32C74 34 64 13 50 13z" fill="#c9e88a"/><circle cx="50" cy="70" r="11" fill="#a0612b" opacity=".9"/><circle cx="46" cy="67" r="3" fill="#c8874b"/><circle cx="40" cy="47" r="4" fill="#2d1b3d"/><circle cx="60" cy="47" r="4" fill="#2d1b3d"/><circle cx="41.5" cy="45.5" r="1.3" fill="#fff"/><circle cx="61.5" cy="45.5" r="1.3" fill="#fff"/><circle cx="33" cy="55" r="4" fill="#ff9a7a" opacity=".6"/><circle cx="67" cy="55" r="4" fill="#ff9a7a" opacity=".6"/><g transform="translate(0,-6)">${mouth}</g></svg>`}
+
+/* ===== מצב ===== */
+let S=ls.get('kl_state')||{};
+S=Object.assign({profile:null,weights:[],xp:0,aw:{},badges:{},days:{},custom:[],favs:[],recent:[],uniq:[],u:0,fast:{plan:16,start:null,hist:[],on:false},lessons:{},saved:[],fit:{level:1,log:[],lvlAt:null},cheat:{day:4,used:{}},set:{music:true,sfx:true,stepGoal:8000}},S);S.set=Object.assign({music:true,sfx:true,stepGoal:8000},S.set);S.fit=Object.assign({level:1,log:[],lvlAt:null},S.fit);S.cheat=Object.assign({day:4,used:{}},S.cheat);
+const dayCache={};
+const V={tab:'today',date:today()};
+function emptyDay(){return{meals:{b:[],l:[],d:[],s:[]},water:0,ex:[],u:0}}
+function getDayLocal(d){if(!dayCache[d]){const x=ls.get('kl_d_'+d)||emptyDay();if(x.water&&x.water<=20)x.water*=250;dayCache[d]=x}return dayCache[d]}
+const allFoods=()=>FOODS.concat(S.custom);
+const foodById=id=>allFoods().find(f=>f.id===id);
+
+/* ===== שמירה בענן (אם זמין) ===== */
+let db=null,uid=null;const timers={},chain={};
+const ref=k=>db.doc('data/users/'+uid+'/'+k);
+function dbWrite(k,getData){if(!db)return;clearTimeout(timers[k]);timers[k]=setTimeout(()=>{const data=JSON.parse(JSON.stringify(getData()));chain[k]=(chain[k]||Promise.resolve()).then(()=>ref(k).set(data)).catch(()=>{})},900)}
+function saveState(){S.u=Date.now();ls.set('kl_state',S);dbWrite('state',()=>S)}
+function saveDay(d){setTimeout(pushWidget,50);const day=getDayLocal(d);day.u=Date.now();ls.set('kl_d_'+d,day);const t=dayTotals(day);
+ const sc=dayScore(day);S.days[d]={k:r0(t.k),n:t.n,sc,w:day.water||0,st:day.steps||0,wg:S.profile?waterGoal():2500,b:S.profile?calc().budget:0};dbWrite('d-'+d,()=>getDayLocal(d));saveState()}
+async function pullDay(d){if(!db)return;try{const s=await ref('d-'+d).get();if(s.exists){const r=s.data();const loc=getDayLocal(d);if((r.u||0)>(loc.u||0)){dayCache[d]=JSON.parse(JSON.stringify(r));ls.set('kl_d_'+d,dayCache[d]);render()}}}catch(e){}}
+(async()=>{try{if(!window.claude||!claude.use)return;const[d,u]=await Promise.all([claude.use('db'),claude.use('user')]);if(!d||!u)return;const id=await u.id();if(!id)return;db=d;uid=id;
+ const s=await ref('state').get();if(s.exists){const r=s.data();if((r.u||0)>(S.u||0)){S=Object.assign(S,JSON.parse(JSON.stringify(r)));ls.set('kl_state',S);render()}else if((S.u||0)>(r.u||0))dbWrite('state',()=>S)}else if(S.profile)dbWrite('state',()=>S);
+ await pullDay(V.date);render()}catch(e){}})();
+
+/* ===== חישובים ===== */
+function curW(){const w=S.weights.slice().sort((a,b)=>a.d<b.d?-1:1);return w.length?w[w.length-1].w:S.profile.w0}
+function calc(){const p=S.profile,w=curW();const bmr=10*w+6.25*p.h-5*p.age+(p.sex==='m'?5:-161);const tdee=bmr*p.act;const floor=p.sex==='m'?1500:1200;
+ const target=tdee-p.pace*7700/7;const budget=Math.max(floor,Math.round(target/10)*10);const weekly=Math.max(0,(tdee-budget)*7/7700);const left=Math.max(0,w-p.goal);
+ const weeks=left>0&&weekly>0?left/weekly:0;return{bmr,tdee,budget,weekly,left,weeks,floored:budget>target+5,bmi:w/((p.h/100)**2),w}}
+function trend(){const w=S.weights.slice().sort((a,b)=>a.d<b.d?-1:1);if(w.length<2)return null;const span=diffDays(w[0].d,w[w.length-1].d);if(span<7)return null;
+ const xs=w.map(x=>diffDays(w[0].d,x.d)),ys=w.map(x=>x.w),n=xs.length,mx=xs.reduce((a,b)=>a+b)/n,my=ys.reduce((a,b)=>a+b)/n;let nu=0,de=0;xs.forEach((x,i)=>{nu+=(x-mx)*(ys[i]-my);de+=(x-mx)**2});return de?-nu/de*7:null}
+function units(f){const u=[];if(f.pc)u.push({k:'pc',n:f.pcn||'יחידה',g:f.pc});u.push({k:'g',n:'גרם',g:1});
+ if(f.cup){u.push({k:'cup',n:'כוס',g:f.cup},{k:'tbsp',n:'כף',g:f.cup/16},{k:'tsp',n:'כפית',g:f.cup/48});if(!['drink','fat','sweet','spice'].includes(f.cat))u.push({k:'fist',n:'אגרוף',g:f.cup})}
+ if(f.cat==='prot'){u.push({k:'palm',n:'כף יד',g:100});if(!f.cup)u.push({k:'fist',n:'אגרוף',g:150})}
+ if(['nut','snack'].includes(f.cat))u.push({k:'hand',n:'חופן',g:f.cat==='nut'?30:20});
+ if(['fruit','veg'].includes(f.cat)&&!f.cup)u.push({k:'fist',n:'אגרוף',g:150});return u}
+function defUnit(f){const u=units(f);return (f.cat==='spice'&&u.find(x=>x.k==='tsp'))||(f.cat==='fat'&&u.find(x=>x.k==='tbsp'))||u.find(x=>x.k==='pc')||u.find(x=>x.k==='cup'&&f.cat==='drink')||u[0]}
+function portion(f,q,unit){const g=q*unit.g,m=g/100;return{fid:f.id,n:f.n,cat:f.cat,q,u:unit.k,un:unit.n,g:r1(g),k:f.k*m,p:f.p*m,c:f.c*m,f:f.f*m,fi:f.fi*m,s:f.s*m}}
+function sum(items){const t={k:0,p:0,c:0,f:0,fi:0,s:0,g:0,n:items.length,veg:0,junk:0};for(const e of items){t.k+=e.k;t.p+=e.p;t.c+=e.c;t.f+=e.f;t.fi+=e.fi;t.s+=e.s;t.g+=e.g||0;
+ if(e.cat==='veg'||e.cat==='fruit')t.veg+=e.g||0;if(['sweet','snack','fast'].includes(e.cat))t.junk+=e.k}return t}
+function dayTotals(day){return sum(MEALS.flatMap(([m])=>day.meals[m]))}
+function exKcal(day){return day.ex.reduce((a,e)=>a+e.k,0)+stepsKcal(day)}
+function scoreItems(items,meal){const t=sum(items);if(t.k<15)return null;if(items.some(x=>x.cheat))return{s:0,cheat:true,good:['ארוחת פינוק מתוכננת, בכמות מוגבלת. נהנים בלי רגשות אשמה.'],bad:['חוזרים לשגרה בארוחה הבאה: הרבה ירקות וחלבון.'],t,items};const B=S.profile?calc().budget:1800;let s=50;const good=[],bad=[];
+ const pp=t.p*4/t.k,fib=t.fi/t.k*100,ed=t.g?t.k/t.g:2,sp=t.s*4/t.k,fp=t.f*9/t.k,share=t.k/B;
+ if(pp>=.25){s+=18;good.push(`עשירה בחלבון (${r0(t.p)} ג׳) — משביעה לאורך זמן ושומרת על מסת השריר.`)}else if(pp>=.15){s+=8;good.push('יש בה כמות סבירה של חלבון.')}else{s-=8;bad.push('מעט חלבון. הוסף ביצה, קוטג׳, טונה, עוף או קטניות כדי להישאר שבע.')}
+ if(fib>=2){s+=14;good.push(`הרבה סיבים תזונתיים (${r1(t.fi)} ג׳) — שובע ועיכול טוב.`)}else if(fib>=1){s+=6;good.push('כמות סיבים טובה.')}else{s-=6;bad.push('מעט סיבים. ירקות, לחם מלא או קטניות יעזרו.')}
+ if(ed<=1.2){s+=12;good.push('נפח גדול במעט קלוריות — אוכלים הרבה ומרגישים מלא.')}else if(ed<=2){s+=4}else if(ed>3){s-=10;bad.push('צפיפות קלורית גבוהה: הרבה קלוריות בכמות קטנה של אוכל.')}
+ if(sp<=.1){s+=6;good.push('מעט סוכר.')}else if(sp>.25){s-=12;bad.push('הרבה סוכר — צפויה נפילת אנרגיה ורעב מהיר.')}
+ if(t.veg>=80){s+=10;good.push('יש בה ירקות או פירות — ויטמינים ונפח.')}else if(meal!=='s'){s-=4;bad.push('הוסף ירקות: אפשר כמעט בלי הגבלה.')}
+ if(t.junk/t.k>.4){s-=12;bad.push('חלק גדול מהקלוריות מגיע ממתוקים, חטיפים או מזון מהיר.')}
+ if(fp>.45){s-=6;bad.push('אחוז שומן גבוה. נסה פחות שמן או רטבים.')}
+ if(meal==='s'?share>.2:share>.45){s-=12;bad.push(`ארוחה גדולה: ${r0(share*100)}% מהתקציב היומי שלך.`)}else if(share>=.15&&meal!=='s')good.push('גודל מנה שמתאים לתקציב היומי.');
+ s=Math.max(5,Math.min(100,Math.round(s)));return{s,good,bad,t,items}}
+function grade(s){return s>=85?['מצוינת','g1']:s>=70?['טובה מאוד','g1']:s>=55?['טובה','g2']:s>=40?['סבירה','g3']:['יש מה לשפר','g4']}
+function dayScore(day){let a=0,n=0;for(const[m]of MEALS){const r=scoreItems(day.meals[m],m);if(r&&!r.cheat){a+=r.s*r.t.k;n+=r.t.k}}return n?Math.round(a/n):0}
+function foodTag(f){const ed=f.k/100,pp=f.k?f.p*4/f.k:0;if(ed<=1.2||(pp>=.3&&ed<=2.5))return['var(--lime)','ירוק — אפשר בנדיבות'];if(ed<=2.6)return['var(--gold)','צהוב — במידה'];return['var(--mango)','כתום — בכמות קטנה']}
+function level(){let i=0;LEVELS.forEach((l,j)=>{if(S.xp>=l[1])i=j});const cur=LEVELS[i],nx=LEVELS[i+1];return{i,name:cur[0],pct:nx?(S.xp-cur[1])/(nx[1]-cur[1]):1,next:nx?nx[1]-S.xp:0}}
+function streak(){let d=today(),n=0;if(!(S.days[d]&&S.days[d].n))d=addDays(d,-1);while(S.days[d]&&S.days[d].n){n++;d=addDays(d,-1)}return n}
+
+/* ===== תגמולים ===== */
+const BADGES=[['first','ביס ראשון','רשמת ארוחה ראשונה',()=>Object.values(S.days).some(x=>x.n)],['s3','שלושה ברצף','3 ימי רישום ברצף',()=>streak()>=3],['s7','שבוע אלוף','7 ימים ברצף',()=>streak()>=7],['s30','הרגל של ברזל','30 ימים ברצף',()=>streak()>=30],
+['water','גמל','עמדת ביעד המים',()=>Object.values(S.days).some(x=>x.w>=(x.wg||2500))],['a90','צלחת זהב','ארוחה עם ציון 90+',()=>!!S.aw.a90],['g10','שף בריא','10 ארוחות בציון 70+',()=>Object.keys(S.aw).filter(k=>k.startsWith('g:')).length>=10],
+['under','בתוך התקציב','5 ימים בתוך התקציב',()=>Object.values(S.days).filter(x=>x.n&&x.k<=x.b+50).length>=5],['weigh','עולה על המשקל','שקילה ראשונה',()=>S.weights.length>1],['ex','זז ונהנה','אימון ראשון',()=>Object.keys(S.aw).some(k=>k.startsWith('x:'))],
+['l1','הקילו הראשון','ירדת קילו',()=>S.profile&&S.profile.w0-curW()>=1],['l5','חמישה למטה','ירדת 5 ק״ג',()=>S.profile&&S.profile.w0-curW()>=5],['l10','עשר!','ירדת 10 ק״ג',()=>S.profile&&S.profile.w0-curW()>=10],
+['chef','ממציא','הוספת מאכל משלך',()=>S.custom.length>0],['var','גורמה','25 מאכלים שונים',()=>S.uniq.length>=25],['photo','צלם אוכל','ניתחת ארוחה מתמונה',()=>!!S.aw.photo],['f1','צום ראשון','השלמת צום לפי התוכנית',()=>S.fast.hist.some(x=>x.h>=x.g)],['f5','מאסטר הצום','5 צומות שהושלמו',()=>S.fast.hist.filter(x=>x.h>=x.g).length>=5],['f16','16 שעות','צום של 16 שעות ומעלה',()=>S.fast.hist.some(x=>x.h>=16)],['les7','תלמיד חרוץ','7 שיעורים יומיים',()=>Object.keys(S.lessons).length>=7],['quest','משימה הושלמה','כל משימות היום',()=>Object.keys(S.aw).some(k=>k.startsWith('q:'))],
+['k10','עשרת אלפים','10,000 צעדים ביום',()=>Object.values(S.days).some(x=>x.st>=10000)],
+['fit5','מתאמן קבוע','5 אימונים מהתוכנית',()=>S.fit.log.filter(x=>x.t!=='r').length>=5],['fit20','לא עוצר','20 אימונים מהתוכנית',()=>S.fit.log.filter(x=>x.t!=='r').length>=20],['lvl3','עולה שלב','רמה 3 בכושר',()=>fitLv()>=3],
+['goal','הגעת ליעד!','הגעת למשקל היעד',()=>S.profile&&curW()<=S.profile.goal]];
+function award(key,xp,msg){if(S.aw[key])return;S.aw[key]=1;S.xp+=xp;sfx('coin');toast(`+${xp} נקודות · ${msg}`)}
+function checkBadges(){checkQuests();const lv=level().i;let got=null;for(const[id,n,,t]of BADGES){if(!S.badges[id]&&t()){S.badges[id]=today();S.xp+=50;got=n}}
+ if(got){setTimeout(()=>{toast('הישג חדש: '+got+' · +50');confetti()},700)}if(level().i>lv)setTimeout(()=>{toast('עלית רמה: '+level().name+'!');confetti()},1500)}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2200)}
+function confetti(){sfx('win');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=$('#cf'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const cols=['#ff7a2f','#7cc63e','#f5b82e','#3a9cf5','#e8484a'];
+ const P=Array.from({length:120},()=>({x:c.width/2,y:c.height/3,vx:(Math.random()-.5)*12,vy:Math.random()*-12-3,r:Math.random()*6+3,c:cols[Math.random()*5|0],a:Math.random()*6}));let f=0;
+ (function tick(){x.clearRect(0,0,c.width,c.height);for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);x.restore()}if(++f<110)requestAnimationFrame(tick);else x.clearRect(0,0,c.width,c.height)})()}
+
+/* ===== תצוגה ראשית ===== */
+function render(){const app=$('#app');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.t===V.tab));
+ if(!S.profile){app.innerHTML=welcome();return}
+ app.innerHTML=V.tab==='today'?viewToday():V.tab==='fast'?viewFast():V.tab==='fit'?viewFit():V.tab==='goals'?viewGoals():viewAwards();if(V.tab==='goals')drawWeight()}
+function welcome(){return `<div class="hero" style="padding-bottom:40px;text-align:center"><div style="width:150px;margin:20px auto 0;animation:bob 2.6s ease-in-out infinite">${avoki('happy')}</div>
+<h1 style="font:44px/1 var(--disp);margin:6px 0;color:var(--mango-d)">קליל</h1><p style="margin:0;font-size:17px">היומן הכי כיפי לירידה במשקל.<br>אני אבוקי, ואני אלווה אותך בדרך.</p></div>
+<div class="wrap"><div class="card"><h2>מה מחכה לך כאן</h2><ul class="why">
+<li><i class="g1">✓</i>מאגר של כ-500 מאכלים ותבלינים, כולל מנות ישראליות, בגרמים, כפות, כפיות, כוסות ואגרופים</li>
+<li><i class="g1">✓</i>ציון לכל ארוחה עם הסבר למה היא טובה ואיך לשפר</li>
+<li><i class="g1">✓</i>צילום אוכל: ה-AI מפרק את הצלחת ומחשב קלוריות</li>
+<li><i class="g1">✓</i>תקציב קלוריות אישי ותחזית מתי תגיע ליעד</li>
+<li><i class="g1">✓</i>שיעור יומי קצר עם חידון: מים, צום, שובע ועוד</li><li><i class="g1">✓</i>טיימר צום לסירוגין: 12:12, 14:10, 16:8, 18:6, 20:4, 23:1</li><li><i class="g1">✓</i>מד צעדים, מוזיקה נעימה וצלילים</li><li><i class="g1">✓</i>בקבוק מים שמתמלא, משימות יומיות, נקודות, רמות והישגים</li></ul>
+<button class="btn full" data-a="profile">בוא נתחיל</button></div>${credit()}</div>`}
+function credit(){return `<p class="credit">פותח ע״י <b>עמיר איבגי</b> למטרתו האישית</p>`}
+function waterGoal(){return Math.min(4000,Math.max(2000,Math.round(curW()*35/250)*250))}
+function lessonFor(d){const x=pd(d),doy=Math.floor((x-new Date(x.getFullYear(),0,0))/864e5);return LESSONS[doy%LESSONS.length]}
+function quests(day,d){const t=dayTotals(day);const q=[['רשום ארוחה',t.n>0],['הגע ליעד המים',(day.water||0)>=waterGoal()],['קרא את שיעור היום וענה',S.lessons[d]!=null],...(fitToday()!=='r'&&d===today()?[['בצע את אימון ה'+FTYPE[fitToday()][0]+' ('+sessMin(fitToday(),fitLv())+' דק׳)',fitDone(d,fitToday())]]:[]),['הגע ל-'+stepGoal().toLocaleString('he-IL')+' צעדים',(day.steps||0)>=stepGoal()],['ארוחה עם ציון 70+',MEALS.some(([m])=>{const r=scoreItems(day.meals[m],m);return r&&r.s>=70})]];
+ if(S.fast.on)q.push(['השלם צום של '+S.fast.plan+' שעות',S.fast.hist.some(h=>ymd(new Date(h.e))===d&&h.h>=h.g)]);return q}
+function checkQuests(){const d=today(),q=quests(getDayLocal(d),d);if(q.every(x=>x[1])&&!S.aw['q:'+d]){award('q:'+d,30,'כל משימות היום!');setTimeout(confetti,300)}}
+function questCard(day){const q=quests(day,V.date),n=q.filter(x=>x[1]).length,all=n===q.length;
+ return `<div class="card"><h2>משימות היום<span class="sp"></span><span class="small" style="color:var(--gold)">${n}/${q.length}${all?' · בונוס +30 התקבל':' · בונוס +30'}</span></h2><div class="bar" style="margin:0 0 6px;height:10px"><i style="width:${n/q.length*100}%;background:var(--gold);color:var(--gold)"></i></div>
+${q.map(x=>`<div class="quest ${x[1]?'done':''}"><span class="ck">${x[1]?'✓':''}</span><span class="qt">${x[0]}</span></div>`).join('')}</div>`}
+function lessonCard(){const L=lessonFor(today()),done=S.lessons[today()];return `<div class="card lesson"><span class="tag">שיעור היום · ${L.g}</span><h2 style="margin-top:8px">${L.t}</h2><p class="muted" style="margin:0 0 4px">${L.b[0]}</p>
+<div class="btns"><button class="btn pink full" data-a="lesson">${IC.book}${done!=null?'קרא שוב':'קרא וענה · +20 נקודות'}</button></div></div>`}
+function openLesson(){const d=today(),L=lessonFor(d),ans=S.lessons[d];openSheet(`${shTop('שיעור היום')}<span class="tag">${L.g}</span><h2 style="font:26px/1.2 var(--disp);margin:10px 0">${L.t}</h2>${L.b.map(p=>`<p style="font-size:17px">${p}</p>`).join('')}
+<div class="card" style="margin-top:6px"><b>שאלה:</b> ${L.q}<div id="opts">${L.o.map((o,i)=>`<button class="opt ${ans!=null&&i===L.a?'ok':''}" data-a="ans" data-i="${i}" ${ans!=null?'disabled':''}>${o}</button>`).join('')}</div><p id="lx" class="${ans!=null?'':'hide'}" style="margin-bottom:0;color:var(--lime)">${L.x}</p></div>`)}
+function fastElapsed(){return S.fast.start?Math.max(0,(Date.now()-S.fast.start)/36e5):0}
+function fmtH(h){const s=Math.floor(h*3600);return String(Math.floor(s/3600)).padStart(2,'0')+':'+String(Math.floor(s/60)%60).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function stageAt(h){return STAGES.reduce((a,s,i)=>h>=s[0]?i:a,0)}
+const hm=d=>d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+function viewFast(){const F=S.fast,on=!!F.start,h=fastElapsed(),g=F.plan,p=Math.min(1,h/g),R=46,C=2*Math.PI*R,st=stageAt(h);
+ const endT=on?new Date(F.start+g*36e5):null,done=F.hist.filter(x=>x.h>=x.g).length,pl=FPLANS.find(x=>x[0]===g)||FPLANS[2];
+ return `<div class="hero"><div class="top"><h1>צום לסירוגין</h1><span class="chipf" style="margin:0">${IC.moon} ${done} צומות</span></div>
+<div class="fring"><svg viewBox="0 0 100 100"><defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a65"/><stop offset="1" stop-color="#2ec4a0"/></linearGradient></defs><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="7"/>
+<circle id="fArc" cx="50" cy="50" r="${R}" fill="none" stroke="url(#fg)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 50 50)" style="filter:drop-shadow(0 0 5px #ff8a65)"/>
+${STAGES.slice(1).filter(s=>s[0]<g).map(s=>{const a=s[0]/g*2*Math.PI-Math.PI/2;return `<circle cx="${r1(50+R*Math.cos(a))}" cy="${r1(50+R*Math.sin(a))}" r="2.4" fill="#fff" opacity="${on&&h>=s[0]?1:.45}"/>`}).join('')}</svg>
+<div class="c">${on?`<span class="small muted">צמת כבר</span><span class="t" id="fT">${fmtH(h)}</span><span class="small" id="fR" style="color:var(--lime)">${h>=g?'יעד הושג!':'נותרו '+fmtH(g-h)}</span>`:`<span class="small muted">התוכנית שלך</span><span class="t">${pl[1]}</span><span class="small muted">${g} שעות צום</span>`}</div></div>
+${on?`<p style="text-align:center;margin:8px 0 0">סיום מתוכנן: <b>${hm(endT)}</b>${endT.toDateString()!==new Date().toDateString()?' מחר':''} · עכשיו: <b>${STAGES[st][1]}</b></p><div class="btns"><button class="btn pink full" data-a="fastEnd">סיים צום</button></div>`
+:`<label class="f" style="max-width:260px;margin:10px auto 0;text-align:center"><span>התחלתי לצום בשעה</span><input type="time" id="fStart" value="${hm(new Date())}"></label><div class="btns"><button class="btn full" data-a="fastStart">${IC.moon}התחל צום</button></div>`}</div>
+<div class="wrap"><div class="card"><h2>בחר תוכנית</h2><div class="seg">${FPLANS.map(([x,n,d])=>`<button data-a="fplan" data-h="${x}" class="${g===x?'on':''}"><b>${n}</b><br><span class="small">${d}</span></button>`).join('')}</div>
+${g>=20?'<p class="small" style="color:var(--gold);margin-bottom:0">תוכנית מתקדמת. מתאימה רק למי שכבר מורגל ב-16:8, ובהתייעצות עם רופא אם יש בעיה רפואית.</p>':''}</div>
+<div class="card"><h2>מה קורה בגוף${on?' עכשיו':''}</h2>${STAGES.map((s,i)=>`<div class="stage ${on&&i<st?'on':''} ${on&&i===st?'now':''}"><span class="sd"></span><div><b>${s[1]}</b> <span class="small muted">· מ-${s[0]} שעות</span><div class="small muted">${s[2]}</div></div></div>`).join('')}
+<p class="small muted" style="margin-bottom:0">הזמנים משוערים ומשתנים מאדם לאדם. בזמן הצום שותים הרבה מים.</p></div>
+<div class="card"><h2>הצומות האחרונים</h2>${F.hist.length?`<div class="week">${F.hist.slice(0,7).reverse().map(x=>`<div class="col"><span style="color:var(--ink);font-weight:700">${r1(x.h)}</span><i style="height:${Math.min(1,x.h/24)*100}px;${x.h>=x.g?'background:var(--lime)':'background:var(--pink)'}"></i>${heDate(ymd(new Date(x.e)),{weekday:'narrow'})}</div>`).join('')}</div><p class="small muted" style="margin:6px 0 0">ליים = הגעת ליעד · ורוד = צום קצר יותר</p>`:'<div class="empty">עוד לא סיימת צום. הראשון תמיד הכי מרגש!</div>'}</div>
+<div class="card"><h2>חשוב לדעת</h2><p class="small muted" style="margin:0">צום לסירוגין לא מתאים בהריון ובהנקה, מתחת לגיל 18, למי שיש לו היסטוריה של הפרעות אכילה, או למי שמטופל בתרופות לסוכרת בלי אישור רופא. מרגישים סחרחורת או חולשה? מפסיקים ואוכלים.</p></div>${credit()}</div>`}
+function waterCard(day){const g=waterGoal(),ml=day.water||0,p=Math.min(1,ml/g),top=Math.round(22+150*(1-p));
+ const msg=p>=1?'יעד המים הושלם! הגוף שלך מודה לך.':p>=.5?'יותר מחצי הדרך. ממשיכים ללגום!':'כל כוס מקרבת אותך ליעד.';const B='M38 8h34v18c0 6 18 10 18 26v110a12 12 0 0 1-12 12H32a12 12 0 0 1-12-12V52c0-16 18-20 18-26z';
+ return `<div class="card" style="border-color:rgba(74,168,255,.4)"><h2 style="color:var(--blue)">מים<span class="sp"></span><span class="small muted">יעד ${(g/1000).toFixed(2).replace(/0$/,'')} ליטר</span></h2>
+<div class="bottle"><svg viewBox="0 0 110 180" aria-hidden="true"><defs><clipPath id="bc"><path d="${B}"/></clipPath><linearGradient id="wgr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4aa8ff"/><stop offset="1" stop-color="#2f7de0"/></linearGradient></defs>
+<g clip-path="url(#bc)"><rect width="110" height="180" fill="rgba(74,168,255,.07)"/><g style="transform:translateY(${top}px);transition:transform .9s cubic-bezier(.2,1.4,.4,1)"><path class="wave" d="M0 6q10-8 20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0V200H0z" fill="url(#wgr)"/></g>
+<circle cx="42" cy="150" r="3" fill="rgba(255,255,255,.45)"/><circle cx="66" cy="132" r="2" fill="rgba(255,255,255,.45)"/></g>
+<path d="${B}" fill="none" stroke="#4aa8ff" stroke-width="3" style="filter:drop-shadow(0 0 6px #4aa8ff)"/><rect x="40" y="1" width="30" height="9" rx="3" fill="#ff8a65"/></svg>
+<div><div class="wbig">${(ml/1000).toFixed(2)} <span style="font-size:18px">ליטר</span></div><div class="small muted">${Math.round(p*100)}% מהיעד · ${Math.round(ml/250)} כוסות</div><p style="margin:8px 0 0;font-size:15px">${msg}</p>
+<div class="btns"><button class="btn" style="background:var(--blue);box-shadow:0 4px 0 #2a7fd6" data-a="water" data-ml="250">+ כוס</button><button class="btn ghost" data-a="water" data-ml="500">+ בקבוק</button><button class="btn ghost" data-a="water" data-ml="-250" aria-label="הורד כוס" style="flex:0 0 52px;padding:0">−</button></div></div></div></div>`}
+function viewToday(){const day=getDayLocal(V.date),c=calc(),t=dayTotals(day),ex=exKcal(day)+cheatBonus(V.date),B=c.budget+ex,left=B-t.k,pct=Math.min(1,t.k/B),over=left<0;
+ const R=44,C=2*Math.PI*R,isT=V.date===today();const mood=!t.n?'happy':over?'sad':pct>.85?'wow':'happy';
+ const msg=!t.n?`${greet()} ${esc(S.profile.name)}! מה אכלנו היום?`:over?'עברנו קצת את התקציב. זה בסדר, מחר יום חדש, בלי רגשות אשמה.':pct>.85?'כמעט סגרנו את היום! נשאר מקום לנשנוש קטן וחכם.':`מעולה! נשארו לך ${r0(left)} קק״ל. ממשיכים ככה.`;
+ const mt={p:B*.3/4,c:B*.4/4,f:B*.3/9};const mac=(n,v,g,col)=>`<div class="mac"><small>${n}</small><b>${r0(v)}</b><span class="small muted"> / ${r0(g)} ג׳</span><div class="bar"><i style="width:${Math.min(100,v/g*100)}%;background:${col};color:${col}"></i></div></div>`;
+ const ds=dayScore(day);
+ return `<div class="hero"><div class="top"><h1>קליל</h1><span class="chipf" style="margin:0" title="ימים ברצף">${IC.fire} ${streak()}</span><button class="ib" data-a="tab" data-t="awards" aria-label="הישגים">${IC.trophy}</button><button class="ib" data-a="music" aria-label="${S.set.music?'כבה מוזיקה':'הפעל מוזיקה'}" style="color:${S.set.music?'var(--mango-d)':'var(--mute)'}">${S.set.music?IC.note:IC.noteOff}</button><button class="ib" data-a="profile" aria-label="פרופיל">${IC.user}</button></div>
+<div class="datebar"><button class="ib" data-a="day" data-n="-1" aria-label="יום קודם">${IC.prev}</button><span>${isT?'היום, ':''}${heDate(V.date)}</span><button class="ib" data-a="day" data-n="1" aria-label="יום הבא" ${isT?'disabled style="opacity:.3"':''}>${IC.next}</button>${isT?'':'<button class="chipf" data-a="goToday" style="margin:0">להיום</button>'}</div>
+<div class="ringwrap"><div class="side"><b>${r0(t.k)}</b>נאכל</div><div class="ring"><svg viewBox="0 0 100 100"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ec4a0"/><stop offset="1" stop-color="#7dd35a"/></linearGradient></defs><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="9"/>
+<circle class="glow" cx="50" cy="50" r="${R}" fill="none" style="color:${over?'#ff8a65':'#2ec4a0'};transition:stroke-dasharray .8s cubic-bezier(.2,1.2,.4,1)" stroke="${over?'#ff8a65':'url(#rg)'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C*pct} ${C}" transform="rotate(-90 50 50)"/></svg>
+<div class="c"><span class="big" style="color:${over?'var(--pink)':'var(--ink)'}">${r0(Math.abs(left))}</span><span class="lbl">${over?'קק״ל מעל':'קק״ל נותרו'}</span></div></div><div class="side"><b>${r0(ex)}</b>פעילות</div></div>
+${S.act?`<div style="text-align:center"><button class="chipf" data-a="tracker" style="background:var(--lime2);color:#4f9a2e;border-color:#bfe5a8">פעילות פעילה · <span id="actChip" dir="ltr">${fmtHMS(actElapsed())}</span></button></div>`:''}<div style="text-align:center"><button class="chipf stpill" data-a="stepsGo">${IC.foot} <b id="heroSt">${(day.steps||0).toLocaleString('he-IL')}</b>&nbsp;/ ${stepGoal().toLocaleString('he-IL')} צעדים${isT&&stepSrc()!=='ידני'?' · '+stepSrc():''}</button></div>
+${S.fast.start?`<div style="text-align:center"><button class="chipf" data-a="tab" data-t="fast">${IC.moon} בצום · <span id="fChip" dir="ltr">${fmtH(fastElapsed())}</span></button></div>`:''}
+<div class="bubble">${avoki(mood)}<span>${msg}</span></div></div>
+<div class="wrap"><div class="quick"><button class="qa" data-a="photo" style="color:var(--pink)">${IC.cam}<span>צלם צלחת</span></button><button class="qa" data-a="tell" style="color:var(--gold)">${IC.chat}<span>ספר מה אכלת</span></button><button class="qa" data-a="water" data-ml="250" style="color:var(--blue)">${IC.drop}<span>שתיתי כוס</span></button><button class="qa" data-a="tab" data-t="fast" style="color:var(--lime)">${IC.moon}<span>${S.fast.start?'בצום':'התחל צום'}</span></button></div>
+<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
+${stepsCard(day)}
+${isT?questCard(day)+cheatCard()+lessonCard():''}
+${ds?`<div class="card" style="display:flex;align-items:center;gap:12px"><div class="sticker ${grade(ds)[1]}">${ds}</div><div><b>ציון היום: ${grade(ds)[0]}</b><div class="small muted">ממוצע ציוני הארוחות, משוקלל לפי קלוריות</div></div></div>`:''}
+${MEALS.map(([m,n])=>mealCard(day,m,n)).join('')}${waterCard(day)}
+<div class="card ex"><h2 style="color:var(--blue)">פעילות גופנית <span class="sp"></span><button class="btn ghost" data-a="exAdd" style="min-height:40px">${IC.plus}הוסף</button></h2>
+${day.ex.length?day.ex.map((e,i)=>`<div class="meal"><div class="row"><div class="nm">${esc(e.n)}<small>${e.min} דק׳</small></div><span class="kc">−${r0(e.k)}</span><button class="del" data-a="exDel" data-i="${i}" aria-label="מחיקה">${IC.trash}</button></div></div>`).join(''):'<div class="empty">קלוריות שתשרוף יתווספו לתקציב של היום.</div>'}</div>${credit()}</div>`}
+function greet(){const h=new Date().getHours();return h<11?'בוקר טוב':h<17?'צהריים טובים':h<21?'ערב טוב':'לילה טוב'}
+function mealCard(day,m,n){const it=day.meals[m],r=scoreItems(it,m),t=sum(it);
+ if(!it.length)return `<div class="card meal mini"><h2>${n}<span class="sp"></span><button class="mb" data-a="add" data-m="${m}" aria-label="הוסף ל${n}">${IC.plus}</button><button class="mb" data-a="photo" data-m="${m}" aria-label="צלם ${n}">${IC.cam}</button><button class="mb" data-a="copy" data-m="${m}" aria-label="כמו אתמול" title="כמו אתמול">${IC.copy}</button></h2></div>`;
+ return `<div class="card meal"><h2>${n}<span class="sp"></span>${t.n?`<span class="kc">${r0(t.k)} קק״ל</span>`:''}${r?(r.cheat?`<button class="sticker s g2" data-a="score" data-m="${m}" style="font-size:12px" aria-label="ארוחת פינוק">פינוק</button>`:`<button class="sticker s ${grade(r.s)[1]}" data-a="score" data-m="${m}" aria-label="ציון ${r.s}, פירוט">${r.s}</button>`):''}</h2>
+${it.length?it.map((e,i)=>`<div class="row"><button class="nm" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכת ${esc(e.n)}">${esc(e.n)}<small>${esc(uLabel(e.q,e.un,e.u))}${e.u!=='g'?` · ${r0(e.g)} ג׳`:''} · ח ${r0(e.p)} פ ${r0(e.c)} ש ${r0(e.f)}</small></button><span class="kc">${r0(e.k)}</span><button class="del" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכה">${IC.pen}</button></div>`).join(''):'<div class="empty">עוד לא נרשם כלום.</div>'}
+${r&&r.cheat?`<button class="mscore" data-a="score" data-m="${m}" style="background:var(--lime2)"><b>ארוחת פינוק מתוכננת</b><span>נהנים בלי רגשות אשמה · חוזרים לשגרה בארוחה הבאה</span></button>`:''}${r&&!r.cheat?`<button class="mscore" data-a="score" data-m="${m}"><b>ציון ${r.s} · ${grade(r.s)[0]}</b><span>${esc((benefits(r.items)[0]||r.good[0]||'').split(':')[0])} · לפירוט מלא</span></button>`:''}
+<div class="btns"><button class="btn ghost" data-a="add" data-m="${m}">${IC.plus}הוסף</button><button class="btn ghost" data-a="photo" data-m="${m}">${IC.cam}צלם</button>${!it.length?`<button class="btn ghost" data-a="copy" data-m="${m}">כמו אתמול</button>`:''}</div></div>`}
+
+function viewGoals(){const p=S.profile,c=calc(),tr=trend();const done=Math.max(0,Math.min(1,(p.w0-c.w)/Math.max(.1,p.w0-p.goal)));
+ const eta=c.weeks?addDays(today(),Math.ceil(c.weeks*7)):null;const eta2=tr&&tr>0.05&&c.left>0?addDays(today(),Math.ceil(c.left/tr*7)):null;
+ const wk=Array.from({length:7},(_,i)=>addDays(today(),i-6));const mx=Math.max(c.budget*1.3,...wk.map(d=>(S.days[d]||{}).k||0));
+ const bmiTxt=c.bmi<18.5?'תת-משקל':c.bmi<25?'תקין':c.bmi<30?'עודף משקל':'השמנה';
+ return `<div class="hero"><div class="top"><h1>המטרות שלי</h1><button class="ib" data-a="profile" aria-label="עריכת פרופיל">${IC.user}</button></div></div>
+<div class="wrap"><div class="goalhero">${c.left>0?`<div class="small" style="opacity:.8">בקצב הנוכחי תגיע ל-${r1(p.goal)} ק״ג בערך ב:</div><div class="d">${eta?heDate(eta,{day:'numeric',month:'long',year:'numeric'}):'—'}</div>
+<div class="small" style="opacity:.85">עוד ${r1(c.left)} ק״ג · כ-${Math.ceil(c.weeks)} שבועות · ${r1(c.weekly)} ק״ג לשבוע</div>`:`<div class="d">הגעת ליעד!</div><div class="small">עכשיו שומרים. אפשר לעדכן יעד חדש בפרופיל.</div>`}
+<div class="prog"><i style="width:${done*100}%"></i></div><div class="small" style="display:flex;justify-content:space-between"><span>התחלה ${r1(p.w0)}</span><span>עכשיו ${r1(c.w)}</span><span>יעד ${r1(p.goal)}</span></div>
+${eta2?`<div class="small" style="margin-top:8px;opacity:.85">לפי השקילות בפועל (${r1(tr)} ק״ג לשבוע): ${heDate(eta2,{day:'numeric',month:'long',year:'numeric'})}</div>`:''}</div>
+<div class="card"><h2>שקילה <span class="sp"></span></h2><div class="step"><input type="number" id="wIn" inputmode="decimal" step="0.1" value="${r1(c.w)}" aria-label="משקל בק״ג"><button class="btn" data-a="weigh" style="width:auto;flex:none">שמור</button></div>
+<div class="fig" id="wFig" style="margin-top:12px"><svg id="wSvg"></svg></div></div>
+<div class="card"><h2>התקציב שלי</h2><div class="statgrid"><div class="stat"><small>תקציב יומי</small><b>${c.budget} קק״ל</b></div><div class="stat"><small>שריפה יומית משוערת</small><b>${r0(c.tdee)} קק״ל</b></div>
+<div class="stat"><small>חילוף חומרים במנוחה</small><b>${r0(c.bmr)} קק״ל</b></div><div class="stat"><small>BMI</small><b>${r1(c.bmi)}</b> <span class="small muted">${bmiTxt}</span></div></div>
+${c.floored?`<p class="small muted">התקציב לא יורד מתחת ל-${p.sex==='m'?1500:1200} קק״ל ביום, כדי לשמור על בריאות ואנרגיה. לכן הקצב בפועל איטי מעט מהקצב שבחרת.</p>`:''}<p class="small muted">חישוב לפי נוסחת מיפלין–סן ז׳ור. כל קילו שומן ≈ 7,700 קק״ל.</p></div>
+<div class="card"><h2>השבוע שלי</h2><div class="week"><div class="ln" style="bottom:${c.budget/mx*120+22}px"></div>
+${wk.map(d=>{const x=S.days[d]||{};return `<div class="col"><i class="${x.k>(x.b||c.budget)+50?'over':''}" style="height:${(x.k||0)/mx*120}px"></i>${heDate(d,{weekday:'narrow'})}</div>`}).join('')}</div>
+<p class="small muted" style="margin:6px 0 0">הקו המקווקו = התקציב היומי. ירוק = בתוך התקציב.</p></div>
+<div class="card"><h2>הישגים ורמות</h2><div class="btns"><button class="btn ghost" data-a="tab" data-t="awards">${IC.trophy}לכל ההישגים</button></div></div>${updCard()}<div class="card"><h2>גיבוי</h2><p class="small muted" style="margin-top:0">${db?'הנתונים נשמרים בענן בחשבון שלך ומסתנכרנים בין מכשירים.':'הנתונים נשמרים במכשיר הזה.'} אפשר גם להעתיק גיבוי.</p>
+<div class="btns"><button class="btn ghost" data-a="backup">גיבוי ושחזור</button></div></div>${credit()}</div>`}
+function drawWeight(){const s=$('#wSvg');if(!s)return;const draw=()=>{const W=s.clientWidth,H=s.clientHeight;if(!W)return;const p=S.profile,c=calc();
+ const w=S.weights.slice().sort((a,b)=>a.d<b.d?-1:1);const d0=w.length?w[0].d:today();const eta=c.weeks?addDays(today(),Math.ceil(c.weeks*7)):today();
+ const dEnd=eta>today()?eta:addDays(today(),7);const span=Math.max(7,diffDays(d0,dEnd));const vals=w.map(x=>x.w).concat([p.goal,p.w0]);const lo=Math.min(...vals)-1,hi=Math.max(...vals)+1;
+ const L=36,Rr=12,T=14,Bm=26;const X=d=>W-Rr-(diffDays(d0,d)/span)*(W-L-Rr),Y=v=>T+(hi-v)/(hi-lo)*(H-T-Bm);
+ let g=`<line x1="${L}" x2="${W-Rr}" y1="${Y(p.goal)}" y2="${Y(p.goal)}" stroke="var(--lime)" stroke-width="2" stroke-dasharray="5 5"/><text x="${W-Rr}" y="${Y(p.goal)-6}" font-size="12" fill="var(--lime)" text-anchor="end">יעד ${r1(p.goal)}</text>`;
+ if(c.left>0)g+=`<line x1="${X(today())}" y1="${Y(c.w)}" x2="${X(eta)}" y2="${Y(p.goal)}" stroke="var(--mute)" stroke-width="2" stroke-dasharray="2 5"/>`;
+ g+=`<polyline fill="none" stroke="var(--mango)" stroke-width="3" stroke-linejoin="round" points="${w.map(x=>X(x.d)+','+Y(x.w)).join(' ')}"/>`;
+ g+=w.map(x=>`<circle cx="${X(x.d)}" cy="${Y(x.w)}" r="4.5" fill="var(--card)" stroke="var(--mango)" stroke-width="2.5"/>`).join('');
+ for(let i=0;i<3;i++){const v=lo+(hi-lo)*i/2;g+=`<text x="${W-2}" y="${Y(v)+4}" font-size="12" fill="var(--mute)" text-anchor="end" direction="ltr">${r1(v)}</text>`}
+ g+=`<text x="${W-Rr}" y="${H-6}" font-size="12" fill="var(--mute)" text-anchor="end">${heDate(d0,{day:'numeric',month:'numeric'})}</text><text x="${L}" y="${H-6}" font-size="12" fill="var(--mute)" text-anchor="start">${heDate(dEnd,{day:'numeric',month:'numeric',year:'2-digit'})}</text>`;
+ s.innerHTML=g};draw();if(drawWeight.ro)drawWeight.ro.disconnect();drawWeight.ro=new ResizeObserver(draw);drawWeight.ro.observe(s)}
+
+function viewAwards(){const lv=level(),st=streak();const got=BADGES.filter(b=>S.badges[b[0]]).length;
+ const medal=(on,i)=>`<svg viewBox="0 0 60 60"><path d="M20 4h8l4 14-8 4zM40 4h-8l-4 14 8 4z" fill="${on?['#e8484a','#3a9cf5','#7cc63e'][i%3]:'#bbb'}"/><circle cx="30" cy="36" r="18" fill="${on?'#f5b82e':'#ccc'}"/><circle cx="30" cy="36" r="13" fill="${on?'#ffd66b':'#ddd'}"/><path d="M30 28l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="${on?'#e2601a':'#aaa'}"/></svg>`;
+ return `<div class="hero"><div class="top"><h1>ההישגים שלי</h1></div><div class="lvl" style="margin-top:14px"><div style="width:96px;flex:none">${avoki(st>=3?'wow':'happy')}</div>
+<div style="flex:1"><div class="small" style="opacity:.85">רמה ${lv.i+1}</div><div style="font-size:30px;font-weight:800;line-height:1.1">${lv.name}</div><div class="prog"><i style="width:${lv.pct*100}%"></i></div>
+<div class="small">${S.xp} נקודות${lv.next?` · עוד ${lv.next} לרמה הבאה`:''}</div></div></div></div>
+<div class="wrap"><div class="macros" style="margin-top:12px;grid-template-columns:repeat(3,minmax(0,1fr))"><div class="mac"><small>רצף ימים</small><b>${st}</b></div><div class="mac"><small>הישגים</small><b>${got}/${BADGES.length}</b></div><div class="mac"><small>מאכלים שונים</small><b>${S.uniq.length}</b></div></div>
+<div class="card"><h2>הישגים</h2><div class="badges">${BADGES.map((b,i)=>`<div class="bd ${S.badges[b[0]]?'':'off'}">${medal(!!S.badges[b[0]],i)}<b>${b[1]}</b>${b[2]}</div>`).join('')}</div></div>
+<div class="card"><h2>איך צוברים נקודות</h2><ul class="why"><li><i class="g2">10</i>רישום ארוחה</li><li><i class="g1">15</i>ארוחה עם ציון 70 ומעלה</li><li><i class="g2">15</i>יעד המים היומי</li><li><i class="g3">20</i>תשובה נכונה בשיעור היומי</li><li><i class="g3">25</i>צום שהושלם</li><li><i class="g1">30</i>כל משימות היום</li><li><i class="g3">20</i>שקילה</li><li><i class="g2">10</i>אימון</li><li><i class="g4">50</i>כל הישג חדש</ul></div>${credit()}</div>`}
+
+const BEN_CAT={veg:'ירקות: ויטמינים, מינרלים ונוגדי חמצון, ונפח גדול במעט קלוריות',fruit:'פירות: ויטמין C, אשלגן וסיבים',leg:'קטניות: חלבון צמחי, ברזל וסיבים שמזינים את חיידקי המעי',nut:'אגוזים וזרעים: שומנים בריאים, ויטמין E ומגנזיום',dairy:'מוצרי חלב: סידן לעצמות וחלבון איכותי',egg:'ביצים: חלבון מלא, ויטמין B12 וכולין לתפקוד המוח',prot:'חלבון מן החי: בונה ושומר על השרירים, עם ברזל ו-B12',spice:'תבלינים: טעם עשיר כמעט בלי קלוריות, וחלקם עשירים בנוגדי חמצון'};
+const BEN_KW=[[/סלמון|סרדינ|הרינג|לברק|מקרל/,'דגים שמנים: אומגה 3 ללב ולמוח'],[/שמן זית/,'שמן זית: שומן חד-בלתי-רווי ידידותי ללב'],[/אבוקדו/,'אבוקדו: שומן בריא ואשלגן'],[/תרד|ברוקולי|קייל|רוקט/,'ירוקים כהים: חומצה פולית, ויטמין K וברזל'],[/יוגורט|אשל|לבן|קפיר/,'יוגורט: חלבון, סידן, ולעיתים חיידקים טובים למעי'],[/עגבני/,'עגבניות: ליקופן, נוגד חמצון'],[/גזר|בטטה|דלעת/,'גזר, בטטה ודלעת: בטא-קרוטן לעיניים ולעור'],[/שום|בצל/,'שום ובצל: תרכובות גופרית ונוגדי חמצון'],[/פלפל|קיווי|תות|תפוז|קלמנטינ|אשכולית|גויאבה|לימון/,'ויטמין C לחיזוק מערכת החיסון'],[/בננה|תפוח אדמה/,'אשלגן לתפקוד שרירים ולחץ דם תקין'],[/שיבולת|קוואקר/,'שיבולת שועל: בטא-גלוקן שעוזר לאיזון הכולסטרול'],[/טחינה|שומשום/,'טחינה ושומשום: סידן, ברזל ושומן בריא'],[/מלא|כוסמין|שיפון|קינואה|בורגול|כוסמת|סובין/,'דגנים מלאים: סיבים, ויטמיני B ואנרגיה יציבה'],[/כורכום/,'כורכום: כורכומין, נוגד חמצון'],[/קינמון/,'קינמון: מוסיף מתיקות בלי סוכר'],[/צ'ילי|חריף|חלפיניו/,'פלפל חריף: קפסאיצין, ותוספת טעם בלי קלוריות'],[/שקדים|אגוזי מלך/,'שקדים ואגוזי מלך: ויטמין E ואומגה 3 צמחית'],[/ביצ/,'ביצים: חלבון מלא וכולין'],[/עדשים|חומוס|שעועית|אפונה/,'קטניות: חלבון, ברזל וסיבים']];
+function benefits(items){const out=[];const add=t=>{if(!out.includes(t))out.push(t)};
+ for(const e of items){let hit=false;for(const[re,t]of BEN_KW)if(re.test(e.n)){add(t);hit=true}if(!hit&&BEN_CAT[e.cat])add(BEN_CAT[e.cat])}
+ const t=sum(items);if(t.p>=25)add(`${r0(t.p)} גרם חלבון: מזין את השרירים ומאריך את השובע`);if(t.fi>=6)add(`${r1(t.fi)} גרם סיבים: עיכול טוב ושובע ממושך`);
+ return out.slice(0,7)}
+async function aiFood(name){const res=$('#res');let sample=null;try{sample=window.claude&&claude.use?await claude.use('sample'):null}catch(e){}
+ if(!sample){const key=ls.get('kl_key');if(!key){res.innerHTML='<div class="empty" style="padding:16px 0">חישוב AI לא זמין כאן. אפשר להוסיף את המאכל ידנית דרך "מאכל חדש משלי".</div>';return}sample={json:(p,o)=>apiJson(p,o,key)}}
+ res.innerHTML='<div style="text-align:center;padding:20px"><div class="spin"></div><p class="muted">מחשב ערכים תזונתיים...</p></div>';
+ try{const r=await sample.json(`אתה תזונאי ישראלי. תן ערכים תזונתיים ממוצעים ל-100 גרם של המאכל: "${name.slice(0,80)}". אם זה מוצר ממותג ישראלי, השתמש בערכים שעל האריזה הישראלית.
+החזר JSON בלבד: {"n":"שם מלא בעברית","cat":"veg","k":0,"p":0,"c":0,"f":0,"fi":0,"s":0,"cup":0,"pc":0,"pcn":""}
+k=קלוריות, p=חלבון, c=פחמימה, f=שומן, fi=סיבים, s=סוכר (גרם ל-100 גרם). cup=משקל כוס בגרמים (0 אם לא מתאים). pc=משקל יחידה או מנה טיפוסית בגרמים ו-pcn שמה (למשל "פרוסה"). cat אחד מ: ${Object.keys(CATS).join(',')}.`);
+  const num=x=>Math.max(0,+x||0);const f={id:'c'+Date.now(),n:String(r.n||name).slice(0,60),cat:CATS[r.cat]?String(r.cat):'mine',k:num(r.k),p:num(r.p),c:num(r.c),f:num(r.f),fi:num(r.fi),s:num(r.s),cup:num(r.cup),pc:num(r.pc),pcn:String(r.pcn||'').slice(0,20),ai:1};
+  S.custom.push(f);saveState();checkBadges();openFood(f.id);toast('נוסף למאגר שלך')}catch(e){res.innerHTML='<div class="empty" style="padding:16px 0">לא הצלחתי לחשב. נסה שוב, או הוסף ידנית דרך "מאכל חדש משלי".</div>'}}
+
+/* ===== צלילים ומוזיקה (סינתזה בקוד) ===== */
+const SND={ctx:null,music:null};
+function ac(){try{if(!SND.ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;SND.ctx=new C()}if(SND.ctx.state==='suspended')SND.ctx.resume();return SND.ctx}catch(e){return null}}
+function tone(f,t0,d,type,vol,dest,att){const c=SND.ctx;const o=c.createOscillator(),g=c.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol||.15,t0+(att||.01));g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(dest||c.destination);o.start(t0);o.stop(t0+d+.05)}
+function sfx(k){if(!S.set.sfx)return;const c=ac();if(!c)return;const t=c.currentTime;
+ if(k==='pop'){tone(660,t,.14,'sine',.2);tone(990,t+.06,.16,'sine',.14)}
+ else if(k==='water'){const o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(260,t);o.frequency.exponentialRampToValueAtTime(900,t+.16);g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.001,t+.22);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.25);tone(1400,t+.12,.08,'sine',.05)}
+ else if(k==='win'){[523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,t+i*.09,.45,'triangle',.13));tone(1318.5,t+.36,.6,'sine',.08)}
+ else if(k==='coin'){tone(987.8,t,.09,'square',.05);tone(1318.5,t+.08,.3,'square',.05)}
+ else if(k==='del'){tone(420,t,.12,'sine',.12);tone(300,t+.07,.18,'sine',.1)}
+ else if(k==='tap'){tone(1250,t,.04,'sine',.035)}
+ else if(k==='fast'){tone(392,t,.4,'triangle',.1);tone(523.25,t+.15,.5,'triangle',.1)}}
+function musicStart(){const c=ac();if(!c||SND.music)return;const out=c.createGain();out.gain.setValueAtTime(0,c.currentTime);out.gain.linearRampToValueAtTime(.55,c.currentTime+3);
+ const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1600;const dl=c.createDelay();dl.delayTime.value=.42;const fb=c.createGain();fb.gain.value=.28;
+ dl.connect(fb);fb.connect(dl);lp.connect(out);lp.connect(dl);dl.connect(out);out.connect(c.destination);
+ const CH=[[261.63,329.63,392,493.88],[220,261.63,329.63,392],[174.61,220,261.63,329.63],[196,246.94,293.66,392]],PEN=[523.25,587.33,659.25,783.99,880,1046.5];
+ const beat=60/80;let bar=0,next=c.currentTime+.2;
+ const sched=()=>{while(next<c.currentTime+2){const ch=CH[bar%4];ch.forEach(f=>tone(f,next,beat*4.2,'triangle',.028,lp,.5));tone(ch[0]/2,next,beat*4,'sine',.07,lp,.05);
+  for(let i=0;i<8;i++)if(Math.random()<.5)tone(PEN[Math.random()*PEN.length|0],next+i*beat/2,beat*1.2,'sine',.035,lp,.02);next+=beat*4;bar++}};
+ sched();SND.music={timer:setInterval(sched,500),out}}
+function musicStop(){const m=SND.music;if(!m)return;SND.music=null;clearInterval(m.timer);try{m.out.gain.linearRampToValueAtTime(0,SND.ctx.currentTime+.6)}catch(e){}setTimeout(()=>{try{m.out.disconnect()}catch(e){}},1200)}
+window.__pause=()=>{try{SND.ctx&&SND.ctx.suspend()}catch(e){}};window.__resume=()=>{try{SND.ctx&&SND.music&&SND.ctx.resume()}catch(e){}};
+document.addEventListener('visibilitychange',()=>{document.hidden?window.__pause():window.__resume()});
+document.addEventListener('pointerdown',function once(){document.removeEventListener('pointerdown',once,true);if(S.set.music)musicStart()},true);
+/* ===== צעדים ===== */
+function hasNative(){try{return !!(window.KalilNative&&KalilNative.available())}catch(e){return false}}
+function nativePerm(){try{return KalilNative.hasPermission()}catch(e){return false}}
+function hcAvail(){try{return !!(window.KalilNative&&KalilNative.hcAvailable&&KalilNative.hcAvailable())}catch(e){return false}}
+function hcOn(){try{return hcAvail()&&KalilNative.hcPermission()}catch(e){return false}}
+function stepSrc(){return hcOn()?'Samsung Health':(hasNative()&&nativePerm())?'חיישן הטלפון':'ידני'}
+function setSteps(n){const d=today(),day=getDayLocal(d);if(!(n>=0)||n<=(day.steps||0)&&n===(day.steps||0))return;day.steps=n;stepsReached(d,day);saveDay(d);checkBadges();
+ const a=$('#heroSt');if(a)a.textContent=n.toLocaleString('he-IL');const b=$('#stN');if(b)b.textContent=n.toLocaleString('he-IL');
+ if(V.tab==='today'&&V.date===d&&!$('#sheet').classList.contains('open'))render()}
+function pushWidget(){try{if(!window.KalilNative||!KalilNative.setWidget||!S.profile)return;const d=today(),day=getDayLocal(d),left=r0(calc().budget+exKcal(day)-dayTotals(day).k);
+ KalilNative.setWidget(stepGoal(),left>=0?`נותרו ${left.toLocaleString('he-IL')} קק״ל`:`${(-left).toLocaleString('he-IL')} קק״ל מעל`)}catch(e){}}
+window.__hcSteps=n=>{setSteps(Math.max(Math.round(n),nativeBest(),getDayLocal(today()).stepsMan||0));renderDiag()};window.__hcErr=()=>renderDiag();
+function stepGoal(){return S.set.stepGoal||8000}
+function baseSteps(){const a=S.profile?S.profile.act:1.375;return a<1.3?3000:a<1.45?5000:a<1.6?7000:a<1.8?9000:11000}
+function stepsKcal(day){return S.profile?Math.max(0,(day.steps||0)-baseSteps())*curW()*.0005:0}
+function stepsReached(d,day){if((day.steps||0)>=stepGoal()&&!S.aw['st:'+d]){award('st:'+d,15,'יעד הצעדים הושג!');confetti()}}
+function stepsCard(day){const st=day.steps||0,g=stepGoal(),p=Math.min(1,st/g),R=40,C=2*Math.PI*R,nat=hasNative(),isT=V.date===today();
+ return `<div class="card" id="stepsCard"><h2 style="color:var(--mango-d)">צעדים<span class="sp"></span><span class="small muted">יעד ${g.toLocaleString('he-IL')}</span></h2>
+<div style="display:flex;align-items:center;gap:16px"><div style="position:relative;width:96px;height:96px;flex:none"><svg viewBox="0 0 96 96" style="width:96px;height:96px"><circle cx="48" cy="48" r="${R}" fill="none" stroke="var(--line)" stroke-width="9"/><circle cx="48" cy="48" r="${R}" fill="none" stroke="var(--mango)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 48 48)" style="transition:stroke-dasharray .8s"/></svg>
+<svg viewBox="0 0 24 24" fill="var(--mango-d)" style="position:absolute;inset:30px"><ellipse cx="8" cy="7" rx="3" ry="4.5"/><ellipse cx="16" cy="13" rx="3" ry="4.5"/><circle cx="8" cy="14.5" r="1.6"/><circle cx="16" cy="20.5" r="1.6"/></svg></div>
+<div><div class="wbig" style="color:var(--mango-d)" id="stN">${st.toLocaleString('he-IL')}</div><div class="small muted">${r1(st*.00075)} ק״מ · <span id="stK">${r0(stepsKcal(day))}</span> קק״ל נוספו לתקציב</div></div></div>
+${(nat||hcAvail())&&isT?(hcOn()?`<p class="small" style="color:var(--mango-d);margin:10px 0 0">מחובר ל-Samsung Health דרך Health Connect · מתעדכן כל 15 שניות</p><div class="btns"><button class="btn ghost" data-a="hcSync">סנכרן עכשיו</button></div>`
+ :`${hcAvail()?`<div class="btns"><button class="btn full" data-a="hcConnect">חבר ל-Samsung Health</button></div><p class="small muted" style="margin:6px 0 0">לא נפתח חלון אישור? <button class="small" data-a="hcSettings" style="color:var(--mango-d);text-decoration:underline;min-height:32px">פתח את הגדרות Health Connect</button> ואפשר ל"קליל" לקרוא צעדים.</p>`:'<p class="small muted" style="margin:10px 0 0">חיבור ל-Samsung Health דורש אנדרואיד 14 ומעלה. בינתיים סופר חיישן הטלפון.</p>'}
+ ${nativePerm()?'<p class="small" style="color:var(--mango-d);margin:6px 0 0">חיישן הצעדים של הטלפון פעיל</p>':'<div class="btns"><button class="btn ghost full" data-a="stepPerm">הפעל את חיישן הצעדים של הטלפון</button></div>'}`)
+ :`<div class="step" style="margin-top:12px"><input type="number" id="stIn" inputmode="numeric" min="0" value="${st}" aria-label="מספר צעדים"><button class="btn" data-a="stepsSave">עדכן</button></div><div class="btns"><button class="btn ghost" data-a="stepsAdd" data-n="1000">+1,000</button><button class="btn ghost" data-a="stepsAdd" data-n="5000">+5,000</button></div>${nat?'':'<p class="small muted" style="margin:8px 0 0">באפליקציה לאנדרואיד הצעדים נספרים אוטומטית.</p>'}`}
+${(nat||hcAvail())&&isT?`<details style="margin-top:10px" ontoggle="this.open&&window.__diag&&window.__diag()"><summary style="cursor:pointer;color:var(--mango-d);font-weight:700;min-height:40px;display:flex;align-items:center">בדיקת חיבור והזנה ידנית</summary><div id="diag" class="small" style="margin-top:6px"></div><p id="diagTip" class="small" style="color:var(--pink)"></p>
+<div class="step" style="margin-top:8px"><input type="number" id="stIn" inputmode="numeric" min="0" value="${st}" aria-label="מספר צעדים"><button class="btn" data-a="stepsSave">עדכן ידנית</button></div></details>`:''}
+<p class="small muted" style="margin:8px 0 0">עד ${baseSteps().toLocaleString('he-IL')} צעדים ביום כבר כלולים ברמת הפעילות שבחרת. כל צעד נוסף מגדיל את התקציב.</p></div>`}
+function renderDiag(){const el=$('#diag');if(!el||!window.KalilNative||!KalilNative.diag)return;let d;try{d=JSON.parse(KalilNative.diag())}catch(e){el.textContent='לא הצלחתי לקרוא את מצב החיבור';return}
+ const yes=v=>v?'כן':'לא',L=[['מכשיר',d.model+' · אנדרואיד API '+d.sdk],['Health Connect זמין',yes(d.hcAvail)+(d.sdk<34?' (דורש אנדרואיד 14)':'')],['הרשאת צעדים ב-Health Connect',yes(d.hcPerm)],
+ ['צעדים מ-Samsung Health',d.hcSteps>=0?d.hcSteps.toLocaleString('he-IL')+(d.hcTime?' · עודכן '+new Date(d.hcTime).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}):''):'עוד לא התקבלו'],
+ ['חיישן צעדים בטלפון',yes(d.sensor)+' · הרשאה: '+yes(d.sensorPerm)],['צעדים מהחיישן היום',d.sensorSteps>=0?d.sensorSteps.toLocaleString('he-IL'):'עוד לא נקלטו'],['שגיאה אחרונה',d.hcErr||'אין']];
+ el.innerHTML=L.map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px solid var(--line)"><span class="muted">${x[0]}</span><b style="text-align:end">${esc(String(x[1]))}</b></div>`).join('');
+ const tip=$('#diagTip');if(tip)tip.textContent=!d.hcAvail?'בטלפון הזה אין Health Connect מובנה, אז רק החיישן סופר.':!d.hcPerm?'צריך לאשר ל"קליל" קריאת צעדים: לחץ "חבר ל-Samsung Health" או "פתח הגדרות Health Connect".':d.hcSteps<=0?'ההרשאה קיימת אבל לא הגיעו צעדים. ב-Samsung Health: הגדרות ← Health Connect ← ודא ש-Samsung Health מורשה לכתוב "צעדים". אחרי זה לחץ "סנכרן עכשיו".':'הכל מחובר!'}
+function nativeBest(){let n=-1;try{if(hasNative()&&nativePerm())n=Math.max(n,KalilNative.steps())}catch(e){}try{if(hcOn()&&KalilNative.hcSteps)n=Math.max(n,KalilNative.hcSteps())}catch(e){}return n}
+function syncSteps(){if(!S.profile||!window.KalilNative)return;try{if(hcOn())KalilNative.hcRefresh()}catch(e){}const n=nativeBest();if(n>=0)setSteps(Math.max(n,getDayLocal(today()).stepsMan||0));renderDiag()}
+setInterval(()=>{if(!document.hidden)syncSteps()},15000);setTimeout(syncSteps,1200);document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(syncSteps,500)});
+window.__stepsOk=()=>{syncSteps();render()};window.__diag=renderDiag;
+
+const UNDO={fn:null,t:0};function showUndoMsg(txt){UNDO.fn=null;$('#undoT').textContent=txt;$('#undo').querySelector('button').classList.add('hide');$('#undo').classList.remove('hide');clearTimeout(UNDO.t);UNDO.t=setTimeout(()=>{$('#undo').classList.add('hide');$('#undo').querySelector('button').classList.remove('hide')},7000)}
+function showUndo(txt,fn){UNDO.fn=fn;$('#undo').querySelector('button').classList.remove('hide');$('#undoT').textContent=txt;$('#undo').classList.remove('hide');clearTimeout(UNDO.t);UNDO.t=setTimeout(()=>{$('#undo').classList.add('hide');UNDO.fn=null},6000)}
+async function getSampler(){let s=null;try{s=window.claude&&claude.use?await claude.use('sample'):null}catch(e){}if(s)return s;const key=ls.get('kl_key');return key?{json:(p,o)=>apiJson(p,o,key)}:null}
+async function scanLabel(file){openAdd(A.meal);const res=$('#res');const smp=await getSampler();
+ if(!smp){res.innerHTML='<div class="empty" style="padding:16px 0">קריאת תוויות דורשת AI. בגרסת Claude זה עובד אוטומטית; באפליקציה לאנדרואיד צריך מפתח API (נכנסים דרך "צלם צלחת").</div>';return}
+ res.innerHTML='<div style="text-align:center;padding:20px"><div class="spin"></div><p class="muted">קורא את התווית...</p></div>';
+ try{const r=await smp.json(`בתמונה תווית סימון תזונתי של מוצר מזון (כנראה ישראלי). קרא את הערכים ל-100 גרם (או 100 מ״ל) ואת שם המוצר אם מופיע.
+החזר JSON בלבד: {"n":"שם המוצר בעברית","cat":"snack","k":0,"p":0,"c":0,"f":0,"fi":0,"s":0,"cup":0,"pc":0,"pcn":""}
+k=קלוריות, p=חלבון, c=פחמימות, f=שומנים, fi=סיבים, s=סוכרים (ל-100 גרם). pc=משקל מנה/יחידה אם מופיע ו-pcn שמה. cat אחד מ: ${Object.keys(CATS).join(',')}. אם אין תווית בתמונה החזר {"n":""}.`,{images:[file]});
+  if(!r||!r.n){res.innerHTML='<div class="empty" style="padding:16px 0">לא הצלחתי לקרוא תווית. נסה תמונה חדה וקרובה יותר.</div>';return}
+  const num=x=>Math.max(0,+x||0);const f={id:'c'+Date.now(),n:String(r.n).slice(0,60),cat:CATS[r.cat]?String(r.cat):'mine',k:num(r.k),p:num(r.p),c:num(r.c),f:num(r.f),fi:num(r.fi),s:num(r.s),cup:num(r.cup),pc:num(r.pc),pcn:String(r.pcn||'').slice(0,20),ai:1};
+  S.custom.push(f);saveState();checkBadges();openFood(f.id);toast('המוצר נוסף למאגר שלך')}catch(e){res.innerHTML='<div class="empty" style="padding:16px 0">לא הצלחתי לקרוא את התווית. נסה שוב.</div>'}}
+/* ===== אנימציות תרגילים ===== */
+const PROP={chair:'<path d="M58 105h40M60 105v45M95 105v45M60 105V65" stroke="#b9c7c3" stroke-width="5" fill="none" stroke-linecap="round"/>',wall:'<path d="M167 14V150" stroke="#b9c7c3" stroke-width="7" stroke-linecap="round"/>',
+table:'<path d="M148 110h48M154 110v40M190 110v40" stroke="#b9c7c3" stroke-width="5" fill="none" stroke-linecap="round"/>',stool:'<path d="M132 115h26M138 115v35M152 115v35" stroke="#b9c7c3" stroke-width="5" fill="none" stroke-linecap="round"/>',
+mat:'<rect x="20" y="148" width="170" height="5" rx="2" fill="#cdeee3"/>'};
+const POSE={chair:{a:'H104,48 N98,62 P82,104 K110,104 F112,150 k108,104 f110,150 E112,72 W128,74 e110,72 w126,76',b:'H107,30 N105,46 P103,93 K108,122 F112,150 k106,122 f110,150 E116,66 W130,64 e114,66 w128,66',p:PROP.chair,d:2.6},
+squat:{a:'H100,30 N100,46 P100,92 K102,121 F102,150 k100,121 f100,150 E112,62 W126,60 e110,62 w124,62',b:'H106,58 N100,72 P80,112 K114,116 F102,150 k112,116 f100,150 E114,76 W132,74 e112,76 w130,76',d:2.4},
+wallpu:{a:'H140,40 N132,54 P112,100 K105,125 F98,150 k103,125 f96,150 E146,56 W162,58 e146,58 w162,60',b:'H150,44 N142,58 P117,102 K108,126 F98,150 k106,126 f96,150 E140,74 W162,60 e140,76 w162,62',p:PROP.wall,d:2.2},
+inclpu:{a:'H160,70 N148,78 P100,114 K75,132 F50,150 k73,132 f48,150 E152,94 W156,110 e150,94 w154,110',b:'H158,90 N146,98 P99,122 K74,136 F50,150 k72,136 f48,150 E134,96 W156,110 e132,98 w154,110',p:PROP.table,d:2.2},
+kneepu:{a:'H152,88 N140,96 P96,122 K72,148 F52,140 k70,148 f50,140 E141,122 W142,150 e139,122 w140,150',b:'H152,124 N140,130 P96,136 K72,148 F52,140 k70,148 f50,140 E122,134 W142,150 e120,134 w140,150',p:PROP.mat,d:2.2},
+pu:{a:'H152,92 N140,100 P90,125 K65,138 F40,150 k63,138 f38,150 E141,125 W142,150 e139,125 w140,150',b:'H152,128 N140,134 P90,142 K65,146 F40,150 k63,146 f38,150 E122,138 W142,150 e120,138 w140,150',p:PROP.mat,d:2.2},
+bridge:{a:'H38,141 N54,144 P100,146 K126,118 F142,150 k124,118 f140,150 E76,147 W96,149 e74,147 w94,149',b:'H38,141 N54,142 P102,120 K128,112 F142,150 k126,112 f140,150 E76,146 W96,149 e74,146 w94,149',p:PROP.mat,d:2.6},
+plankK:{a:'H152,121 N140,127 P104,139 K80,148 F60,141 k78,148 f58,141 E140,150 W162,150 e138,150 w160,150',b:'H152,119 N140,125 P104,137',p:PROP.mat,d:3},
+plank:{a:'H152,118 N140,124 P90,136 K65,143 F40,150 k63,143 f38,150 E140,150 W162,150 e138,150 w160,150',b:'H152,116 N140,122 P90,134',p:PROP.mat,d:3},
+lunge:{a:'H100,30 N100,46 P100,92 K102,121 F104,150 k98,121 f96,150 E112,70 W104,90 e88,70 w96,90',b:'H100,48 N100,64 P98,108 K118,118 F120,150 k84,140 f66,150 E112,88 W104,108 e88,88 w96,108',d:2.6},
+calf:{a:'H100,30 N100,46 P100,92 K101,121 F101,150 k99,121 f99,150 E130,62 W160,64 e96,68 w94,90',b:'H100,22 N100,38 P100,84 K101,113 F101,142 k99,113 f99,142 E130,56 W160,58 e96,60 w94,82',p:PROP.wall,d:1.8},
+superman:{a:'H164,140 N148,144 P100,146 K70,147 F40,148 k70,148 f40,149 E172,146 W192,147 e170,147 w190,148',b:'H164,128 N148,136 P100,146 K70,142 F40,134 E172,132 W192,126',p:PROP.mat,d:2.6},
+deadbug:{a:'H36,140 N52,143 P100,145 K100,112 F130,112 k102,112 f132,112 E54,118 W56,96 e56,118 w58,96',b:'k130,138 f162,144 E34,128 W14,134',p:PROP.mat,d:3},
+climber:{a:'H164,104 N150,112 P100,124 K74,136 F50,148 k76,136 f52,148 E150,130 W150,150 e148,130 w148,150',b:'k128,124 f108,140',p:PROP.mat,d:1.2},
+march:{a:'H100,30 N100,46 P100,92 K101,121 F101,150 k99,121 f99,150 E92,70 W88,88 e108,64 w116,78',b:'K118,106 F114,134 E108,64 W116,78 e92,70 w88,88',d:1.2},
+arms:{a:'E112,40 W120,20 e110,40 w118,20',b:'E92,70 W84,90 e94,70 w86,90',d:2},
+hips:{a:'P94,92 K99,121 k97,121 E106,72 W96,92 e94,72 w104,92',b:'P106,92 K103,121 k101,121 E114,72 W106,92 e100,72 w110,92',d:2},
+halfsq:{a:'E112,64 W124,64 e110,64 w122,66',b:'H102,40 N100,56 P92,102 K108,122 F102,150 k106,122 f100,150 E112,66 W124,66 e110,66 w122,68',d:1.8},
+walk:{a:'K110,120 F118,150 k92,122 f82,150 E108,68 W116,86 e92,68 w86,86',b:'K92,122 F82,150 k110,120 f118,150 E92,68 W86,86 e108,68 w116,86',d:1.1},
+run:{a:'H108,30 N104,46 P96,90 K116,108 F112,134 k86,120 f70,138 E116,62 W124,50 e88,66 w80,80',b:'K86,120 F70,138 k116,108 f112,134 E88,66 W80,80 e116,62 w124,50',d:.7},
+breathe:{a:'H100,30',b:'H100,28 N100,44',d:4},
+st_ham:{a:'H128,74 N118,80 P92,94 K92,122 F92,150 k118,112 f142,112 E126,96 W138,110 e124,96 w136,112',b:'H132,80 N121,86 E128,100 W142,112',p:PROP.stool,d:4},
+st_quad:{a:'k96,122 f84,96 e92,72 w86,96 E108,64 W118,50',b:'H101,30 k95,122 f83,98',d:4},
+st_chest:{a:'e90,54 w76,44 E106,68 W108,90',b:'H104,30 N103,46 P101,92',p:PROP.wall.replace('M167','M74'),d:4},
+st_calf:{a:'H128,40 N122,54 P104,96 K122,120 F124,150 k88,124 f70,150 E142,58 W160,60 e140,60 w160,62',b:'H131,42 N125,56 P107,98 K124,121',p:PROP.wall,d:4},
+st_child:{a:'H150,140 N138,138 P92,128 K112,150 F72,150 k110,150 f70,150 E160,148 W182,150 e158,148 w180,150',b:'P90,126 N137,137',p:PROP.mat,d:4},
+st_twist:{a:'H36,140 N52,143 P100,145 K118,130 F140,140 k120,134 f142,144 E52,128 W40,112 e60,146 w80,148',b:'K120,134 k122,138',p:PROP.mat,d:4}};
+function pj(str,base){const o={};if(base)for(const k in base)o[k]=Object.assign({},base[k]);str.split(' ').forEach(t=>{if(!t)return;const[x,y]=t.slice(1).split(',').map(Number);o[t[0]]={x,y}});return o}
+const STAND=pj('H100,30 N100,46 P100,92 K101,121 F101,150 k99,121 f99,150 E104,68 W106,90 e96,68 w94,90');
+function fig(id,w){const P=POSE[id];if(!P)return '';const A=pj(P.a,STAND),B=pj(P.b||'',A),d=(P.d||2)+'s';
+ const an=(at,a,b)=>a===b?'':`<animate attributeName="${at}" values="${a};${b};${a}" dur="${d}" repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1"/>`;
+ const sg=(p,q,c,sw)=>`<line x1="${A[p].x}" y1="${A[p].y}" x2="${A[q].x}" y2="${A[q].y}" stroke="${c}" stroke-width="${sw}" stroke-linecap="round">${an('x1',A[p].x,B[p].x)}${an('y1',A[p].y,B[p].y)}${an('x2',A[q].x,B[q].x)}${an('y2',A[q].y,B[q].y)}</line>`;
+ const bk='#9fdcca',fr='#169a7e';
+ return `<svg class="afig" viewBox="0 0 200 160" style="width:${w||'100%'}" aria-hidden="true"><path d="M8 151H192" stroke="#e2ebe8" stroke-width="3"/>${P.p||''}${sg('P','k',bk,8)}${sg('k','f',bk,8)}${sg('N','e',bk,7)}${sg('e','w',bk,7)}${sg('N','P',fr,10)}${sg('P','K',fr,8)}${sg('K','F',fr,8)}${sg('N','E',fr,7)}${sg('E','W',fr,7)}<circle cx="${A.H.x}" cy="${A.H.y}" r="10" fill="#ff8a65">${an('cx',A.H.x,B.H.x)}${an('cy',A.H.y,B.H.y)}</circle></svg>`}
+/* ===== טיימר פעילות ===== */
+const ACTT=[['הליכה',3.5,100,.415,'walk'],['הליכה מהירה',4.8,115,.43,'walk'],['ריצה קלה',8,155,.6,'run'],['ריצה',10,165,.7,'run'],['אופניים',7,0,0,'march'],['אחר',5,0,0,'march']];
+function sensorNow(){try{return hasNative()&&nativePerm()?KalilNative.steps():-1}catch(e){return -1}}
+function actElapsed(){const a=S.act;return a?(a.acc+(a.run?Date.now()-a.run:0))/1000:0}
+function actStats(){const a=S.act,T=ACTT[a.ti],sec=actElapsed(),h=sec/3600,w=curW();let steps=0,est=true;const nb=sensorNow();
+ if(T[2]&&a.base>=0&&nb>=a.base){steps=nb-a.base;est=false}else if(T[2])steps=Math.round(T[2]*sec/60);
+ const km=T[2]?steps*(S.profile.h/100)*T[3]/1000:(T[0]==='אופניים'?16*h:0);return{sec,steps,est,km,kcal:T[1]*w*h,pace:km>.05?sec/60/km:0}}
+const fmtHMS=x=>{x=Math.floor(x);const h=Math.floor(x/3600),m=Math.floor(x/60)%60,s=x%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(s).padStart(2,'0')};
+let TRK=0;
+function openTracker(){clearInterval(TRK);const a=S.act;
+ if(!a){const sel=S.actPref||{ti:1,min:30};openSheet(`${shTop('טיימר פעילות')}<p class="muted" style="margin-top:0">בוחרים פעילות ויעד זמן. הטיימר מחשב צעדים, מרחק, קלוריות וקצב, וממשיך לרוץ גם כשיוצאים מהאפליקציה.</p>
+<label class="f"><span>סוג פעילות</span><div class="seg">${ACTT.map((t,i)=>`<button data-a="trkT" data-i="${i}" class="${i===sel.ti?'on':''}">${t[0]}</button>`).join('')}</div></label>
+<label class="f"><span>יעד זמן (דקות)</span><div class="seg">${[10,20,30,45,60,90].map(m=>`<button data-a="trkM" data-m="${m}" class="${m===sel.min?'on':''}">${m}</button>`).join('')}</div></label>
+<div style="width:200px;margin:14px auto 0">${fig(ACTT[sel.ti][4])}</div><button class="btn full" data-a="trkStart" style="margin-top:10px">${IC.plus}התחל</button>
+${hasNative()&&nativePerm()?'<p class="small muted">הצעדים נספרים מחיישן הטלפון. השאר את הטלפון בכיס.</p>':'<p class="small muted">הצעדים מחושבים לפי קצב ממוצע. באפליקציה לאנדרואיד עם חיישן צעדים פעיל הם נספרים בפועל.</p>'}`);return}
+ const T=ACTT[a.ti];openSheet(`${shTop(T[0]+' · יעד '+a.target+' דק׳')}<div style="width:190px;margin:0 auto">${fig(T[4])}</div>
+<div style="text-align:center"><div class="kbig" id="tkT" style="font-size:64px;direction:ltr">0:00</div><div class="bar" style="height:10px;margin:8px 0"><i id="tkP" style="width:0;background:var(--mango);color:var(--mango)"></i></div><div class="small muted" id="tkL"></div></div>
+<div class="statgrid" style="margin-top:12px"><div class="stat"><small id="tkSL">צעדים</small><b id="tkS">0</b></div><div class="stat"><small>מרחק</small><b id="tkD">0</b></div><div class="stat"><small>קלוריות</small><b id="tkK">0</b></div><div class="stat"><small>קצב (דק׳ לק״מ)</small><b id="tkPc">–</b></div></div>
+<div class="btns"><button class="btn" data-a="trkPause" id="tkPB">${a.run?'השהה':'המשך'}</button><button class="btn lime" data-a="trkEnd">סיים ושמור</button></div><button class="btn ghost full" data-a="trkCancel" style="margin-top:10px;color:var(--red)">בטל בלי לשמור</button>`);
+ updTracker();TRK=setInterval(updTracker,1000)}
+function updTracker(){const a=S.act;if(!a||!$('#tkT')){clearInterval(TRK);return}const st=actStats(),tg=a.target*60;
+ $('#tkT').textContent=fmtHMS(st.sec);$('#tkP').style.width=Math.min(100,st.sec/tg*100)+'%';$('#tkL').textContent=st.sec>=tg?'הגעת ליעד! אפשר להמשיך או לסיים':'נותרו '+fmtHMS(tg-st.sec)+(a.run?'':' · מושהה');
+ $('#tkS').textContent=ACTT[a.ti][2]?st.steps.toLocaleString('he-IL'):'–';$('#tkSL').textContent=st.est?'צעדים (משוער)':'צעדים';$('#tkD').textContent=st.km?r1(st.km)+' ק״מ':'–';$('#tkK').textContent=r0(st.kcal);$('#tkPc').textContent=st.pace?fmtS(st.pace*60):'–';
+ if(st.sec>=tg&&!a.hit){a.hit=1;saveState();sfx('win');toast('הגעת ליעד של '+a.target+' דקות!')}}
+function endTracker(save){const a=S.act;if(!a)return;clearInterval(TRK);const st=actStats(),T=ACTT[a.ti];S.act=null;
+ if(save&&st.sec>=60){const d=today(),day=getDayLocal(d),min=Math.round(st.sec/60);day.ex.push({n:T[0]+(st.km?' · '+r1(st.km)+' ק״מ':''),min,k:st.kcal});
+  if(st.est&&st.steps){day.steps=(day.steps||0)+st.steps;day.stepsMan=(day.stepsMan||0)+st.steps;stepsReached(d,day)}
+  if(T[2]&&min>=10)S.fit.log.push({d,t:'c',feel:'ok',lvl:fitLv(),min});award('x:'+d,10,'אימון');award('tk:'+d+':'+a.start,15,'פעילות נשמרה');saveDay(d);checkBadges();
+  openSheet(`${shTop('סיכום פעילות')}<div style="text-align:center"><div style="width:110px;margin:0 auto">${avoki('wow')}</div><h2 style="font:26px var(--disp);margin:6px 0">${T[0]} · ${fmtHMS(st.sec)}</h2></div><div class="statgrid"><div class="stat"><small>צעדים${st.est?' (משוער)':''}</small><b>${st.steps.toLocaleString('he-IL')}</b></div><div class="stat"><small>מרחק</small><b>${r1(st.km)} ק״מ</b></div><div class="stat"><small>קלוריות</small><b>${r0(st.kcal)}</b></div><div class="stat"><small>קצב</small><b>${st.pace?fmtS(st.pace*60):'–'}</b></div></div><p class="small muted">הפעילות נוספה ליומן של היום${st.est&&st.steps?', והצעדים נוספו למונה':''}.</p><button class="btn full" data-a="close">מעולה</button>`);confetti()}
+ else closeSheet();saveState();render()}
+/* ===== טאבאטה ===== */
+function tbDef(){return{work:20,rest:10,rounds:8,sets:1,setRest:60,ex:['squat','kneepu','climber','plankK']}}
+function tbTotal(T){return 4*30+T.sets*T.rounds*(T.work+T.rest)+(T.sets-1)*T.setRest+3*30}
+function openTabata(){const T=S.tab=S.tab||tbDef(),L=fitLv();const row=(k,n,u)=>`<div style="display:flex;align-items:center;gap:10px;padding:6px 0"><span style="flex:1">${n}</span><div class="step" style="width:180px"><button data-a="tbx" data-k="${k}" data-d="-1" aria-label="פחות">−</button><input type="text" readonly value="${T[k]}${u}" aria-label="${n}"><button data-a="tbx" data-k="${k}" data-d="1" aria-label="יותר">+</button></div></div>`;
+ openSheet(`${shTop('תכנון טאבאטה')}<p class="muted" style="margin-top:0">טאבאטה: פרצים קצרים ועצימים עם מנוחה קצרה. הקלאסי הוא 20 שניות עבודה, 10 שניות מנוחה, 8 סבבים, כלומר 4 דקות.</p>
+${L<4?`<div class="card" style="margin-top:0;background:var(--pink2);border:0"><b>שים לב:</b> טאבאטה עצים מתאים בדרך כלל מרמה 4. עכשיו אתה ברמה ${L}, אז כדאי להתחיל בגרסה עדינה.<div class="btns"><button class="btn pink" data-a="tbGentle">החל גרסה עדינה (20/20 × 6)</button></div></div>`:''}
+${row('work','שניות עבודה','')}${row('rest','שניות מנוחה','')}${row('rounds','סבבים בסט','')}${row('sets','סטים','')}${row('setRest','מנוחה בין סטים (שנ׳)','')}
+<label class="f"><span>תרגילים (מתחלפים בכל סבב)</span><div class="chips" style="flex-wrap:wrap">${Object.keys(FX).map(id=>`<button class="chip ${T.ex.includes(id)?'on':''}" data-a="tbEx" data-id="${id}">${FX[id][0]}</button>`).join('')}</div></label>
+<p style="text-align:center;font-size:18px">זמן כולל: <b>${fmtS(tbTotal(T))}</b> דקות, כולל חימום ומתיחות</p><button class="btn full" data-a="tbStart">התחל טאבאטה</button><p class="small muted">ההגדרות נשמרות לפעם הבאה.</p>`)}
+function buildTabata(){const T=S.tab||tbDef(),st=[];WARM.forEach(w=>st.push({n:'חימום: '+w[0],d:w[1],sec:30,k:'warm',fig:w[3]}));let i=0;
+ for(let s=1;s<=T.sets;s++){for(let r=1;r<=T.rounds;r++){const id=T.ex[i++%T.ex.length];st.push({n:FX[id][0],d:'עבודה! '+FX[id][1],b:FX[id][2],sec:T.work,k:'ex',fig:id,lbl:'סט '+s+'/'+T.sets+' · סבב '+r+'/'+T.rounds});if(r<T.rounds||s<T.sets)st.push({n:r<T.rounds?'מנוחה':'מנוחה בין סטים',d:'נושמים עמוק.',sec:r<T.rounds?T.rest:T.setRest,k:'rest',fig:'breathe'})}}
+ STRETCH.slice(0,3).forEach(x=>st.push({n:'מתיחה: '+x[0],d:x[1],sec:x[2],k:'str',fig:x[3]}));return st}
+
+/* ===== כושר ===== */
+const FX={chair:['קימה מכיסא','שב על קצה כיסא יציב, רגליים ברוחב האגן. קום בלי עזרת הידיים ושב לאט חזרה.','ירכיים וישבן: השרירים הגדולים בגוף, ששורפים הכי הרבה אנרגיה.'],
+squat:['סקוואט','רגליים ברוחב הכתפיים. רד עם הישבן לאחור כאילו אתה מתיישב, גב ישר, ברכיים בכיוון האצבעות.','רגליים וישבן, ומשפר את היכולת לקום, להרים ולעלות מדרגות.'],
+squatP:['סקוואט עם עצירה','כמו סקוואט רגיל, אבל עוצרים 2 שניות למטה לפני שעולים.','מגביר את העבודה של הרגליים בלי ציוד.'],
+wallpu:['שכיבת סמיכה על הקיר','ידיים על הקיר בגובה הכתפיים, צעד אחורה. כופפים מרפקים ומקרבים את החזה לקיר.','חזה, כתפיים וזרועות, בעומס עדין לחזרה לכושר.'],
+inclpu:['שכיבת סמיכה על שולחן','ידיים על שולחן יציב או על משענת ספה, הגוף ישר כמו קרש. מורידים את החזה ועולים.','חזה, כתפיים וזרועות, ושרירי הבטן שומרים על הגוף ישר.'],
+kneepu:['שכיבת סמיכה על הברכיים','ידיים על הרצפה, ברכיים על מזרן, גוף ישר מהברכיים לראש.','חיזוק פלג הגוף העליון.'],
+pu:['שכיבת סמיכה','גוף ישר מהעקבים לראש. אם קשה, עוברים לברכיים באמצע הסט, זה בסדר גמור.','חזה, כתפיים, זרועות ובטן.'],
+bridge:['גשר ישבן','שכב על הגב, ברכיים כפופות. הרם את האגן עד קו ישר מהכתפיים לברכיים, החזק שנייה ורד לאט.','ישבן וגב תחתון. עוזר נגד כאבי גב מישיבה ממושכת.'],
+plankK:['פלאנק על הברכיים','אמות על הרצפה, ברכיים על מזרן, גוף ישר. נושמים רגיל, לא עוצרים נשימה.','שרירי בטן וגב שמייצבים את עמוד השדרה.'],
+plank:['פלאנק','אמות ובהונות על הרצפה, גוף ישר, בטן אסופה. נושמים רגיל.','ליבה חזקה: יציבה טובה ופחות כאבי גב.'],
+lunge:['מכרע לאחור','צעד גדול אחורה ורד עד שהברך האחורית קרובה לרצפה, ואז חוזרים. אפשר להיעזר בקיר. מחליפים רגל.','רגליים, ישבן ושיווי משקל.'],
+calf:['עליות על קצות האצבעות','עמוד ליד קיר, עלה לאט על קצות האצבעות ורד.','שוקיים ויציבות של הקרסול.'],
+superman:['סופרמן','שכב על הבטן. הרם יחד יד ורגל נגדיות, החזק 2 שניות והחלף.','שרירי הגב ויציבה זקופה.'],
+deadbug:['דד-באג','שכב על הגב, ידיים למעלה וברכיים ב-90°. הורד לאט יד ורגל נגדיות בלי שהגב יתרומם.','שרירי בטן עמוקים שמגינים על הגב.'],
+climber:['טיפוס הרים איטי','בעמידת שכיבת סמיכה (או ידיים על ספה), מקרבים ברך לחזה לסירוגין בקצב נוח.','בטן, כתפיים, ומעלה דופק.']};
+const FLV=[null,
+{r:2,rest:60,x:[['chair',8],['wallpu',8],['bridge',10],['plankK',15,1],['calf',10]],c:[15,0]},
+{r:2,rest:60,x:[['chair',10],['wallpu',10],['bridge',12],['plankK',20,1],['superman',6]],c:[18,0]},
+{r:3,rest:60,x:[['squat',10],['inclpu',8],['bridge',12],['plankK',25,1],['lunge',6]],c:[20,0]},
+{r:3,rest:50,x:[['squat',12],['inclpu',10],['bridge',15],['plank',20,1],['lunge',8],['deadbug',8]],c:[22,4]},
+{r:3,rest:45,x:[['squat',15],['kneepu',8],['bridge',15],['plank',30,1],['lunge',10],['deadbug',10]],c:[25,5]},
+{r:3,rest:45,x:[['squat',15],['kneepu',10],['lunge',10],['plank',35,1],['climber',20,1],['bridge',20]],c:[28,6]},
+{r:3,rest:40,x:[['squatP',12],['pu',6],['lunge',12],['plank',40,1],['climber',30,1],['superman',12]],c:[30,8]},
+{r:4,rest:40,x:[['squatP',15],['pu',8],['lunge',12],['plank',50,1],['climber',40,1],['deadbug',12]],c:[32,10]}];
+const FNAMES=['','מתחמם','מתעורר','בתנועה','צובר כוח','יציב','חזק','אתלט','מכונה'];
+const FWEEK=['s','c','r','s','c','s','r'];
+const FTYPE={s:['כוח','אימון כוח במשקל גוף'],c:['אירובי','הליכה מהירה'],r:['מנוחה פעילה','מתיחות קלות'],t:['טאבאטה','אימון טאבאטה']};
+const WARM=[['הליכה במקום','מרימים ברכיים בנחת ומניעים ידיים.',40,'march'],['סיבובי כתפיים וידיים','סיבובים גדולים קדימה ואחורה.',30,'arms'],['סיבובי אגן','ידיים על המותניים, סיבובים איטיים לשני הכיוונים.',30,'hips'],['חצי סקוואט קל','ירידה קטנה ועלייה, רק כדי לחמם את הברכיים.',30,'halfsq']];
+const STRETCH=[['מתיחת ירך אחורית','רגל ישרה על כיסא נמוך, מתכופפים קדימה עם גב ישר.',30,'st_ham'],['מתיחת ירך קדמית','מחזיקים את הקרסול מאחור, ברכיים צמודות. לשתי הרגליים.',40,'st_quad'],['מתיחת חזה בפתח דלת','אמה על משקוף, צעד קדימה עד מתיחה נעימה.',30,'st_chest'],['מתיחת שוקיים בקיר','רגל אחורית ישרה, עקב על הרצפה.',30,'st_calf'],['תנוחת הילד','ישיבה על העקבים, ידיים קדימה על הרצפה, נשימות עמוקות.',40,'st_child'],['פיתול גב בשכיבה','ברכיים לצד אחד, מבט לצד השני. מחליפים צד.',40,'st_twist']];
+const ACT_INFO=[['הליכה מהירה',4.8,'הדרך הבטוחה והקלה לחזור לכושר. מחזקת לב וריאות, משפרת רגישות לאינסולין ומצב רוח, ועדינה למפרקים. הקצב הנכון: אפשר לדבר אבל לא לשיר.'],
+['אימון כוח',5,'בונה ושומר על שריר, ולכן שומר על חילוף החומרים בזמן ירידה במשקל. מחזק עצמות, משפר יציבה ומקטין כאבי גב.'],
+['ריצה קלה',8,'שורפת הרבה קלוריות בזמן קצר ומחזקת את הלב. כדאי להגיע אליה בהדרגה, אחרי כמה שבועות של הליכה, כדי להגן על הברכיים.'],
+['אופניים',7,'אירובי חזק בלי עומס על הברכיים, מצוין למשקל גבוה. מחזק רגליים ומשפר סיבולת.'],
+['שחייה',7,'עובדת על כל הגוף כמעט בלי עומס על המפרקים. מחזקת לב, גב וכתפיים.'],
+['אימון HIIT',8,'פרצים קצרים ועצימים עם מנוחה. משפר כושר מהר בזמן קצר, אבל מתאים רק אחרי בסיס של כמה שבועות.'],
+['יוגה',2.5,'גמישות, שיווי משקל, נשימה והפחתת סטרס. סטרס נמוך עוזר גם לשליטה ברעב.'],
+['ריקוד',5,'אירובי כיפי שמעלה דופק ומשפר קואורדינציה ומצב רוח.']];
+function fitLv(){return Math.min(8,Math.max(1,S.fit.level||1))}
+function fitToday(){return FWEEK[new Date().getDay()]}
+function fitDone(d,t){return S.fit.log.some(x=>x.d===d&&(!t||x.t===t))}
+function fitWeekCount(){const from=addDays(today(),-6);return S.fit.log.filter(x=>x.d>=from&&x.t!=='r').length}
+function sessMin(t,L){const P=FLV[L];if(t==='c')return P.c[0];if(t==='r')return 5;const ex=P.x.reduce((a,x)=>a+(x[2]?x[1]:x[1]*3.5*(x[0]==='lunge'?2:1))+15,0);return Math.round((ex*P.r+P.rest*(P.r-1)+170)/60)}
+function buildSession(t){const L=fitLv(),P=FLV[L],st=[];
+ if(t==='t')return buildTabata();if(t==='r'){STRETCH.forEach(s=>st.push({n:s[0],d:s[1],sec:s[2],k:'str',fig:s[3]}));return st}
+ if(t==='c'){const[min,iv]=P.c;const fast=L>=7?'ריצה קלה':'הליכה מהירה מאוד';const rf=L>=7?'run':'walk';st.push({n:'חימום: הליכה רגילה',d:'מתחילים בקצב נינוח.',sec:180,k:'warm',fig:'walk'});
+  const main=Math.max(5,min-6);if(!iv)st.push({n:'הליכה מהירה',d:'קצב שבו אפשר לדבר אבל לא לשיר. ידיים זזות, צעדים ארוכים.',sec:main*60,k:'main',fig:'walk'});
+  else{const rest=Math.max(60,Math.round((main*60-iv*60)/iv));for(let i=0;i<iv;i++){st.push({n:fast+' · '+(i+1)+'/'+iv,d:'דקה אחת בקצב מהיר יותר. נושמים חזק אבל בשליטה.',sec:60,k:'fast',fig:rf});st.push({n:'הליכה מהירה',d:'חוזרים לקצב רגיל ומסדירים נשימה.',sec:rest,k:'main',fig:'walk'})}}
+  st.push({n:'שחרור: הליכה איטית',d:'מורידים קצב בהדרגה.',sec:180,k:'cool',fig:'walk'});return st}
+ WARM.forEach(w=>st.push({n:'חימום: '+w[0],d:w[1],sec:w[2],k:'warm',fig:w[3]}));
+ for(let r=1;r<=P.r;r++){P.x.forEach(([id,v,timed])=>{const e=FX[id];st.push({n:e[0],d:e[1],b:e[2],rep:timed?0:v,sec:timed?v:0,k:'ex',fig:id,lbl:'סבב '+r+' מתוך '+P.r,side:id==='lunge'})});if(r<P.r)st.push({n:'מנוחה',d:'שותים מים ונושמים. הסבב הבא מתחיל עוד רגע.',sec:P.rest,k:'rest',fig:'breathe'})}
+ STRETCH.slice(0,3).forEach(s=>st.push({n:'מתיחה: '+s[0],d:s[1],sec:s[2],k:'str',fig:s[3]}));return st}
+const PL_={st:[],i:0,left:0,run:false,t:0,type:'s'};
+function openWorkout(t){PL_.type=t;PL_.st=buildSession(t);PL_.i=0;PL_.run=false;clearInterval(PL_.t);PL_.left=PL_.st[0].sec||0;showStep()}
+function beep(hi){if(!S.set.sfx)return;const c=ac();if(!c)return;tone(hi?1046.5:784,c.currentTime,.18,'sine',.2)}
+function showStep(){const s=PL_.st[PL_.i];if(!s)return finishWorkout();const tot=PL_.st.length,L=fitLv();
+ const nxt=PL_.st[PL_.i+1];const col=s.k==='rest'?'var(--blue)':s.k==='fast'?'var(--pink)':s.k==='warm'||s.k==='cool'?'var(--gold)':'var(--mango-d)';
+ openSheet(`${shTop(FTYPE[PL_.type][0]+' · רמה '+L)}<div class="bar" style="height:8px;margin:0 0 12px"><i style="width:${PL_.i/tot*100}%;background:var(--mango);color:var(--mango)"></i></div>
+<div style="text-align:center">${s.fig?`<div style="width:min(240px,64vw);margin:0 auto">${fig(s.fig)}</div>`:''}<div class="small muted">${s.lbl?s.lbl+' · ':''}שלב ${PL_.i+1} מתוך ${tot}</div>
+<h2 style="font:28px/1.2 var(--disp);margin:6px 0;color:${col}">${s.n}</h2>
+${s.rep?`<div class="kbig" style="font-size:60px">${s.rep}</div><div class="muted">חזרות${s.side?' לכל רגל':''}</div>`:`<div class="kbig" id="plT" style="font-size:60px;direction:ltr">${fmtS(PL_.left)}</div>`}
+<p style="font-size:17px;margin:14px 0 6px">${s.d}</p>${s.b?`<p class="small" style="color:var(--mango-d);margin:0">למה זה טוב: ${s.b}</p>`:''}</div>
+<div class="btns" style="margin-top:18px">${s.rep?`<button class="btn full" data-a="plNext">סיימתי · הבא</button>`:`<button class="btn" data-a="plToggle" id="plTog">${PL_.run?'השהה':'התחל'}</button><button class="btn ghost" data-a="plNext">דלג</button>`}</div>
+${nxt?`<p class="small muted" style="text-align:center">הבא: ${nxt.n}${nxt.rep?' · '+nxt.rep+' חזרות':nxt.sec?' · '+fmtS(nxt.sec):''}</p>`:''}
+<p class="small muted" style="text-align:center;margin-top:10px">כאב בחזה, סחרחורת או קוצר נשימה חריג? עוצרים מיד.</p>`);
+ if(!s.rep&&PL_.run)runTimer()}
+const fmtS=x=>{x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+String(x%60).padStart(2,'0')};
+function runTimer(){clearInterval(PL_.t);PL_.t=setInterval(()=>{if(!PL_.run)return;PL_.left--;const el=$('#plT');if(el)el.textContent=fmtS(PL_.left);if(PL_.left<=3&&PL_.left>0)beep(false);
+ if(PL_.left<=0){beep(true);clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()}},1000)}
+function finishWorkout(){clearInterval(PL_.t);PL_.run=false;openSheet(`${shTop('כל הכבוד!')}<div style="text-align:center"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">סיימת את האימון!</h2><p class="muted">איך הרגיש? זה עוזר לי להתאים את הרמה.</p></div>
+<div class="seg" style="margin-top:10px"><button data-a="plFeel" data-f="easy">קל מדי</button><button data-a="plFeel" data-f="ok">בדיוק</button><button data-a="plFeel" data-f="hard">קשה מדי</button></div>`);confetti()}
+function logWorkout(t,feel){const d=today(),L=fitLv(),min=t==='t'?Math.round(PL_.st.reduce((a,x)=>a+(x.sec||0),0)/60):sessMin(t,L),met=t==='t'?7:t==='s'?3.8:t==='c'?(L>=7?5.5:4.3):2.3;
+ S.fit.log.push({d,t,feel,lvl:L,min});S.fit.log=S.fit.log.slice(-300);const day=getDayLocal(d);day.ex.push({n:FTYPE[t][1]+' (רמה '+L+')',min,k:met*curW()*min/60});
+ award('fw:'+d+t,25,'אימון הושלם!');award('x:'+d,10,'אימון');saveDay(d);checkBadges();saveState()}
+function fitCheck(){const L=fitLv(),n=fitWeekCount(),last=S.fit.log.filter(x=>x.t!=='r').slice(-2),since=S.fit.lvlAt?diffDays(S.fit.lvlAt,today()):99;
+ if(last.length===2&&last.every(x=>x.feel==='hard')&&L>1){S.fit.level=L-1;S.fit.lvlAt=today();return `האימונים הרגישו קשים, אז ירדנו לרמה ${L-1}. אין בושה. בונים בסיס.`}
+ if(n>=3&&since>=6&&L<8&&!(last.length&&last[last.length-1].feel==='hard')){S.fit.level=L+1;S.fit.lvlAt=today();setTimeout(confetti,400);return `השלמת ${n} אימונים השבוע. עלית לרמה ${L+1} בכושר!`}
+ if(n<3)return `כדי לעלות רמה בשקילה הבאה: עוד ${3-n} אימונים השבוע.`;return ''}
+function viewFit(){const L=fitLv(),t=fitToday(),d=today(),done=fitDone(d,t),n=fitWeekCount(),w=curW();
+ const days=Array.from({length:7},(_,i)=>addDays(d,i-6));
+ return `<div class="hero"><div class="top"><h1>הכושר שלי</h1><span class="chipf" style="margin:0">רמה ${L} · ${FNAMES[L]}</span></div>
+<div class="card" style="margin-top:14px;text-align:center"><span class="tag">האימון של היום</span><h2 style="justify-content:center;font-size:26px;margin:10px 0 4px">${FTYPE[t][0]}${done?' · בוצע!':''}</h2>
+<p class="muted" style="margin:0">${FTYPE[t][1]} · כ-${sessMin(t,L)} דקות${t==='r'?' · אופציונלי':''}</p>
+<div class="btns"><button class="btn full ${done?'ghost':''}" data-a="fitGo" data-t="${t}">${done?'לעשות שוב':'התחל אימון'}</button></div>
+<div class="btns" style="margin-top:8px">${['s','c','r'].filter(x=>x!==t).map(x=>`<button class="btn ghost" data-a="fitGo" data-t="${x}">${FTYPE[x][0]} במקום</button>`).join('')}</div></div></div>
+<div class="wrap">${S.act?`<button class="btn lime full" data-a="tracker" style="margin-top:14px">פעילות פעילה · <span id="actChip2" dir="ltr">${fmtHMS(actElapsed())}</span></button>`:''}<div class="card"><h2>השבוע שלי<span class="sp"></span><span class="small muted">${n}/3 אימונים</span></h2><div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center">
+${days.map(x=>{const dn=S.fit.log.some(y=>y.d===x),pt=FWEEK[pd(x).getDay()];return `<div><div class="small muted">${heDate(x,{weekday:'narrow'})}</div><div style="height:40px;border-radius:12px;display:grid;place-items:center;font-weight:800;margin-top:4px;background:${dn?'var(--mango)':x===d?'var(--mango2)':'var(--card2)'};color:${dn?'#fff':'var(--mute)'}">${dn?'✓':FTYPE[pt][0][0]}</div></div>`}).join('')}</div>
+<p class="small muted" style="margin:10px 0 0">כ = כוח · א = אירובי · מ = מנוחה פעילה. השיבוץ קבוע לפי ימי השבוע, ואפשר להחליף בכל יום.</p></div>
+<div class="card"><h2>איך מתקדמים</h2><p style="margin:0">התוכנית מתחילה בעדינות, כי עבר זמן מאז שהתאמנת. בכל שקילה שבועית בודקים: אם השלמת 3 אימונים בשבוע וההרגשה לא הייתה "קשה מדי", עולים רמה. אם שני אימונים ברצף הרגישו קשים מדי, יורדים רמה.</p>
+<div class="bar" style="height:10px;margin-top:12px"><i style="width:${L/8*100}%;background:var(--mango);color:var(--mango)"></i></div><p class="small muted" style="margin:6px 0 0">רמה ${L} מתוך 8 · אימון כוח: ${FLV[L].r} סבבים · אירובי: ${FLV[L].c[0]} דקות${FLV[L].c[1]?' עם '+FLV[L].c[1]+' האצות':''}</p>
+<div class="btns"><button class="btn ghost" data-a="fitLvl" data-d="-1">רמה קלה יותר</button><button class="btn ghost" data-a="fitLvl" data-d="1">רמה קשה יותר</button></div></div>
+<div class="card"><h2>טיימר פעילות</h2><p class="muted" style="margin:0">הליכה, ריצה או אופניים עם יעד זמן. מחשב צעדים, מרחק, קלוריות וקצב.</p><div class="btns"><button class="btn full" data-a="tracker">${S.act?'חזרה לפעילות הפעילה':'התחל טיימר פעילות'}</button></div></div>
+<div class="card"><h2>טאבאטה ואינטרוולים</h2><p class="muted" style="margin:0">תכנן אימון אינטרוולים משלך: זמני עבודה ומנוחה, סבבים ותרגילים.${L<4?' מומלץ מרמה 4, ויש גרסה עדינה למתחילים.':''}</p><div class="btns"><button class="btn ghost full" data-a="tabata">תכנן טאבאטה</button></div></div>
+<div class="card"><h2>התרגילים ברמה שלך</h2>${FLV[L].x.map(([id,v,tm])=>`<div class="quest" style="align-items:center"><div style="width:96px;flex:none;background:var(--card2);border-radius:14px">${fig(id)}</div><div><span class="tag" style="background:var(--mango2);color:var(--mango-d)">${tm?v+' שניות':v+' חזרות'}</span><br><b>${FX[id][0]}</b><div class="small muted">${FX[id][1]}</div><div class="small" style="color:var(--mango-d)">${FX[id][2]}</div></div></div>`).join('')}</div>
+<div class="card"><h2>מה הפעילות עושה לגוף</h2>${ACT_INFO.map(a=>`<div style="padding:10px 0;border-bottom:1px solid var(--line)"><b>${a[0]}</b> <span class="small" style="color:var(--pink)">≈ ${r0(a[1]*w*.5)} קק״ל ב-30 דקות</span><div class="small muted">${a[2]}</div></div>`).join('')}<p class="small muted" style="margin-bottom:0">הקלוריות מחושבות לפי המשקל שלך, ${r1(w)} ק״ג.</p></div>
+<div class="card"><h2>בטיחות</h2><p class="small muted" style="margin:0">אם יש לך בעיה בלב, לחץ דם לא מאוזן, סוכרת או כאבי מפרקים, כדאי לקבל אישור מרופא לפני שמתחילים. בזמן אימון: כאב בחזה, סחרחורת או קוצר נשימה חריג? עוצרים מיד.</p></div>${credit()}</div>`}
+
+/* ===== ארוחת פינוק ===== */
+const CHEAT=[['2 משולשי פיצה + סלט',[['פיצה',2,'pc'],['סלט ירקות קצוץ (בלי שמן)',1,'cup']],'בלי תוספות שמנות כמו בייקון או שוליים ממולאים.'],
+['המבורגר + צ׳יפס קטן',[['המבורגר בלחמנייה',1,'pc'],["צ'יפס",80,'g']],'צ׳יפס קטן בלבד, בלי מיונז. עדיף שתייה זירו.'],
+['שווארמה בפיתה',[['שווארמה בפיתה',1,'pc']],'בפיתה ולא בלאפה. סלטים בפנים בכיף, טחינה במידה.'],
+['פלאפל בפיתה',[['פלאפל בפיתה',1,'pc']],'עד חצי מנה צ׳יפס בפנים, לא יותר.'],
+['12 יחידות סושי',[['סושי',12,'pc']],'עדיף רולים בלי טמפורה ובלי רוטב מיונז.'],
+['ג׳חנון או מלאווח',[["ג'חנון",1,'pc'],['ביצה קשה',1,'pc'],['רסק עגבניות',2,'tbsp']],'אחד בלבד, עם ביצה ורסק.'],
+['פסטה ברוטב שמנת',[['פסטה ברוטב שמנת',1,'pc']],'צלחת אחת, בלי תוספת לחם.'],
+['קינוח: 2 כדורי גלידה',[['גלידה',2,'pc']],'במקום ארוחה מתוקה שלמה. אפשר להוסיף פירות.']];
+const CHEAT_BONUS=300;
+function wkKey(d){return addDays(d,-pd(d).getDay())}
+function cheatUsedOn(){return S.cheat.used[wkKey(today())]||null}
+function cheatBonus(d){return Object.values(S.cheat.used).includes(d)?CHEAT_BONUS:0}
+function cheatItems(o){return o[1].map(([n,q,u])=>{const f=FOODS.find(x=>x.n===n);if(!f)return null;const un=units(f).find(x=>x.k===u)||units(f)[0];const e=portion(f,q,un);e.cheat=1;return e}).filter(Boolean)}
+const DAYN=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+function cheatCard(){const used=cheatUsedOn(),wd=new Date().getDay(),plan=S.cheat.day,left=(plan-wd+7)%7;
+ if(used)return `<div class="card" style="padding:12px 16px"><b>ארוחת הפינוק של השבוע נוצלה</b> <span class="small muted">(${heDate(used,{weekday:'long'})}). הבאה מיום ראשון.</span></div>`;
+ return `<div class="card cheat"><span class="tag" style="background:var(--lime2);color:#4f9a2e">ארוחת פינוק שבועית</span><h2 style="margin-top:8px">${left===0?'היום יום הפינוק שלך!':`הפינוק הבא: יום ${DAYN[plan]}${left===1?' (מחר)':` (עוד ${left} ימים)`}`}</h2>
+<p class="muted" style="margin:0 0 4px">ארוחה אחת בשבוע, מתוכננת ומוגבלת בכמות. ביום הפינוק התקציב גדל ב-${CHEAT_BONUS} קק״ל.</p><div class="btns"><button class="btn ${left===0?'':'ghost'} full" data-a="cheat">${left===0?'בחר את הפינוק':'הצץ בתפריט הפינוק'}</button></div></div>`}
+function openCheat(){const used=cheatUsedOn(),B=calc().budget;
+ openSheet(`${shTop('ארוחת פינוק')}<div class="card" style="margin-top:0;background:var(--lime2);border:0"><b>מותר, בתנאים:</b><ul class="why" style="margin:6px 0 0"><li><i class="g1">1</i>פעם אחת בשבוע, ארוחה אחת. לא יום שלם.</li><li><i class="g1">2</i>רק מהתפריט כאן, בכמות שכתובה.</li><li><i class="g1">3</i>נהנים לאט ובלי רגשות אשמה, וחוזרים לשגרה בארוחה הבאה.</li></ul></div>
+${used?`<p style="color:var(--pink);font-weight:700">כבר נהנית מארוחת פינוק השבוע (${heDate(used,{weekday:'long'})}). הבאה מיום ראשון. בינתיים: נשנוש קטן מתוכנן, כמו קובייה-שתיים של שוקולד מריר, נכנס בתקציב הרגיל.</p>`:''}
+${CHEAT.map((o,i)=>{const it=cheatItems(o),k=sum(it).k;return `<div class="card" style="padding:12px 14px"><div style="display:flex;align-items:center;gap:10px"><div style="flex:1"><b>${o[0]}</b><div class="small muted">${it.map(e=>uLabel(e.q,e.un,e.u)+' '+e.n).join(' + ')}</div><div class="small" style="color:var(--mango-d)">${o[2]}</div></div><div style="text-align:center"><div class="kc">${r0(k)}</div><div class="small muted">קק״ל</div></div></div>
+${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="cheatPick" data-i="${i}">זה הפינוק שלי</button></div>`}</div>`}).join('')}
+<p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
+
+/* ===== עדכונים ===== */
+const APPV=7;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
+function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
+const UPD={st:'',info:null,quiet:false};
+function updCard(){if(!isApk())return `<div class="card"><h2>עדכונים</h2><p class="small muted" style="margin:0">הגרסה בתוך Claude מתעדכנת אוטומטית. גרסת תוכן ${APPV}.</p></div>`;
+ const v=appVer(),i=UPD.info;let body='';
+ if(UPD.st==='checking')body='<div class="spin" style="margin:10px auto"></div><p class="small muted" style="text-align:center">בודק עדכונים...</p>';
+ else if(UPD.st==='dl')body='<div class="spin" style="margin:10px auto"></div><p class="small muted" style="text-align:center">מוריד עדכון...</p>';
+ else if(UPD.st==='err')body=`<p class="small" style="color:var(--red)">לא הצלחתי לבדוק עדכונים. בדוק חיבור לאינטרנט ונסה שוב.</p>`;
+ else if(i&&i.apk>v.apk)body=`<p style="margin:0 0 6px"><b>גרסת אפליקציה חדשה זמינה (${esc(i.name||'')})</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updApk">הורד והתקן</button></div><p class="small muted" style="margin:6px 0 0">בפעם הראשונה אנדרואיד יבקש לאשר התקנה מ"קליל". הנתונים נשמרים.</p>`;
+ else if(i&&i.html>v.html)body=`<p style="margin:0 0 6px"><b>עדכון חדש זמין</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updHtml">עדכן עכשיו (כמה שניות)</button></div>`;
+ else if(i)body='<p class="small" style="color:var(--mango-d);margin:0">יש לך את הגרסה האחרונה.</p>';
+ return `<div class="card" id="updCard"><h2>עדכונים<span class="sp"></span><span class="small muted">אפליקציה ${v.apk} · תוכן ${v.html}</span></h2>${body}<div class="btns"><button class="btn ghost full" data-a="updCheck">חפש עדכון</button></div></div>`}
+function rUpd(){const el=$('#updCard');if(el)el.outerHTML=updCard()}
+function updCheck(quiet){if(!isApk()||UPD_BASE.indexOf('__')===0)return;UPD.quiet=!!quiet;if(!quiet){UPD.st='checking';rUpd()}try{KalilNative.checkUpdate(UPD_BASE+'version.json')}catch(e){UPD.st='err';rUpd()}}
+window.__upd=(err,txt)=>{if(err){UPD.st=UPD.quiet?'':'err';rUpd();return}try{UPD.info=JSON.parse(txt);UPD.st=''}catch(e){UPD.st='err'}rUpd();const v=appVer(),i=UPD.info;
+ if(i&&(i.apk>v.apk||i.html>v.html)){showUndoMsg('יש עדכון חדש לקליל! מסך "מטרות" ← עדכונים');S.updSeen=today();saveState()}else if(!UPD.quiet)toast('יש לך את הגרסה האחרונה')};
+window.__updErr=e=>{UPD.st='err';rUpd();toast('העדכון נכשל. נסה שוב')};
+setTimeout(()=>{if(isApk()&&S.lastUpdCheck!==today()){S.lastUpdCheck=today();saveState();updCheck(true)}},4000);
+
+/* ===== גיליונות ===== */
+function openSheet(h){$('#sheetIn').innerHTML=h;$('#sheet').classList.add('open');$('#sheetIn').scrollTop=0}
+function closeSheet(){try{clearInterval(PL_.t);PL_.run=false}catch(e){}$('#sheet').classList.remove('open');$('#sheetIn').innerHTML='';AI.ctl&&AI.ctl.abort()}
+const shTop=t=>`<div class="sh-top"><h3>${t}</h3><button class="x" data-a="close" aria-label="סגירה">${IC.x}</button></div>`;
+const A={meal:'b',cat:'',q:'',food:null,unit:null,qty:1,tray:[],edit:null};
+function guessMeal(){const h=new Date().getHours();return h<11?'b':h<16?'l':h<21?'d':'s'}
+function openAdd(m){A.meal=m||guessMeal();A.cat='';A.q='';openSheet(`${shTop('הוספת מאכל')}<div class="seg" id="mealSeg">${MEALS.map(([k,n])=>`<button data-a="ameal" data-m="${k}" class="${k===A.meal?'on':''}">${n.replace('ארוחת ','')}</button>`).join('')}</div>
+<input type="search" id="q" placeholder="חפש מאכל: חומוס, קוטג׳, שניצל..." style="margin-top:10px" autocomplete="off">
+<div class="chips" id="chips"><button class="chip on" data-a="cat" data-c="">הכל</button><button class="chip" data-a="cat" data-c="recent">אחרונים</button><button class="chip" data-a="cat" data-c="saved">ארוחות שמורות</button><button class="chip" data-a="cat" data-c="fav">מועדפים</button>${Object.entries(CATS).map(([k,n])=>`<button class="chip" data-a="cat" data-c="${k}">${n}</button>`).join('')}</div>
+<div id="res"></div><div class="btns"><button class="btn ghost" data-a="custom">מאכל חדש משלי</button><button class="btn ghost" data-a="label">${IC.cam}צלם תווית מוצר</button></div><div id="trayBar" class="traybar"></div>`);renderRes();renderTray()}
+function renderRes(){const el=$('#res');if(!el)return;
+ if(A.cat==='saved'){el.innerHTML=S.saved.length?S.saved.map(m=>{const t=sum(m.items);return `<div class="food"><button data-a="useSaved" data-id="${m.id}" style="flex:1;text-align:start;min-height:48px"><b>${esc(m.n)}</b><small>${m.items.length} מאכלים · ${r0(t.k)} קק״ל · ${esc(m.items.map(x=>x.n).join(', ').slice(0,60))}</small></button><button class="del" data-a="delSaved" data-id="${m.id}" aria-label="מחק ארוחה שמורה">${IC.trash}</button></div>`}).join(''):'<div class="empty" style="padding:16px 0">עוד אין ארוחות שמורות. בנה צלחת ושמור אותה כארוחה קבועה.</div>';return}let L=allFoods();const q=norm(A.q);
+ if(A.cat==='recent')L=S.recent.map(foodById).filter(Boolean);else if(A.cat==='fav')L=S.favs.map(foodById).filter(Boolean);else if(A.cat)L=L.filter(f=>f.cat===A.cat);
+ if(q){const tk=q.split(' ');L=L.filter(f=>{const n=norm(f.n);return tk.every(t=>n.includes(t))}).sort((a,b)=>norm(a.n).indexOf(q)-norm(b.n).indexOf(q))}
+ else if(!A.cat&&S.recent.length)L=S.recent.slice(0,8).map(foodById).filter(Boolean).concat(L.filter(f=>!S.recent.includes(f.id)));
+ el.innerHTML=L.length?L.slice(0,80).map(f=>{const u=defUnit(f),tg=foodTag(f);return `<div class="food"><button class="fpick" data-a="pick" data-id="${f.id}"><span class="dot" style="background:${tg[0]}"></span><span class="nm">${esc(f.n)}<small>${u.k==='g'?'100 גרם':'1 '+esc(u.n)} · ${r0(f.k*u.g*(u.k==='g'?100:1)/100)} קק״ל · ${CATS[f.cat]||''}</small></span></button><button class="qplus" data-a="quickTray" data-id="${f.id}" aria-label="הוסף ${esc(f.n)} לצלחת">${IC.plus}</button></div>`}).join(''):
+ `<div class="empty" style="padding:14px 0">לא מצאתי "${esc(A.q)}" במאגר.</div>`;
+ if(A.q.trim().length>=2&&A.cat!=='saved')el.insertAdjacentHTML('beforeend',`<button class="btn ghost full" data-a="aiFood" style="margin-top:10px">לא מצאת? ה-AI יחשב את "${esc(A.q.trim())}"</button>`)}
+const PL={'כף':'כפות','כפית':'כפיות','כוס':'כוסות','אגרוף':'אגרופים','כף יד':'כפות ידיים','חופן':'חופנים','פרוסה':'פרוסות','יחידה':'יחידות','גביע':'גביעים','ביצה':'ביצים','כדור':'כדורים','קובייה':'קוביות','פיתה':'פיתות','מנה':'מנות','קציצה':'קציצות','שקית':'שקיות','עוגייה':'עוגיות','משולש':'משולשים','צלחת':'צלחות','קערה':'קערות','פלח':'פלחים','תמר':'תמרים','שניצל':'שניצלים'};
+const FRQ={0.25:'¼',0.5:'½',0.75:'¾',1.25:'1¼',1.5:'1½',1.75:'1¾',2.5:'2½',3.5:'3½'};
+const fq=q=>FRQ[q]||String(r1(q));
+const uLabel=(q,un,uk)=>uk==='g'?`${r0(q)} גרם`:`${fq(q)} ${q>1&&PL[un]?PL[un]:un}`;
+function foodFromEntry(e){const k=100/(e.g||100);return{id:'',n:e.n,cat:e.cat||'dish',k:e.k*k,p:e.p*k,c:e.c*k,f:e.f*k,fi:e.fi*k,s:e.s*k,cup:0,pc:0,pcn:''}}
+function openFood(src,edit){const f=typeof src==='string'?foodById(src):src;if(!f)return;A.food=f;A.edit=edit||null;const us=units(f);
+ if(edit){const e=edit.e;A.unit=us.find(u=>u.k===e.u)||us[0];A.qty=A.unit.k===e.u?e.q:e.g}else{A.unit=defUnit(f);A.qty=A.unit.k==='g'?100:1}
+ const tg=foodTag(f),fav=f.id&&S.favs.includes(f.id);
+ openSheet(`<div class="sh-top">${edit?'':`<button class="x" data-a="back" aria-label="חזרה">${IC.prev}</button>`}<h3>${edit?'עריכה: ':''}${esc(f.n)}</h3>${f.id&&!edit?`<button class="x" data-a="fav" aria-label="מועדף" style="color:${fav?'var(--gold)':'var(--mute)'}">${IC.star}</button>`:''}${edit?`<button class="x" data-a="close" aria-label="סגירה">${IC.x}</button>`:''}</div>
+<div class="small" style="display:flex;align-items:center;gap:6px"><span class="dot" style="background:${tg[0]};color:${tg[0]}"></span>${tg[1]} · ${r0(f.k)} קק״ל ל-100 גרם${f.ai?' · חושב ע״י AI':''}</div>
+<label class="f"><span>1. בחר יחידת מידה</span><div class="seg" id="useg">${us.map(u=>`<button data-a="unit" data-k="${u.k}" class="${u.k===A.unit.k?'on':''}">${esc(u.n)}${u.k!=='g'?` <span class="small muted">(${r0(u.g)}ג׳)</span>`:''}</button>`).join('')}</div></label>
+<label class="f"><span>2. כמה?</span><div class="step"><button data-a="qty" data-d="-1" aria-label="פחות">−</button><input type="number" id="qty" inputmode="decimal" step="any" min="0" value="${A.qty}"><button data-a="qty" data-d="1" aria-label="יותר">+</button></div></label>
+<div class="chips" id="qchips"></div><div id="pv"></div>
+<div class="seg" style="margin-top:14px">${MEALS.map(([k,n])=>`<button data-a="ameal" data-m="${k}" class="${k===A.meal?'on':''}">${n.replace('ארוחת ','')}</button>`).join('')}</div>
+${edit?`<div class="btns"><button class="btn" data-a="saveEdit">שמור שינויים</button><button class="btn ghost" data-a="delEdit" style="color:var(--red);flex:0 0 auto">${IC.trash}מחק</button></div>`
+:`<div class="btns"><button class="btn" data-a="toTray">${IC.plus}הוסף לצלחת</button><button class="btn ghost" data-a="addFood">ישר ליומן</button></div><p class="small muted" style="margin:8px 0 0">"הוסף לצלחת" מאפשר לבנות ארוחה שלמה מכמה מאכלים ולהוסיף הכל בבת אחת.</p>
+${String(f.id).startsWith('c')?`<button class="btn ghost full" data-a="editCustom" style="margin-top:10px">עריכת המאכל שלי</button>`:''}`}`);renderQ();preview()}
+function renderQ(){const el=$('#qchips');if(!el)return;const g=A.unit.k==='g',vals=g?[50,100,150,200,250,300]:[.25,.5,1,1.5,2,3,4];
+ el.innerHTML=vals.map(v=>`<button class="chip ${v===A.qty?'on':''}" data-a="qset" data-v="${v}">${g?v:fq(v)}</button>`).join('')}
+function preview(){const el=$('#pv');if(!el||!A.food)return;const e=portion(A.food,A.qty,A.unit);
+ el.innerHTML=`<div style="text-align:center;margin-top:10px"><div style="font:20px var(--disp)">${uLabel(A.qty,A.unit.n,A.unit.k)}${A.unit.k!=='g'?` <span class="muted small">= ${r0(e.g)} גרם</span>`:''}</div><div class="kbig" style="margin-top:4px">${r0(e.k)}</div><div class="muted small">קק״ל</div></div>
+<div class="nut"><div><b>${r1(e.p)}</b><small>חלבון ג׳</small></div><div><b>${r1(e.c)}</b><small>פחמימה ג׳</small></div><div><b>${r1(e.f)}</b><small>שומן ג׳</small></div><div><b>${r1(e.fi)}</b><small>סיבים ג׳</small></div><div><b>${r1(e.s)}</b><small>סוכר ג׳</small></div><div><b>${S.profile?r0(e.k/calc().budget*100):0}%</b><small>מהתקציב</small></div></div>`}
+function renderTray(){const el=$('#trayBar');if(!el)return;if(!A.tray.length){el.innerHTML='';return}const t=sum(A.tray);
+ el.innerHTML=`<button class="btn full pink" data-a="trayView">הצלחת שלי: ${A.tray.length} מאכלים · ${r0(t.k)} קק״ל · לסיום</button>`}
+function trayView(){if(!A.tray.length)return openAdd(A.meal);const t=sum(A.tray),r=scoreItems(A.tray,A.meal);
+ openSheet(`<div class="sh-top"><button class="x" data-a="back" aria-label="חזרה">${IC.prev}</button><h3>הצלחת שלי</h3><button class="x" data-a="close" aria-label="סגירה">${IC.x}</button></div>
+<div class="card" style="margin-top:0">${A.tray.map((e,i)=>`<div class="row" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)"><div class="nm" style="flex:1">${esc(e.n)}<small class="muted" style="display:block">${uLabel(e.q,e.un,e.u)}${e.u!=='g'?' · '+r0(e.g)+' ג׳':''}</small></div><span class="kc">${r0(e.k)}</span><button class="del" data-a="trayDel" data-i="${i}" aria-label="הסר">${IC.trash}</button></div>`).join('')}
+<button class="btn ghost full" data-a="back" style="margin-top:12px">${IC.plus}הוסף עוד מאכל</button></div>
+<div style="text-align:center;margin-top:14px"><div class="kbig">${r0(t.k)}</div><div class="muted small">קק״ל בארוחה · ח ${r0(t.p)} · פ ${r0(t.c)} · ש ${r0(t.f)}</div></div>
+${r?`<div class="card">${scoreBlock(r)}</div>`:''}
+<div class="seg" style="margin-top:14px">${MEALS.map(([k,n])=>`<button data-a="tmeal" data-m="${k}" class="${k===A.meal?'on':''}">${n.replace('ארוחת ','')}</button>`).join('')}</div>
+<button class="btn full" data-a="trayAdd" style="margin-top:12px">הוסף את כל הארוחה ליומן</button>
+<div class="card"><b>לשמור כארוחה קבועה?</b><p class="small muted" style="margin:4px 0 8px">ככה תוכל להוסיף אותה בלחיצה אחת בפעם הבאה.</p><input type="text" id="smName" placeholder="שם הארוחה, למשל: ארוחת בוקר קבועה" maxlength="40"><div class="btns"><button class="btn ghost" data-a="traySave">שמור ארוחה</button><button class="btn ghost" data-a="trayClear" style="color:var(--red)">נקה צלחת</button></div></div>`)}
+function openCustom(edit){const f=edit||{n:'',k:'',p:0,c:0,f:0,fi:0,s:0,pcn:'',pc:'',cat:'mine'};const v=k=>esc(f[k]??'');
+ openSheet(`${shTop(edit?'עריכת המאכל שלי':'מאכל חדש משלי')}<form id="cf2"><label class="f"><span>שם המאכל</span><input type="text" name="n" required maxlength="60" value="${v('n')}"></label>
+<p class="small muted">ערכים ל-100 גרם (מופיעים על כל אריזה):</p><div class="grid2"><label class="f"><span>קלוריות</span><input type="number" name="k" step="any" min="0" required value="${v('k')}"></label><label class="f"><span>חלבון (ג׳)</span><input type="number" name="p" step="any" min="0" value="${v('p')}"></label>
+<label class="f"><span>פחמימה (ג׳)</span><input type="number" name="c" step="any" min="0" value="${v('c')}"></label><label class="f"><span>שומן (ג׳)</span><input type="number" name="f" step="any" min="0" value="${v('f')}"></label>
+<label class="f"><span>סיבים (ג׳)</span><input type="number" name="fi" step="any" min="0" value="${v('fi')}"></label><label class="f"><span>סוכר (ג׳)</span><input type="number" name="s" step="any" min="0" value="${v('s')}"></label>
+<label class="f"><span>שם יחידה (לא חובה)</span><input type="text" name="pcn" placeholder="למשל: חטיף" value="${v('pcn')}"></label><label class="f"><span>משקל יחידה (ג׳)</span><input type="number" name="pc" step="any" min="0" value="${f.pc||''}"></label></div>
+<label class="f"><span>קטגוריה</span><select name="cat">${Object.entries(CATS).map(([k,n])=>`<option value="${k}" ${k===f.cat?'selected':''}>${n}</option>`).join('')}</select></label><button class="btn full" type="submit" style="margin-top:14px">${edit?'שמור שינויים':'שמור והוסף'}</button>
+${edit?`<button class="btn ghost full" type="button" data-a="delCustom" style="margin-top:10px;color:var(--red)">מחק את המאכל</button>`:''}</form>`);
+ $('#cf2').addEventListener('submit',ev=>{ev.preventDefault();const F=new FormData(ev.target),num=k=>Math.max(0,+F.get(k)||0);const nf={id:edit?edit.id:'c'+Date.now(),n:String(F.get('n')).trim().slice(0,60),cat:F.get('cat'),k:num('k'),p:num('p'),c:num('c'),f:num('f'),fi:num('fi'),s:num('s'),cup:0,pc:num('pc'),pcn:String(F.get('pcn')||'').trim().slice(0,20)};
+  if(edit){const i=S.custom.findIndex(x=>x.id===edit.id);if(i>=0)S.custom[i]=nf;toast('המאכל עודכן')}else S.custom.push(nf);saveState();checkBadges();openFood(nf.id)})}
+function addEntries(m,entries){sfx('pop');const day=getDayLocal(V.date);entries.forEach(e=>{day.meals[m].push(e);if(e.fid){S.recent=[e.fid].concat(S.recent.filter(x=>x!==e.fid)).slice(0,30)}if(!S.uniq.includes(e.n))S.uniq.push(e.n)});
+ award('m:'+V.date+m,10,'ארוחה נרשמה');const r=scoreItems(day.meals[m],m);if(r&&!r.cheat&&r.s>=70)award('g:'+V.date+m,15,'ארוחה מעולה');if(r&&r.s>=90)S.aw.a90=1;saveDay(V.date);checkBadges();saveState()}
+function openScore(m){const day=getDayLocal(V.date),r=scoreItems(day.meals[m],m);if(!r)return;openSheet(shTop(MEALS.find(x=>x[0]===m)[1])+scoreBlock(r))}
+function scoreBlock(r){if(r.cheat)return `<div style="display:flex;align-items:center;gap:14px"><div class="sticker g2" style="width:84px;height:84px;font-size:20px">פינוק</div><div><div style="font-size:22px;font-weight:800">ארוחת פינוק</div><div class="muted small">${r0(r.t.k)} קק״ל · לא נספרת בציון היומי</div></div></div><ul class="why">${r.good.concat(r.bad).map(x=>`<li><i class="g1">✓</i><span>${x}</span></li>`).join('')}</ul>`;const g=grade(r.s);return `<div style="display:flex;align-items:center;gap:14px"><div class="sticker ${g[1]}" style="width:84px;height:84px;font-size:30px">${r.s}</div><div><div style="font-size:24px;font-weight:800">${g[0]}</div><div class="muted small">${r0(r.t.k)} קק״ל · ח ${r0(r.t.p)} · פ ${r0(r.t.c)} · ש ${r0(r.t.f)} · סיבים ${r1(r.t.fi)}</div></div></div>
+${(()=>{const b=benefits(r.items||[]);return b.length?`<h4 style="margin:16px 0 0">מה טוב בה לגוף</h4><ul class="why">${b.map(x=>`<li><i class="g2">+</i><span>${esc(x)}</span></li>`).join('')}</ul>`:''})()}
+${r.good.length?`<h4 style="margin:12px 0 0">למה היא טובה לירידה במשקל</h4><ul class="why">${r.good.map(x=>`<li><i class="g1">✓</i><span>${x}</span></li>`).join('')}</ul>`:''}
+${r.bad.length?`<h4 style="margin:10px 0 0">איך לשפר</h4><ul class="why">${r.bad.map(x=>`<li><i class="g3">!</i><span>${x}</span></li>`).join('')}</ul>`:''}`}
+
+function openProfile(){const p=S.profile||{name:'עמיר',sex:'m',age:'',h:'',w0:'',goal:'',act:1.375,pace:.5};const w=S.profile?curW():'';
+ openSheet(`${shTop(S.profile?'הפרופיל שלי':'נעים להכיר')}<form id="pf"><label class="f"><span>שם</span><input type="text" name="name" value="${esc(p.name)}" required></label>
+<label class="f"><span>מין</span><div class="seg" data-g="sex">${[['m','זכר'],['f','נקבה']].map(([k,n])=>`<button type="button" data-a="pick1" data-v="${k}" class="${p.sex===k?'on':''}">${n}</button>`).join('')}</div></label>
+<div class="grid2"><label class="f"><span>גיל</span><input type="number" name="age" inputmode="numeric" min="14" max="99" value="${p.age}" required></label><label class="f"><span>גובה (ס״מ)</span><input type="number" name="h" inputmode="numeric" min="120" max="230" value="${p.h}" required></label>
+<label class="f"><span>משקל נוכחי (ק״ג)</span><input type="number" name="w" inputmode="decimal" step="0.1" min="35" max="300" value="${w}" required></label><label class="f"><span>משקל יעד (ק״ג)</span><input type="number" name="goal" inputmode="decimal" step="0.1" min="35" max="300" value="${p.goal}" required></label></div>
+<label class="f"><span>רמת פעילות</span><select name="act">${ACTS.map(([v,n,d])=>`<option value="${v}" ${+p.act===v?'selected':''}>${n} — ${d}</option>`).join('')}</select></label>
+<label class="f"><span>קצב ירידה בשבוע</span><div class="seg" data-g="pace">${PACES.map(([v,n])=>`<button type="button" data-a="pick1" data-v="${v}" class="${+p.pace===v?'on':''}">${n}<br><span class="small">${v} ק״ג</span></button>`).join('')}</div></label>
+<label class="f"><span>יעד צעדים יומי</span><select name="sg">${[5000,6000,7000,8000,10000,12000,15000].map(v=>`<option value="${v}" ${v===S.set.stepGoal?'selected':''}>${v.toLocaleString('he-IL')}</option>`).join('')}</select></label>
+<label class="f"><span>יום ארוחת הפינוק</span><select name="cd">${DAYN.map((n,i)=>`<option value="${i}" ${i===S.cheat.day?'selected':''}>${n}</option>`).join('')}</select></label>
+<label class="f"><span>צלילים ומוזיקה</span><div class="seg"><button type="button" data-a="musTog" class="${S.set.music?'on':''}">מוזיקת רקע</button><button type="button" data-a="sfxTog" class="${S.set.sfx?'on':''}">צלילי פעולות</button></div></label>
+<p id="perr" class="small" style="color:var(--red)"></p><button class="btn full" type="submit">${S.profile?'שמירה':'יאללה, מתחילים'}</button></form>${credit()}`);
+ $('#pf').addEventListener('submit',ev=>{ev.preventDefault();const f=new FormData(ev.target),g=k=>{const b=document.querySelector(`[data-g="${k}"] .on`);return b?b.dataset.v:null};
+  const np={name:String(f.get('name')).trim()||'חבר',sex:g('sex')||'m',age:+f.get('age'),h:+f.get('h'),goal:+f.get('goal'),act:+f.get('act'),pace:+(g('pace')||.5)};const w=+f.get('w');
+  const minW=18.5*(np.h/100)**2;if(np.goal<minW){$('#perr').textContent=`היעד נמוך מדי לגובה שלך. המשקל הבריא המינימלי הוא כ-${r1(minW)} ק״ג.`;return}
+  if(np.goal>w){$('#perr').textContent='משקל היעד צריך להיות נמוך מהמשקל הנוכחי (או שווה לו).';return}
+  S.set.stepGoal=+f.get('sg')||8000;S.cheat.day=+f.get('cd');const first=!S.profile;np.w0=first?w:S.profile.w0;np.start=first?today():S.profile.start;S.profile=np;
+  const t=today();S.weights=S.weights.filter(x=>x.d!==t);S.weights.push({d:t,w});saveState();closeSheet();if(first){toast('ברוך הבא, '+np.name+'!');confetti()}setTimeout(syncSteps,300);checkBadges();saveState();render()})}
+
+function openEx(){openSheet(`${shTop('הוספת פעילות')}<label class="f"><span>סוג פעילות</span><select id="exT">${EXS.map((e,i)=>`<option value="${i}">${e[0]}</option>`).join('')}</select></label>
+<label class="f"><span>דקות</span><div class="step"><button data-a="exq" data-d="-5">−</button><input type="number" id="exM" value="30" inputmode="numeric" min="1"><button data-a="exq" data-d="5">+</button></div></label>
+<p id="exInfo" class="small" style="color:var(--mango-d);margin:10px 0 0"></p><div class="kbig" id="exK" style="text-align:center;margin-top:14px"></div><div class="muted small" style="text-align:center">קק״ל משוערות</div><button class="btn full" data-a="exSave" style="margin-top:14px">הוסף</button>`);exPv()}
+function exPv(){const t=EXS[+$('#exT').value],m=+$('#exM').value||0;$('#exK').textContent=r0(t[1]*curW()*m/60);const i=ACT_INFO.find(a=>t[0].includes(a[0].split(' ')[0])||a[0].includes(t[0].split(' ')[0]));const el=$('#exInfo');if(el)el.textContent=i?i[2]:''}
+
+function openBackup(){const days={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith('kl_d_'))days[k.slice(5)]=ls.get(k)}}catch(e){}Object.assign(days,dayCache);
+ const data=JSON.stringify({state:S,days});openSheet(`${shTop('גיבוי ושחזור')}<p class="small muted" style="margin-top:0">העתק את הטקסט ושמור אותו (למשל בהודעה לעצמך). לשחזור — הדבק כאן ולחץ "שחזר".</p>
+<textarea id="bk" rows="6" style="direction:ltr;font-size:13px">${esc(data)}</textarea><div class="btns"><button class="btn" data-a="bkCopy">העתק</button><button class="btn ghost" data-a="bkLoad">שחזר מהטקסט</button></div><p id="bkMsg" class="small"></p>`)}
+
+/* ===== צילום אוכל + AI ===== */
+const AI={m:'l',items:[],file:null,url:null,ctl:null,note:''};
+function openPhoto(m,tell){AI.m=m||guessMeal();AI.items=[];AI.note='';openSheet(`${shTop(tell?'ספר מה אכלת':'צלם את הצלחת')}<p class="muted" style="margin-top:0">צלם או בחר תמונה של הארוחה — אבוקי יזהה מה יש בצלחת, יעריך כמויות, יחשב קלוריות וייתן ציון.</p>
+<div class="btns"><button class="btn" data-a="snap">${IC.cam}צלם / בחר תמונה</button></div><div id="aiBox"></div>
+<label class="f"><span>או תאר במילים מה אכלת</span><textarea id="aiTxt" rows="2" placeholder="למשל: 2 פרוסות לחם מלא, חביתה מ-2 ביצים, סלט ירקות עם כף שמן זית"></textarea></label>
+<div class="btns"><button class="btn ghost" data-a="aiText">נתח את התיאור</button></div>`);if(tell){const t=$('#aiTxt');if(t){t.rows=3;setTimeout(()=>t.focus(),250)}}}
+async function runAI(withImg){const box=$('#aiBox');let sample=null;try{sample=window.claude&&claude.use?await claude.use('sample'):null}catch(e){}
+ const txt=($('#aiTxt')||{}).value||'';if(!withImg&&!txt.trim()){box.innerHTML='<p class="small">כתוב קודם מה אכלת.</p>';return}
+ if(!sample){const key=ls.get('kl_key');if(!key){box.innerHTML=keyForm(withImg);return}sample={json:(pr,o)=>apiJson(pr,o,key)}}
+ AI.ctl&&AI.ctl.abort();AI.ctl=new AbortController();
+ box.innerHTML=`${AI.url&&withImg?`<img class="photo" src="${AI.url}" alt="התמונה שצילמת" style="margin-top:12px">`:''}<div style="text-align:center;padding:18px"><div class="spin"></div><p class="muted">אבוקי בוחן את הצלחת...</p><button class="btn ghost" data-a="aiStop">עצור</button></div>`;
+ const prompt=`אתה תזונאי ישראלי מומחה. ${withImg?'בתמונה מצולמת ארוחה.':''} ${txt.trim()?'תיאור מהמשתמש: "'+txt.trim().slice(0,600)+'".':''}
+פרק את הארוחה לרכיבים נפרדים (כולל שמן, רטבים וממרחים שנראים או סבירים), הערך את משקל כל רכיב בגרמים לפי גודל המנה, וחשב ערכים תזונתיים לכל הכמות של הרכיב.
+החזר JSON בלבד במבנה: {"items":[{"n":"שם בעברית","g":120,"k":200,"p":10,"c":20,"f":8,"fi":3,"s":2,"cat":"veg"}],"note":"משפט קצר בעברית על הארוחה"}
+k=קלוריות, p=חלבון, c=פחמימה, f=שומן, fi=סיבים, s=סוכר (כולם בגרמים לכל הכמות). cat אחד מ: veg,fruit,bread,grain,prot,egg,dairy,leg,nut,fat,drink,sweet,snack,dish,fast.
+אם אין אוכל בתמונה החזר {"items":[],"note":"לא זיהיתי אוכל בתמונה"}.`;
+ try{const opt={signal:AI.ctl.signal};if(withImg&&AI.file)opt.images=[AI.file];const res=await sample.json(prompt,opt);
+  const it=(res&&Array.isArray(res.items)?res.items:[]).slice(0,20).map(x=>{const g=Math.max(1,+x.g||100),cat=CATS[x.cat]?String(x.cat):'dish';return{n:String(x.n||'רכיב').slice(0,50),g,g0:g,k0:Math.max(0,+x.k||0),p0:Math.max(0,+x.p||0),c0:Math.max(0,+x.c||0),f0:Math.max(0,+x.f||0),fi0:Math.max(0,+x.fi||0),s0:Math.max(0,+x.s||0),cat}});
+  AI.items=it;AI.note=String(res&&res.note||'').slice(0,200);if(withImg){S.aw.photo=1;saveState();checkBadges()}renderAI()}
+ catch(e){const c=e&&e.code;if(c==='cancelled'){box.innerHTML='';return}box.innerHTML=`<p class="small" style="color:var(--red)">${c==='not_granted'||c==='sampling_disabled'?'לא ניתן אישור לשימוש ב-AI.':c==='rate_limited'?'יותר מדי בקשות כרגע. נסה שוב בעוד רגע.':c==='image_rejected'?'התמונה לא התקבלה. נסה תמונה אחרת.':c==='images_unavailable'?'שליחת תמונות לא זמינה כאן — נסה לתאר במילים.':c==='bad_key'?'מפתח ה-API לא תקין. נסה שוב עם מפתח אחר.':'משהו השתבש. נסה שוב.'}</p>`}}
+function keyForm(withImg){return `<div class="card"><b>חיבור ה-AI באפליקציה</b><p class="small muted">כדי לנתח תמונות בתוך האפליקציה צריך מפתח API אישי של Anthropic (מ-console.anthropic.com). הוא נשמר רק בטלפון שלך. כל ניתוח עולה כמה אגורות בחשבון ה-API שלך.</p>
+<input type="text" id="keyIn" placeholder="sk-ant-..." style="direction:ltr" autocomplete="off"><div class="btns"><button class="btn" data-a="keySave" data-img="${withImg?1:0}">שמור ונתח</button></div></div>`}
+async function shrink(file){try{const bm=await createImageBitmap(file);const sc=Math.min(1,1280/Math.max(bm.width,bm.height));const c=document.createElement('canvas');c.width=Math.round(bm.width*sc);c.height=Math.round(bm.height*sc);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.85).split(',')[1]}
+ catch(e){return await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=no;r.readAsDataURL(file)})}}
+async function apiJson(prompt,opt,key){const content=[];if(opt.images&&opt.images[0])content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:await shrink(opt.images[0])}});content.push({type:'text',text:prompt+'\nהחזר JSON בלבד, בלי טקסט נוסף.'});
+ let r;try{r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:opt.signal,headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:2000,messages:[{role:'user',content}]})})}
+ catch(e){throw{code:e&&e.name==='AbortError'?'cancelled':'upstream_error'}}
+ if(r.status===401){ls.set('kl_key',null);throw{code:'bad_key'}}if(r.status===429)throw{code:'rate_limited'};if(!r.ok)throw{code:'upstream_error'};
+ const j=await r.json();const t=(j.content||[]).map(x=>x.text||'').join('');const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0)throw{code:'upstream_error'};return JSON.parse(t.slice(a,b+1))}
+function aiEntries(){return AI.items.map(x=>{const m=x.g/x.g0;return{fid:'',n:x.n,cat:x.cat,q:x.g,u:'g',un:'גרם',g:x.g,k:x.k0*m,p:x.p0*m,c:x.c0*m,f:x.f0*m,fi:x.fi0*m,s:x.s0*m}})}
+function renderAI(){const box=$('#aiBox');if(!box)return;if(!AI.items.length){box.innerHTML=`<p>${esc(AI.note||'לא זיהיתי אוכל.')}</p>`;return}
+ const E=aiEntries(),r=scoreItems(E,AI.m),t=sum(E);
+ box.innerHTML=`${AI.url?`<img class="photo" src="${AI.url}" alt="התמונה שצילמת" style="margin-top:12px">`:''}${AI.note?`<div class="bubble" style="background:var(--lime2);color:var(--ink)">${avoki('wow')}<span>${esc(AI.note)}</span></div>`:''}
+<h4 style="margin:14px 0 4px">מה מצאתי בצלחת <span class="small muted">(אפשר לתקן גרמים)</span></h4>${AI.items.map((x,i)=>`<div class="ai-row"><div>${esc(x.n)}<div class="small muted">${r0(E[i].k)} קק״ל · ח ${r0(E[i].p)}</div></div><input type="number" inputmode="numeric" data-ai="${i}" value="${r0(x.g)}" aria-label="גרם"><button class="del" data-a="aiDel" data-i="${i}" aria-label="הסר">${IC.trash}</button></div>`).join('')}
+<div style="text-align:center;margin-top:14px"><div class="kbig">${r0(t.k)}</div><div class="muted small">קק״ל בסך הכל · הערכה בלבד</div></div>${r?`<div class="card">${scoreBlock(r)}</div>`:''}
+<div class="seg" style="margin-top:14px">${MEALS.map(([k,n])=>`<button data-a="aimeal" data-m="${k}" class="${k===AI.m?'on':''}">${n.replace('ארוחת ','')}</button>`).join('')}</div><button class="btn full lime" data-a="aiAdd" style="margin-top:10px">הוסף הכל ליומן</button>`}
+
+/* ===== אירועים ===== */
+const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.dataset.m),photo:b=>{if(!S.profile)return openProfile();openPhoto(b.dataset.m)},close:closeSheet,profile:openProfile,
+ day:b=>{const n=addDays(V.date,+b.dataset.n);if(n>today())return;V.date=n;render();pullDay(n)},
+ cat:b=>{A.cat=b.dataset.c;document.querySelectorAll('#chips .chip').forEach(c=>c.classList.toggle('on',c===b));renderRes()},
+ ameal:b=>{A.meal=b.dataset.m;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
+ pick:b=>openFood(b.dataset.id),back:()=>{openAdd(A.meal)},
+
+ unit:b=>{const u=units(A.food).find(x=>x.k===b.dataset.k);A.unit=u;A.qty=u.k==='g'?100:1;$('#qty').value=A.qty;
+  b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));renderQ();preview()},
+ qty:b=>{const g=A.unit.k==='g',st=g?10:(A.qty<1||(A.qty===1&&+b.dataset.d<0)?.25:.5);A.qty=Math.max(g?1:.25,Math.round((A.qty+st*+b.dataset.d)*100)/100);$('#qty').value=A.qty;renderQ();preview()},
+ qset:b=>{A.qty=+b.dataset.v;$('#qty').value=A.qty;renderQ();preview()},
+ fav:b=>{const id=A.food.id;if(!id)return;S.favs=S.favs.includes(id)?S.favs.filter(x=>x!==id):[id].concat(S.favs);b.style.color=S.favs.includes(id)?'var(--gold)':'var(--mute)';saveState()},
+ addFood:()=>{if(!(A.qty>0))return;addEntries(A.meal,[portion(A.food,A.qty,A.unit)]);closeSheet();render();toast('נוסף: '+A.food.n)},
+ toTray:()=>{if(!(A.qty>0))return;A.tray.push(portion(A.food,A.qty,A.unit));toast('נוסף לצלחת: '+A.food.n);openAdd(A.meal)},
+ trayView:trayView,trayDel:b=>{A.tray.splice(+b.dataset.i,1);trayView()},tmeal:b=>{A.meal=b.dataset.m;trayView()},
+ trayAdd:()=>{if(!A.tray.length)return;const n=A.tray.length;addEntries(A.meal,JSON.parse(JSON.stringify(A.tray)));A.tray=[];closeSheet();render();toast('הארוחה נוספה: '+n+' מאכלים');confetti()},
+ traySave:()=>{const n=(($('#smName')||{}).value||'').trim()||'ארוחה שמורה';S.saved.unshift({id:'m'+Date.now(),n:n.slice(0,40),items:JSON.parse(JSON.stringify(A.tray))});saveState();toast('הארוחה נשמרה: '+n)},
+ trayClear:()=>{A.tray=[];openAdd(A.meal)},
+ useSaved:b=>{const m=S.saved.find(x=>x.id===b.dataset.id);if(!m)return;A.tray.push(...JSON.parse(JSON.stringify(m.items)));toast('נוסף לצלחת: '+m.n);trayView()},
+ delSaved:b=>{S.saved=S.saved.filter(x=>x.id!==b.dataset.id);saveState();renderRes()},
+ aiFood:()=>aiFood(A.q.trim()),
+ music:()=>{S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();render();toast(S.set.music?'מוזיקה הופעלה':'מוזיקה כובתה')},
+ sfxTog:()=>{S.set.sfx=!S.set.sfx;saveState();toast(S.set.sfx?'צלילים הופעלו':'צלילים כובו');openProfile()},
+ musTog:()=>{S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();openProfile()},
+ hcConnect:()=>{try{KalilNative.hcRequest()}catch(e){}},hcSettings:()=>{try{KalilNative.hcSettings()}catch(e){}},hcSync:()=>{syncSteps();toast('מסנכרן עם Samsung Health...');setTimeout(()=>{syncSteps();renderDiag()},2500)},
+ stepsGo:()=>{const el=$('#stepsCard');if(el)el.scrollIntoView({behavior:'smooth',block:'center'})},
+ cheat:openCheat,
+ cheatPick:b=>{if(cheatUsedOn())return;const o=CHEAT[+b.dataset.i];const it=cheatItems(o);S.cheat.used[wkKey(today())]=today();V.date=today();const h=new Date().getHours(),m=h<11?'b':h<17?'l':'d';addEntries(m,it);award('ch:'+wkKey(today()),15,'פינוק מתוכנן');saveState();closeSheet();render();toast('בתיאבון! '+o[0]);confetti()},
+ updCheck:()=>updCheck(false),updHtml:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.updateHtml(UPD_BASE+'index.html',i.html)}catch(e){}},updApk:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){}},
+ tracker:openTracker,tabata:openTabata,
+ trkT:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{ti:+b.dataset.i});openTracker()},trkM:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{min:+b.dataset.m});openTracker()},
+ trkStart:()=>{const p=S.actPref||{ti:1,min:30};S.act={ti:p.ti,target:p.min,start:Date.now(),acc:0,run:Date.now(),base:sensorNow()};saveState();sfx('fast');openTracker();render()},
+ trkPause:()=>{const a=S.act;if(!a)return;if(a.run){a.acc+=Date.now()-a.run;a.run=null}else a.run=Date.now();saveState();const b=$('#tkPB');if(b)b.textContent=a.run?'השהה':'המשך'},
+ trkEnd:()=>endTracker(true),trkCancel:()=>endTracker(false),
+ tbx:b=>{const T=S.tab,k=b.dataset.k,d=+b.dataset.d,st={work:5,rest:5,rounds:1,sets:1,setRest:15}[k],lim={work:[10,60],rest:[5,60],rounds:[2,12],sets:[1,4],setRest:[15,180]}[k];T[k]=Math.min(lim[1],Math.max(lim[0],T[k]+d*st));saveState();openTabata()},
+ tbEx:b=>{const T=S.tab,id=b.dataset.id;T.ex=T.ex.includes(id)?T.ex.filter(x=>x!==id):T.ex.concat(id);if(!T.ex.length)T.ex=['squat'];saveState();openTabata()},
+ tbGentle:()=>{Object.assign(S.tab,{work:20,rest:20,rounds:6,sets:1,setRest:60,ex:['chair','wallpu','bridge','calf']});saveState();openTabata()},
+ tbStart:()=>{saveState();openWorkout('t')},
+ fitGo:b=>openWorkout(b.dataset.t),plNext:()=>{clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()},
+ plToggle:()=>{PL_.run=!PL_.run;const b=$('#plTog');if(b)b.textContent=PL_.run?'השהה':'המשך';if(PL_.run)runTimer();else clearInterval(PL_.t)},
+ plFeel:b=>{logWorkout(PL_.type,b.dataset.f);closeSheet();render();toast(b.dataset.f==='hard'?'נרשם. נשמור על הקצב.':b.dataset.f==='easy'?'מעולה! בשקילה הבאה נשקול לעלות רמה':'אימון נרשם. כל הכבוד!')},
+ fitLvl:b=>{S.fit.level=Math.min(8,Math.max(1,fitLv()+ +b.dataset.d));S.fit.lvlAt=today();saveState();render();toast('רמת אימון: '+fitLv())},
+ goToday:()=>{V.date=today();render()},tell:()=>{if(!S.profile)return openProfile();openPhoto(null,true)},
+ undo:()=>{const f=UNDO.fn;UNDO.fn=null;$('#undo').classList.add('hide');if(f){f();toast('שוחזר')}},
+ label:()=>$('#lbl').click(),
+ quickTray:b=>{const f=foodById(b.dataset.id);if(!f)return;const u=defUnit(f);A.tray.push(portion(f,u.k==='g'?100:1,u));sfx('pop');toast('נוסף לצלחת: '+f.n);renderTray();b.classList.add('pop');setTimeout(()=>b.classList.remove('pop'),400)},
+ stepPerm:()=>{try{KalilNative.requestPermission()}catch(e){}},
+ stepsSave:()=>{const v=Math.max(0,Math.round(+($('#stIn')||{}).value||0));const day=getDayLocal(V.date);day.steps=v;day.stepsMan=v;stepsReached(V.date,day);saveDay(V.date);checkBadges();render();toast('עודכן: '+v.toLocaleString('he-IL')+' צעדים')},
+ stepsAdd:b=>{const day=getDayLocal(V.date);day.steps=(day.steps||0)+ +b.dataset.n;stepsReached(V.date,day);saveDay(V.date);checkBadges();render()},
+ edit:b=>{const day=getDayLocal(V.date),m=b.dataset.m,i=+b.dataset.i,e=day.meals[m][i];if(!e)return;A.meal=m;openFood((e.fid&&foodById(e.fid))||foodFromEntry(e),{m,i,e})},
+ saveEdit:()=>{if(!(A.qty>0)||!A.edit)return;const day=getDayLocal(V.date),{m,i}=A.edit,e=portion(A.food,A.qty,A.unit);if(!A.food.id){e.fid=A.edit.e.fid||''}
+  if(A.meal===m)day.meals[m][i]=e;else{day.meals[m].splice(i,1);day.meals[A.meal].push(e)}saveDay(V.date);checkBadges();closeSheet();render();toast('עודכן')},
+ delEdit:()=>{if(!A.edit)return;sfx('del');const day=getDayLocal(V.date),m=A.edit.m,i=A.edit.i,e=day.meals[m].splice(i,1)[0];saveDay(V.date);closeSheet();render();showUndo('נמחק: '+e.n,()=>{getDayLocal(V.date).meals[m].splice(i,0,e);saveDay(V.date);render()})},
+ editCustom:()=>openCustom(S.custom.find(x=>x.id===A.food.id)),
+ delCustom:()=>{const id=(A.food||{}).id;S.custom=S.custom.filter(x=>x.id!==id);S.favs=S.favs.filter(x=>x!==id);S.recent=S.recent.filter(x=>x!==id);saveState();toast('המאכל נמחק');openAdd(A.meal)},
+ del:b=>{const day=getDayLocal(V.date);day.meals[b.dataset.m].splice(+b.dataset.i,1);saveDay(V.date);render()},
+ score:b=>openScore(b.dataset.m),
+ copy:async b=>{const y=addDays(V.date,-1);await pullDay(y);const yd=getDayLocal(y),it=yd.meals[b.dataset.m];if(!it.length){toast('אתמול לא נרשם כלום בארוחה הזו');return}addEntries(b.dataset.m,JSON.parse(JSON.stringify(it)));render()},
+ water:b=>{const day=getDayLocal(V.date),ml=+b.dataset.ml;day.water=Math.max(0,(day.water||0)+ml);try{navigator.vibrate&&navigator.vibrate(25)}catch(e){}
+  if(ml>0)sfx('water');toast(WMSG[Math.random()*WMSG.length|0]+' +'+ml+' מ״ל');if(day.water>=waterGoal()&&!S.aw['w:'+V.date]){award('w:'+V.date,15,'יעד המים הושלם!');confetti()}saveDay(V.date);checkBadges();render()},
+ lesson:openLesson,
+ ans:b=>{const d=today(),L=lessonFor(d);if(S.lessons[d]!=null)return;const i=+b.dataset.i,ok=i===L.a;S.lessons[d]=ok;
+  document.querySelectorAll('#opts .opt').forEach((x,j)=>{x.disabled=true;if(j===L.a)x.classList.add('ok');else if(j===i)x.classList.add('no')});$('#lx').classList.remove('hide');
+  if(ok){award('les:'+d,20,'תשובה נכונה!');confetti()}else award('les:'+d,5,'למדת משהו חדש');saveState();checkBadges();saveState();render()},
+ fplan:b=>{S.fast.plan=+b.dataset.h;S.fast.on=true;saveState();render()},
+ fastStart:()=>{const v=($('#fStart')||{}).value;const d=new Date();if(v){const[H,M]=v.split(':').map(Number);d.setHours(H,M,0,0);if(d>new Date())d.setDate(d.getDate()-1)}
+  sfx('fast');S.fast.start=d.getTime();S.fast.on=true;saveState();render();toast('הצום התחיל! בהצלחה');try{navigator.vibrate&&navigator.vibrate([30,60,30])}catch(e){}},
+ fastEnd:()=>{const h=fastElapsed(),F=S.fast;if(h<.05){F.start=null;saveState();render();return}F.hist.unshift({s:F.start,e:Date.now(),h:r1(h),g:F.plan});F.hist=F.hist.slice(0,60);F.start=null;
+  if(h>=F.plan){award('fd:'+today(),25,'צום הושלם!');confetti()}else toast('צמת '+r1(h)+' שעות. כל שעה נחשבת!');saveState();checkBadges();saveState();render()},
+ exAdd:openEx,exq:b=>{const el=$('#exM');el.value=Math.max(5,(+el.value||0)+ +b.dataset.d);exPv()},
+ exSave:()=>{const t=EXS[+$('#exT').value],m=+$('#exM').value||0;if(m<=0)return;const day=getDayLocal(V.date);day.ex.push({n:t[0],min:m,k:t[1]*curW()*m/60});award('x:'+V.date,10,'אימון');saveDay(V.date);checkBadges();closeSheet();render()},
+ exDel:b=>{const day=getDayLocal(V.date);day.ex.splice(+b.dataset.i,1);saveDay(V.date);render()},
+ weigh:()=>{const w=+$('#wIn').value;if(!(w>30&&w<350))return toast('משקל לא תקין');const t=today();S.weights=S.weights.filter(x=>x.d!==t);S.weights.push({d:t,w});award('wt:'+t,20,'שקילה');const fm=fitCheck();saveState();checkBadges();saveState();render();toast('נשמר: '+r1(w)+' ק״ג');if(fm)setTimeout(()=>showUndoMsg(fm),2400)},
+ pick1:b=>b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)),
+ custom:()=>openCustom(),backup:openBackup,
+ bkCopy:async()=>{try{await navigator.clipboard.writeText($('#bk').value);$('#bkMsg').textContent='הועתק!'}catch(e){$('#bk').select();$('#bkMsg').textContent='סמן והעתק ידנית.'}},
+ bkLoad:()=>{try{const o=JSON.parse($('#bk').value);if(!o.state||!o.state.profile)throw 0;S=Object.assign(S,o.state);Object.entries(o.days||{}).forEach(([d,v])=>{dayCache[d]=v;ls.set('kl_d_'+d,v);dbWrite('d-'+d,()=>dayCache[d])});saveState();closeSheet();render();toast('שוחזר בהצלחה')}catch(e){$('#bkMsg').textContent='הטקסט לא תקין.'}},
+ snap:()=>$('#pic').click(),aiText:()=>{AI.url=null;AI.file=null;runAI(false)},aiStop:()=>{AI.ctl&&AI.ctl.abort()},
+ keySave:b=>{const k=($('#keyIn').value||'').trim();if(!k.startsWith('sk-'))return toast('מפתח לא תקין');ls.set('kl_key',k);runAI(b.dataset.img==='1')},
+ aiDel:b=>{AI.items.splice(+b.dataset.i,1);renderAI()},aimeal:b=>{AI.m=b.dataset.m;renderAI()},
+ aiAdd:()=>{const E=aiEntries();if(!E.length)return;addEntries(AI.m,E);closeSheet();V.tab='today';V.date=today();render();toast('הארוחה נוספה')}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;if(!['water','addFood','toTray','trayAdd','delEdit','ans'].includes(b.dataset.a))sfx('tap');if(b.closest('#sheet')&&!b.closest('#sheetIn')){}const f=act[b.dataset.a];if(f){e.preventDefault();f(b,e)}});
+$('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
+document.addEventListener('input',e=>{const t=e.target;if(t.id==='q'){A.q=t.value;renderRes()}else if(t.id==='qty'){A.qty=Math.max(0,+t.value||0);renderQ();preview()}else if(t.id==='exM')exPv();
+ else if(t.dataset.ai!=null){const x=AI.items[+t.dataset.ai];if(x){x.g=Math.max(1,+t.value||1);clearTimeout(renderAI.t);renderAI.t=setTimeout(()=>{const pos=t.dataset.ai;renderAI();const el=document.querySelector(`[data-ai="${pos}"]`);if(el){el.focus();const v=el.value;el.value='';el.value=v}},700)}}});
+document.addEventListener('change',e=>{if(e.target.id==='exT')exPv()});
+$('#lbl').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(f)scanLabel(f)});
+$('#pic').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;AI.file=f;if(AI.url)URL.revokeObjectURL(AI.url);AI.url=URL.createObjectURL(f);e.target.value='';runAI(true)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+setInterval(()=>{if(S.act){const t=fmtHMS(actElapsed());const a1=$('#actChip');if(a1)a1.textContent=t;const a2=$('#actChip2');if(a2)a2.textContent=t}},1000);
+setInterval(()=>{if(!S.fast||!S.fast.start)return;const h=fastElapsed(),g=S.fast.plan;const a=$('#fT');if(a)a.textContent=fmtH(h);const r=$('#fR');if(r)r.textContent=h>=g?'יעד הושג!':'נותרו '+fmtH(g-h);
+ const c=$('#fChip');if(c)c.textContent=fmtH(h);const arc=$('#fArc');if(arc){const C=2*Math.PI*46;arc.setAttribute('stroke-dasharray',C*Math.min(1,h/g)+' '+C)}const st=stageAt(h);if(V.tab==='fast'&&V.st!=null&&st!==V.st)render();V.st=st},1000);
+window.__back=()=>{if($('#sheet').classList.contains('open')){closeSheet();return true}if(V.tab!=='today'){V.tab='today';render();return true}return false};
+render();
+}
+</script>
+</body>
+</html>
