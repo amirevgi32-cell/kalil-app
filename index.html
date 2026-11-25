@@ -227,6 +227,11 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .flive{text-align:center}input[type=range]{accent-color:var(--pink);min-height:36px}
 .chip svg{width:18px;height:18px;vertical-align:middle}
 .qcard h2 svg{width:22px;height:22px;vertical-align:-4px}.qcard .btn svg{width:18px;height:18px}
+.mlist{padding-bottom:6px}.mrow{border-top:1px solid var(--line)}.mlist h2+.mrow{border-top:0}.mhead{display:flex;align-items:center;gap:6px;padding:6px 0}
+.mtog{flex:1;min-width:0;display:flex;align-items:center;gap:8px;text-align:right;font:inherit;color:inherit;background:none;padding:4px 0;min-height:48px}
+.mtog .mn{flex:1;min-width:0;display:flex;flex-direction:column}.mtog .mn b{font-size:17px}.mtog .mn small{font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mtog .kc{font-weight:800;white-space:nowrap}.mtog .chev svg{width:18px;height:18px;color:var(--mute);transform:rotate(-90deg);transition:transform .2s}.mrow.open .chev svg{transform:rotate(90deg)}
+.mb.sm{width:38px;height:38px;border-radius:12px;flex:none}.mb.sm svg{width:20px;height:20px}.mbody{padding:0 0 8px;animation:pop .25s ease}.mtog .sticker.s{flex:none}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
 .qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
@@ -9418,14 +9423,23 @@ ${S.free?`<div style="text-align:center"><button class="chipf" data-a="free" sty
 ${S.fast.start?`<div style="text-align:center"><button class="chipf" data-a="tab" data-t="fast">${IC.moon} בצום · <span id="fChip" dir="ltr">${fmtH(fastElapsed())}</span></button></div>`:''}
 <div class="bubble">${avoki(mood)}<span>${msg}</span></div></div>
 <div class="wrap"><div class="quick"><button class="qa" data-a="photo" style="color:var(--pink)">${IC.cam}<span>צלם צלחת</span></button><button class="qa" data-a="tell" style="color:var(--gold)">${IC.chat}<span>ספר מה אכלת</span></button><button class="qa" data-a="water" data-ml="250" style="color:var(--blue)">${IC.drop}<span>שתיתי כוס</span></button><button class="qa" data-a="tab" data-t="fast" style="color:var(--lime)">${IC.moon}<span>${S.fast.start?'בצום':'התחל צום'}</span></button></div>
-${isT?homeCard():''}<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
+${mealsBlock(day)}${isT?homeCard():''}<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
 <div class="btns"><button class="btn ghost" data-a="weekGo">${IC.chart} סיכום שבועי</button><button class="btn ghost" data-a="calGo">${IC.cal} לוח חודשי</button></div>
 ${stepsCard(day)}
 ${isT?questCard(day)+cheatCard()+lessonCard():''}
 ${ds?`<div class="card" style="display:flex;align-items:center;gap:12px"><div class="sticker ${grade(ds)[1]}">${ds}</div><div><b>ציון היום: ${grade(ds)[0]}</b><div class="small muted">ממוצע ציוני הארוחות, משוקלל לפי קלוריות</div></div></div>`:''}
-${MEALS.map(([m,n])=>mealCard(day,m,n)).join('')}${waterCard(day)}
+${waterCard(day)}
 <div class="card ex"><h2 style="color:var(--blue)">פעילות גופנית <span class="sp"></span><button class="btn ghost" data-a="exAdd" style="min-height:40px">${IC.plus}הוסף</button></h2>
 ${day.ex.length?day.ex.map((e,i)=>`<div class="meal"><div class="row"><div class="nm">${esc(e.n)}<small>${e.min} דק׳</small></div><span class="kc">−${r0(e.k)}</span><button class="del" data-a="exDel" data-i="${i}" aria-label="מחיקה">${IC.trash}</button></div></div>`).join(''):'<div class="empty">קלוריות שתשרוף יתווספו לתקציב של היום.</div>'}</div>${credit()}</div>`}
+function mealsBlock(day){const tot=MEALS.reduce((a,[m])=>a+sum(day.meals[m]).k,0);
+ return `<div class="card meal mlist"><h2>הארוחות של היום<span class="sp"></span><span class="kc">${r0(tot)} קק״ל</span></h2>${MEALS.map(([m,n])=>mealRow(day,m,n)).join('')}</div>`}
+function mealRow(day,m,n){const it=day.meals[m],r=it.length?scoreItems(it,m):null,t=sum(it),open=!!(V.mx&&V.mx[m]);
+ const names=it.map(e=>e.n).join(' · ');
+ const stk=r?(r.cheat?`<span class="sticker s g2" style="font-size:11px">פינוק</span>`:`<span class="sticker s ${grade(r.s)[1]}">${r.s}</span>`):'';
+ return `<div class="mrow ${open?'open':''}"><div class="mhead"><button class="mtog" data-a="mtog" data-m="${m}" aria-expanded="${open}" aria-label="${n}, ${it.length?r0(t.k)+' קלוריות':'ריק'}"><span class="mn"><b>${n}</b><small>${it.length?esc(names):'עוד לא נרשם'}</small></span>${it.length?`<span class="kc">${r0(t.k)}</span>`:''}${stk}<span class="chev">${IC.next}</span></button>
+<button class="mb sm" data-a="add" data-m="${m}" aria-label="הוסף ל${n}">${IC.plus}</button><button class="mb sm" data-a="photo" data-m="${m}" aria-label="צלם ${n}">${IC.cam}</button></div>
+${open?`<div class="mbody">${it.length?it.map((e,i)=>`<div class="row"><button class="nm" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכת ${esc(e.n)}">${esc(e.n)}<small>${esc(uLabel(e.q,e.un,e.u))}${e.u!=='g'?` · ${r0(e.g)} ג׳`:''} · ח ${r0(e.p)} פ ${r0(e.c)} ש ${r0(e.f)}</small></button><span class="kc">${r0(e.k)}</span><button class="del" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכה">${IC.pen}</button></div>`).join(''):`<div class="empty" style="padding:8px">עוד לא נרשם כלום.</div><div class="btns"><button class="btn ghost" data-a="copy" data-m="${m}">${IC.copy} כמו אתמול</button></div>`}
+${r&&r.cheat?`<button class="mscore" data-a="score" data-m="${m}" style="background:var(--lime2)"><b>ארוחת פינוק מתוכננת</b><span>נהנים בלי רגשות אשמה · חוזרים לשגרה בארוחה הבאה</span></button>`:''}${r&&!r.cheat?`<button class="mscore" data-a="score" data-m="${m}"><b>ציון ${r.s} · ${grade(r.s)[0]}</b><span>${esc((benefits(r.items)[0]||r.good[0]||'').split(':')[0])} · לפירוט מלא</span></button>`:''}</div>`:''}</div>`}
 function greet(){const h=new Date().getHours();return h<11?'בוקר טוב':h<17?'צהריים טובים':h<21?'ערב טוב':'לילה טוב'}
 function mealCard(day,m,n){const it=day.meals[m],r=scoreItems(it,m),t=sum(it);
  if(!it.length)return `<div class="card meal mini"><h2>${n}<span class="sp"></span><button class="mb" data-a="add" data-m="${m}" aria-label="הוסף ל${n}">${IC.plus}</button><button class="mb" data-a="photo" data-m="${m}" aria-label="צלם ${n}">${IC.cam}</button><button class="mb" data-a="copy" data-m="${m}" aria-label="כמו אתמול" title="כמו אתמול">${IC.copy}</button></h2></div>`;
@@ -10068,7 +10082,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=26;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=27;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10283,7 +10297,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  homeOk:b=>confirmHome(b.dataset.add==='1'),homeNo:()=>{HM.res=null;closeSheet();toast('לא נרשם. מחר זה היום שלך!')},
  homeBeat:()=>{SND.beat?beatStop():beatStart();showHome()},homeEnd:()=>finishHome(false),box:openBox,journey:openJourney,
  wear:b=>{if(b.dataset.a!=='wear')return;S.acc=b.dataset.id||null;saveState();render();toast(S.acc?'אבוקי התלבש!':'אבוקי בלי אביזרים')},
- quick:openQuick,qweighO:openQWeigh,
+ quick:openQuick,mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
  qwater:b=>{act.water(b);const day=getDayLocal(V.date),e=$('#qwv');if(e)e.textContent=(day.water||0).toLocaleString('he-IL')+' / '+waterGoal().toLocaleString('he-IL')+' מ״ל'},
  qplan:b=>{S.fast.plan=+b.dataset.h;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
  qfast:()=>{const v=($('#sheetIn #fStart')||{}).value||'';document.querySelectorAll('#fStart').forEach(x=>x.value=v);act.fastStart();closeSheet()},qfastEnd:()=>{closeSheet();act.fastEnd()},
