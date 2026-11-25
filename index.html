@@ -240,6 +240,9 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .sgc{flex:0 0 150px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);font:inherit;color:var(--ink);text-align:right;min-height:118px}
 .sgc b{font-size:14.5px;line-height:1.25}.sgc small{font-size:11.5px;color:var(--mute);line-height:1.3}
 .seg button svg{width:18px;height:18px;vertical-align:-3px;margin-inline-end:4px}
+.dschip{display:flex;align-items:center;gap:10px;margin:8px auto 0;padding:6px 14px 6px 8px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);font:inherit;color:var(--ink)}
+.dschip span:last-child{display:flex;flex-direction:column;text-align:right;line-height:1.15}.dschip small{font-size:12px;color:var(--mute)}.dschip .sticker.s{width:40px;height:40px;font-size:16px}
+.dsrow{padding:9px 0;border-bottom:1px solid var(--line)}.dsweek{display:flex;gap:6px;align-items:flex-end;height:140px;padding-top:6px}.dsweek div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px}.dsweek i{width:70%;border-radius:8px 8px 3px 3px;display:block}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
 .qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
@@ -9429,13 +9432,13 @@ function viewToday(){const day=getDayLocal(V.date),c=calc(),t=dayTotals(day),ex=
 <div class="c"><span class="big" style="color:${over?'var(--pink)':'var(--ink)'}">${r0(Math.abs(left))}</span><span class="lbl">${over?'קק״ל מעל':'קק״ל נותרו'}</span></div></div><div class="side"><b>${r0(ex)}</b>פעילות</div></div>
 ${S.free?`<div style="text-align:center"><button class="chipf" data-a="free" style="background:var(--pink2)">${IC.fire} אימון פעיל · <span id="frChip" dir="ltr">${fmtHMS(freeSec())}</span></button></div>`:''}${S.act?`<div style="text-align:center"><button class="chipf" data-a="tracker" style="background:var(--lime2);color:#4f9a2e;border-color:#bfe5a8">פעילות פעילה · <span id="actChip" dir="ltr">${fmtHMS(actElapsed())}</span></button></div>`:''}<div style="text-align:center"><button class="chipf stpill" data-a="stepsGo">${IC.foot} <b id="heroSt">${(day.steps||0).toLocaleString('he-IL')}</b>&nbsp;/ ${stepGoal().toLocaleString('he-IL')} צעדים${isT&&stepSrc()!=='ידני'?' · '+stepSrc():''}</button></div>
 ${S.fast.start?`<div style="text-align:center"><button class="chipf" data-a="tab" data-t="fast">${IC.moon} בצום · <span id="fChip" dir="ltr">${fmtH(fastElapsed())}</span></button></div>`:''}
-<div class="bubble">${avoki(mood)}<span>${msg}</span></div></div>
+${dsChip()}<div class="bubble">${avoki(mood)}<span>${msg}</span></div></div>
 <div class="wrap"><div class="quick"><button class="qa" data-a="photo" style="color:var(--pink)">${IC.cam}<span>צלם צלחת</span></button><button class="qa" data-a="tell" style="color:var(--gold)">${IC.chat}<span>ספר מה אכלת</span></button><button class="qa" data-a="water" data-ml="250" style="color:var(--blue)">${IC.drop}<span>שתיתי כוס</span></button><button class="qa" data-a="tab" data-t="fast" style="color:var(--lime)">${IC.moon}<span>${S.fast.start?'בצום':'התחל צום'}</span></button></div>
 ${mealsBlock(day)}${isT?homeCard():''}<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
 <div class="btns"><button class="btn ghost" data-a="weekGo">${IC.chart} סיכום שבועי</button><button class="btn ghost" data-a="calGo">${IC.cal} לוח חודשי</button></div>
 ${stepsCard(day)}
 ${isT?questCard(day)+cheatCard()+lessonCard():''}
-${ds?`<div class="card" style="display:flex;align-items:center;gap:12px"><div class="sticker ${grade(ds)[1]}">${ds}</div><div><b>ציון היום: ${grade(ds)[0]}</b><div class="small muted">ממוצע ציוני הארוחות, משוקלל לפי קלוריות</div></div></div>`:''}
+
 ${waterCard(day)}
 <div class="card ex"><h2 style="color:var(--blue)">פעילות גופנית <span class="sp"></span><button class="btn ghost" data-a="exAdd" style="min-height:40px">${IC.plus}הוסף</button></h2>
 ${day.ex.length?day.ex.map((e,i)=>`<div class="meal"><div class="row"><div class="nm">${esc(e.n)}<small>${e.min} דק׳</small></div><span class="kc">−${r0(e.k)}</span><button class="del" data-a="exDel" data-i="${i}" aria-label="מחיקה">${IC.trash}</button></div></div>`).join(''):'<div class="empty">קלוריות שתשרוף יתווספו לתקציב של היום.</div>'}</div>${credit()}</div>`}
@@ -9448,6 +9451,29 @@ function mealRow(day,m,n){const it=day.meals[m],r=it.length?scoreItems(it,m):nul
 <button class="mb sm" data-a="add" data-m="${m}" aria-label="הוסף ל${n}">${IC.plus}</button><button class="mb sm" data-a="photo" data-m="${m}" aria-label="צלם ${n}">${IC.cam}</button></div>
 ${open?`<div class="mbody">${it.length?it.map((e,i)=>`<div class="row"><button class="nm" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכת ${esc(e.n)}">${esc(e.n)}<small>${esc(uLabel(e.q,e.un,e.u))}${e.u!=='g'?` · ${r0(e.g)} ג׳`:''} · ח ${r0(e.p)} פ ${r0(e.c)} ש ${r0(e.f)}</small></button><span class="kc">${r0(e.k)}</span><button class="del" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכה">${IC.pen}</button></div>`).join(''):`<div class="empty" style="padding:8px">עוד לא נרשם כלום.</div><div class="btns"><button class="btn ghost" data-a="copy" data-m="${m}">${IC.copy} כמו אתמול</button></div>`}
 ${r&&r.cheat?`<button class="mscore" data-a="score" data-m="${m}" style="background:var(--lime2)"><b>ארוחת פינוק מתוכננת</b><span>נהנים בלי רגשות אשמה · חוזרים לשגרה בארוחה הבאה</span></button>`:''}${r&&!r.cheat?`<button class="mscore" data-a="score" data-m="${m}"><b>ציון ${r.s} · ${grade(r.s)[0]}</b><span>${esc((benefits(r.items)[0]||r.good[0]||'').split(':')[0])} · לפירוט מלא</span></button>`:''}</div>`:''}</div>`}
+/* ===== ציון יומי ===== */
+function dScore(d){const day=getDayLocal(d),c=calc(),t=dayTotals(day),B=c.budget+exKcal(day)+cheatBonus(d),isT=d===today();
+ const inB=t.n&&t.k<=B,W=inB?[6,3,3,4,4]:[20,10,10,15,15],P=[];
+ if(inB)P.push(['קלוריות בתקציב',80,80,!isT&&t.k<B*.6?'בתקציב, אבל אכלת מעט מדי. גוף רעב שורף פחות ומתקשה להתמיד':isT?`נשארו ${r0(B-t.k)} קק״ל · כל עוד אתה בתקציב הציון מעל 80`:'נשארת בתקציב']);
+ else if(!t.n)P.push(['קלוריות בתקציב',0,80,'רשום מה אכלת היום. בתקציב = 80 נקודות לפחות']);
+ else{const o=(t.k-B)/B;P.push(['קלוריות בתקציב',Math.max(0,Math.round(30*(1-o/.25))),80,`עברת את התקציב ב-${r0(t.k-B)} קק״ל, ולכן הציון נשאר מתחת ל-80`])}
+ const q=dayScore(day),pg=B*.3/4,pr=Math.min(1,t.p/pg),wg=waterGoal(),wr=Math.min(1,(day.water||0)/wg),sg=stepGoal(),sr=Math.min(1,(day.steps||0)/sg);
+ const rest=FWEEK[pd(d).getDay()]==='r',did=day.ex.some(e=>e.min>=10)||S.fit.log.some(z=>z.d===d&&z.t!=='r');
+ const R=[['איכות הארוחות',q/100,q?(q<70?'הוסף ירקות וחלבון לארוחה הבאה':'ארוחות איכותיות'):'עוד אין ארוחות עם ציון'],
+  ['חלבון',pr,pr<1?`עוד ${r0(pg-t.p)} ג׳ חלבון (ביצים, קוטג׳, עוף, טונה)`:'יעד החלבון הושג'],
+  ['מים',wr,wr<1?`עוד ${Math.ceil((wg-(day.water||0))/250)} כוסות`:'יעד המים הושג'],
+  ['צעדים',sr,sr<1?`עוד ${(sg-(day.steps||0)).toLocaleString('he-IL')} צעדים`:'יעד הצעדים הושג'],
+  ['אימון',did||rest?1:0,did?'התאמנת היום':rest?'יום מנוחה מתוכנן, נחשב כבוצע':'אימון של 10 דקות ומעלה']];
+ R.forEach((x,i)=>P.push([x[0],Math.round(x[1]*W[i]),W[i],x[2]]));
+ let s=P.reduce((a,x)=>a+x[1],0);s=inB?Math.min(100,s):Math.min(79,s);return{s,P,inB,empty:!t.n&&!day.water&&!day.steps&&!day.ex.length}}
+function dsChip(){const r=dScore(V.date);return `<button class="dschip" data-a="dscore" aria-label="ציון יומי ${r.s}, פירוט"><span class="sticker s ${grade(r.s)[1]}">${r.s}</span><span><b>ציון יומי</b><small>${grade(r.s)[0]}</small></span></button>`}
+function openDScore(){const d=V.date,r=dScore(d),isT=d===today();const days=Array.from({length:7},(_,i)=>addDays(d,i-6)).filter(x=>x>=((S.profile&&S.profile.start)||'0'));
+ const hist=days.map(x=>{const q=dScore(x);return{d:x,s:q.s,e:q.empty&&x!==today()}});const hv=hist.filter(h=>!h.e);const best=r.P.filter(x=>x[1]<x[2]).sort((a,b)=>(b[2]-b[1])-(a[2]-a[1]));
+ openSheet(`${shTop('הציון היומי')}<div style="text-align:center"><div class="sticker ${grade(r.s)[1]}" style="width:110px;height:110px;font-size:44px;margin:0 auto">${r.s}</div><h2 style="font:24px var(--disp);margin:8px 0 2px">${grade(r.s)[0]}</h2><div class="small muted">${isT?'היום עד עכשיו':heDate(d)} · מתוך 100</div></div>
+${r.P.map(([n,g,m,tip])=>`<div class="dsrow"><div style="display:flex;justify-content:space-between"><b>${n}</b><span class="small"><b>${g}</b> / ${m}</span></div><div class="bar" style="height:8px;margin:5px 0"><i style="width:${g/m*100}%;background:${g>=m?'var(--lime)':g>=m/2?'var(--gold)':'var(--pink)'}"></i></div><div class="small muted">${esc(tip)}</div></div>`).join('')}
+${isT&&best.length?`<div class="card" style="background:var(--mango2);border:0;margin-top:12px"><b>הכי קל להעלות את הציון עכשיו:</b><div class="small" style="margin-top:4px">${best.slice(0,2).map(x=>'• '+esc(x[3])).join('<br>')}</div></div>`:''}
+${hist.length>1?`<h2 style="margin:16px 0 6px">7 הימים האחרונים</h2><div class="dsweek">${hist.map(h=>`<div><span class="small"><b>${h.e?'–':h.s}</b></span><i style="height:${h.e?2:Math.max(4,h.s)}%;background:${h.s>=70?'var(--lime)':h.s>=40?'var(--gold)':'var(--pink)'}"></i><small>${heDate(h.d,{weekday:'narrow'})}</small></div>`).join('')}</div>${hv.length?`<p class="small muted">ממוצע: ${r0(hv.reduce((a,h)=>a+h.s,0)/hv.length)}${hv.length<hist.length?' (בלי ימים שלא נרשם בהם כלום)':''}</p>`:''}`:''}
+<p class="small muted">${r.inB?'כל עוד אתה בתקציב הקלוריות הציון הוא לפחות 80. את 20 הנקודות הנוספות מקבלים על איכות הארוחות, חלבון, מים, צעדים ואימון.':'כשנמצאים בתקציב הקלוריות, הציון מתחיל מ-80. מעל התקציב הציון נשאר מתחת ל-80, וצעדים, אימון, מים ואיכות הארוחות עדיין מוסיפים נקודות.'}</p>`)}
 function greet(){const h=new Date().getHours();return h<11?'בוקר טוב':h<17?'צהריים טובים':h<21?'ערב טוב':'לילה טוב'}
 function mealCard(day,m,n){const it=day.meals[m],r=scoreItems(it,m),t=sum(it);
  if(!it.length)return `<div class="card meal mini"><h2>${n}<span class="sp"></span><button class="mb" data-a="add" data-m="${m}" aria-label="הוסף ל${n}">${IC.plus}</button><button class="mb" data-a="photo" data-m="${m}" aria-label="צלם ${n}">${IC.cam}</button><button class="mb" data-a="copy" data-m="${m}" aria-label="כמו אתמול" title="כמו אתמול">${IC.copy}</button></h2></div>`;
@@ -10105,7 +10131,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=32;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=33;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10333,7 +10359,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  homeOk:b=>confirmHome(b.dataset.add==='1'),homeNo:()=>{HM.res=null;closeSheet();toast('לא נרשם. מחר זה היום שלך!')},
  homeBeat:()=>{SND.beat?beatStop():beatStart();showHome()},homeEnd:()=>finishHome(false),box:openBox,journey:openJourney,
  wear:b=>{if(b.dataset.a!=='wear')return;S.acc=b.dataset.id||null;saveState();render();toast(S.acc?'אבוקי התלבש!':'אבוקי בלי אביזרים')},
- quick:openQuick,updNow:()=>{const i=UPD.info;if(!i)return;try{sessionStorage.setItem('kl_new',i.notes||'')}catch(_){}const g=$('#updGo');if(g)g.innerHTML='<div class="spin" style="margin:10px auto"></div><p class="muted" style="text-align:center">מוריד ומעדכן...</p>';if(i.apk>appVer().apk)act.updApk();else act.updHtml()},fdo:b=>{FR.retro=+b.dataset.r;FR.q='';if(!FR.retro&&S.free)return openFreeLive();if(!FR.retro)wkPreview();openFreeCfg(b.dataset.id,b.dataset.sp?{sp:+b.dataset.sp}:null)},fq2:b=>{FR.q='';openFreeCfg(b.dataset.id)},mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
+ quick:openQuick,dscore:openDScore,updNow:()=>{const i=UPD.info;if(!i)return;try{sessionStorage.setItem('kl_new',i.notes||'')}catch(_){}const g=$('#updGo');if(g)g.innerHTML='<div class="spin" style="margin:10px auto"></div><p class="muted" style="text-align:center">מוריד ומעדכן...</p>';if(i.apk>appVer().apk)act.updApk();else act.updHtml()},fdo:b=>{FR.retro=+b.dataset.r;FR.q='';if(!FR.retro&&S.free)return openFreeLive();if(!FR.retro)wkPreview();openFreeCfg(b.dataset.id,b.dataset.sp?{sp:+b.dataset.sp}:null)},fq2:b=>{FR.q='';openFreeCfg(b.dataset.id)},mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
  qwater:b=>{act.water(b);const day=getDayLocal(V.date),e=$('#qwv');if(e)e.textContent=(day.water||0).toLocaleString('he-IL')+' / '+waterGoal().toLocaleString('he-IL')+' מ״ל'},
  qplan:b=>{S.fast.plan=+b.dataset.h;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
  qfast:()=>{const v=($('#sheetIn #fStart')||{}).value||'';document.querySelectorAll('#fStart').forEach(x=>x.value=v);act.fastStart();closeSheet()},qfastEnd:()=>{closeSheet();act.fastEnd()},
