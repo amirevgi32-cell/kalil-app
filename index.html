@@ -10085,7 +10085,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=28;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=29;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10240,7 +10240,7 @@ k=קלוריות, p=חלבון, c=פחמימה, f=שומן, fi=סיבים, s=ס�
 אם אין אוכל בתמונה החזר {"items":[],"note":"לא זיהיתי אוכל בתמונה"}.`;
  try{const opt={signal:AI.ctl.signal};if(withImg&&AI.file)opt.images=[AI.file];const res=await sample.json(prompt,opt);
   const it=(res&&Array.isArray(res.items)?res.items:[]).slice(0,20).map(x=>{const g=Math.max(1,+x.g||100),cat=CATS[x.cat]?String(x.cat):'dish';return{n:String(x.n||'רכיב').slice(0,50),g,g0:g,k0:Math.max(0,+x.k||0),p0:Math.max(0,+x.p||0),c0:Math.max(0,+x.c||0),f0:Math.max(0,+x.f||0),fi0:Math.max(0,+x.fi||0),s0:Math.max(0,+x.s||0),cat}});
-  AI.items=it;AI.note=String(res&&res.note||'').slice(0,200);AI.op=String(res&&res.op||'').slice(0,500);const arr=x=>(Array.isArray(x)?x:[]).map(v=>String(v).slice(0,160)).slice(0,3);AI.good=arr(res&&res.good);AI.tip=arr(res&&res.tip).slice(0,2);if(it.length){AI.tag='a'+Date.now().toString(36);AI.d=V.date;AI.logged=0;AI.undone=0}if(withImg){S.aw.photo=1;saveState();checkBadges()}renderAI()}
+  AI.items=it;AI.note=String(res&&res.note||'').slice(0,200);AI.op=String(res&&res.op||'').slice(0,500);const arr=x=>(Array.isArray(x)?x:[]).map(v=>String(v).slice(0,160)).slice(0,3);AI.good=arr(res&&res.good);AI.tip=arr(res&&res.tip).slice(0,2);if(withImg){S.aw.photo=1;saveState();checkBadges()}renderAI()}
  catch(e){const c=e&&e.code;if(c==='cancelled'){box.innerHTML='';return}box.innerHTML=`<p class="small" style="color:var(--red)">${c==='not_granted'||c==='sampling_disabled'?'לא ניתן אישור לשימוש ב-AI.':c==='rate_limited'?'יותר מדי בקשות כרגע. נסה שוב בעוד רגע.':c==='image_rejected'?'התמונה לא התקבלה. נסה תמונה אחרת.':c==='images_unavailable'?'שליחת תמונות לא זמינה כאן — נסה לתאר במילים.':c==='bad_key'?'מפתח ה-API לא תקין. נסה שוב עם מפתח אחר.':'משהו השתבש. נסה שוב.'}</p>`}}
 function keyForm(withImg){return `<div class="card"><b>חיבור ה-AI באפליקציה</b><p class="small muted">כדי לנתח תמונות בתוך האפליקציה צריך מפתח API אישי של Anthropic (מ-console.anthropic.com). הוא נשמר רק בטלפון שלך. כל ניתוח עולה כמה אגורות בחשבון ה-API שלך.</p>
 <input type="text" id="keyIn" placeholder="sk-ant-..." style="direction:ltr" autocomplete="off"><div class="btns"><button class="btn" data-a="keySave" data-img="${withImg?1:0}">שמור ונתח</button></div></div>`}
@@ -10257,16 +10257,15 @@ function aiSync(){if(!AI.tag)return;const d=AI.d||V.date,day=getDayLocal(d);MEAL
  const E=AI.undone?[]:aiEntries().map(e=>Object.assign(e,{ai:AI.tag}));
  if(!AI.logged&&E.length){AI.logged=1;const vd=V.date;V.date=d;addEntries(AI.m,E);V.date=vd}else{if(E.length)day.meals[AI.m].push(...E);saveDay(d);saveState()}render()}
 function renderAI(){const box=$('#aiBox');if(!box)return;if(!AI.items.length){if(AI.tag){aiSync();AI.tag=null}box.innerHTML=`<p>${esc(AI.note||'לא זיהיתי אוכל.')}</p>`;return}
- aiSync();{const h=$('#aiTell');if(h)h.style.display='none'}const E=aiEntries(),r=scoreItems(E,AI.m),t=sum(E),cx=aiCtx(),left=cx.B-cx.k-t.k,mn=(MEALS.find(x=>x[0]===AI.m)||[,''])[1];
- box.innerHTML=`<div class="aiok"><b>✓ נוסף ליומן · ${mn}</b><span class="small">אפשר לתקן כמויות או לבטל למטה</span></div>
-${AI.url?`<img class="photo" src="${AI.url}" alt="התמונה שצילמת" style="margin-top:10px;max-height:220px;object-fit:cover">`:''}
-<div style="display:flex;justify-content:center;gap:26px;align-items:flex-end;margin-top:12px;text-align:center"><div><div class="kbig">${r0(t.k)}</div><div class="muted small">קק״ל בארוחה</div></div><div><div class="kbig" style="font-size:34px;color:${left<0?'var(--pink)':'var(--lime)'}">${r0(Math.abs(left))}</div><div class="muted small">${left<0?'קק״ל מעל התקציב היום':'קק״ל נשארו להיום'}</div></div></div>
+ {const h=$('#aiTell');if(h)h.style.display='none'}const E=aiEntries(),r=scoreItems(E,AI.m),t=sum(E),cx=aiCtx(),left=cx.B-cx.k-t.k,mn=(MEALS.find(x=>x[0]===AI.m)||[,''])[1];
+ box.innerHTML=`${AI.url?`<img class="photo" src="${AI.url}" alt="התמונה שצילמת" style="margin-top:10px;max-height:220px;object-fit:cover">`:''}
+<div style="display:flex;justify-content:center;gap:26px;align-items:flex-end;margin-top:12px;text-align:center"><div><div class="kbig">${r0(t.k)}</div><div class="muted small">קק״ל בארוחה</div></div><div><div class="kbig" style="font-size:34px;color:${left<0?'var(--pink)':'var(--lime)'}">${r0(Math.abs(left))}</div><div class="muted small">${left<0?'קק״ל מעל התקציב אם תאכל':'קק״ל יישארו להיום'}</div></div></div>
 ${AI.op||AI.good.length||AI.tip.length?`<div class="card aiop"><h2 style="margin-bottom:6px">${avoki(r&&r.s>=70?'wow':'happy')}<span>חוות הדעת של אבוקי</span></h2>${AI.op?`<p style="margin:0 0 8px">${esc(AI.op)}</p>`:''}
 ${AI.good.map(g=>`<div class="aili"><span style="color:var(--lime)">✓</span>${esc(g)}</div>`).join('')}${AI.tip.map(g=>`<div class="aili"><span style="color:var(--gold)">💡</span>${esc(g)}</div>`).join('')}</div>`:AI.note?`<div class="bubble" style="background:var(--lime2);color:var(--ink)">${avoki('wow')}<span>${esc(AI.note)}</span></div>`:''}
 ${r?`<details class="card aisc"><summary style="cursor:pointer;display:flex;align-items:center;gap:10px;min-height:44px"><span class="sticker s ${r.cheat?'g2':grade(r.s)[1]}">${r.cheat?'פינוק':r.s}</span><b>${r.cheat?'ארוחת פינוק':'ציון '+r.s+' · '+grade(r.s)[0]}</b><span class="small muted" style="margin-inline-start:auto">פירוט הציון</span></summary>${scoreBlock(r)}</details>`:''}
-<details class="aifix"><summary>מה מצאתי בצלחת (${AI.items.length}) · תיקון כמויות</summary>${AI.items.map((x,i)=>`<div class="ai-row"><div>${esc(x.n)}<div class="small muted">${r0(E[i].k)} קק״ל · ח ${r0(E[i].p)}</div></div><input type="number" inputmode="numeric" data-ai="${i}" value="${r0(x.g)}" aria-label="גרם"><button class="del" data-a="aiDel" data-i="${i}" aria-label="הסר">${IC.trash}</button></div>`).join('')}
+<details class="aifix" open><summary>מה מצאתי בצלחת (${AI.items.length}) · אפשר לתקן גרמים</summary>${AI.items.map((x,i)=>`<div class="ai-row"><div>${esc(x.n)}<div class="small muted">${r0(E[i].k)} קק״ל · ח ${r0(E[i].p)}</div></div><input type="number" inputmode="numeric" data-ai="${i}" value="${r0(x.g)}" aria-label="גרם"><button class="del" data-a="aiDel" data-i="${i}" aria-label="הסר">${IC.trash}</button></div>`).join('')}
 <div class="small muted" style="margin-top:10px">שייך לארוחה:</div><div class="seg" style="margin-top:4px">${MEALS.map(([k,n])=>`<button data-a="aimeal" data-m="${k}" class="${k===AI.m?'on':''}">${n.replace('ארוחת ','')}</button>`).join('')}</div></details>
-<div class="btns" style="margin-top:12px"><button class="btn lime" data-a="aiDone">מעולה, סיימתי</button><button class="btn ghost" data-a="aiUndo" style="color:var(--red)">בטל, אל תוסיף</button></div>`}
+<div class="btns" style="margin-top:12px"><button class="btn lime" data-a="aiAdd">${IC.plus} הוסף ל${mn}</button><button class="btn ghost" data-a="close">סגור בלי להוסיף</button></div><p class="small muted" style="text-align:center;margin:6px 0 0">שום דבר לא נרשם ביומן עד שתלחץ "הוסף".</p>`}
 
 /* ===== אירועים ===== */
 const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.dataset.m),photo:b=>{if(!S.profile)return openProfile();openPhoto(b.dataset.m);V.ext=Date.now();try{$('#pic').click()}catch(e){}},close:closeSheet,profile:openProfile,
@@ -10388,7 +10387,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  keySave:b=>{const k=($('#keyIn').value||'').trim();if(!k.startsWith('sk-'))return toast('מפתח לא תקין');ls.set('kl_key',k);runAI(b.dataset.img==='1')},
  aiDel:b=>{AI.items.splice(+b.dataset.i,1);renderAI()},aimeal:b=>{AI.m=b.dataset.m;renderAI()},
  aiDone:()=>{closeSheet();V.tab='today';render();toast('הארוחה ביומן')},aiUndo:()=>{AI.undone=1;aiSync();AI.tag=null;closeSheet();toast('הארוחה לא נוספה')},
-aiAdd:()=>{const E=aiEntries();if(!E.length)return;addEntries(AI.m,E);closeSheet();V.tab='today';V.date=today();render();toast('הארוחה נוספה')}};
+aiAdd:()=>{const E=aiEntries();if(!E.length)return;addEntries(AI.m,E);closeSheet();V.tab='today';render();toast('הארוחה נוספה ליומן')}};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;if(!['water','addFood','toTray','trayAdd','delEdit','ans'].includes(b.dataset.a))sfx('tap');if(b.closest('#sheet')&&!b.closest('#sheetIn')){}const f=act[b.dataset.a];if(f){e.preventDefault();f(b,e)}});
 $('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
 document.addEventListener('input',e=>{const t=e.target;if(t.id==='fminIn'&&FR.cfg){FR.cfg.min=Math.max(0,Math.min(600,+t.value||0));document.querySelectorAll('[data-a=fmin]').forEach(x=>x.classList.toggle('on',+x.dataset.m===FR.cfg.min));freePrev();return}
