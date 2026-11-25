@@ -1203,7 +1203,7 @@ steptouch:{a:'K97,121 F94,150 k103,121 f106,150 E108,72 W114,88 e92,72 w86,88',b
 buttkick:{a:'E108,66 W114,80 e92,70 w88,86',b:'k96,121 f78,110 E92,70 W88,86 e108,66 w114,80',d:.8},
 jack:{a:'K99,121 F98,150 k101,121 f102,150 E96,70 W94,90 e104,70 w106,90',b:'K90,122 F82,150 E84,48 W76,26 e116,48 w124,26',d:1.1},
 kneetw:{a:'E114,52 W106,36 e86,52 w94,36',b:'K112,104 F108,132 E108,86 W100,70 e88,54 w94,38',d:1.1}});
-const HMOVES=[['march','צעידה במקום','מרימים ברכיים ומניעים ידיים חזק.',110],['sidestep','צעד הצידה','צעד גדול לצד, ידיים נפתחות.',100],['punch','צעידה עם אגרופים','צועדים ומכים אגרופים קדימה. מתאגרף אמיתי!',110],['steptouch','צעד, נגיעה ומחיאה','צעד לצד, מצמידים רגל ומוחאים כף מעל הראש.',100],['buttkick','בעיטות לישבן','עקב לכיוון הישבן, לסירוגין, בקצב נוח.',120],['jack','פיסוק בלי קפיצה','צעד לצד וידיים למעלה, כמו קפיצת פיסוק בלי לקפוץ.',100],['kneetw','ברך למרפק','מרימים ברך ומביאים אליה מרפק נגדי. מפעיל בטן!',90],['arms','צעידה עם סיבובי ידיים','צועדים ומסובבים ידיים גדולות.',105]];
+const HMOVES=[['march','צעידה במקום','מרימים ברכיים ומניעים ידיים חזק.',100],['sidestep','צעד הצידה','צעד גדול לצד, ידיים נפתחות.',100],['punch','צעידה עם אגרופים','צועדים ומכים אגרופים קדימה. מתאגרף אמיתי!',100],['steptouch','צעד, נגיעה ומחיאה','צעד לצד, מצמידים רגל ומוחאים כף מעל הראש.',100],['buttkick','בעיטות לישבן','עקב לכיוון הישבן, לסירוגין, בקצב נוח.',100],['jack','פיסוק בלי קפיצה','צעד לצד וידיים למעלה, כמו קפיצת פיסוק בלי לקפוץ.',100],['kneetw','ברך למרפק','מרימים ברך ומביאים אליה מרפק נגדי. מפעיל בטן!',100],['arms','צעידה עם סיבובי ידיים','צועדים ומסובבים ידיים גדולות.',100]];
 const HFACTS=['כל 1,000 צעדים שורפים בערך 40–50 קלוריות.','10 דקות של צעידה אחרי ארוחה מורידות את הסוכר בדם.','ישיבה ממושכת מאטה את חילוף החומרים. כל הפסקת תנועה עוזרת.','מוזיקה עם קצב מגבירה מוטיבציה וגורמת לזמן לעבור מהר יותר.','צעידה משחררת אנדורפינים, ההורמונים של מצב רוח טוב.','הברכיים אוהבות תנועה: צעידה מזינה את הסחוס.','לב בריא אוהב 150 דקות של פעילות בינונית בשבוע. אתה בדרך!','שתה כוס מים אחרי הצעדה. הגוף יודה לך.'];
 const JOURNEY=[['מטולה',0,'הנקודה הצפונית. המסע מתחיל!'],['קריית שמונה',9,'מבט אל הר החרמון.'],['ראש פינה',36,'אחת המושבות הראשונות בגליל.'],['טבריה',66,'הכינרת, האגם המתוק הגדול בארץ.'],['נצרת',96,'העיר הגדולה בגליל התחתון.'],['חיפה',133,'הכרמל והגנים הבהאיים.'],['זכרון יעקב',165,'כרמים ונוף לים.'],['קיסריה',180,'נמל רומי עתיק על חוף הים.'],['נתניה',205,'צוקים מעל הים התיכון.'],['תל אביב',235,'העיר שלא נרדמת. חצי מהדרך כמעט!'],['אשדוד',275,'הנמל הגדול בדרום.'],['באר שבע',345,'בירת הנגב.'],['מצפה רמון',425,'המכתש הגדול בעולם מסוגו.'],['אילת',570,'הגעת לים סוף! סיימת את הארץ לאורכה!']];
 const ACCS=[['cap','כובע מצחייה','<path d="M27 31q23-24 46 0z" fill="#ff8a65"/><rect x="62" y="27" width="22" height="5" rx="2.5" fill="#e0663f"/>'],['shades','משקפי שמש','<rect x="31" y="41" width="16" height="10" rx="4" fill="#2f3a3d"/><rect x="53" y="41" width="16" height="10" rx="4" fill="#2f3a3d"/><path d="M47 45h6" stroke="#2f3a3d" stroke-width="2"/>'],['band','סרט ספורט','<path d="M21 37q29-13 58 0" stroke="#4aa8ff" stroke-width="7" fill="none" stroke-linecap="round"/>'],['phones','אוזניות','<path d="M23 50q0-37 27-37t27 37" stroke="#2f3a3d" stroke-width="4" fill="none"/><rect x="17" y="45" width="11" height="17" rx="4" fill="#ff8a65"/><rect x="72" y="45" width="11" height="17" rx="4" fill="#ff8a65"/>'],['crown','כתר','<path d="M33 23l7 10 10-13 10 13 7-10 2 15H31z" fill="#f6b93b" stroke="#e0a42a" stroke-width="1"/>']];
@@ -1218,22 +1218,33 @@ function homeCard(){const day=getDayLocal(today()),st=day.steps||0,g=stepGoal(),
 <button class="jline" data-a="journey"><span>${IC.pin} ${JOURNEY[i][0]}</span><span>${nx?`עוד ${r1(nx[1]-km)} ק״מ ל${nx[0]}`:'סיימת את המסע!'}</span></button>
 ${ch?`<div class="chal">אתגר היום: <b>${ch.t}</b> · נקודות כפולות</div>`:''}
 <div class="btns"><button class="btn full hbtn" data-a="homeSetup">${IC.play} התחל צעדה</button></div></div>`}
-function openHomeSetup(){const H=S.homePref||{min:10,beat:true},rows=[[5,'הפסקת משרד'],[10,'צעדה קלה'],[20,'צעדה טובה'],[30,'חצי שעה של כוח'],[45,'מסע ערב'],[75,'אתגר 8,000 צעדים']];
- openSheet(`${shTop('צעדה בבית')}<div style="width:150px;margin:0 auto">${fig('march')}</div><p style="text-align:center;margin:4px 0 12px">כל דקה תנועה חדשה, ספרינטים קצרים, מוזיקה עם קצב, ותיבת הפתעה בסוף.</p>
-${rows.map(([m,n])=>`<button class="hopt ${H.min===m?'on':''}" data-a="hMin" data-m="${m}"><b>${m} דק׳</b><span>${n}</span><span class="muted">≈ ${(m*108).toLocaleString('he-IL')} צעדים</span></button>`).join('')}
-<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:10px;min-height:40px"><input type="checkbox" id="hBeat" ${H.beat?'checked':''} style="width:22px;height:22px"> מוזיקת קצב (ביט) בזמן הצעדה</label>
+function openHomeSetup(){const H=S.homePref||{min:10,beat:true},rows=[[5,'הפסקת משרד'],[10,'צעדה קלה'],[20,'צעדה טובה'],[30,'חצי שעה של כוח'],[45,'מסע ערב'],[80,'אתגר 8,000 צעדים']];
+ openSheet(`${shTop('צעדה בבית')}<div style="width:150px;margin:0 auto">${fig('march')}</div><p style="text-align:center;margin:4px 0 12px">כל דקה תנועה חדשה, בקצב צעידה טוב ויציב (כ-100 צעדים בדקה). הביט מכתיב את הקצב: צעד על כל פעימה. בסוף מחכה תיבת הפתעה.</p>
+${rows.map(([m,n])=>`<button class="hopt ${H.min===m?'on':''}" data-a="hMin" data-m="${m}"><b>${m} דק׳</b><span>${n}</span><span class="muted">≈ ${(m*100).toLocaleString('he-IL')} צעדים</span></button>`).join('')}
+<div class="card" style="margin-top:12px;padding:12px 14px"><b>ספירת צעדים מדויקת</b>${hasNative()&&nativePerm()?'<p class="small" style="margin:4px 0 0;color:var(--mango-d)">הצעדים נספרים בפועל על ידי חיישן הצעדים של הטלפון. שים את הטלפון בכיס או החזק אותו ביד.</p>'
+ :hasNative()?'<p class="small muted" style="margin:4px 0 6px">כדי לספור כל צעד אמיתי, צריך לאשר לקליל גישה לחיישן הצעדים.</p><button class="btn full" data-a="stepPerm">הפעל ספירה מדויקת</button>'
+ :'<p class="small muted" style="margin:4px 0 0">הצעדים נספרים לפי תנועת הטלפון. שים אותו בכיס או החזק אותו ביד.</p>'}
+<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:6px;min-height:40px"><input type="checkbox" id="hTime" ${(S.homePref||{}).mode==='time'?'checked':''} style="width:22px;height:22px"> הטלפון לא עליי (ספירה משוערת לפי זמן)</label></div>
+<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:10px;min-height:40px"><input type="checkbox" id="hBeat" ${H.beat?'checked':''} style="width:22px;height:22px"> ביט שמכתיב קצב טוב (100 צעדים בדקה)</label>
 <div class="btns"><button class="btn full hbtn" data-a="homeGo">${IC.play} יאללה!</button></div>`)}
-const HM={seg:[],i:0,left:0,run:false,t:0,steps:0,base:-1,fact:0,bonus:false};
+const HM={seg:[],i:0,left:0,run:false,t:0,steps:0,base:-1,fact:0,bonus:false,mode:'time',mot:0,last:0,idle:0};
+const PED={on:false,f:9.8,up:false,t:0,ok:false};
+function pedH(e){const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;PED.ok=true;const m=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);PED.f=PED.f*.8+m*.2;const now=Date.now();
+ if(!PED.up&&PED.f>11.2&&now-PED.t>280){PED.up=true;PED.t=now;if(HM.run&&HM.mode==='motion')HM.mot++}else if(PED.up&&PED.f<10.2)PED.up=false}
+function pedStart(){if(PED.on)return;PED.on=true;try{window.addEventListener('devicemotion',pedH)}catch(e){}}
+function pedStop(){PED.on=false;try{window.removeEventListener('devicemotion',pedH)}catch(e){}}
+function stepMode(){if(hasNative()&&nativePerm())return 'sensor';return (S.homePref&&S.homePref.mode==='time')?'time':'motion'}
 function buildHome(min){const seed=pd(today()).getDate(),mv=HMOVES.slice(seed%3).concat(HMOVES.slice(0,seed%3)),seg=[];
- seg.push({m:['march','חימום: צעידה רגועה','מתחילים לאט. ידיים זזות.',95],sec:60});
- for(let i=1;i<min-1;i++){const m=mv[(i-1)%mv.length];if(min>=10&&i%3===0){seg.push({m,sec:40});seg.push({m:['march','ספרינט במקום!','20 שניות מהר ככל שנוח. אתה יכול!',150],sec:20,sprint:1})}else seg.push({m,sec:60})}
+ seg.push({m:['march','חימום: צעידה רגועה','מתחילים לאט. ידיים זזות.',90],sec:60});
+ for(let i=1;i<min-1;i++){const m=mv[(i-1)%mv.length];if(min>=10&&i%3===0){seg.push({m,sec:40});seg.push({m:['march','האצה קלה!','20 שניות קצת יותר מהר, ואז חוזרים לקצב.',115],sec:20,sprint:1})}else seg.push({m,sec:60})}
  if(min>1)seg.push({m:['march','שחרור: צעידה איטית','מורידים קצב ונושמים עמוק.',90],sec:60});return seg}
-function openHome(){const H=S.homePref||{min:10,beat:true};HM.seg=buildHome(H.min);HM.i=0;HM.left=HM.seg[0].sec;HM.steps=0;HM.sens=0;HM.base=sensorNow();HM.run=true;HM.fact=0;HM.min=H.min;HM.startDay=today();
+function openHome(){const H=S.homePref||{min:10,beat:true};HM.seg=buildHome(H.min);HM.i=0;HM.left=HM.seg[0].sec;HM.steps=0;HM.sens=0;HM.base=sensorNow();HM.mode=(S.homePref||{}).mode==='time'?'time':stepMode();HM.mot=0;HM.last=0;HM.idle=0;if(HM.mode==='motion')pedStart();HM.run=true;HM.fact=0;HM.min=H.min;HM.startDay=today();
  const ch=hs().chal;HM.bonus=!!(ch&&ch.d===today());if(H.beat)beatStart();showHome();clearInterval(HM.t);HM.t=setInterval(homeTick,1000)}
-function showHome(){const s=HM.seg[HM.i],nx=HM.seg[HM.i+1],tot=HM.seg.reduce((a,x)=>a+x.sec,0),done=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(s.sec-HM.left),goal=HM.min*108,R=46,C=2*Math.PI*R,p=Math.min(1,HM.steps/goal),day=getDayLocal(today());
- openSheet(`<div class="sh-top"><h3>${s.sprint?'ספרינט!':'צעדה בבית'}</h3><button class="x" data-a="homeEnd" aria-label="סיום">${IC.x}</button></div>
+function showHome(){const s=HM.seg[HM.i],nx=HM.seg[HM.i+1],tot=HM.seg.reduce((a,x)=>a+x.sec,0),done=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(s.sec-HM.left),goal=HM.min*100,R=46,C=2*Math.PI*R,p=Math.min(1,HM.steps/goal),day=getDayLocal(today());
+ openSheet(`<div class="sh-top"><h3>${s.sprint?'האצה קלה':'צעדה בבית'}</h3><button class="x" data-a="homeEnd" aria-label="סיום">${IC.x}</button></div>
 <div class="hstage ${s.sprint?'spr':''}"><div class="fring" style="width:min(220px,58vw);margin:0 auto"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="7"/><circle id="hArc" cx="50" cy="50" r="${R}" fill="none" stroke="#ff8a65" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 50 50)"/></svg>
-<div class="c"><span class="small muted">צעדים</span><span class="t" id="hSt" style="color:var(--pink)">${Math.round(HM.steps).toLocaleString('he-IL')}</span><span class="small muted">מתוך ≈${goal.toLocaleString('he-IL')}</span></div></div>
+<div class="c"><span class="small muted">צעדים</span><span class="t" id="hSt" style="color:var(--pink)">${Math.round(HM.steps).toLocaleString('he-IL')}</span><span class="small muted">${HM.mode==='time'?'משוער · ':'נמדד · '}יעד ≈${goal.toLocaleString('he-IL')}</span></div></div>
+<p id="hIdle" class="small hide" style="text-align:center;color:var(--pink);margin:4px 0">לא זוהו צעדים. שים את הטלפון בכיס או החזק אותו ביד.</p>
 <div style="width:min(210px,56vw);margin:6px auto 0" class="${s.sprint?'shake':''}">${fig(s.m[0])}</div>
 <h2 style="font:26px/1.2 var(--disp);text-align:center;margin:4px 0;color:${s.sprint?'var(--pink)':'var(--mango-d)'}">${s.m[1]}</h2><p style="text-align:center;margin:0">${s.m[2]}</p>
 <div style="text-align:center;margin-top:6px"><span class="kbig" id="hT" style="font-size:40px;direction:ltr">${fmtS(HM.left)}</span>${nx?`<div class="small muted">הבא: ${nx.m[1]}</div>`:''}</div></div>
@@ -1242,19 +1253,25 @@ function showHome(){const s=HM.seg[HM.i],nx=HM.seg[HM.i+1],tot=HM.seg.reduce((a,
 <div class="hfact" id="hF">${HFACTS[HM.fact%HFACTS.length]}</div>
 <div class="btns"><button class="btn" data-a="homePause" id="hPB">${HM.run?'השהה':'המשך'}</button><button class="btn ghost" data-a="homeBeat">${SND.beat?'כבה ביט':'הפעל ביט'}</button><button class="btn lime" data-a="homeEnd">סיים</button></div>`)}
 function homeTick(){if(!$('#hT')){return}if(!HM.run)return;const s=HM.seg[HM.i];HM.left--;
- const n=sensorNow();if(HM.base>=0&&n>=HM.base)HM.sens=n-HM.base;HM.steps+=s.m[3]/60;
- const goal=HM.min*108,C=2*Math.PI*46;$('#hT').textContent=fmtS(HM.left);$('#hSt').textContent=Math.round(HM.steps).toLocaleString('he-IL');$('#hArc').setAttribute('stroke-dasharray',C*Math.min(1,HM.steps/goal)+' '+C);
+ const n=sensorNow();if(HM.base>=0&&n>=HM.base)HM.sens=n-HM.base;
+ if(HM.mode==='sensor')HM.steps=HM.sens;else if(HM.mode==='motion')HM.steps=HM.mot;else HM.steps+=s.m[3]/60;
+ if(HM.mode!=='time'){if(Math.round(HM.steps)===HM.last)HM.idle++;else{HM.idle=0;HM.last=Math.round(HM.steps)}const ih=$('#hIdle');if(ih)ih.classList.toggle('hide',HM.idle<12)}
+ if(HM.mode==='motion'&&HM.idle>=20&&!PED.ok&&HM.steps===0){HM.mode='time';toast('הטלפון לא מודד תנועה כאן. עברתי לספירה משוערת לפי זמן')}
+ const goal=HM.min*100,C=2*Math.PI*46;$('#hT').textContent=fmtS(HM.left);$('#hSt').textContent=Math.round(HM.steps).toLocaleString('he-IL');$('#hArc').setAttribute('stroke-dasharray',C*Math.min(1,HM.steps/goal)+' '+C);
  const tot=HM.seg.reduce((a,x)=>a+x.sec,0),done=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(s.sec-HM.left);$('#hP').style.width=done/tot*100+'%';
  if(done%45===0){HM.fact++;const f=$('#hF');if(f)f.textContent=HFACTS[HM.fact%HFACTS.length]}
  if(HM.left<=3&&HM.left>0)beep(false);
- if(HM.left<=0){HM.i++;if(HM.i>=HM.seg.length){finishHome(true);return}HM.left=HM.seg[HM.i].sec;beep(true);try{navigator.vibrate&&navigator.vibrate(60)}catch(e){}const m=HM.seg[HM.i];if(HM.seg[HM.i].sprint)toast('ספרינט! 20 שניות, קדימה!');else if(HM.i>1&&HM.i%4===0)toast(['אש!','מכונה!','איזה קצב!','ממשיכים חזק!'][HM.i%4]);showHome()}}
-function finishHome(full){clearInterval(HM.t);HM.t=0;HM.run=false;beatStop();const secs=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(HM.seg[HM.i]?HM.seg[HM.i].sec-HM.left:0),steps=Math.round(HM.steps);
- if(secs<30&&steps<50){closeSheet();return}HM.res={secs,steps,full,sens:Math.round(HM.sens||0)};const day=getDayLocal(today()),now=day.steps||0;
+ if(HM.left<=0){HM.i++;if(HM.i>=HM.seg.length){finishHome(true);return}HM.left=HM.seg[HM.i].sec;beep(true);try{navigator.vibrate&&navigator.vibrate(60)}catch(e){}const m=HM.seg[HM.i];if(HM.seg[HM.i].sprint)toast('האצה קלה: 20 שניות');else if(HM.i>1&&HM.i%4===0)toast(['אש!','מכונה!','איזה קצב!','ממשיכים חזק!'][HM.i%4]);showHome()}}
+function finishHome(full){clearInterval(HM.t);HM.t=0;HM.run=false;beatStop();pedStop();const secs=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(HM.seg[HM.i]?HM.seg[HM.i].sec-HM.left:0),steps=Math.round(HM.steps);
+ if(secs<30&&steps<50){closeSheet();return}HM.res={secs,steps,full,sens:Math.round(HM.sens||0),mode:HM.mode};const day=getDayLocal(today()),now=day.steps||0;
  openSheet(`${shTop('ביצעת את האימון?')}<div style="text-align:center"><div style="width:100px;margin:0 auto">${avoki('happy')}</div><h2 style="font:26px var(--disp);margin:4px 0">${fmtHMS(secs)} · ${steps.toLocaleString('he-IL')} צעדים</h2></div>
+${HM.res.mode==='sensor'?`<p style="text-align:center;margin:0 0 10px">חיישן הטלפון מדד <b>${steps.toLocaleString('he-IL')} צעדים</b>, והם כבר נכנסים למונה היומי (הטלפון ו-Samsung Health סופרים אותם). אין צורך להוסיף ידנית, כדי שלא ייספרו פעמיים.</p>
+<div class="btns"><button class="btn full" data-a="homeOk" data-add="0">אישור, ביצעתי את האימון</button></div><div class="btns"><button class="btn ghost" data-a="homeNo" style="color:var(--red)">לא ביצעתי</button></div>`:`
+<p style="text-align:center;margin:0 0 4px" class="small muted">${HM.res.mode==='motion'?'נמדד לפי תנועת הטלפון':'משוער לפי זמן וקצב, כי הטלפון לא היה עליך'}</p>
 <p style="text-align:center;margin:0 0 10px">אישור יוסיף את הצעדים למונה היומי, מעבר למה ש-Samsung Health ספר:<br><b>${now.toLocaleString('he-IL')} + ${steps.toLocaleString('he-IL')} = ${(now+steps).toLocaleString('he-IL')} צעדים</b>, והקלוריות יתעדכנו בהתאם.</p>
 ${HM.res.sens>steps*.3?`<p class="small" style="color:var(--pink);text-align:center;margin:0 0 8px">שים לב: חיישן הטלפון ספר ${HM.res.sens.toLocaleString('he-IL')} צעדים בזמן האימון. אם הטלפון היה עליך, הם כבר נספרו, ועדיף לא להוסיף פעמיים.</p>`:''}
 <div class="btns"><button class="btn full" data-a="homeOk" data-add="1">כן, ביצעתי. הוסף ${steps.toLocaleString('he-IL')} צעדים</button></div>
-<div class="btns"><button class="btn ghost" data-a="homeOk" data-add="0">ביצעתי, כבר נספר בטלפון</button><button class="btn ghost" data-a="homeNo" style="color:var(--red)">לא ביצעתי</button></div>`)}
+<div class="btns"><button class="btn ghost" data-a="homeOk" data-add="0">ביצעתי, כבר נספר בטלפון</button><button class="btn ghost" data-a="homeNo" style="color:var(--red)">לא ביצעתי</button></div>`}`)}
 function confirmHome(add){const r=HM.res;if(!r)return;HM.res=null;const{secs,steps,full}=r,min=Math.round(secs/60),d=today(),day=getDayLocal(d),km0=journeyKm(),at0=journeyAt(km0),h=hs();
  recompSteps(day);if(add){day.stepsExtra=(day.stepsExtra||0)+steps;recompSteps(day)}
  day.ex.push({n:'צעדה בבית'+(add?' · '+steps.toLocaleString('he-IL')+' צעדים':''),min,k:0});stepsReached(d,day);
@@ -1276,7 +1293,7 @@ function openJourney(){const km=journeyKm(),at=journeyAt(km);openSheet(`${shTop(
 <div class="jlist">${JOURNEY.map((j,i)=>`<div class="jst ${i<=at?'ok':''} ${i===at?'now':''}"><span class="jd"></span><div><b>${j[0]}</b> <span class="small muted">· ${j[1]} ק״מ</span>${i<=at?`<div class="small">${j[2]}</div>`:i===at+1?`<div class="small" style="color:var(--pink)">עוד ${r1(j[1]-km)} ק״מ</div>`:''}</div></div>`).join('')}</div><p class="small muted">המרחקים משוערים, בערך לאורך הכביש.</p>`)}
 /* ביט */
 function beatStart(){const c=ac();if(!c||SND.beat)return;const out=c.createGain();out.gain.value=.5;out.connect(c.destination);const nb=c.createBuffer(1,c.sampleRate*.05,c.sampleRate),dt=nb.getChannelData(0);for(let i=0;i<dt.length;i++)dt[i]=(Math.random()*2-1)*(1-i/dt.length);
- const bpm=112,b=60/bpm;let next=c.currentTime+.1,n=0;const BASS=[65.41,65.41,87.31,98];
+ const bpm=100,b=60/bpm;let next=c.currentTime+.1,n=0;const BASS=[65.41,65.41,87.31,98];
  const kick=t=>{const o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+.12);g.gain.setValueAtTime(.7,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(out);o.start(t);o.stop(t+.2)};
  const hat=t=>{const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=nb;f.type='highpass';f.frequency.value=6000;g.gain.value=.25;s.connect(f);f.connect(g);g.connect(out);s.start(t)};
  const sch=()=>{while(next<c.currentTime+.6){kick(next);hat(next+b/2);if(n%2===0)tone(BASS[(n>>2)%4],next,b*.9,'triangle',.12,out);if(n%8===4)tone(523.25,next,b*.5,'sine',.05,out);next+=b;n++}};sch();SND.beat={t:setInterval(sch,200),out};if(SND.music){musicStop();SND.mres=1}}
@@ -1406,7 +1423,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=13;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=14;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -1429,7 +1446,7 @@ setTimeout(()=>{if(isApk()&&S.lastUpdCheck!==today()){S.lastUpdCheck=today();sav
 
 /* ===== גיליונות ===== */
 function openSheet(h){$('#sheetIn').innerHTML=h;$('#sheet').classList.add('open');$('#sheetIn').scrollTop=0}
-function closeSheet(){try{if(HM.run||HM.t){clearInterval(HM.t);HM.t=0;HM.run=false;beatStop()}}catch(e){}try{clearInterval(PL_.t);PL_.run=false}catch(e){}$('#sheet').classList.remove('open');$('#sheetIn').innerHTML='';AI.ctl&&AI.ctl.abort()}
+function closeSheet(){try{pedStop()}catch(e){}try{if(HM.run||HM.t){clearInterval(HM.t);HM.t=0;HM.run=false;beatStop()}}catch(e){}try{clearInterval(PL_.t);PL_.run=false}catch(e){}$('#sheet').classList.remove('open');$('#sheetIn').innerHTML='';AI.ctl&&AI.ctl.abort()}
 const shTop=t=>`<div class="sh-top"><h3>${t}</h3><button class="x" data-a="close" aria-label="סגירה">${IC.x}</button></div>`;
 const A={meal:'b',cat:'',q:'',food:null,unit:null,qty:1,tray:[],edit:null};
 function guessMeal(){const h=new Date().getHours();return h<11?'b':h<16?'l':h<21?'d':'s'}
@@ -1594,7 +1611,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  wm:b=>{V.wm=b.dataset.m;const el=$('#weekCard');if(el)el.outerHTML=weekCard()},wk:b=>{V.wk=Math.max(0,(V.wk||0)+ +b.dataset.d);const el=$('#weekCard');if(el)el.outerHTML=weekCard()},weekGo:()=>{V.tab='goals';render();setTimeout(()=>{const el=$('#weekCard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)},
  updCheck:()=>updCheck(false),updHtml:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.updateHtml(i.url||UPD_BASE+'index.html',i.html)}catch(e){}},updApk:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){}},
  homeSetup:()=>{if(!S.profile)return openProfile();openHomeSetup()},hMin:b=>{S.homePref=Object.assign(S.homePref||{min:10,beat:true},{min:+b.dataset.m});openHomeSetup()},
- homeGo:()=>{const bt=$('#hBeat');S.homePref=Object.assign(S.homePref||{min:10},{beat:bt?bt.checked:true});saveState();openHome()},
+ homeGo:()=>{const bt=$('#hBeat'),tm=$('#hTime');S.homePref=Object.assign(S.homePref||{min:10},{beat:bt?bt.checked:true,mode:tm&&tm.checked?'time':'auto'});saveState();openHome()},
  homePause:()=>{HM.run=!HM.run;const b=$('#hPB');if(b)b.textContent=HM.run?'השהה':'המשך';HM.run?(S.homePref&&S.homePref.beat&&beatStart()):beatStop()},
  homeOk:b=>confirmHome(b.dataset.add==='1'),homeNo:()=>{HM.res=null;closeSheet();toast('לא נרשם. מחר זה היום שלך!')},
  homeBeat:()=>{SND.beat?beatStop():beatStart();showHome()},homeEnd:()=>finishHome(false),box:openBox,journey:openJourney,
