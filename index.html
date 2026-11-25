@@ -1305,7 +1305,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=10;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=11;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -1315,14 +1315,15 @@ function updCard(){if(!isApk())return `<div class="card"><h2>עדכונים</h2>
  else if(UPD.st==='dl')body='<div class="spin" style="margin:10px auto"></div><p class="small muted" style="text-align:center">מוריד עדכון...</p>';
  else if(UPD.st==='err')body=`<p class="small" style="color:var(--red)">לא הצלחתי לבדוק עדכונים. בדוק חיבור לאינטרנט ונסה שוב.</p>`;
  else if(i&&i.apk>v.apk)body=`<p style="margin:0 0 6px"><b>גרסת אפליקציה חדשה זמינה (${esc(i.name||'')})</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updApk">הורד והתקן</button></div><p class="small muted" style="margin:6px 0 0">בפעם הראשונה אנדרואיד יבקש לאשר התקנה מ"קליל". הנתונים נשמרים.</p>`;
- else if(i&&i.html>v.html)body=`<p style="margin:0 0 6px"><b>עדכון חדש זמין</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updHtml">עדכן עכשיו (כמה שניות)</button></div>`;
+ else if(i&&i.html>Math.min(v.html,APPV))body=`<p style="margin:0 0 6px"><b>עדכון חדש זמין</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updHtml">עדכן עכשיו (כמה שניות)</button></div>`;
  else if(i)body='<p class="small" style="color:var(--mango-d);margin:0">יש לך את הגרסה האחרונה.</p>';
- return `<div class="card" id="updCard"><h2>עדכונים<span class="sp"></span><span class="small muted">אפליקציה ${v.apk} · תוכן ${v.html}</span></h2>${body}<div class="btns"><button class="btn ghost full" data-a="updCheck">חפש עדכון</button></div></div>`}
+ return `<div class="card" id="updCard"><h2>עדכונים<span class="sp"></span><span class="small muted">אפליקציה ${v.apk} · תוכן ${APPV}</span></h2>${body}<div class="btns"><button class="btn ghost full" data-a="updCheck">חפש עדכון</button></div></div>`}
 function rUpd(){const el=$('#updCard');if(el)el.outerHTML=updCard()}
 function updCheck(quiet){if(!isApk()||UPD_BASE.indexOf('__')===0)return;UPD.quiet=!!quiet;if(!quiet){UPD.st='checking';rUpd()}try{KalilNative.checkUpdate('https://api.github.com/repos/amirevgi32-cell/kalil-app/contents/version.json?ref=main')}catch(e){UPD.st='err';rUpd()}}
-window.__upd=(err,txt)=>{if(err){UPD.st=UPD.quiet?'':'err';rUpd();return}try{let j=JSON.parse(txt);if(j&&j.content)j=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g,'')))));UPD.info=j;UPD.st=''}catch(e){UPD.st='err'}rUpd();const v=appVer(),i=UPD.info;
- if(i&&(i.apk>v.apk||i.html>v.html)){showUndoMsg('יש עדכון חדש לקליל! מסך "מטרות" ← עדכונים');S.updSeen=today();saveState()}else if(!UPD.quiet)toast('יש לך את הגרסה האחרונה')};
+window.__upd=(err,txt)=>{if(err){UPD.st=UPD.quiet?'':'err';rUpd();return}try{let j=JSON.parse(txt);if(j&&j.content)j=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g,'')))));UPD.info=j;UPD.st='';if(UPD.heal&&j&&j.html>=appVer().html&&j.html>APPV){UPD.heal=false;toast('משלים עדכון...');try{KalilNative.updateHtml(j.url||UPD_BASE+'index.html',j.html)}catch(e){}return}}catch(e){UPD.st='err'}rUpd();const v=appVer(),i=UPD.info;
+ if(i&&(i.apk>v.apk||i.html>Math.min(v.html,APPV))){showUndoMsg('יש עדכון חדש לקליל! מסך "מטרות" ← עדכונים');S.updSeen=today();saveState()}else if(!UPD.quiet)toast('יש לך את הגרסה האחרונה')};
 window.__updErr=e=>{UPD.st='err';rUpd();toast('העדכון נכשל. נסה שוב')};
+setTimeout(()=>{try{if(isApk()&&appVer().html>APPV&&!sessionStorage.getItem('kl_heal')){sessionStorage.setItem('kl_heal','1');UPD.quiet=true;UPD.heal=true;KalilNative.checkUpdate('https://api.github.com/repos/amirevgi32-cell/kalil-app/contents/version.json?ref=main')}}catch(e){}},1500);
 setTimeout(()=>{if(isApk()&&S.lastUpdCheck!==today()){S.lastUpdCheck=today();saveState();updCheck(true)}},4000);
 
 /* ===== גיליונות ===== */
@@ -1488,7 +1489,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  cheatPick:b=>{if(cheatUsedOn())return;const o=CHEAT[+b.dataset.i];const it=cheatItems(o);S.cheat.used[wkKey(today())]=today();V.date=today();const h=new Date().getHours(),m=h<11?'b':h<17?'l':'d';addEntries(m,it);award('ch:'+wkKey(today()),15,'פינוק מתוכנן');saveState();closeSheet();render();toast('בתיאבון! '+o[0]);confetti()},
  mo:b=>{V.mo=Math.min(0,(V.mo||0)+ +b.dataset.d);const el=$('#monthCard');if(el)el.outerHTML=monthCard()},calDay:b=>{V.date=b.dataset.d;V.tab='today';render();scrollTo(0,0)},calGo:()=>{V.tab='goals';render();setTimeout(()=>{const el=$('#monthCard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)},
  wm:b=>{V.wm=b.dataset.m;const el=$('#weekCard');if(el)el.outerHTML=weekCard()},wk:b=>{V.wk=Math.max(0,(V.wk||0)+ +b.dataset.d);const el=$('#weekCard');if(el)el.outerHTML=weekCard()},weekGo:()=>{V.tab='goals';render();setTimeout(()=>{const el=$('#weekCard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)},
- updCheck:()=>updCheck(false),updHtml:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.updateHtml(UPD_BASE+'index.html',i.html)}catch(e){}},updApk:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){}},
+ updCheck:()=>updCheck(false),updHtml:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.updateHtml(i.url||UPD_BASE+'index.html',i.html)}catch(e){}},updApk:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){}},
  tracker:openTracker,tabata:openTabata,
  trkT:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{ti:+b.dataset.i});openTracker()},trkM:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{min:+b.dataset.m});openTracker()},
  trkStart:()=>{const p=S.actPref||{ti:1,min:30};S.act={ti:p.ti,target:p.min,start:Date.now(),acc:0,run:Date.now(),base:sensorNow()};saveState();sfx('fast');openTracker();render()},
