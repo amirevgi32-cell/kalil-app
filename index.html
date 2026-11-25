@@ -243,6 +243,8 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .dschip{display:flex;align-items:center;gap:10px;margin:8px auto 0;padding:6px 14px 6px 8px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);font:inherit;color:var(--ink)}
 .dschip span:last-child{display:flex;flex-direction:column;text-align:right;line-height:1.15}.dschip small{font-size:12px;color:var(--mute)}.dschip .sticker.s{width:40px;height:40px;font-size:16px}
 .dsrow{padding:9px 0;border-bottom:1px solid var(--line)}.dsweek{display:flex;gap:6px;align-items:flex-end;height:140px;padding-top:6px}.dsweek div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px}.dsweek i{width:70%;border-radius:8px 8px 3px 3px;display:block}
+.tipc{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,#fff7ec,#fff);border-color:rgba(255,183,77,.45)}.tipi{font-size:34px;line-height:1;flex:none;width:52px;height:52px;border-radius:16px;background:#fff1dc;display:grid;place-items:center}
+.tipn{margin-top:6px;font:inherit;font-size:13px;font-weight:700;color:var(--mango-d);background:none;min-height:36px;padding:0}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
 .qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
@@ -9434,7 +9436,7 @@ ${S.free?`<div style="text-align:center"><button class="chipf" data-a="free" sty
 ${S.fast.start?`<div style="text-align:center"><button class="chipf" data-a="tab" data-t="fast">${IC.moon} בצום · <span id="fChip" dir="ltr">${fmtH(fastElapsed())}</span></button></div>`:''}
 ${dsChip()}<div class="bubble">${avoki(mood)}<span>${msg}</span></div></div>
 <div class="wrap"><div class="quick"><button class="qa" data-a="photo" style="color:var(--pink)">${IC.cam}<span>צלם צלחת</span></button><button class="qa" data-a="tell" style="color:var(--gold)">${IC.chat}<span>ספר מה אכלת</span></button><button class="qa" data-a="water" data-ml="250" style="color:var(--blue)">${IC.drop}<span>שתיתי כוס</span></button><button class="qa" data-a="tab" data-t="fast" style="color:var(--lime)">${IC.moon}<span>${S.fast.start?'בצום':'התחל צום'}</span></button></div>
-${mealsBlock(day)}${isT?homeCard():''}<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
+${mealsBlock(day)}${isT?tipCard():''}${isT?homeCard():''}<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
 <div class="btns"><button class="btn ghost" data-a="weekGo">${IC.chart} סיכום שבועי</button><button class="btn ghost" data-a="calGo">${IC.cal} לוח חודשי</button></div>
 ${stepsCard(day)}
 ${isT?questCard(day)+cheatCard()+lessonCard():''}
@@ -9474,6 +9476,62 @@ ${r.P.map(([n,g,m,tip])=>`<div class="dsrow"><div style="display:flex;justify-co
 ${isT&&best.length?`<div class="card" style="background:var(--mango2);border:0;margin-top:12px"><b>הכי קל להעלות את הציון עכשיו:</b><div class="small" style="margin-top:4px">${best.slice(0,2).map(x=>'• '+esc(x[3])).join('<br>')}</div></div>`:''}
 ${hist.length>1?`<h2 style="margin:16px 0 6px">7 הימים האחרונים</h2><div class="dsweek">${hist.map(h=>`<div><span class="small"><b>${h.e?'–':h.s}</b></span><i style="height:${h.e?2:Math.max(4,h.s)}%;background:${h.s>=70?'var(--lime)':h.s>=40?'var(--gold)':'var(--pink)'}"></i><small>${heDate(h.d,{weekday:'narrow'})}</small></div>`).join('')}</div>${hv.length?`<p class="small muted">ממוצע: ${r0(hv.reduce((a,h)=>a+h.s,0)/hv.length)}${hv.length<hist.length?' (בלי ימים שלא נרשם בהם כלום)':''}</p>`:''}`:''}
 <p class="small muted">${r.inB?'כל עוד אתה בתקציב הקלוריות הציון הוא לפחות 80. את 20 הנקודות הנוספות מקבלים על איכות הארוחות, חלבון, מים, צעדים ואימון.':'כשנמצאים בתקציב הקלוריות, הציון מתחיל מ-80. מעל התקציב הציון נשאר מתחת ל-80, וצעדים, אימון, מים ואיכות הארוחות עדיין מוסיפים נקודות.'}</p>`)}
+/* ===== טיפ יומי ===== */
+const DTIPS=[
+['🥗','חצי צלחת ירקות','מלא חצי צלחת בירקות לפני שאתה שם את השאר. ככה אוכלים יותר נפח בפחות קלוריות.'],
+['💧','כוס מים לפני האוכל','כוס מים לפני כל ארוחה עוזרת להרגיש שובע מהר יותר. הרבה פעמים צמא מתחפש לרעב.'],
+['🍳','חלבון בבוקר','ארוחת בוקר עם חלבון (ביצים, קוטג׳, יוגורט) מורידה נשנושים בהמשך היום.'],
+['🚶','5 דקות כל שעה','במשרד, קום כל שעה ל-5 דקות הליכה. זה מצטבר לכ-2,000 צעדים ביום בלי להרגיש.'],
+['🍽️','צלחת קטנה','אוכל מצלחת קטנה יותר גורם למוח להרגיש שאכלת יותר. טריק פשוט שעובד.'],
+['⏱️','לאט לאט','למוח לוקח כ-20 דקות להבין שאתה שבע. הנח את המזלג בין ביס לביס.'],
+['😴','שינה היא דיאטה','שינה של פחות מ-6 שעות מגבירה את הורמון הרעב. נסה ללכת לישון חצי שעה מוקדם יותר.'],
+['🥤','לשתות קלוריות?','מיץ ומשקה ממותק יכולים להוסיף 200–300 קק״ל בלי שובע. עדיף מים, סודה או משקה זירו.'],
+['🍎','נשנוש מתוכנן','תכין נשנוש מראש לעבודה (פרי, יוגורט, ירקות חתוכים) כדי לא להגיע רעב למכונת החטיפים.'],
+['📸','תרשום לפני','רשום את הארוחה לפני שאתה אוכל. זה עוזר לבחור טוב יותר מאשר לרשום אחרי.'],
+['🧂','שים לב לרטבים','כף טחינה או מיונז היא 90–100 קק״ל. שווה לשקול רטבים בכפית במקום בעין.'],
+['🏋️','שריר שורף','אימוני כוח שומרים על השריר בזמן ירידה במשקל, ושריר שורף אנרגיה גם במנוחה.'],
+['⚖️','שקילה בבוקר','שקילה באותה שעה בבוקר, אחרי שירותים, נותנת את התמונה הכי מדויקת. תנודות של קילו ביום הן נורמליות.'],
+['📉','מגמה ולא יום','המשקל קופץ בגלל מלח, מים ופחמימות. תסתכל על המגמה השבועית בגרף, לא על יום אחד.'],
+['🍞','לחם מלא','לחם מלא או שיפון משביע יותר מלחם לבן בזכות הסיבים, ומעלה את הסוכר בדם לאט יותר.'],
+['🥜','אגוזים במידה','אגוזים בריאים מאוד אבל צפופים: חופן קטן הוא כבר 180–200 קק״ל. תמנה במקום לאכול מהשקית.'],
+['🌙','מטבח סגור','קבע שעה שאחריה המטבח סגור. זה גם עוזר לצום לסירוגין וגם לשינה טובה יותר.'],
+['🛒','קנייה שבעה','אל תלך לסופר רעב. קונים פחות מה שלא תכננו.'],
+['🎯','80/20','לא צריך להיות מושלם. אם 80% מהזמן אתה בתקציב, אתה בדרך הנכונה.'],
+['🍕','ארוחת פינוק בלי אשמה','ארוחה אחת חריגה לא הורסת שבוע. חוזרים לשגרה בארוחה הבאה, לא ביום שני.'],
+['🥒','רעב בין ארוחות?','ירקות חתוכים ומלפפונים כמעט בלי קלוריות. תמיד שיהיה קופסה כזו במקרר.'],
+['☕','קפה חכם','קפה שחור או עם מעט חלב כמעט בלי קלוריות. לאטה גדול עם סירופ יכול להגיע ל-300.'],
+['🧘','אכילה רגשית','לפני שאתה אוכל מתוך סטרס, חכה 10 דקות ושתה מים. אם עדיין רעב, תאכל משהו מתוכנן.'],
+['🏃','צעדים אחרי ארוחה','הליכה של 10 דקות אחרי ארוחה מורידה את הסוכר בדם ועוזרת לעיכול.'],
+['🍗','חלבון בכל ארוחה','חלבון בכל ארוחה שומר על שובע ועל השריר. עוף, דג, ביצים, קטניות, גבינות רזות.'],
+['🍚','פחמימה בגודל אגרוף','מנת אורז או פסטה בגודל אגרוף אחד מספיקה לארוחה. השאר ירקות וחלבון.'],
+['🧊','מים קרים','לא אוהב מים? תוסיף לימון, נענע או מלפפון. בקבוק על השולחן במשרד = שותים יותר.'],
+['📅','תכנן את מחר','5 דקות בערב לתכנן את האוכל של מחר חוסכות הרבה החלטות רעות כשאתה רעב.'],
+['🏆','חגוג הצלחות קטנות','כל יום בתקציב הוא ניצחון. הרצף שלך באפליקציה הוא מה שבונה הרגל.'],
+['🥣','שובע מנפח','מרק ירקות לפני הארוחה ממלא את הבטן בפחות קלוריות. מעולה לחורף.'],
+['🍫','מתוק חכם','בא לך מתוק? 2 קוביות שוקולד מריר או פרי קפוא עדיפים על חבילה שלמה.'],
+['🪑','מוסיפים תנועה','חנה רחוק, עלה במדרגות, דבר בטלפון בהליכה. כל צעד נספר.'],
+['🔥','צום מתחיל בשינה','בצום 16:8 רוב השעות עוברות בשינה. אם מסיימים לאכול ב-20:00, אוכלים שוב ב-12:00.'],
+['🧠','לא מוותרים על ארוחות','דילוג על ארוחות בלי תוכנית מוביל לרעב חזק בערב. עדיף צום מתוכנן או ארוחות קטנות.'],
+['🥛','מוצרי חלב רזים','קוטג׳ 3% ויוגורט חלבון נותנים הרבה חלבון בקלוריות נמוכות. מושלם לנשנוש.'],
+['🍉','פירות במקום מיץ','פרי שלם משביע הרבה יותר ממיץ בזכות הסיבים, ובחצי מהקלוריות.'],
+['🍟','מטוגן או אפוי?','אותו מאכל אפוי או בטיגון אוויר יכול לחסוך 100–200 קק״ל לעומת טיגון עמוק.'],
+['👟','הרגל לפני עוצמה','עדיף 10 דקות אימון כל יום מאשר שעה פעם בשבוע. ההרגל הוא מה שמשנה.'],
+['📱','בלי מסכים בארוחה','אכילה מול מסך גורמת לאכול יותר בלי לשים לב. נסה לפחות ארוחה אחת ביום בלי טלפון.'],
+['🧾','קרא תוויות','מדבקה ירוקה או אדומה היא רמז. תשווה קלוריות ל-100 גרם בין מוצרים דומים.'],
+['🍲','בישול כפול','כשמבשלים, בשל כפול ושמור מנה למחר. ככה יש ארוחה מוכנה במקום משלוח.'],
+['🥚','ביצה קשה','ביצה קשה היא נשנוש של 70 קק״ל עם 6 גרם חלבון. תכין כמה מראש לשבוע.'],
+['🌶️','תבלינים בחינם','תבלינים, לימון, חומץ ושום מוסיפים טעם כמעט בלי קלוריות. תתפרע איתם.'],
+['🏖️','סופ״ש זה לא חופש מהתוכנית','רוב העלייה במשקל קורית בסופי שבוע. תכנן מראש ארוחה אחת חופשית ולא יומיים.'],
+['💪','גוף כבד שורף יותר','בזכות המשקל שלך, כל הליכה שורפת יותר קלוריות מאשר אצל אדם רזה. זה יתרון בהתחלה!'],
+['🧃','אלכוהול','כוס יין או בירה הם 120–200 קק״ל ומגבירים תיאבון. אם שותים, שותים לאט ועם מים בין לבין.'],
+['📈','קצב בריא','ירידה של חצי קילו עד קילו בשבוע היא קצב שאפשר לשמור עליו לאורך זמן.'],
+['🛑','שבע ב-80%','תפסיק לאכול כשאתה מרגיש שבע ב-80%. אחרי 20 דקות תרגיש מלא לגמרי.'],
+['🗓️','שקילה שבועית','אם השקילה היומית מלחיצה, תישקל פעם בשבוע באותו יום ובאותה שעה.'],
+['🥙','בחוץ חכם','במסעדה: חלבון על הגריל, ירקות, ורוטב בצד. אל תתבייש לבקש שינויים.'],
+['🍿','פופקורן במקום חטיף','קערה גדולה של פופקורן בלי חמאה היא כ-100 קק״ל. חלופה מעולה לחטיפים בערב.'],
+['😊','תהיה נחמד לעצמך','מעידה זה חלק מהדרך. מי שמצליח הוא מי שחוזר מהר, לא מי שלא מועד אף פעם.']];
+function tipIdx(){const d=Math.floor(pd(today()).getTime()/864e5);return ((d%DTIPS.length)+DTIPS.length+(V.tipOff||0))%DTIPS.length}
+function tipCard(){const t=DTIPS[tipIdx()];return `<div class="card tipc"><div class="tipi">${t[0]}</div><div style="flex:1;min-width:0"><div class="small" style="color:var(--mango-d);font-weight:800">${V.tipOff?'עוד טיפ':'הטיפ של היום'}</div><b style="font-size:17px">${t[1]}</b><p class="small" style="margin:4px 0 0;line-height:1.55">${t[2]}</p><button class="tipn" data-a="tipNext">עוד טיפ ←</button></div></div>`}
 function greet(){const h=new Date().getHours();return h<11?'בוקר טוב':h<17?'צהריים טובים':h<21?'ערב טוב':'לילה טוב'}
 function mealCard(day,m,n){const it=day.meals[m],r=scoreItems(it,m),t=sum(it);
  if(!it.length)return `<div class="card meal mini"><h2>${n}<span class="sp"></span><button class="mb" data-a="add" data-m="${m}" aria-label="הוסף ל${n}">${IC.plus}</button><button class="mb" data-a="photo" data-m="${m}" aria-label="צלם ${n}">${IC.cam}</button><button class="mb" data-a="copy" data-m="${m}" aria-label="כמו אתמול" title="כמו אתמול">${IC.copy}</button></h2></div>`;
@@ -10131,7 +10189,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=34;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=35;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10145,16 +10203,17 @@ function updCard(){if(!isApk())return `<div class="card"><h2>עדכונים</h2>
  else if(i)body='<p class="small" style="color:var(--mango-d);margin:0">יש לך את הגרסה האחרונה.</p>';
  return `<div class="card" id="updCard"><h2>עדכונים</h2>${body}<div class="btns"><button class="btn ghost full" data-a="updCheck">חפש עדכון</button></div></div>`}
 function rUpd(){const el=$('#updCard');if(el)el.outerHTML=updCard()}
-function updCheck(quiet){if(!isApk()||UPD_BASE.indexOf('__')===0)return;UPD.quiet=!!quiet;if(!quiet){UPD.st='checking';rUpd()}UPD.k=0;UPD.errs=[];updTry()}
+function updCheck(quiet){if(!isApk()||UPD_BASE.indexOf('__')===0)return;UPD.last=Date.now();UPD.quiet=!!quiet;if(!quiet){UPD.st='checking';rUpd()}UPD.k=0;UPD.errs=[];updTry()}
 const UPD_SRC=['https://api.github.com/repos/amirevgi32-cell/kalil-app/contents/version.json?ref=main','https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/version.json','https://cdn.jsdelivr.net/gh/amirevgi32-cell/kalil-app@main/version.json'];
 function updTry(){try{KalilNative.checkUpdate(UPD_SRC[UPD.k])}catch(e){UPD.st='err';UPD.errs=[String(e)];rUpd()}}
 window.__upd=(err,txt)=>{if(err){(UPD.errs=UPD.errs||[]).push(String(err).slice(0,120));if(UPD.k<UPD_SRC.length-1){UPD.k++;updTry();return}UPD.st=UPD.quiet?'':'err';rUpd();return}try{let j=JSON.parse(txt);if(j&&j.content)j=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g,'')))));UPD.info=j;UPD.st='';if(UPD.heal&&j&&j.html>=appVer().html&&j.html>APPV){UPD.heal=false;toast('משלים עדכון...');try{sessionStorage.setItem('kl_in','1');KalilNative.updateHtml(j.url||UPD_BASE+'index.html',j.html)}catch(e){}return}}catch(e){UPD.st='err'}rUpd();const v=appVer(),i=UPD.info;
  if(i&&(i.apk>v.apk||i.html>Math.min(v.html,APPV))){if(UPD.quiet)updPrompt()}else if(!UPD.quiet)toast('יש לך את הגרסה האחרונה')};
-function updPrompt(n){n=n||0;if(n>120)return;if($('#splash')||$('#sheet').classList.contains('open'))return setTimeout(()=>updPrompt(n+1),1000);const i=UPD.info;if(!i)return;const apk=i.apk>appVer().apk;
- sfx('coin');openSheet(`<div style="text-align:center;padding-top:6px"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">יש עדכון חדש!</h2>${i.notes?`<p class="muted" style="margin:0 0 12px;line-height:1.6">${esc(i.notes)}</p>`:''}</div><div id="updGo"><button class="btn lime full" data-a="updNow">${apk?'הורד והתקן':'עדכן עכשיו'}</button><button class="btn ghost full" data-a="close" style="margin-top:10px">אחר כך</button>${apk?'<p class="small muted" style="text-align:center">אנדרואיד יבקש לאשר את ההתקנה. הנתונים נשמרים.</p>':'<p class="small muted" style="text-align:center">לוקח כמה שניות. הנתונים שלך נשמרים.</p>'}</div>`)}
+function updPrompt(n){n=n||0;if(n>120)return;if(UPD.info&&UPD.later===UPD.info.html+'/'+UPD.info.apk)return;if($('#splash')||$('#sheet').classList.contains('open'))return setTimeout(()=>updPrompt(n+1),1000);const i=UPD.info;if(!i)return;const apk=i.apk>appVer().apk;
+ sfx('coin');openSheet(`<div style="text-align:center;padding-top:6px"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">יש עדכון חדש!</h2>${i.notes?`<p class="muted" style="margin:0 0 12px;line-height:1.6">${esc(i.notes)}</p>`:''}</div><div id="updGo"><button class="btn lime full" data-a="updNow">${apk?'הורד והתקן':'עדכן עכשיו'}</button><button class="btn ghost full" data-a="updLater" style="margin-top:10px">אחר כך</button>${apk?'<p class="small muted" style="text-align:center">אנדרואיד יבקש לאשר את ההתקנה. הנתונים נשמרים.</p>':'<p class="small muted" style="text-align:center">לוקח כמה שניות. הנתונים שלך נשמרים.</p>'}</div>`)}
 window.__updErr=e=>{try{sessionStorage.removeItem('kl_in')}catch(_){}try{sessionStorage.removeItem('kl_new')}catch(_){}{const g=$('#updGo');if(g)g.innerHTML='<p style="color:var(--red);text-align:center">העדכון נכשל. בדוק אינטרנט ונסה שוב.</p><button class="btn lime full" data-a="updNow">נסה שוב</button>'}UPD.st='err';rUpd();toast('העדכון נכשל. נסה שוב')};
 setTimeout(()=>{try{if(isApk()&&appVer().html>APPV&&!sessionStorage.getItem('kl_heal')){sessionStorage.setItem('kl_heal','1');UPD.quiet=true;UPD.heal=true;KalilNative.checkUpdate('https://api.github.com/repos/amirevgi32-cell/kalil-app/contents/version.json?ref=main')}}catch(e){}},1500);
 setTimeout(()=>{if(isApk()&&!sessionStorage.getItem('kl_chk')){try{sessionStorage.setItem('kl_chk','1')}catch(_){}updCheck(true)}},2500);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&isApk()&&Date.now()-(UPD.last||0)>90000)updCheck(true)});
 setTimeout(()=>{try{const n=sessionStorage.getItem('kl_new');if(n){sessionStorage.removeItem('kl_new');showUndoMsg('קליל עודכן! '+n)}}catch(_){}},1800);
 
 /* ===== גיליונות ===== */
@@ -10359,7 +10418,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  homeOk:b=>confirmHome(b.dataset.add==='1'),homeNo:()=>{HM.res=null;closeSheet();toast('לא נרשם. מחר זה היום שלך!')},
  homeBeat:()=>{SND.beat?beatStop():beatStart();showHome()},homeEnd:()=>finishHome(false),box:openBox,journey:openJourney,
  wear:b=>{if(b.dataset.a!=='wear')return;S.acc=b.dataset.id||null;saveState();render();toast(S.acc?'אבוקי התלבש!':'אבוקי בלי אביזרים')},
- quick:openQuick,dscore:openDScore,updNow:()=>{const i=UPD.info;if(!i)return;try{sessionStorage.setItem('kl_new',i.notes||'')}catch(_){}const g=$('#updGo');if(g)g.innerHTML='<div class="spin" style="margin:10px auto"></div><p class="muted" style="text-align:center">מוריד ומעדכן...</p>';if(i.apk>appVer().apk)act.updApk();else act.updHtml()},fdo:b=>{FR.retro=+b.dataset.r;FR.q='';if(!FR.retro&&S.free)return openFreeLive();if(!FR.retro)wkPreview();openFreeCfg(b.dataset.id,b.dataset.sp?{sp:+b.dataset.sp}:null)},fq2:b=>{FR.q='';openFreeCfg(b.dataset.id)},mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
+ quick:openQuick,tipNext:b=>{V.tipOff=(V.tipOff||0)+1;sfx('tap');const c=b.closest('.tipc');if(c)c.outerHTML=tipCard()},updLater:()=>{const i=UPD.info;if(i)UPD.later=i.html+'/'+i.apk;closeSheet()},dscore:openDScore,updNow:()=>{const i=UPD.info;if(!i)return;try{sessionStorage.setItem('kl_new',i.notes||'')}catch(_){}const g=$('#updGo');if(g)g.innerHTML='<div class="spin" style="margin:10px auto"></div><p class="muted" style="text-align:center">מוריד ומעדכן...</p>';if(i.apk>appVer().apk)act.updApk();else act.updHtml()},fdo:b=>{FR.retro=+b.dataset.r;FR.q='';if(!FR.retro&&S.free)return openFreeLive();if(!FR.retro)wkPreview();openFreeCfg(b.dataset.id,b.dataset.sp?{sp:+b.dataset.sp}:null)},fq2:b=>{FR.q='';openFreeCfg(b.dataset.id)},mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
  qwater:b=>{act.water(b);const day=getDayLocal(V.date),e=$('#qwv');if(e)e.textContent=(day.water||0).toLocaleString('he-IL')+' / '+waterGoal().toLocaleString('he-IL')+' מ״ל'},
  qplan:b=>{S.fast.plan=+b.dataset.h;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
  qfast:()=>{const v=($('#sheetIn #fStart')||{}).value||'';document.querySelectorAll('#fStart').forEach(x=>x.value=v);act.fastStart();closeSheet()},qfastEnd:()=>{closeSheet();act.fastEnd()},
