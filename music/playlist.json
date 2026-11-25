@@ -1,7 +1,7 @@
 {
- "updated": "2026-11-25",
+ "updated": "2026-11-25b",
  "rotateDays": 3,
- "workoutPerRotation": 8,
+ "workoutPerRotation": 12,
  "bg": [
   {
    "f": "soft-gold-sky",
@@ -30,68 +30,120 @@
  ],
  "workout": [
   {
-   "f": "x-076c1d",
+   "f": "x-fe0be5",
    "t": "Power Mix 01"
   },
   {
-   "f": "x-0edd59",
+   "f": "x-c94056",
    "t": "Power Mix 02"
   },
   {
-   "f": "x-261059",
+   "f": "x-6f19c2",
    "t": "Power Mix 03"
   },
   {
-   "f": "x-2b35cc",
+   "f": "x-f1de31",
    "t": "Power Mix 04"
   },
   {
-   "f": "x-30db57",
+   "f": "x-634163",
    "t": "Power Mix 05"
   },
   {
-   "f": "x-485c23",
+   "f": "x-697e27",
    "t": "Power Mix 06"
   },
   {
-   "f": "x-49e672",
+   "f": "x-a0192b",
    "t": "Power Mix 07"
   },
   {
-   "f": "x-4a2653",
+   "f": "x-65a046",
    "t": "Power Mix 08"
   },
   {
-   "f": "x-5c72fc",
+   "f": "x-9ccab2",
    "t": "Power Mix 09"
   },
   {
-   "f": "x-6f85ef",
+   "f": "x-847a4a",
    "t": "Power Mix 10"
   },
   {
-   "f": "x-7a7fe2",
+   "f": "x-a5f8e9",
    "t": "Power Mix 11"
   },
   {
-   "f": "x-bd4dd8",
+   "f": "x-6b1339",
    "t": "Power Mix 12"
   },
   {
-   "f": "x-cb39d4",
+   "f": "x-9f0088",
    "t": "Power Mix 13"
   },
   {
-   "f": "x-cbab25",
+   "f": "x-ba9d4f",
    "t": "Power Mix 14"
   },
   {
-   "f": "x-challenge",
+   "f": "x-77714d",
    "t": "Power Mix 15"
   },
   {
-   "f": "x-d63123",
+   "f": "x-dba2c0",
    "t": "Power Mix 16"
+  },
+  {
+   "f": "x-ef1eec",
+   "t": "Power Mix 17"
+  },
+  {
+   "f": "x-417fa9",
+   "t": "Power Mix 18"
+  },
+  {
+   "f": "x-d32cba",
+   "t": "Power Mix 19"
+  },
+  {
+   "f": "x-076c1d",
+   "t": "Power Mix 20"
+  },
+  {
+   "f": "x-485c23",
+   "t": "Power Mix 21"
+  },
+  {
+   "f": "x-49e672",
+   "t": "Power Mix 22"
+  },
+  {
+   "f": "x-4a2653",
+   "t": "Power Mix 23"
+  },
+  {
+   "f": "x-5c72fc",
+   "t": "Power Mix 24"
+  },
+  {
+   "f": "x-6f85ef",
+   "t": "Power Mix 25"
+  },
+  {
+   "f": "x-bd4dd8",
+   "t": "Power Mix 26"
+  },
+  {
+   "f": "x-cbab25",
+   "t": "Power Mix 27"
+  },
+  {
+   "f": "x-challenge",
+   "t": "Power Mix 28"
+  },
+  {
+   "f": "x-d63123",
+   "t": "Power Mix 29"
   }
  ]
 }

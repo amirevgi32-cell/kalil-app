@@ -223,6 +223,9 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .sp-bg i:nth-child(1){width:90px;height:90px;left:8%;top:12%}.sp-bg i:nth-child(2){width:40px;height:40px;right:12%;top:20%;animation-duration:7s}.sp-bg i:nth-child(3){width:140px;height:140px;right:-30px;bottom:18%;animation-duration:12s}
 .sp-bg i:nth-child(4){width:24px;height:24px;left:20%;bottom:12%;animation-duration:6s}.sp-bg i:nth-child(5){width:60px;height:60px;left:-10px;top:55%;animation-duration:10s}.sp-bg i:nth-child(6){width:30px;height:30px;right:30%;top:6%;animation-duration:8s}
 @keyframes spFloat{50%{transform:translateY(-26px) scale(1.1)}}
+.freec{border-color:rgba(255,138,101,.45)}.fburn{display:grid;grid-template-columns:1.4fr 1fr;align-items:end;text-align:center;gap:8px}.flame svg{width:30px;height:30px;color:var(--pink);animation:bob 1s ease-in-out infinite}
+.flive{text-align:center}input[type=range]{accent-color:var(--pink);min-height:36px}
+.chip svg{width:18px;height:18px;vertical-align:middle}
 .hide{display:none!important}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -9408,7 +9411,7 @@ function viewToday(){const day=getDayLocal(V.date),c=calc(),t=dayTotals(day),ex=
 <div class="ringwrap"><div class="side"><b>${r0(t.k)}</b>נאכל</div><div class="ring"><svg viewBox="0 0 100 100"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ec4a0"/><stop offset="1" stop-color="#7dd35a"/></linearGradient></defs><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="9"/>
 <circle class="glow" cx="50" cy="50" r="${R}" fill="none" style="color:${over?'#ff8a65':'#2ec4a0'};transition:stroke-dasharray .8s cubic-bezier(.2,1.2,.4,1)" stroke="${over?'#ff8a65':'url(#rg)'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C*pct} ${C}" transform="rotate(-90 50 50)"/></svg>
 <div class="c"><span class="big" style="color:${over?'var(--pink)':'var(--ink)'}">${r0(Math.abs(left))}</span><span class="lbl">${over?'קק״ל מעל':'קק״ל נותרו'}</span></div></div><div class="side"><b>${r0(ex)}</b>פעילות</div></div>
-${S.act?`<div style="text-align:center"><button class="chipf" data-a="tracker" style="background:var(--lime2);color:#4f9a2e;border-color:#bfe5a8">פעילות פעילה · <span id="actChip" dir="ltr">${fmtHMS(actElapsed())}</span></button></div>`:''}<div style="text-align:center"><button class="chipf stpill" data-a="stepsGo">${IC.foot} <b id="heroSt">${(day.steps||0).toLocaleString('he-IL')}</b>&nbsp;/ ${stepGoal().toLocaleString('he-IL')} צעדים${isT&&stepSrc()!=='ידני'?' · '+stepSrc():''}</button></div>
+${S.free?`<div style="text-align:center"><button class="chipf" data-a="free" style="background:var(--pink2)">${IC.fire} אימון פעיל · <span id="frChip" dir="ltr">${fmtHMS(freeSec())}</span></button></div>`:''}${S.act?`<div style="text-align:center"><button class="chipf" data-a="tracker" style="background:var(--lime2);color:#4f9a2e;border-color:#bfe5a8">פעילות פעילה · <span id="actChip" dir="ltr">${fmtHMS(actElapsed())}</span></button></div>`:''}<div style="text-align:center"><button class="chipf stpill" data-a="stepsGo">${IC.foot} <b id="heroSt">${(day.steps||0).toLocaleString('he-IL')}</b>&nbsp;/ ${stepGoal().toLocaleString('he-IL')} צעדים${isT&&stepSrc()!=='ידני'?' · '+stepSrc():''}</button></div>
 ${S.fast.start?`<div style="text-align:center"><button class="chipf" data-a="tab" data-t="fast">${IC.moon} בצום · <span id="fChip" dir="ltr">${fmtH(fastElapsed())}</span></button></div>`:''}
 <div class="bubble">${avoki(mood)}<span>${msg}</span></div></div>
 <div class="wrap"><div class="quick"><button class="qa" data-a="photo" style="color:var(--pink)">${IC.cam}<span>צלם צלחת</span></button><button class="qa" data-a="tell" style="color:var(--gold)">${IC.chat}<span>ספר מה אכלת</span></button><button class="qa" data-a="water" data-ml="250" style="color:var(--blue)">${IC.drop}<span>שתיתי כוס</span></button><button class="qa" data-a="tab" data-t="fast" style="color:var(--lime)">${IC.moon}<span>${S.fast.start?'בצום':'התחל צום'}</span></button></div>
@@ -9437,8 +9440,8 @@ function viewGoals(){const p=S.profile,c=calc(),tr=trend();const done=Math.max(0
 <div class="small" style="opacity:.85">עוד ${r1(c.left)} ק״ג · כ-${Math.ceil(c.weeks)} שבועות · ${r1(c.weekly)} ק״ג לשבוע</div>`:`<div class="d">הגעת ליעד!</div><div class="small">עכשיו שומרים. אפשר לעדכן יעד חדש בפרופיל.</div>`}
 <div class="prog"><i style="width:${done*100}%"></i></div><div class="small" style="display:flex;justify-content:space-between"><span>התחלה ${r1(p.w0)}</span><span>עכשיו ${r1(c.w)}</span><span>יעד ${r1(p.goal)}</span></div>
 ${eta2?`<div class="small" style="margin-top:8px;opacity:.85">לפי השקילות בפועל (${r1(tr)} ק״ג לשבוע): ${heDate(eta2,{day:'numeric',month:'long',year:'numeric'})}</div>`:''}</div>
-<div class="card"><h2>שקילה <span class="sp"></span></h2><div class="step"><input type="number" id="wIn" inputmode="decimal" step="0.1" value="${r1(c.w)}" aria-label="משקל בק״ג"><button class="btn" data-a="weigh" style="width:auto;flex:none">שמור</button></div>
-<div class="fig" id="wFig" style="margin-top:12px"><svg id="wSvg"></svg></div>${c.w>p.w0&&diffDays(p.start||today(),today())<=21?`<p class="small" style="color:var(--pink);margin:6px 0 0">המשקל גבוה ממשקל ההתחלה (${r1(p.w0)}). אם משקל ההתחלה הוזן בהערכה, <button class="small" data-a="fixW0" style="color:var(--mango-d);text-decoration:underline;min-height:32px">קבע את ${r1(c.w)} כמשקל ההתחלתי</button>.</p>`:''}</div>
+<div class="card"><h2>שקילה <span class="sp"></span><button class="chip" data-a="wbig" style="font-size:14px">${IC.chart} הגדל גרף ושינויים</button></h2><div class="step"><input type="number" id="wIn" inputmode="decimal" step="0.1" value="${r1(c.w)}" aria-label="משקל בק״ג"><button class="btn" data-a="weigh" style="width:auto;flex:none">שמור</button></div>
+<div class="fig" id="wFig" style="margin-top:12px;cursor:zoom-in" data-a="wbig"><svg id="wSvg"></svg></div>${c.w>p.w0&&diffDays(p.start||today(),today())<=21?`<p class="small" style="color:var(--pink);margin:6px 0 0">המשקל גבוה ממשקל ההתחלה (${r1(p.w0)}). אם משקל ההתחלה הוזן בהערכה, <button class="small" data-a="fixW0" style="color:var(--mango-d);text-decoration:underline;min-height:32px">קבע את ${r1(c.w)} כמשקל ההתחלתי</button>.</p>`:''}</div>
 <div class="card"><h2>התקציב שלי</h2><div class="statgrid"><div class="stat"><small>תקציב יומי</small><b>${c.budget} קק״ל</b></div><div class="stat"><small>שריפה יומית משוערת</small><b>${r0(c.tdee)} קק״ל</b></div>
 <div class="stat"><small>חילוף חומרים במנוחה</small><b>${r0(c.bmr)} קק״ל</b></div><div class="stat"><small>BMI</small><b>${r1(c.bmi)}</b> <span class="small muted">${bmiTxt}</span></div></div>
 ${c.floored?`<p class="small muted">התקציב לא יורד מתחת ל-${p.sex==='m'?1500:1200} קק״ל ביום, כדי לשמור על בריאות ואנרגיה. לכן הקצב בפועל איטי מעט מהקצב שבחרת.</p>`:''}<p class="small muted">חישוב לפי נוסחת מיפלין–סן ז׳ור. כל קילו שומן ≈ 7,700 קק״ל.</p></div>
@@ -9484,6 +9487,49 @@ function drawWeight(){const s=$('#wSvg');if(!s)return;const draw=()=>{const W=s.
  for(let i=0;i<3;i++){const v=lo+(hi-lo)*i/2;g+=`<text x="${W-2}" y="${Y(v)+4}" font-size="12" fill="var(--mute)" text-anchor="end" direction="ltr">${r1(v)}</text>`}
  g+=`<text x="${W-Rr}" y="${H-6}" font-size="12" fill="var(--mute)" text-anchor="end">${heDate(d0,{day:'numeric',month:'numeric'})}</text><text x="${L}" y="${H-6}" font-size="12" fill="var(--mute)" text-anchor="start">${heDate(dEnd,{day:'numeric',month:'numeric',year:'2-digit'})}</text>`;
  s.innerHTML=g};draw();if(drawWeight.ro)drawWeight.ro.disconnect();drawWeight.ro=new ResizeObserver(draw);drawWeight.ro.observe(s)}
+
+/* ===== גרף התקדמות מוגדל + שינויים בכל שקילה ===== */
+const WB={r:'all',z:1,sel:-1};
+function wSorted(){return S.weights.slice().sort((a,b)=>a.d<b.d?-1:1)}
+function openWBig(){WB.sel=-1;openSheet(`${shTop('גרף ההתקדמות')}
+<div class="seg" style="margin-bottom:8px">${[['m','חודש'],['q','3 חודשים'],['all','הכל'],['f','עם תחזית']].map(([k,n])=>`<button data-a="wbR" data-r="${k}" class="${WB.r===k?'on':''}">${n}</button>`).join('')}</div>
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="small muted" style="flex:1">לחץ על נקודה כדי לראות את השינוי</span><button class="chip" data-a="wbZ" data-d="-1" aria-label="הקטן">−</button><span class="small" id="wbZv" style="min-width:34px;text-align:center">×${WB.z}</span><button class="chip" data-a="wbZ" data-d="1" aria-label="הגדל">+</button></div>
+<div id="wbScroll" style="overflow-x:auto;direction:ltr;border-radius:14px;background:var(--card2,rgba(0,0,0,.03))"><svg id="wbSvg" style="display:block;height:320px"></svg></div>
+<div id="wbTip" class="card" style="margin:8px 0;text-align:center;min-height:54px"></div>
+<div id="wbStats"></div>
+<h2 style="margin:16px 0 4px">השינוי בכל שקילה</h2><p class="small muted" style="margin:0 0 6px">ירוק: ירידה מהשקילה הקודמת. אדום: עלייה.</p>
+<div id="wbDelta" style="overflow-x:auto;direction:ltr"><svg id="wbDs" style="display:block;height:170px"></svg></div>
+<div id="wbList" style="margin-top:10px"></div>`);wbDraw()}
+function wbData(){const all=wSorted(),t=today();let from=null;if(WB.r==='m')from=addDays(t,-30);else if(WB.r==='q')from=addDays(t,-91);
+ const pts=all.map((x,i)=>Object.assign({i,prev:i?all[i-1]:null},x)).filter(x=>!from||x.d>=from);return{all,pts}}
+function wbDraw(){const svg=$('#wbSvg');if(!svg)return;const box=$('#wbScroll'),p=S.profile,c=calc(),{all,pts}=wbData();const t=today();
+ const W=Math.max(300,(box.clientWidth||340)*WB.z),H=320;svg.style.width=W+'px';svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+ if(!pts.length){svg.innerHTML=`<text x="${W/2}" y="${H/2}" text-anchor="middle" fill="var(--mute)" font-size="15">אין עדיין שקילות בטווח הזה</text>`;wbExtras(all);return}
+ const eta=c.weeks?addDays(t,Math.ceil(c.weeks*7)):t,fc=WB.r==='f'&&c.left>0;const d0=pts[0].d;let dEnd=pts[pts.length-1].d;if(dEnd<t)dEnd=t;if(fc&&eta>dEnd)dEnd=eta;
+ const span=Math.max(6,diffDays(d0,dEnd));const vals=pts.map(x=>x.w);if(fc||WB.r==='all')vals.push(p.goal);const lo=Math.floor(Math.min(...vals)-1),hi=Math.ceil(Math.max(...vals)+1);
+ const L=46,R=18,T=22,B=34,X=d=>L+(diffDays(d0,d)/span)*(W-L-R),Y=v=>T+(hi-v)/(hi-lo)*(H-T-B);let g='';
+ const step=(hi-lo)<=6?1:(hi-lo)<=14?2:5;for(let v=Math.ceil(lo/step)*step;v<=hi;v+=step)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${Y(v)+4}" font-size="12" fill="var(--mute)" text-anchor="end">${v}</text>`;
+ const nT=Math.max(2,Math.min(12,Math.round(W/90)));for(let i=0;i<=nT;i++){const d=addDays(d0,Math.round(span*i/nT));g+=`<text x="${X(d)}" y="${H-10}" font-size="11" fill="var(--mute)" text-anchor="middle">${heDate(d,{day:'numeric',month:'numeric'})}</text>`}
+ if(p.goal>=lo&&p.goal<=hi)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(p.goal)}" y2="${Y(p.goal)}" stroke="var(--lime)" stroke-width="2" stroke-dasharray="6 5"/><text x="${W-R}" y="${Y(p.goal)-6}" font-size="12" fill="var(--lime)" text-anchor="end">יעד ${r1(p.goal)}</text>`;
+ if(fc)g+=`<line x1="${X(t)}" y1="${Y(c.w)}" x2="${X(eta)}" y2="${Y(p.goal)}" stroke="var(--mute)" stroke-width="2" stroke-dasharray="2 5"/><text x="${X(eta)}" y="${Y(p.goal)+18}" font-size="11" fill="var(--mute)" text-anchor="end">${heDate(eta,{day:'numeric',month:'short'})}</text>`;
+ const line=pts.map(x=>X(x.d)+','+Y(x.w)).join(' ');
+ g+=`<polygon points="${X(pts[0].d)},${H-B} ${line} ${X(pts[pts.length-1].d)},${H-B}" fill="var(--mango)" opacity=".10"/><polyline fill="none" stroke="var(--mango)" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" points="${line}"/>`;
+ g+=pts.map((x,k)=>{const on=x.i===WB.sel;return `<circle cx="${X(x.d)}" cy="${Y(x.w)}" r="${on?8:5.5}" fill="${on?'var(--mango)':'var(--card)'}" stroke="var(--mango)" stroke-width="3"/><circle data-a="wbP" data-i="${x.i}" cx="${X(x.d)}" cy="${Y(x.w)}" r="18" fill="transparent" style="cursor:pointer"/>`}).join('');
+ if(WB.sel>=0){const x=all[WB.sel];if(x&&pts.some(q=>q.i===WB.sel))g+=`<text x="${X(x.d)}" y="${Y(x.w)-14}" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="middle">${r1(x.w)}</text>`}
+ svg.innerHTML=g;if(WB.sel<0)box.scrollLeft=box.scrollWidth;wbExtras(all)}
+function wbExtras(all){const p=S.profile,tip=$('#wbTip');
+ if(tip){const x=all[WB.sel];if(!x)tip.innerHTML=`<span class="small muted">${all.length} שקילות · מתחילת הדרך: <b style="color:${all.length&&all[all.length-1].w<=p.w0?'var(--lime)':'var(--red)'}">${all.length?sgn(all[all.length-1].w-p.w0):'–'} ק״ג</b></span>`;
+  else{const pv=WB.sel?all[WB.sel-1]:null,dd=pv?x.w-pv.w:0,days=pv?diffDays(pv.d,x.d):0;tip.innerHTML=`<b style="font-size:18px">${heDate(x.d,{weekday:'long',day:'numeric',month:'long'})}: ${r1(x.w)} ק״ג</b><div class="small">${pv?`<span style="color:${dd<=0?'var(--lime)':'var(--red)'};font-weight:700">${sgn(dd)} ק״ג</span> מהשקילה הקודמת (לפני ${days} ימים)`:'השקילה הראשונה'} · <span style="color:${x.w<=p.w0?'var(--lime)':'var(--red)'};font-weight:700">${sgn(x.w-p.w0)} ק״ג</span> מההתחלה</div>`}}
+ const st=$('#wbStats');if(st&&all.length){const last=all[all.length-1],wkAgo=all.filter(x=>x.d<=addDays(today(),-7)).pop(),moAgo=all.filter(x=>x.d<=addDays(today(),-30)).pop(),min=Math.min(...all.map(x=>x.w));
+  st.innerHTML=`<div class="statgrid"><div class="stat"><small>שבוע אחרון</small><b>${wkAgo?sgn(last.w-wkAgo.w):'–'}</b></div><div class="stat"><small>חודש אחרון</small><b>${moAgo?sgn(last.w-moAgo.w):'–'}</b></div><div class="stat"><small>מההתחלה</small><b>${sgn(last.w-p.w0)}</b></div><div class="stat"><small>הנמוך ביותר</small><b>${r1(min)}</b></div></div>`}
+ const ds=$('#wbDs');if(ds){const D=all.slice(1).map((x,i)=>({d:x.d,v:x.w-all[i].w,i:i+1}));const bw=34,W=Math.max(($('#wbDelta').clientWidth||320),D.length*bw+50),H=170,M=Math.max(.5,...D.map(x=>Math.abs(x.v))),mid=H/2-6,sc=(H/2-30)/M;
+  ds.style.width=W+'px';ds.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  ds.innerHTML=D.length?`<line x1="20" x2="${W-10}" y1="${mid}" y2="${mid}" stroke="var(--line)" stroke-width="2"/>`+D.map((x,k)=>{const cx=30+k*bw,h=Math.max(2,Math.abs(x.v)*sc),up=x.v>0,on=x.i===WB.sel;
+   return `<g data-a="wbP" data-i="${x.i}" style="cursor:pointer"><rect x="${cx}" y="${up?mid-h:mid}" width="${bw-10}" height="${h}" rx="5" fill="${up?'var(--red)':'var(--lime)'}" opacity="${on||WB.sel<0?1:.45}"/><text x="${cx+(bw-10)/2}" y="${up?mid-h-5:mid+h+13}" font-size="10" text-anchor="middle" fill="var(--ink)">${sgn(x.v)}</text><text x="${cx+(bw-10)/2}" y="${H-4}" font-size="9" text-anchor="middle" fill="var(--mute)">${heDate(x.d,{day:'numeric',month:'numeric'})}</text><rect x="${cx-3}" y="0" width="${bw-4}" height="${H}" fill="transparent"/></g>`}).join('')
+   :`<text x="${W/2}" y="${H/2}" text-anchor="middle" fill="var(--mute)" font-size="14">אחרי השקילה השנייה יופיעו כאן השינויים</text>`;$('#wbDelta').scrollLeft=$('#wbDelta').scrollWidth}
+ const li=$('#wbList');if(li)li.innerHTML=all.slice().reverse().map(x=>{const i=all.indexOf(x),pv=i?all[i-1]:null,dd=pv?x.w-pv.w:null;
+  return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)"><span style="flex:1"><b>${r1(x.w)} ק״ג</b> <span class="small muted">${heDate(x.d,{weekday:'short',day:'numeric',month:'numeric',year:'2-digit'})}</span></span>${dd!=null?`<span style="font-weight:700;color:${dd<=0?'var(--lime)':'var(--red)'}">${dd<0?'▼':dd>0?'▲':'●'} ${r1(Math.abs(dd))}</span>`:'<span class="small muted">ראשונה</span>'}<button class="chip" data-a="wbDel" data-d="${x.d}" aria-label="מחק שקילה" style="color:var(--red)">${IC.trash}</button></div>`}).join('')}
+function sgn(v){v=Math.round(v*10)/10;return '\u200E'+(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1)}
 
 function viewAwards(){const lv=level(),st=streak();const got=BADGES.filter(b=>S.badges[b[0]]).length;
  const medal=(on,i)=>`<svg viewBox="0 0 60 60"><path d="M20 4h8l4 14-8 4zM40 4h-8l-4 14 8 4z" fill="${on?['#e8484a','#3a9cf5','#7cc63e'][i%3]:'#bbb'}"/><circle cx="30" cy="36" r="18" fill="${on?'#f5b82e':'#ccc'}"/><circle cx="30" cy="36" r="13" fill="${on?'#ffd66b':'#ddd'}"/><path d="M30 28l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="${on?'#e2601a':'#aaa'}"/></svg>`;
@@ -9656,7 +9702,7 @@ function actStats(){const a=S.act,T=ACTT[a.ti],sec=actElapsed(),h=sec/3600,w=cur
  const km=T[2]?steps*(S.profile.h/100)*T[3]/1000:(T[0]==='אופניים'?16*h:0);return{sec,steps,est,km,kcal:T[1]*w*h,pace:km>.05?sec/60/km:0}}
 const fmtHMS=x=>{x=Math.floor(x);const h=Math.floor(x/3600),m=Math.floor(x/60)%60,s=x%60;return (h?h+':'+String(m).padStart(2,'0'):m)+':'+String(s).padStart(2,'0')};
 let TRK=0;
-function openTracker(){clearInterval(TRK);const a=S.act;
+function openTracker(){clearInterval(TRK);const a=S.act;if(!a)wkPreview();
  if(!a){const sel=S.actPref||{ti:1,min:30};openSheet(`${shTop('טיימר פעילות')}<p class="muted" style="margin-top:0">בוחרים פעילות ויעד זמן. הטיימר מחשב צעדים, מרחק, קלוריות וקצב, וממשיך לרוץ גם כשיוצאים מהאפליקציה.</p>
 <label class="f"><span>סוג פעילות</span><div class="seg">${ACTT.map((t,i)=>`<button data-a="trkT" data-i="${i}" class="${i===sel.ti?'on':''}">${t[0]}</button>`).join('')}</div></label>
 <label class="f"><span>יעד זמן (דקות)</span><div class="seg">${[10,20,30,45,60,90].map(m=>`<button data-a="trkM" data-m="${m}" class="${m===sel.min?'on':''}">${m}</button>`).join('')}</div></label>
@@ -9680,14 +9726,27 @@ function endTracker(save){const a=S.act;if(!a)return;clearInterval(TRK);beatStop
 /* ===== טאבאטה ===== */
 function tbDef(){return{work:20,rest:10,rounds:8,sets:1,setRest:60,ex:['squat','kneepu','climber','plankK']}}
 function tbTotal(T){return 4*30+T.sets*T.rounds*(T.work+T.rest)+(T.sets-1)*T.setRest+3*30}
-function openTabata(){const T=S.tab=S.tab||tbDef(),L=fitLv();const row=(k,n,u)=>`<div style="display:flex;align-items:center;gap:10px;padding:6px 0"><span style="flex:1">${n}</span><div class="step" style="width:180px"><button data-a="tbx" data-k="${k}" data-d="-1" aria-label="פחות">−</button><input type="text" readonly value="${T[k]}${u}" aria-label="${n}"><button data-a="tbx" data-k="${k}" data-d="1" aria-label="יותר">+</button></div></div>`;
- openSheet(`${shTop('תכנון טאבאטה')}<p class="muted" style="margin-top:0">טאבאטה: פרצים קצרים ועצימים עם מנוחה קצרה. הקלאסי הוא 20 שניות עבודה, 10 שניות מנוחה, 8 סבבים, כלומר 4 דקות.</p>
+const FXT={runspot:['ריצה במקום','רוץ במקום על קצות האצבעות, ידיים מניפות לצד הגוף.','מעלה דופק מהר, אירובי בלי ציוד.','run'],highmarch:['צעידה גבוהה','הרם ברכיים לגובה האגן לסירוגין, בקצב מהיר.','ליבה, ירכיים ודופק.','march'],
+jack:['קפיצות פיסוק','קפוץ לפיסוק עם ידיים למעלה וחזור. גרסה שקטה: צעד הצידה במקום לקפוץ.','אירובי לכל הגוף.','jack'],punch:['אגרופים באוויר','עמידה יציבה, אגרופים ישרים לפנים לסירוגין, בטן אסופה.','כתפיים, זרועות ודופק.','punch'],
+buttkick:['עקבים לישבן','רוץ במקום ומשוך את העקב אל הישבן.','הארבע-ראשי האחורי ודופק.','buttkick'],sidestep:['צעדי צד','צעד רחב לצד וחזור, ידיים פתוחות.','ירכיים חיצוניות ואירובי.','sidestep'],
+kneetw:['ברך למרפק','הרם ברך אל המרפק הנגדי עם סיבוב קל של הגו.','בטן אלכסונית וקואורדינציה.','kneetw'],halfsq:['חצי סקוואט מהיר','ירידה קצרה לחצי סקוואט ועלייה מהירה.','רגליים חזקות ודופק.','halfsq']};
+function tbAll(){const o={};Object.keys(FX).forEach(k=>{if(k.length>1)o[k]=FX[k]});Object.assign(o,FXT);(S.myEx||[]).forEach(e=>o[e.id]=[e.n,'התרגיל שלך. בצע בקצב שלך ובטכניקה נכונה.','',null]);return o}
+function fxGet(id){const A=tbAll(),e=A[id]||[id,'','',null];return{n:e[0],d:e[1],b:e[2],fig:e[3]===undefined?id:e[3]}}
+function openTabata(){wkPreview();const T=S.tab=S.tab||tbDef(),L=fitLv(),A=tbAll();T.ex=(T.ex||[]).filter(id=>A[id]);const row=(k,n,u)=>`<div style="display:flex;align-items:center;gap:10px;padding:6px 0"><span style="flex:1">${n}</span><div class="step" style="width:180px"><button data-a="tbx" data-k="${k}" data-d="-1" aria-label="פחות">−</button><input type="text" readonly value="${T[k]}${u}" aria-label="${n}"><button data-a="tbx" data-k="${k}" data-d="1" aria-label="יותר">+</button></div></div>`;
+ const plan=[];if(T.ex.length)for(let r=0;r<T.rounds;r++)plan.push(A[T.ex[r%T.ex.length]][0]);
+ openSheet(`${shTop('תכנון טאבאטה ואינטרוולים')}<p class="muted" style="margin-top:0">פרצים קצרים ועצימים עם מנוחה קצרה. הקלאסי הוא 20 שניות עבודה, 10 שניות מנוחה, 8 סבבים, כלומר 4 דקות.</p>
 ${L<4?`<div class="card" style="margin-top:0;background:var(--pink2);border:0"><b>שים לב:</b> טאבאטה עצים מתאים בדרך כלל מרמה 4. עכשיו אתה ברמה ${L}, אז כדאי להתחיל בגרסה עדינה.<div class="btns"><button class="btn pink" data-a="tbGentle">החל גרסה עדינה (20/20 × 6)</button></div></div>`:''}
 ${row('work','שניות עבודה','')}${row('rest','שניות מנוחה','')}${row('rounds','סבבים בסט','')}${row('sets','סטים','')}${row('setRest','מנוחה בין סטים (שנ׳)','')}
-<label class="f"><span>תרגילים (מתחלפים בכל סבב)</span><div class="chips" style="flex-wrap:wrap">${Object.keys(FX).map(id=>`<button class="chip ${T.ex.includes(id)?'on':''}" data-a="tbEx" data-id="${id}">${FX[id][0]}</button>`).join('')}</div></label>
-<p style="text-align:center;font-size:18px">זמן כולל: <b>${fmtS(tbTotal(T))}</b> דקות, כולל חימום ומתיחות</p><button class="btn full" data-a="tbStart">התחל טאבאטה</button><p class="small muted">ההגדרות נשמרות לפעם הבאה.</p>`)}
-function buildTabata(){const T=S.tab||tbDef(),st=[];WARM.forEach(w=>st.push({n:'חימום: '+w[0],d:w[1],sec:30,k:'warm',fig:w[3]}));let i=0;
- for(let s=1;s<=T.sets;s++){for(let r=1;r<=T.rounds;r++){const id=T.ex[i++%T.ex.length];st.push({n:FX[id][0],d:'עבודה! '+FX[id][1],b:FX[id][2],sec:T.work,k:'ex',fig:id,lbl:'סט '+s+'/'+T.sets+' · סבב '+r+'/'+T.rounds});if(r<T.rounds||s<T.sets)st.push({n:r<T.rounds?'מנוחה':'מנוחה בין סטים',d:'נושמים עמוק.',sec:r<T.rounds?T.rest:T.setRest,k:'rest',fig:'breathe'})}}
+<div class="card" style="margin:10px 0"><h2 style="margin-bottom:4px">התרגילים שלך, לפי הסדר<span class="sp"></span><button class="chip" data-a="tbClr">נקה</button></h2><p class="small muted" style="margin:0 0 6px">לחץ על תרגיל מהמאגר כדי להוסיף אותו לסוף הרשימה. אפשר להוסיף אותו תרגיל כמה פעמים. ${T.ex.length<T.rounds?'יש פחות תרגילים מסבבים, אז הרשימה חוזרת מההתחלה.':''}</p>
+${T.ex.length?'':'<div class="empty" style="padding:10px">הרשימה ריקה. בחר תרגילים מהמאגר למטה.</div>'}${T.ex.map((id,i)=>`<div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--line)"><b style="min-width:26px;color:var(--pink)">${i+1}</b><span style="flex:1">${A[id][0]}</span>${i?`<button class="chip" data-a="tbUp" data-i="${i}" aria-label="הזז למעלה">▲</button>`:''}<button class="chip" data-a="tbDel" data-i="${i}" aria-label="הסר" style="color:var(--red)">✕</button></div>`).join('')}
+${T.ex.length!==T.rounds&&T.ex.length>=2&&T.ex.length<=12?`<button class="btn ghost full" style="margin-top:8px" data-a="tbFit">סבב אחד לכל תרגיל (${T.ex.length} סבבים)</button>`:''}</div>
+<label class="f"><span>מאגר תרגילים: לחץ להוספה</span><div class="chips" style="flex-wrap:wrap">${Object.keys(A).map(id=>`<button class="chip" data-a="tbEx" data-id="${id}">+ ${A[id][0]}</button>`).join('')}</div></label>
+<label class="f"><span>תרגיל משלך</span><div style="display:flex;gap:8px"><input type="text" id="tbNew" placeholder="למשל: ברפי, כפיפות בטן, חבל דמיוני" maxlength="30" style="flex:1"><button class="btn" data-a="tbAdd" style="min-width:auto;padding:0 16px">הוסף</button></div></label>
+${(S.myEx||[]).length?`<div class="small muted">התרגילים ששמרת: ${(S.myEx).map(e=>`<button class="chip" data-a="tbRm" data-id="${e.id}" aria-label="מחק ${e.n}">${e.n} ✕</button>`).join(' ')}</div>`:''}
+<div class="card" style="margin:10px 0"><b>תוכנית הסבבים</b><div class="small" style="margin-top:4px">${plan.length?plan.map((n,i)=>`${i+1}. ${n}`).join(' · '):'עדיין לא נבחרו תרגילים'}</div></div>
+<p style="text-align:center;font-size:18px">זמן כולל: <b>${fmtS(tbTotal(T))}</b> דקות, כולל חימום ומתיחות</p><button class="btn full" data-a="tbStart">התחל טאבאטה</button><p class="small muted">ההגדרות והתרגילים שלך נשמרים לפעם הבאה.</p>`)}
+function buildTabata(){const T=Object.assign({},S.tab||tbDef()),st=[];if(!T.ex||!T.ex.length)T.ex=tbDef().ex;WARM.forEach(w=>st.push({n:'חימום: '+w[0],d:w[1],sec:30,k:'warm',fig:w[3]}));let i=0;
+ for(let s=1;s<=T.sets;s++){for(let r=1;r<=T.rounds;r++){const id=T.ex[i++%T.ex.length],e=fxGet(id);st.push({n:e.n,d:'עבודה! '+e.d,b:e.b,sec:T.work,k:'ex',fig:e.fig,lbl:'סט '+s+'/'+T.sets+' · סבב '+r+'/'+T.rounds});if(r<T.rounds||s<T.sets)st.push({n:r<T.rounds?'מנוחה':'מנוחה בין סטים',d:'נושמים עמוק.',sec:r<T.rounds?T.rest:T.setRest,k:'rest',fig:'breathe'})}}
  STRETCH.slice(0,3).forEach(x=>st.push({n:'מתיחה: '+x[0],d:x[1],sec:x[2],k:'str',fig:x[3]}));return st}
 
 /* ===== צעדה בבית ===== */
@@ -9712,7 +9771,7 @@ function homeCard(){const day=getDayLocal(today()),st=day.steps||0,g=stepGoal(),
 <button class="jline" data-a="journey"><span>${IC.pin} ${JOURNEY[i][0]}</span><span>${nx?`עוד ${r1(nx[1]-km)} ק״מ ל${nx[0]}`:'סיימת את המסע!'}</span></button>
 ${ch?`<div class="chal">אתגר היום: <b>${ch.t}</b> · נקודות כפולות</div>`:''}
 <div class="btns"><button class="btn full hbtn" data-a="homeSetup">${IC.play} התחל צעדה</button></div></div>`}
-function openHomeSetup(){const H=S.homePref||{min:10,beat:true},rows=[[5,'הפסקת משרד'],[10,'צעדה קלה'],[20,'צעדה טובה'],[30,'חצי שעה של כוח'],[45,'מסע ערב'],[80,'אתגר 8,000 צעדים']];
+function openHomeSetup(){wkPreview();const H=S.homePref||{min:10,beat:true},rows=[[5,'הפסקת משרד'],[10,'צעדה קלה'],[20,'צעדה טובה'],[30,'חצי שעה של כוח'],[45,'מסע ערב'],[80,'אתגר 8,000 צעדים']];
  openSheet(`${shTop('צעדה בבית')}<div style="width:150px;margin:0 auto">${fig('march')}</div><p style="text-align:center;margin:4px 0 12px">כל דקה תנועה חדשה, בקצב צעידה טוב ויציב (כ-100 צעדים בדקה). הביט מכתיב את הקצב: צעד על כל פעימה. בסוף מחכה תיבת הפתעה.</p>
 ${rows.map(([m,n])=>`<button class="hopt ${H.min===m?'on':''}" data-a="hMin" data-m="${m}"><b>${m} דק׳</b><span>${n}</span><span class="muted">≈ ${(m*100).toLocaleString('he-IL')} צעדים</span></button>`).join('')}
 <div class="card" style="margin-top:12px;padding:12px 14px"><b>ספירת צעדים מדויקת</b>${hasNative()&&nativePerm()?'<p class="small" style="margin:4px 0 0;color:var(--mango-d)">הצעדים נספרים בפועל על ידי חיישן הצעדים של הטלפון. שים את הטלפון בכיס או החזק אותו ביד.</p>'
@@ -9733,7 +9792,7 @@ function buildHome(min){const seed=pd(today()).getDate(),mv=HMOVES.slice(seed%3)
  for(let i=1;i<min-1;i++){const m=mv[(i-1)%mv.length];if(min>=10&&i%3===0){seg.push({m,sec:40});seg.push({m:['march','האצה קלה!','20 שניות קצת יותר מהר, ואז חוזרים לקצב.',115],sec:20,sprint:1})}else seg.push({m,sec:60})}
  if(min>1)seg.push({m:['march','שחרור: צעידה איטית','מורידים קצב ונושמים עמוק.',90],sec:60});return seg}
 function openHome(){const H=S.homePref||{min:10,beat:true};HM.seg=buildHome(H.min);HM.i=0;HM.left=HM.seg[0].sec;HM.steps=0;HM.sens=0;HM.base=sensorNow();HM.mode=(S.homePref||{}).mode==='time'?'time':stepMode();HM.mot=0;HM.last=0;HM.idle=0;if(HM.mode==='motion')pedStart();HM.run=true;HM.fact=0;HM.min=H.min;HM.startDay=today();
- const ch=hs().chal;HM.bonus=!!(ch&&ch.d===today());if(H.beat)beatStart();showHome();clearInterval(HM.t);HM.t=setInterval(homeTick,1000)}
+ const ch=hs().chal;HM.bonus=!!(ch&&ch.d===today());if(H.beat)beatStart();else beatStop();SND.pre=0;showHome();clearInterval(HM.t);HM.t=setInterval(homeTick,1000)}
 function showHome(){const s=HM.seg[HM.i],nx=HM.seg[HM.i+1],tot=HM.seg.reduce((a,x)=>a+x.sec,0),done=HM.seg.slice(0,HM.i).reduce((a,x)=>a+x.sec,0)+(s.sec-HM.left),goal=HM.min*(HM.mode==='time'?80:100),R=46,C=2*Math.PI*R,p=Math.min(1,HM.steps/goal),day=getDayLocal(today());
  openSheet(`<div class="sh-top"><h3>${s.sprint?'האצה קלה':'צעדה בבית'}</h3><button class="x" data-a="homeEnd" aria-label="סיום">${IC.x}</button></div>
 <div class="hstage ${s.sprint?'spr':''}"><div class="fring" style="width:min(220px,58vw);margin:0 auto"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="7"/><circle id="hArc" cx="50" cy="50" r="${R}" fill="none" stroke="#ff8a65" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 50 50)"/></svg>
@@ -9786,12 +9845,14 @@ function openBox(){if(!HM.box)return;HM.box=false;const b=$('#mbox');if(b)b.clas
 function openJourney(){const km=journeyKm(),at=journeyAt(km);openSheet(`${shTop('המסע: ממטולה לאילת')}<p class="muted" style="margin-top:0">כל צעד שאתה עושה, בבית, בעבודה או בהליכה, מקדם אותך לאורך הארץ. עד עכשיו: <b>${r1(km)} ק״מ</b> מתוך ${JOURNEY[JOURNEY.length-1][1]}.</p>
 <div class="jlist">${JOURNEY.map((j,i)=>`<div class="jst ${i<=at?'ok':''} ${i===at?'now':''}"><span class="jd"></span><div><b>${j[0]}</b> <span class="small muted">· ${j[1]} ק״מ</span>${i<=at?`<div class="small">${j[2]}</div>`:i===at+1?`<div class="small" style="color:var(--pink)">עוד ${r1(j[1]-km)} ק״מ</div>`:''}</div></div>`).join('')}</div><p class="small muted">המרחקים משוערים, בערך לאורך הכביש.</p>`)}
 /* ביט */
-const WTRACKS=[['w-cassette-basement-bounce','Cassette Basement Bounce'],['w-summer-curbside-glow','Summer Curbside Glow'],['w-block-party-slow-jam','Block Party Slow Jam'],['w-neon-on-the-diner-floor','Neon on the Diner Floor'],['w-roller-rink-reverie','Roller Rink Reverie']];
+const WTRACKS=[['x-fe0be5','Power Mix'],['x-634163','Power Mix'],['x-6f85ef','Power Mix'],['x-challenge','Challenge Accepted'],['x-c94056','Power Mix'],['x-847a4a','Power Mix']];
 const WM={el:null,on:false,fail:0,q:[],cur:null};
 function wPlay(){if(!WM.el){WM.el=new Audio();WM.el.preload='auto';WM.el.volume=.6;WM.el.onended=()=>wPlay();
   WM.el.onerror=()=>{WM.fail++;if(WM.fail>=3){WM.on=false;SND.beat=null;beatSynth()}else wPlay()}}
  let set=wkSet();if(!set.length)set=WTRACKS.map(t=>({f:t[0],t:t[1]}));if(WM.setKey!==set.map(x=>x.f).join()){WM.setKey=set.map(x=>x.f).join();WM.q=[]}
  const t=nextOf(WM.q,set,WM.cur&&WM.cur.f);WM.cur=t;WM.el.src='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/music/'+t.f+'.mp3';WM.on=true;const p=WM.el.play();if(p&&p.catch)p.catch(()=>{})}
+function wkPreview(){if(!S.set.music||SND.beat)return;SND.pre=1;beatStart()}
+function wkIdle(){return !S.free&&!S.act&&!HM.run&&!HM.t&&!PL_.on}
 function beatStart(){if(SND.beat)return;if(realMusic()){if(MUS.on||SND.music){musicStop();SND.mres=1}WM.fail=0;SND.beat={real:1};wPlay();return}beatSynth()}
 function beatSynth(){const c=ac();if(!c||SND.beat)return;const out=c.createGain();out.gain.value=.5;out.connect(c.destination);const nb=c.createBuffer(1,c.sampleRate*.05,c.sampleRate),dt=nb.getChannelData(0);for(let i=0;i<dt.length;i++)dt[i]=(Math.random()*2-1)*(1-i/dt.length);
  const bpm=100,b=60/bpm;let next=c.currentTime+.1,n=0;const BASS=[65.41,65.41,87.31,98];
@@ -9799,6 +9860,65 @@ function beatSynth(){const c=ac();if(!c||SND.beat)return;const out=c.createGain(
  const hat=t=>{const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=nb;f.type='highpass';f.frequency.value=6000;g.gain.value=.25;s.connect(f);f.connect(g);g.connect(out);s.start(t)};
  const sch=()=>{while(next<c.currentTime+.6){kick(next);hat(next+b/2);if(n%2===0)tone(BASS[(n>>2)%4],next,b*.9,'triangle',.12,out);if(n%8===4)tone(523.25,next,b*.5,'sine',.05,out);next+=b;n++}};sch();SND.beat={t:setInterval(sch,200),out};if(SND.music){musicStop();SND.mres=1}}
 function beatStop(){if(WM.on){WM.on=false;try{WM.el.pause()}catch(e){}}const m=SND.beat;if(!m)return;SND.beat=null;if(m.real){if(SND.mres&&S.set.music){SND.mres=0;musicStart()}return}clearInterval(m.t);try{m.out.gain.linearRampToValueAtTime(0,SND.ctx.currentTime+.4)}catch(e){}setTimeout(()=>{try{m.out.disconnect()}catch(e){}},800);if(SND.mres&&S.set.music){SND.mres=0;musicStart()}}
+
+/* ===== אימון חופשי: מאגר פעילויות, קלוריות בלייב ו-EPOC ===== */
+const FCATS=[['run','ריצה והליכה'],['bike','אופניים'],['str','כוח'],['mach','מכשירי קרדיו'],['water','מים'],['studio','סטודיו'],['sport','ספורט'],['rec','פנאי וגמישות']];
+// [id,name,cat,type,baseMET,interval?,desc]  type: run|walk|bike|fixed
+const FACT=[['run','ריצה','run','run',0,0,'שורפת הכי הרבה קלוריות לדקה ומחזקת לב וריאות.'],['tread','ריצה על הליכון','run','run',0,0,'כמו ריצה בחוץ, עם שליטה בקצב ובשיפוע.'],['walk','הליכה','run','walk',0,0,'בטוחה לברכיים ומשפרת רגישות לאינסולין.'],['incl','הליכה בעלייה / הליכון בשיפוע','run','walk',0,0,'שיפוע מכפיל את השריפה בלי להעמיס על הברכיים.'],['nordic','הליכה נורדית','run','fixed',4.8,0,'מקלות מפעילים גם את פלג הגוף העליון.'],['hike','טיול שטח','run','fixed',6,0,'אירובי בטבע, עם עליות וירידות.'],['stairs','עליית מדרגות','run','fixed',6,0,'מחזק רגליים וישבן ומעלה דופק מהר.'],
+['bike','רכיבה בחוץ','bike','bike',0,0,'אירובי חזק בלי עומס על המפרקים.'],['mtb','אופני הרים','bike','fixed',8.5,0,'עבודה קשה בעליות, מחזק רגליים.'],['sbike','אופני כושר','bike','fixed',6.8,0,'מצוין למשקל גבוה, בלי עומס על הברכיים.'],['spin','ספינינג','bike','fixed',8.5,1,'שיעור אינטרוולים עצים על אופניים.'],
+['weights','הרמת משקולות','str','fixed',4.5,0,'בונה שריר ושומר על חילוף החומרים.'],['circuit','אימון מעגלים (סירקט)','str','fixed',6,1,'משלב כוח ודופק גבוה.'],['crossfit','קרוספיט / פונקציונלי','str','fixed',8,1,'עצים מאוד. משלב כוח וסיבולת.'],['bw','אימון משקל גוף','str','fixed',5,0,'שכיבות סמיכה, סקוואטים ופלאנק, בלי ציוד.'],['trx','TRX','str','fixed',5,0,'כוח וליבה עם רצועות.'],['kb','קטלבל','str','fixed',7,1,'סווינגים מעלים דופק ומחזקים את הגב.'],
+['ellip','אליפטיקל','mach','fixed',5,0,'אירובי בלי מכות על המפרקים.'],['row','מכונת חתירה','mach','fixed',7,0,'מפעילה 85% משרירי הגוף.'],['stepper','סטפר','mach','fixed',8,0,'עבודה חזקה לרגליים ולישבן.'],['rope','קפיצה בחבל','mach','fixed',10,1,'אחד מהאירוביים השורפים ביותר.'],['hiit','HIIT','mach','fixed',8,1,'פרצים עצימים עם מנוחה. אפטר-ברנר גבוה.'],['tabata','טאבאטה','mach','fixed',9,1,'20 שניות עבודה, 10 שניות מנוחה.'],
+['swimfree','שחייה חתירה','water','fixed',7.5,0,'כל הגוף, אפס עומס על המפרקים.'],['swimbr','שחייה חזה','water','fixed',5.3,0,'שחייה נינוחה ויעילה.'],['swimback','שחייה גב','water','fixed',4.8,0,'מעולה ליציבה ולכתפיים.'],['aqua','אקווה אירובי','water','fixed',5.5,0,'אירובי במים, עדין לגוף.'],
+['zumba','זומבה','studio','fixed',6.5,0,'ריקוד כיפי שמעלה דופק.'],['dance','ריקוד','studio','fixed',5,0,'קואורדינציה, מצב רוח ושריפה.'],['step','אירובי סטפ','studio','fixed',7,0,'אירובי קלאסי על מדרגה.'],['pyoga','פאוור יוגה','studio','fixed',4,0,'יוגה דינמית שמחזקת.'],['yoga','יוגה','studio','fixed',2.5,0,'גמישות, נשימה והפחתת סטרס.'],['pilates','פילאטיס','studio','fixed',3,0,'ליבה חזקה ויציבה טובה.'],
+['soccer','כדורגל','sport','fixed',7,1,'ספרינטים ומשחק: שריפה גבוהה.'],['basket','כדורסל','sport','fixed',6.5,1,'קפיצות וריצות קצרות.'],['tennis','טניס','sport','fixed',7.3,1,'תנועה מהירה לכל הכיוונים.'],['padel','פאדל','sport','fixed',6,1,'כיפי, חברתי ושורף.'],['volley','כדורעף','sport','fixed',4,0,'קפיצות ותגובה מהירה.'],['boxbag','אגרוף בשק','sport','fixed',5.5,1,'שחרור לחץ וחיזוק הכתפיים.'],['kick','קיקבוקס / ספארינג','sport','fixed',7.8,1,'עצים מאוד, כל הגוף.'],['martial','אומנויות לחימה','sport','fixed',7.5,1,'כוח, גמישות וסיבולת.'],['climb','טיפוס קירות','sport','fixed',8,1,'כוח אחיזה וגב חזק.'],['skate','רולרבליידס / סקייט','sport','fixed',7,0,'אירובי כיפי לרגליים.'],['sup','סאפ','sport','fixed',6,0,'ליבה ושיווי משקל על המים.'],
+['stretch','מתיחות','rec','fixed',2.3,0,'שיקום וגמישות.'],['houseclean','ניקיון בית אינטנסיבי','rec','fixed',3.5,0,'גם זה נחשב תנועה!'],['garden','גינון','rec','fixed',3.8,0,'עבודה פיזית רגועה.'],['play','משחק פעיל עם ילדים','rec','fixed',4.5,0,'כיף ושורף.']];
+const FLVL=[[.8,'קלה','אפשר לשיר'],[1,'בינונית','אפשר לדבר, לא לשיר'],[1.25,'גבוהה','רק כמה מילים'],[1.45,'מקסימלית','אי אפשר לדבר']];
+function bikeMET(k){return k<16?4:k<19?6.8:k<22?8:k<25?10:k<30?12:15.8}
+function freeMET(c){const a=FACT.find(x=>x[0]===c.id);if(!a)return 4;const v=c.sp*1000/60,g=(c.inc||0)/100;
+ if(a[3]==='walk')return (0.1*v+1.8*v*g+3.5)/3.5;if(a[3]==='run')return (0.2*v+0.9*v*g+3.5)/3.5;if(a[3]==='bike')return bikeMET(c.sp);return a[4]*FLVL[c.lvl][0]}
+function epocF(c){const a=FACT.find(x=>x[0]===c.id),m=freeMET(c);let f=m<4?.03:m<6?.05:m<8?.07:m<10?.10:.13;if(a&&a[5])f+=.03;if(a&&a[2]==='str'&&c.lvl>=2)f+=.02;return f}
+function netRate(c){return Math.max(0,freeMET(c)-1)*curW()/3600}
+function paceTxt(k){if(!(k>0))return'–';const p=60/k;return Math.floor(p)+':'+String(Math.round((p%1)*60)).padStart(2,'0')}
+const FR={cat:'run',q:'',cfg:null};
+function openFree(){if(S.free)return openFreeLive();wkPreview();FR.cfg=null;openSheet(`${shTop('אימון חופשי')}<p class="muted" style="margin-top:0">בחר פעילות, קבע קצב או עצימות וזמן, ותראה קלוריות בזמן אמת ואת האפטר-ברנר.</p>
+<input type="search" id="fq" placeholder="חפש: ריצה, משקולות, שחייה, פאדל..." autocomplete="off"><div class="chips" id="fchips">${FCATS.map(([k,n])=>`<button class="chip ${FR.cat===k&&!FR.q?'on':''}" data-a="fcat" data-c="${k}">${n}</button>`).join('')}</div><div id="flist"></div>`);renderFList()}
+function renderFList(){const el=$('#flist');if(!el)return;const q=norm(FR.q||'');const L=FACT.filter(a=>q?norm(a[1]).includes(q):a[2]===FR.cat);
+ el.innerHTML=L.map(a=>`<button class="food fpick" data-a="fpick" data-id="${a[0]}" style="border-bottom:1px solid var(--line)"><span class="nm"><b>${a[1]}</b><small>${a[6]}</small></span><span class="small" style="color:var(--pink);white-space:nowrap">${a[3]==='fixed'?'≈'+r0(Math.max(0,a[4]-1)*curW()*.5)+' קק״ל ל-30 ד׳':'לפי קצב'}</span></button>`).join('')||'<div class="empty">לא נמצא.</div>'}
+function openFreeCfg(id){const a=FACT.find(x=>x[0]===id);const last=(S.freeLast||{})[id]||{};const c=FR.cfg={id,sp:last.sp||(a[3]==='run'?9:a[3]==='walk'?5:a[3]==='bike'?18:0),inc:last.inc||(id==='incl'?6:0),lvl:last.lvl!=null?last.lvl:1,min:last.min||30};
+ const sp=a[3]!=='fixed',inc=id==='tread'||id==='incl'||id==='walk';
+ openSheet(`<div class="sh-top"><button class="x" data-a="free" aria-label="חזרה">${IC.prev}</button><h3>${a[1]}</h3><button class="x" data-a="close" aria-label="סגירה">${IC.x}</button></div><p class="muted" style="margin-top:0">${a[6]}</p>
+${sp?`<label class="f"><span>מהירות: <b id="fspv">${r1(c.sp)} קמ״ש</b>${a[3]!=='bike'?` · קצב <b id="fpace">${paceTxt(c.sp)}</b> דק׳ לק״מ`:''}</span><input type="range" id="fsp" min="${a[3]==='walk'?2:a[3]==='bike'?8:5}" max="${a[3]==='walk'?8:a[3]==='bike'?40:20}" step="0.5" value="${c.sp}" style="width:100%"></label>`:''}
+${inc?`<label class="f"><span>שיפוע: <b id="fincv">${c.inc}%</b></span><input type="range" id="finc" min="0" max="15" step="1" value="${c.inc}" style="width:100%"></label>`:''}
+${!sp?`<label class="f"><span>עצימות</span><div class="seg">${FLVL.map((l,i)=>`<button data-a="flvl" data-i="${i}" class="${c.lvl===i?'on':''}"><b>${l[1]}</b><br><span class="small">${l[2]}</span></button>`).join('')}</div></label>`:''}
+<label class="f"><span>זמן מתוכנן</span><div class="seg">${[10,15,20,30,45,60,90].map(m=>`<button data-a="fmin" data-m="${m}" class="${c.min===m?'on':''}">${m}</button>`).join('')}</div></label>
+<div class="card" id="fprev" style="text-align:center"></div><div class="btns"><button class="btn full hbtn" style="background:var(--pink);color:#fff" data-a="freeStart">${IC.play} התחל אימון</button></div>
+<details class="small" style="margin-top:10px"><summary style="cursor:pointer;color:var(--mango-d);font-weight:700;min-height:40px">מה זה אפטר-ברנר (EPOC)?</summary><p>אחרי אימון הגוף ממשיך לצרוך יותר חמצן מהרגיל כדי להתאושש: לקרר את הגוף, לחדש מאגרי אנרגיה ולתקן שריר. התופעה נקראת EPOC. היא גדולה יותר אחרי אימון עצים, אינטרוולים ואימוני כוח, ונמוכה אחרי פעילות קלה. בדרך כלל מדובר בכ-5%–15% מהקלוריות של האימון, והיא נמשכת שעות ספורות. המספרים כאן הם הערכה.</p></details>`);freePrev()}
+function freePrev(){const c=FR.cfg,el=$('#fprev');if(!c||!el)return;const m=freeMET(c),net=netRate(c)*c.min*60,ep=net*epocF(c);
+ el.innerHTML=`<div class="small muted">צפי ל-${c.min} דקות · עוצמה ${r1(m)} MET</div><div style="display:flex;justify-content:center;gap:22px;align-items:flex-end;margin-top:6px"><div><div class="kbig" style="font-size:42px">${r0(net)}</div><div class="small muted">קק״ל באימון</div></div><div style="font:26px var(--disp);color:var(--mute)">+</div><div><div class="kbig" style="font-size:42px;color:var(--pink)">${r0(ep)}</div><div class="small muted">אפטר-ברנר</div></div></div>${FR.cfg.sp&&FACT.find(x=>x[0]===c.id)[3]!=='fixed'?`<div class="small muted" style="margin-top:6px">מרחק צפוי: ${r1(c.sp*c.min/60)} ק״מ</div>`:''}<div class="small muted" style="margin-top:4px">קלוריות מעבר לשריפה במנוחה, לפי המשקל שלך (${r1(curW())} ק״ג)</div>`}
+let FRT=0;
+function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0};saveState();if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
+function freeAccum(){const f=S.free;if(!f||!f.run)return;const now=Date.now(),dt=Math.min(6*3600,(now-f.last)/1000);f.kc+=netRate(f.cfg)*dt;const a=FACT.find(x=>x[0]===f.cfg.id);if(a&&a[3]!=='fixed')f.km+=f.cfg.sp*dt/3600;f.last=now}
+function freeSec(){const f=S.free;return f?(f.acc+(f.run?Date.now()-f.run:0))/1000:0}
+function openFreeLive(){clearInterval(FRT);const f=S.free;if(!f)return openFree();const a=FACT.find(x=>x[0]===f.cfg.id),sp=a[3]!=='fixed';
+ openSheet(`<div class="sh-top"><h3>${a[1]}</h3><button class="x" data-a="close" aria-label="מזער">${IC.x}</button></div>
+<div class="flive"><div class="small muted">זמן</div><div class="kbig" id="flT" style="font-size:58px;direction:ltr;color:var(--ink)">0:00</div><div class="bar" style="height:8px;margin:6px 0 12px"><i id="flP" style="width:0;background:var(--pink);color:var(--pink)"></i></div>
+<div class="fburn"><div><span class="flame">${IC.fire}</span><div class="kbig" id="flK" style="font-size:52px;color:var(--pink)">0</div><div class="small muted">קק״ל נשרפו עכשיו</div></div><div><div class="kbig" id="flE" style="font-size:34px;color:var(--gold)">+0</div><div class="small muted">אפטר-ברנר צפוי</div></div></div>
+<div class="statgrid" style="margin-top:12px"><div class="stat"><small>קצב שריפה</small><b id="flR">0</b> <span class="small muted">קק״ל/דקה</span></div><div class="stat"><small>${sp?'מרחק':'עוצמה'}</small><b id="flD">–</b></div></div></div>
+${sp?`<label class="f"><span>מהירות עכשיו: <b id="flspv">${r1(f.cfg.sp)} קמ״ש</b>${a[3]!=='bike'?` · קצב <b id="flpace">${paceTxt(f.cfg.sp)}</b>`:''}</span><input type="range" id="flsp" min="${a[3]==='walk'?2:a[3]==='bike'?8:5}" max="${a[3]==='walk'?8:a[3]==='bike'?40:20}" step="0.5" value="${f.cfg.sp}" style="width:100%"></label>`
+:`<label class="f"><span>עצימות עכשיו</span><div class="seg">${FLVL.map((l,i)=>`<button data-a="fllvl" data-i="${i}" class="${f.cfg.lvl===i?'on':''}">${l[1]}</button>`).join('')}</div></label>`}
+<div class="btns"><button class="btn" data-a="freePause" id="flPB">${f.run?'השהה':'המשך'}</button><button class="btn lime" data-a="freeEnd">סיים ושמור</button></div><button class="btn ghost full" data-a="freeCancel" style="margin-top:10px;color:var(--red)">בטל בלי לשמור</button>`);
+ freeTick();FRT=setInterval(freeTick,1000)}
+function freeTick(){const f=S.free;if(!f||!$('#flT')){clearInterval(FRT);return}freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id);
+ $('#flT').textContent=fmtHMS(s);$('#flP').style.width=Math.min(100,s/(f.cfg.min*60)*100)+'%';$('#flK').textContent=r0(f.kc);$('#flE').textContent='+'+r0(f.kc*epocF(f.cfg));$('#flR').textContent=r1(netRate(f.cfg)*60);
+ $('#flD').textContent=a[3]!=='fixed'?r1(f.km)+' ק״מ':r1(freeMET(f.cfg))+' MET';
+ if(s>=f.cfg.min*60&&!f.hit){f.hit=1;sfx('win');toast('הגעת לזמן שתכננת! אפשר להמשיך או לסיים');saveState()}if(Math.floor(s)%20===0)saveState()}
+function freeEnd(save){const f=S.free;if(!f)return;clearInterval(FRT);freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id),ep=f.kc*epocF(f.cfg),min=Math.round(s/60);S.free=null;beatStop();
+ if(save&&s>=60){const d=today(),day=getDayLocal(d);day.ex.push({n:a[1]+(a[3]!=='fixed'?' · '+r1(f.km)+' ק״מ':' · '+FLVL[f.cfg.lvl][1]),min,k:f.kc+ep});
+  if(min>=10)S.fit.log.push({d,t:a[2]==='str'?'s':'c',feel:'ok',lvl:fitLv(),min});award('x:'+d,10,'אימון');award('fr:'+d+':'+f.start,20,'אימון הושלם');saveDay(d);checkBadges();
+  openSheet(`${shTop('סיכום אימון')}<div style="text-align:center"><div style="width:110px;margin:0 auto">${avoki('wow')}</div><h2 style="font:26px var(--disp);margin:4px 0">${a[1]} · ${fmtHMS(s)}</h2></div>
+<div class="statgrid"><div class="stat"><small>נשרף באימון</small><b>${r0(f.kc)} קק״ל</b></div><div class="stat"><small>אפטר-ברנר (EPOC)</small><b style="color:var(--pink)">+${r0(ep)} קק״ל</b></div><div class="stat"><small>סה״כ נוסף לתקציב</small><b>${r0(f.kc+ep)} קק״ל</b></div><div class="stat"><small>${a[3]!=='fixed'?'מרחק':'עצימות'}</small><b>${a[3]!=='fixed'?r1(f.km)+' ק״מ':FLVL[f.cfg.lvl][1]}</b></div></div>
+<p class="small muted">האפטר-ברנר ימשיך בשעות הקרובות, ולכן הוא נכלל כבר עכשיו. כל המספרים הם הערכה לפי מחקרים וטבלאות מקובלות.</p><button class="btn full" data-a="close">מעולה</button>`);confetti()}
+ else closeSheet();saveState();render()}
 
 /* ===== כושר ===== */
 const FX={chair:['קימה מכיסא','שב על קצה כיסא יציב, רגליים ברוחב האגן. קום בלי עזרת הידיים ושב לאט חזרה.','ירכיים וישבן: השרירים הגדולים בגוף, ששורפים הכי הרבה אנרגיה.'],
@@ -9891,7 +10011,9 @@ ${days.map(x=>{const dn=S.fit.log.some(y=>y.d===x),pt=FWEEK[pd(x).getDay()];retu
 <div class="card"><h2>איך מתקדמים</h2><p style="margin:0">התוכנית מתחילה בעדינות, כי עבר זמן מאז שהתאמנת. בכל שקילה שבועית בודקים: אם השלמת 3 אימונים בשבוע וההרגשה לא הייתה "קשה מדי", עולים רמה. אם שני אימונים ברצף הרגישו קשים מדי, יורדים רמה.</p>
 <div class="bar" style="height:10px;margin-top:12px"><i style="width:${L/8*100}%;background:var(--mango);color:var(--mango)"></i></div><p class="small muted" style="margin:6px 0 0">רמה ${L} מתוך 8 · אימון כוח: ${FLV[L].r} סבבים · אירובי: ${FLV[L].c[0]} דקות${FLV[L].c[1]?' עם '+FLV[L].c[1]+' האצות':''}</p>
 <div class="btns"><button class="btn ghost" data-a="fitLvl" data-d="-1">רמה קלה יותר</button><button class="btn ghost" data-a="fitLvl" data-d="1">רמה קשה יותר</button></div></div>
-${homeCard()}<div class="card"><h2>טיימר פעילות</h2><p class="muted" style="margin:0">הליכה, ריצה או אופניים עם יעד זמן. מחשב צעדים, מרחק, קלוריות וקצב.</p><div class="btns"><button class="btn full" data-a="tracker">${S.act?'חזרה לפעילות הפעילה':'התחל טיימר פעילות'}</button></div></div>
+${homeCard()}<div class="card freec"><h2>אימון חופשי<span class="sp"></span><span class="tag" style="background:var(--pink2);color:var(--pink)">${FACT.length} פעילויות</span></h2><p class="muted" style="margin:0">ריצה בקצב שתבחר, משקולות, שחייה, פאדל ועוד. עצימות וזמן לבחירתך, קלוריות בזמן אמת ואפטר-ברנר (EPOC).</p>
+<div class="btns"><button class="btn full" style="background:var(--pink);box-shadow:0 4px 0 #e0663f" data-a="free">${S.free?'חזרה לאימון הפעיל':IC.play+' בחר אימון'}</button></div></div>
+<div class="card"><h2>טיימר פעילות</h2><p class="muted" style="margin:0">הליכה, ריצה או אופניים עם יעד זמן. מחשב צעדים, מרחק, קלוריות וקצב.</p><div class="btns"><button class="btn full" data-a="tracker">${S.act?'חזרה לפעילות הפעילה':'התחל טיימר פעילות'}</button></div></div>
 <div class="card"><h2>טאבאטה ואינטרוולים</h2><p class="muted" style="margin:0">תכנן אימון אינטרוולים משלך: זמני עבודה ומנוחה, סבבים ותרגילים.${L<4?' מומלץ מרמה 4, ויש גרסה עדינה למתחילים.':''}</p><div class="btns"><button class="btn ghost full" data-a="tabata">תכנן טאבאטה</button></div></div>
 <div class="card"><h2>התרגילים ברמה שלך</h2>${FLV[L].x.map(([id,v,tm])=>`<div class="quest" style="align-items:center"><div style="width:96px;flex:none;background:var(--card2);border-radius:14px">${fig(id)}</div><div><span class="tag" style="background:var(--mango2);color:var(--mango-d)">${tm?v+' שניות':v+' חזרות'}</span><br><b>${FX[id][0]}</b><div class="small muted">${FX[id][1]}</div><div class="small" style="color:var(--mango-d)">${FX[id][2]}</div></div></div>`).join('')}</div>
 <div class="card"><h2>מה הפעילות עושה לגוף</h2>${ACT_INFO.map(a=>`<div style="padding:10px 0;border-bottom:1px solid var(--line)"><b>${a[0]}</b> <span class="small" style="color:var(--pink)">≈ ${r0(a[1]*w*.5)} קק״ל ב-30 דקות</span><div class="small muted">${a[2]}</div></div>`).join('')}<p class="small muted" style="margin-bottom:0">הקלוריות מחושבות לפי המשקל שלך, ${r1(w)} ק״ג.</p></div>
@@ -9924,7 +10046,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=22;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=23;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -9932,22 +10054,24 @@ function updCard(){if(!isApk())return `<div class="card"><h2>עדכונים</h2>
  const v=appVer(),i=UPD.info;let body='';
  if(UPD.st==='checking')body='<div class="spin" style="margin:10px auto"></div><p class="small muted" style="text-align:center">בודק עדכונים...</p>';
  else if(UPD.st==='dl')body='<div class="spin" style="margin:10px auto"></div><p class="small muted" style="text-align:center">מוריד עדכון...</p>';
- else if(UPD.st==='err')body=`<p class="small" style="color:var(--red)">לא הצלחתי לבדוק עדכונים. בדוק חיבור לאינטרנט ונסה שוב.</p>`;
+ else if(UPD.st==='err')body=`<p class="small" style="color:var(--red)">לא הצלחתי לבדוק עדכונים (ניסיתי 3 שרתים). אם האינטרנט תקין, ייתכן ש-GitHub חוסם זמנית בגלל עומס בדיקות מאותה רשת. נסה בעוד כמה דקות או דרך Wi-Fi אחר.</p><details class="small muted"><summary>פרטים טכניים</summary><div dir="ltr" style="word-break:break-all">${(UPD.errs||[]).map(x=>String(x).replace(/[<>&]/g,'')).join('<br>')}</div></details>`;
  else if(i&&i.apk>v.apk)body=`<p style="margin:0 0 6px"><b>גרסת אפליקציה חדשה זמינה (${esc(i.name||'')})</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updApk">הורד והתקן</button></div><p class="small muted" style="margin:6px 0 0">בפעם הראשונה אנדרואיד יבקש לאשר התקנה מ"קליל". הנתונים נשמרים.</p>`;
  else if(i&&i.html>Math.min(v.html,APPV))body=`<p style="margin:0 0 6px"><b>עדכון חדש זמין</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updHtml">עדכן עכשיו (כמה שניות)</button></div>`;
  else if(i)body='<p class="small" style="color:var(--mango-d);margin:0">יש לך את הגרסה האחרונה.</p>';
  return `<div class="card" id="updCard"><h2>עדכונים<span class="sp"></span><span class="small muted">אפליקציה ${v.apk} · תוכן ${APPV}</span></h2>${body}<div class="btns"><button class="btn ghost full" data-a="updCheck">חפש עדכון</button></div></div>`}
 function rUpd(){const el=$('#updCard');if(el)el.outerHTML=updCard()}
-function updCheck(quiet){if(!isApk()||UPD_BASE.indexOf('__')===0)return;UPD.quiet=!!quiet;if(!quiet){UPD.st='checking';rUpd()}try{KalilNative.checkUpdate('https://api.github.com/repos/amirevgi32-cell/kalil-app/contents/version.json?ref=main')}catch(e){UPD.st='err';rUpd()}}
-window.__upd=(err,txt)=>{if(err){UPD.st=UPD.quiet?'':'err';rUpd();return}try{let j=JSON.parse(txt);if(j&&j.content)j=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g,'')))));UPD.info=j;UPD.st='';if(UPD.heal&&j&&j.html>=appVer().html&&j.html>APPV){UPD.heal=false;toast('משלים עדכון...');try{KalilNative.updateHtml(j.url||UPD_BASE+'index.html',j.html)}catch(e){}return}}catch(e){UPD.st='err'}rUpd();const v=appVer(),i=UPD.info;
+function updCheck(quiet){if(!isApk()||UPD_BASE.indexOf('__')===0)return;UPD.quiet=!!quiet;if(!quiet){UPD.st='checking';rUpd()}UPD.k=0;UPD.errs=[];updTry()}
+const UPD_SRC=['https://api.github.com/repos/amirevgi32-cell/kalil-app/contents/version.json?ref=main','https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/version.json','https://cdn.jsdelivr.net/gh/amirevgi32-cell/kalil-app@main/version.json'];
+function updTry(){try{KalilNative.checkUpdate(UPD_SRC[UPD.k])}catch(e){UPD.st='err';UPD.errs=[String(e)];rUpd()}}
+window.__upd=(err,txt)=>{if(err){(UPD.errs=UPD.errs||[]).push(String(err).slice(0,120));if(UPD.k<UPD_SRC.length-1){UPD.k++;updTry();return}UPD.st=UPD.quiet?'':'err';rUpd();return}try{let j=JSON.parse(txt);if(j&&j.content)j=JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\s/g,'')))));UPD.info=j;UPD.st='';if(UPD.heal&&j&&j.html>=appVer().html&&j.html>APPV){UPD.heal=false;toast('משלים עדכון...');try{sessionStorage.setItem('kl_in','1');KalilNative.updateHtml(j.url||UPD_BASE+'index.html',j.html)}catch(e){}return}}catch(e){UPD.st='err'}rUpd();const v=appVer(),i=UPD.info;
  if(i&&(i.apk>v.apk||i.html>Math.min(v.html,APPV))){showUndoMsg('יש עדכון חדש לקליל! מסך "מטרות" ← עדכונים');S.updSeen=today();saveState()}else if(!UPD.quiet)toast('יש לך את הגרסה האחרונה')};
-window.__updErr=e=>{UPD.st='err';rUpd();toast('העדכון נכשל. נסה שוב')};
+window.__updErr=e=>{try{sessionStorage.removeItem('kl_in')}catch(_){}UPD.st='err';rUpd();toast('העדכון נכשל. נסה שוב')};
 setTimeout(()=>{try{if(isApk()&&appVer().html>APPV&&!sessionStorage.getItem('kl_heal')){sessionStorage.setItem('kl_heal','1');UPD.quiet=true;UPD.heal=true;KalilNative.checkUpdate('https://api.github.com/repos/amirevgi32-cell/kalil-app/contents/version.json?ref=main')}}catch(e){}},1500);
 setTimeout(()=>{if(isApk()&&S.lastUpdCheck!==today()){S.lastUpdCheck=today();saveState();updCheck(true)}},4000);
 
 /* ===== גיליונות ===== */
 function openSheet(h){$('#sheetIn').innerHTML=h;$('#sheet').classList.add('open');$('#sheetIn').scrollTop=0}
-function closeSheet(){try{if(PL_.on){PL_.on=0;beatStop()}}catch(e){}try{pedStop()}catch(e){}try{if(HM.run||HM.t){clearInterval(HM.t);HM.t=0;HM.run=false;beatStop()}}catch(e){}try{clearInterval(PL_.t);PL_.run=false}catch(e){}$('#sheet').classList.remove('open');$('#sheetIn').innerHTML='';AI.ctl&&AI.ctl.abort()}
+function closeSheet(){try{if(SND.pre&&wkIdle()){SND.pre=0;beatStop()}}catch(e){}try{if(PL_.on){PL_.on=0;beatStop()}}catch(e){}try{pedStop()}catch(e){}try{if(HM.run||HM.t){clearInterval(HM.t);HM.t=0;HM.run=false;beatStop()}}catch(e){}try{clearInterval(PL_.t);PL_.run=false}catch(e){}$('#sheet').classList.remove('open');$('#sheetIn').innerHTML='';AI.ctl&&AI.ctl.abort()}
 const shTop=t=>`<div class="sh-top"><h3>${t}</h3><button class="x" data-a="close" aria-label="סגירה">${IC.x}</button></div>`;
 const A={meal:'b',cat:'',q:'',food:null,unit:null,qty:1,tray:[],edit:null};
 function guessMeal(){const h=new Date().getHours();return h<11?'b':h<16?'l':h<21?'d':'s'}
@@ -10123,29 +10247,43 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  sfxTog:()=>{S.set.sfx=!S.set.sfx;saveState();toast(S.set.sfx?'צלילים הופעלו':'צלילים כובו');openProfile()},
  musTog:()=>{S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();openProfile()},
- hcConnect:()=>{try{KalilNative.hcRequest()}catch(e){}},hcSettings:()=>{try{KalilNative.hcSettings()}catch(e){}},hcSync:()=>{syncSteps();toast('מסנכרן עם Samsung Health...');setTimeout(()=>{syncSteps();renderDiag()},2500)},
+ hcConnect:()=>{V.ext=Date.now();try{KalilNative.hcRequest()}catch(e){}},hcSettings:()=>{V.ext=Date.now();try{KalilNative.hcSettings()}catch(e){}},hcSync:()=>{syncSteps();toast('מסנכרן עם Samsung Health...');setTimeout(()=>{syncSteps();renderDiag()},2500)},
  stepsGo:()=>{const el=$('#stepsCard');if(el)el.scrollIntoView({behavior:'smooth',block:'center'})},
  cheat:openCheat,
  cheatPick:b=>{if(cheatUsedOn())return;const o=CHEAT[+b.dataset.i];const it=cheatItems(o);S.cheat.used[wkKey(today())]=today();V.date=today();const h=new Date().getHours(),m=h<11?'b':h<17?'l':'d';addEntries(m,it);award('ch:'+wkKey(today()),15,'פינוק מתוכנן');saveState();closeSheet();render();toast('בתיאבון! '+o[0]);confetti()},
  mo:b=>{V.mo=Math.min(0,(V.mo||0)+ +b.dataset.d);const el=$('#monthCard');if(el)el.outerHTML=monthCard()},calDay:b=>{V.date=b.dataset.d;V.tab='today';render();scrollTo(0,0)},calGo:()=>{V.tab='goals';render();setTimeout(()=>{const el=$('#monthCard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)},
  fixW0:()=>{const w=curW();S.profile.w0=w;S.profile.start=today();S.weights=S.weights.filter(x=>x.d===today());saveState();render();toast('משקל ההתחלה עודכן ל-'+r1(w)+' ק״ג')},
  wm:b=>{V.wm=b.dataset.m;const el=$('#weekCard');if(el)el.outerHTML=weekCard()},wk:b=>{V.wk=Math.max(0,(V.wk||0)+ +b.dataset.d);const el=$('#weekCard');if(el)el.outerHTML=weekCard()},weekGo:()=>{V.tab='goals';render();setTimeout(()=>{const el=$('#weekCard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},50)},
- updCheck:()=>updCheck(false),updHtml:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.updateHtml(i.url||UPD_BASE+'index.html',i.html)}catch(e){}},updApk:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){}},
+ updCheck:()=>updCheck(false),updHtml:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{sessionStorage.setItem('kl_in','1');KalilNative.updateHtml(i.url||UPD_BASE+'index.html',i.html)}catch(e){}},updApk:()=>{const i=UPD.info;if(!i)return;UPD.st='dl';rUpd();try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){}},
  homeSetup:()=>{if(!S.profile)return openProfile();openHomeSetup()},hMin:b=>{S.homePref=Object.assign(S.homePref||{min:10,beat:true},{min:+b.dataset.m});openHomeSetup()},
  homeGo:()=>{const bt=$('#hBeat'),tm=$('#hTime');S.homePref=Object.assign(S.homePref||{min:10},{beat:bt?bt.checked:true,mode:tm&&tm.checked?'time':'auto'});saveState();openHome()},
  homePause:()=>{HM.run=!HM.run;const b=$('#hPB');if(b)b.textContent=HM.run?'השהה':'המשך';HM.run?(S.homePref&&S.homePref.beat&&beatStart()):beatStop()},
  homeOk:b=>confirmHome(b.dataset.add==='1'),homeNo:()=>{HM.res=null;closeSheet();toast('לא נרשם. מחר זה היום שלך!')},
  homeBeat:()=>{SND.beat?beatStop():beatStart();showHome()},homeEnd:()=>finishHome(false),box:openBox,journey:openJourney,
  wear:b=>{if(b.dataset.a!=='wear')return;S.acc=b.dataset.id||null;saveState();render();toast(S.acc?'אבוקי התלבש!':'אבוקי בלי אביזרים')},
+ free:openFree,fcat:b=>{FR.cat=b.dataset.c;FR.q='';const q=$('#fq');if(q)q.value='';document.querySelectorAll('#fchips .chip').forEach(x=>x.classList.toggle('on',x===b));renderFList()},
+ fpick:b=>openFreeCfg(b.dataset.id),flvl:b=>{FR.cfg.lvl=+b.dataset.i;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},
+ fmin:b=>{FR.cfg.min=+b.dataset.m;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},freeStart:freeStart,
+ freePause:()=>{const f=S.free;if(!f)return;freeAccum();if(f.run){f.acc+=Date.now()-f.run;f.run=null}else{f.run=Date.now();f.last=Date.now()}saveState();const b=$('#flPB');if(b)b.textContent=f.run?'השהה':'המשך'},
+ fllvl:b=>{const f=S.free;if(!f)return;freeAccum();f.cfg.lvl=+b.dataset.i;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
+ freeEnd:()=>freeEnd(true),freeCancel:()=>freeEnd(false),
+ wbig:openWBig,wbR:b=>{WB.r=b.dataset.r;WB.sel=-1;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));wbDraw()},
+ wbZ:b=>{WB.z=Math.max(1,Math.min(6,WB.z*(+b.dataset.d>0?2:.5)));$('#wbZv').textContent='×'+WB.z;wbDraw()},wbP:b=>{WB.sel=+b.dataset.i;sfx('tap');wbDraw()},
+ wbDel:b=>{const d=b.dataset.d;if(!b.dataset.c){b.dataset.c=1;b.textContent='בטוח?';return}S.weights=S.weights.filter(x=>x.d!==d);WB.sel=-1;saveState();wbDraw();render();toast('השקילה נמחקה')},
  tracker:openTracker,tabata:openTabata,
  trkT:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{ti:+b.dataset.i});openTracker()},trkM:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{min:+b.dataset.m});openTracker()},
  trkStart:()=>{if(S.set.music)beatStart();const p=S.actPref||{ti:1,min:30};S.act={ti:p.ti,target:p.min,start:Date.now(),acc:0,run:Date.now(),base:sensorNow()};saveState();sfx('fast');openTracker();render()},
  trkPause:()=>{const a=S.act;if(!a)return;if(a.run){a.acc+=Date.now()-a.run;a.run=null}else a.run=Date.now();saveState();const b=$('#tkPB');if(b)b.textContent=a.run?'השהה':'המשך'},
  trkEnd:()=>endTracker(true),trkCancel:()=>endTracker(false),
  tbx:b=>{const T=S.tab,k=b.dataset.k,d=+b.dataset.d,st={work:5,rest:5,rounds:1,sets:1,setRest:15}[k],lim={work:[10,60],rest:[5,60],rounds:[2,12],sets:[1,4],setRest:[15,180]}[k];T[k]=Math.min(lim[1],Math.max(lim[0],T[k]+d*st));saveState();openTabata()},
- tbEx:b=>{const T=S.tab,id=b.dataset.id;T.ex=T.ex.includes(id)?T.ex.filter(x=>x!==id):T.ex.concat(id);if(!T.ex.length)T.ex=['squat'];saveState();openTabata()},
+ tbEx:b=>{const T=S.tab;if(T.ex.length>=24)return toast('מקסימום 24 תרגילים');T.ex.push(b.dataset.id);sfx('tap');saveState();const y=$('#sheetIn').scrollTop;openTabata();$('#sheetIn').scrollTop=y},
+ tbDel:b=>{const T=S.tab;T.ex.splice(+b.dataset.i,1);saveState();const y=$('#sheetIn').scrollTop;openTabata();$('#sheetIn').scrollTop=y},
+ tbUp:b=>{const T=S.tab,i=+b.dataset.i;[T.ex[i-1],T.ex[i]]=[T.ex[i],T.ex[i-1]];saveState();const y=$('#sheetIn').scrollTop;openTabata();$('#sheetIn').scrollTop=y},
+ tbClr:()=>{S.tab.ex=[];openTabata()},tbFit:()=>{S.tab.rounds=S.tab.ex.length;saveState();openTabata()},
+ tbAdd:()=>{const v=($('#tbNew').value||'').trim();if(!v)return toast('כתוב שם לתרגיל');S.myEx=S.myEx||[];let e=S.myEx.find(x=>x.n===v);if(!e){e={id:'u'+Date.now().toString(36),n:v};S.myEx.push(e)}S.tab.ex.push(e.id);sfx('pop');saveState();openTabata();toast('נוסף: '+v)},
+ tbRm:b=>{const id=b.dataset.id;S.myEx=(S.myEx||[]).filter(x=>x.id!==id);S.tab.ex=S.tab.ex.filter(x=>x!==id);saveState();openTabata()},
  tbGentle:()=>{Object.assign(S.tab,{work:20,rest:20,rounds:6,sets:1,setRest:60,ex:['chair','wallpu','bridge','calf']});saveState();openTabata()},
- tbStart:()=>{saveState();openWorkout('t')},
+ tbStart:()=>{if(!S.tab.ex.length)return toast('בחר לפחות תרגיל אחד');saveState();openWorkout('t')},
  fitGo:b=>openWorkout(b.dataset.t),plNext:()=>{clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()},
  plToggle:()=>{PL_.run=!PL_.run;const b=$('#plTog');if(b)b.textContent=PL_.run?'השהה':'המשך';if(PL_.run)runTimer();else clearInterval(PL_.t)},
  plFeel:b=>{logWorkout(PL_.type,b.dataset.f);closeSheet();render();toast(b.dataset.f==='hard'?'נרשם. נשמור על הקצב.':b.dataset.f==='easy'?'מעולה! בשקילה הבאה נשקול לעלות רמה':'אימון נרשם. כל הכבוד!')},
@@ -10157,9 +10295,9 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  waterGoalPick:b=>{S.set.water=+b.dataset.v||0;saveState();closeSheet();render();toast('יעד המים: '+(waterGoal()/1000)+' ליטר')},
  goToday:()=>{V.date=today();render()},tell:()=>{if(!S.profile)return openProfile();openPhoto(null,true)},
  undo:()=>{const f=UNDO.fn;UNDO.fn=null;$('#undo').classList.add('hide');if(f){f();toast('שוחזר')}},
- label:()=>$('#lbl').click(),
+ label:()=>{V.ext=Date.now();$('#lbl').click()},
  quickTray:b=>{const f=foodById(b.dataset.id);if(!f)return;const u=defUnit(f);A.tray.push(portion(f,u.k==='g'?100:1,u));sfx('pop');toast('נוסף לצלחת: '+f.n);renderTray();b.classList.add('pop');setTimeout(()=>b.classList.remove('pop'),400)},
- stepPerm:()=>{try{KalilNative.requestPermission()}catch(e){}},
+ stepPerm:()=>{V.ext=Date.now();try{KalilNative.requestPermission()}catch(e){}},
  stepsSave:()=>{const v=Math.max(0,Math.round(+($('#stIn')||{}).value||0));const day=getDayLocal(V.date);day.stepsMan=Math.max(0,v-(day.stepsExtra||0));recompSteps(day);stepsReached(V.date,day);saveDay(V.date);checkBadges();render();toast('עודכן: '+v.toLocaleString('he-IL')+' צעדים')},
  stepsAdd:b=>{const day=getDayLocal(V.date);recompSteps(day);day.stepsMan=Math.max(day.stepsMan||0,day.stepsNat||0)+ +b.dataset.n;recompSteps(day);stepsReached(V.date,day);saveDay(V.date);checkBadges();render()},
  edit:b=>{const day=getDayLocal(V.date),m=b.dataset.m,i=+b.dataset.i,e=day.meals[m][i];if(!e)return;A.meal=m;openFood((e.fid&&foodById(e.fid))||foodFromEntry(e),{m,i,e})},
@@ -10185,35 +10323,42 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  exAdd:openEx,exq:b=>{const el=$('#exM');el.value=Math.max(5,(+el.value||0)+ +b.dataset.d);exPv()},
  exSave:()=>{const t=EXS[+$('#exT').value],m=+$('#exM').value||0;if(m<=0)return;const day=getDayLocal(V.date);day.ex.push({n:t[0],min:m,k:t[1]*curW()*m/60});award('x:'+V.date,10,'אימון');saveDay(V.date);checkBadges();closeSheet();render()},
  exDel:b=>{const day=getDayLocal(V.date);day.ex.splice(+b.dataset.i,1);saveDay(V.date);render()},
- weigh:()=>{const w=+$('#wIn').value;if(!(w>30&&w<350))return toast('משקל לא תקין');const t=today();S.weights=S.weights.filter(x=>x.d!==t);S.weights.push({d:t,w});award('wt:'+t,20,'שקילה');const fm=fitCheck();saveState();checkBadges();saveState();render();toast('נשמר: '+r1(w)+' ק״ג');if(fm)setTimeout(()=>showUndoMsg(fm),2400)},
+ weigh:()=>{const w=+$('#wIn').value;if(!(w>30&&w<350))return toast('משקל לא תקין');const t=today();S.weights=S.weights.filter(x=>x.d!==t);S.weights.push({d:t,w});award('wt:'+t,20,'שקילה');const fm=fitCheck();saveState();checkBadges();saveState();render();{const ws=wSorted(),i=ws.findIndex(x=>x.d===t),pv=i>0?ws[i-1]:null;toast('נשמר: '+r1(w)+' ק״ג'+(pv?' · '+sgn(w-pv.w)+' מהשקילה הקודמת':''))}if(fm)setTimeout(()=>showUndoMsg(fm),2400)},
  pick1:b=>b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)),
  custom:()=>openCustom(),backup:openBackup,
  bkCopy:async()=>{try{await navigator.clipboard.writeText($('#bk').value);$('#bkMsg').textContent='הועתק!'}catch(e){$('#bk').select();$('#bkMsg').textContent='סמן והעתק ידנית.'}},
  bkLoad:()=>{try{const o=JSON.parse($('#bk').value);if(!o.state||!o.state.profile)throw 0;S=Object.assign(S,o.state);Object.entries(o.days||{}).forEach(([d,v])=>{dayCache[d]=v;ls.set('kl_d_'+d,v);dbWrite('d-'+d,()=>dayCache[d])});saveState();closeSheet();render();toast('שוחזר בהצלחה')}catch(e){$('#bkMsg').textContent='הטקסט לא תקין.'}},
- snap:()=>$('#pic').click(),aiText:()=>{AI.url=null;AI.file=null;runAI(false)},aiStop:()=>{AI.ctl&&AI.ctl.abort()},
+ snap:()=>{V.ext=Date.now();$('#pic').click()},aiText:()=>{AI.url=null;AI.file=null;runAI(false)},aiStop:()=>{AI.ctl&&AI.ctl.abort()},
  keySave:b=>{const k=($('#keyIn').value||'').trim();if(!k.startsWith('sk-'))return toast('מפתח לא תקין');ls.set('kl_key',k);runAI(b.dataset.img==='1')},
  aiDel:b=>{AI.items.splice(+b.dataset.i,1);renderAI()},aimeal:b=>{AI.m=b.dataset.m;renderAI()},
  aiAdd:()=>{const E=aiEntries();if(!E.length)return;addEntries(AI.m,E);closeSheet();V.tab='today';V.date=today();render();toast('הארוחה נוספה')}};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;if(!['water','addFood','toTray','trayAdd','delEdit','ans'].includes(b.dataset.a))sfx('tap');if(b.closest('#sheet')&&!b.closest('#sheetIn')){}const f=act[b.dataset.a];if(f){e.preventDefault();f(b,e)}});
 $('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
-document.addEventListener('input',e=>{const t=e.target;if(t.id==='q'){A.q=t.value;renderRes()}else if(t.id==='qty'){A.qty=Math.max(0,+t.value||0);renderQ();preview()}else if(t.id==='exM')exPv();
+document.addEventListener('input',e=>{const t=e.target;if(t.id==='fq'){FR.q=t.value;document.querySelectorAll('#fchips .chip').forEach(x=>x.classList.remove('on'));renderFList();return}
+ if(t.id==='fsp'||t.id==='finc'){if(t.id==='fsp')FR.cfg.sp=+t.value;else FR.cfg.inc=+t.value;const a=$('#fspv');if(a)a.textContent=r1(FR.cfg.sp)+' קמ״ש';const p=$('#fpace');if(p)p.textContent=paceTxt(FR.cfg.sp);const i=$('#fincv');if(i)i.textContent=FR.cfg.inc+'%';freePrev();return}
+ if(t.id==='flsp'&&S.free){freeAccum();S.free.cfg.sp=+t.value;const a=$('#flspv');if(a)a.textContent=r1(S.free.cfg.sp)+' קמ״ש';const p=$('#flpace');if(p)p.textContent=paceTxt(S.free.cfg.sp);return}if(t.id==='q'){A.q=t.value;renderRes()}else if(t.id==='qty'){A.qty=Math.max(0,+t.value||0);renderQ();preview()}else if(t.id==='exM')exPv();
  else if(t.dataset.ai!=null){const x=AI.items[+t.dataset.ai];if(x){x.g=Math.max(1,+t.value||1);clearTimeout(renderAI.t);renderAI.t=setTimeout(()=>{const pos=t.dataset.ai;renderAI();const el=document.querySelector(`[data-ai="${pos}"]`);if(el){el.focus();const v=el.value;el.value='';el.value=v}},700)}}});
 document.addEventListener('change',e=>{if(e.target.id==='exT')exPv()});
 $('#lbl').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(f)scanLabel(f)});
 $('#pic').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;AI.file=f;if(AI.url)URL.revokeObjectURL(AI.url);AI.url=URL.createObjectURL(f);e.target.value='';runAI(true)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
-setInterval(()=>{if(S.act){const t=fmtHMS(actElapsed());const a1=$('#actChip');if(a1)a1.textContent=t;const a2=$('#actChip2');if(a2)a2.textContent=t}},1000);
+setInterval(()=>{if(S.free){const c=$('#frChip');if(c)c.textContent=fmtHMS(freeSec())}if(S.act){const t=fmtHMS(actElapsed());const a1=$('#actChip');if(a1)a1.textContent=t;const a2=$('#actChip2');if(a2)a2.textContent=t}},1000);
 setInterval(()=>{if(!S.fast||!S.fast.start)return;const h=fastElapsed(),g=S.fast.plan;const a=$('#fT');if(a)a.textContent=fmtH(h);const r=$('#fR');if(r)r.textContent=h>=g?'יעד הושג!':'נותרו '+fmtH(g-h);
  const c=$('#fChip');if(c)c.textContent=fmtH(h);const arc=$('#fArc');if(arc){const C=2*Math.PI*46;arc.setAttribute('stroke-dasharray',C*Math.min(1,h/g)+' '+C)}const st=stageAt(h);const fn=$('#fNext');if(fn&&STAGES[st+1])fn.textContent=fmtH(STAGES[st+1][0]-h);if(V.st!=null&&st>V.st){toast('שלב חדש בצום: '+STAGES[st][1]+'!');sfx('coin');if(V.tab==='fast')render()}V.st=st},1000);
-(function(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');if(av)av.innerHTML=avoki('happy');
+const SPLASH_HTML=($('#splash')||{}).outerHTML||'';
+function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');if(av)av.innerHTML=avoki('happy');
  const hi=$('#spHi');if(hi){if(S.profile){const left=r1(curW()-S.profile.goal),st=streak();hi.textContent=`${greet()} ${S.profile.name}! `+(st?`${st} ימים ברצף · `:'')+(left>0?`עוד ${left} ק״ג ליעד`:'הגעת ליעד!')}else hi.textContent='ברוך הבא!'}
  const pad=sp.querySelector('.ppad');pad.innerHTML=[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>k===''?'<span></span>':`<button data-k="${k}" aria-label="${k==='⌫'?'מחק':k}">${k}</button>`).join('');
  let code='';const dots=()=>document.querySelectorAll('#pdots i').forEach((d,i)=>d.classList.toggle('on',i<code.length));
  const H=x=>{let h=5381;for(const ch of x)h=((h<<5)+h+ch.charCodeAt(0))|0;return h};
  pad.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.stopPropagation();try{navigator.vibrate&&navigator.vibrate(15)}catch(_){}const k=b.dataset.k;
   if(k==='⌫')code=code.slice(0,-1);else if(code.length<4)code+=k;dots();
-  if(code.length===4){if(H(code)===H('88'+'60')){try{sessionStorage.setItem('kl_in','1')}catch(_){}setTimeout(hideSplash,180)}else{const d=$('#pdots');d.classList.remove('bad');void d.offsetWidth;d.classList.add('bad');sfx('del');setTimeout(()=>{code='';dots()},450)}}});
- try{if(sessionStorage.getItem('kl_in')==='1'){sp.remove()}}catch(_){}})();
+  if(code.length===4){if(H(code)===H('88'+'60')){setTimeout(hideSplash,180)}else{const d=$('#pdots');d.classList.remove('bad');void d.offsetWidth;d.classList.add('bad');sfx('del');setTimeout(()=>{code='';dots()},450)}}});
+ try{if(sessionStorage.getItem('kl_in')==='1'){sessionStorage.removeItem('kl_in');sp.remove()}}catch(_){}}
+initSplash();
+window.__kl=()=>({S,getDayLocal,today,buildTabata,lockApp});
+function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
+let hidAt=0;document.addEventListener('visibilitychange',()=>{if(document.hidden){hidAt=Date.now();return}if(hidAt&&Date.now()-hidAt>20000&&!(V.ext&&Date.now()-V.ext<300000))lockApp();V.ext=0;hidAt=0});
 function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),550)}
 window.__back=()=>{if($('#splash'))return false;if($('#sheet').classList.contains('open')){closeSheet();return true}if(V.tab!=='today'){V.tab='today';render();return true}return false};
 render();
