@@ -226,6 +226,9 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .freec{border-color:rgba(255,138,101,.45)}.fburn{display:grid;grid-template-columns:1.4fr 1fr;align-items:end;text-align:center;gap:8px}.flame svg{width:30px;height:30px;color:var(--pink);animation:bob 1s ease-in-out infinite}
 .flive{text-align:center}input[type=range]{accent-color:var(--pink);min-height:36px}
 .chip svg{width:18px;height:18px;vertical-align:middle}
+.qcard h2 svg{width:22px;height:22px;vertical-align:-4px}.qcard .btn svg{width:18px;height:18px}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
+.qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -235,7 +238,7 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 <nav class="tabs"><div class="in">
  <button class="tab on" data-a="tab" data-t="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>היום</button>
  <button class="tab" data-a="tab" data-t="fast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 15A8 8 0 0 1 9 4a8 8 0 1 0 11 11z"/></svg>צום</button>
- <button class="fab" data-a="add" aria-label="הוספת מאכל"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+ <button class="fab" data-a="quick" aria-label="הוספה: מאכל, אימון, מים, צום"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
  <button class="tab" data-a="tab" data-t="fit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/></svg>כושר</button>
  <button class="tab" data-a="tab" data-t="goals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>מטרות</button>
 </div></nav>
@@ -9531,6 +9534,19 @@ function wbExtras(all){const p=S.profile,tip=$('#wbTip');
   return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)"><span style="flex:1"><b>${r1(x.w)} ק״ג</b> <span class="small muted">${heDate(x.d,{weekday:'short',day:'numeric',month:'numeric',year:'2-digit'})}</span></span>${dd!=null?`<span style="font-weight:700;color:${dd<=0?'var(--lime)':'var(--red)'}">${dd<0?'▼':dd>0?'▲':'●'} ${r1(Math.abs(dd))}</span>`:'<span class="small muted">ראשונה</span>'}<button class="chip" data-a="wbDel" data-d="${x.d}" aria-label="מחק שקילה" style="color:var(--red)">${IC.trash}</button></div>`}).join('')}
 function sgn(v){v=Math.round(v*10)/10;return '\u200E'+(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1)}
 
+/* ===== תפריט הוספה מהירה (הפלוס האמצעי) ===== */
+function openQuick(){if(!S.profile)return openProfile();const day=getDayLocal(V.date),F=S.fast,fh=F.start?fastElapsed():0,c=calc();
+ const tile=(a,ic,t,sub,col,extra='')=>`<button class="qtile" data-a="${a}" ${extra} style="--qc:${col}"><span class="qi">${ic}</span><b>${t}</b><small>${sub}</small></button>`;
+ openSheet(`${shTop('מה מוסיפים?')}<div class="qgrid">
+${tile('add',IC.plus,'מאכל','חיפוש במאגר','var(--mango)')}${tile('photo',IC.cam,'צלם ארוחה','ה-AI יחשב','var(--mango)')}
+${tile('freeRetro',IC.pen,'אימון שביצעתי','היום או לפני','var(--pink)')}${tile('free',IC.play,S.free?'לאימון הפעיל':'התחל אימון',S.free?'האימון רץ עכשיו':'קלוריות בלייב','var(--pink)')}
+${tile('homeSetup',IC.foot,'צעדה בבית','עד 8,000 צעדים','var(--pink)')}${tile('qweighO',IC.chart,'שקילה','עכשיו '+r1(c.w)+' ק״ג','var(--lime)')}</div>
+<div class="card qcard" style="margin:12px 0 0"><h2 style="margin-bottom:6px"><span style="color:#3a9cf5">${IC.drop}</span> מים<span class="sp"></span><span class="small muted" id="qwv" style="white-space:nowrap">${(day.water||0).toLocaleString('he-IL')} / ${waterGoal().toLocaleString('he-IL')} מ״ל</span></h2>
+<div class="btns" style="margin-top:4px"><button class="btn ghost" data-a="qwater" data-ml="250">+ כוס 250</button><button class="btn ghost" data-a="qwater" data-ml="500">+ בקבוק 500</button><button class="btn ghost" data-a="qwater" data-ml="-250" aria-label="הורד 250" style="flex:.45">−</button></div></div>
+<div class="card qcard" style="margin:12px 0 0"><h2 style="margin-bottom:6px"><span style="color:#7a6cf0">${IC.moon}</span> צום לסירוגין</h2>${F.start?`<p style="margin:0">אתה בצום כבר <b>${fmtH(fh)}</b> מתוך ${F.plan} שעות${fh>=F.plan?' · <b style="color:var(--lime)">היעד הושג!</b>':''}</p><div class="btns"><button class="btn" data-a="qfastEnd">סיים צום</button><button class="btn ghost" data-a="tab" data-t="fast">למסך הצום</button></div>`
+:`<div class="seg">${FPLANS.slice(0,5).map(p=>`<button data-a="qplan" data-h="${p[0]}" class="${F.plan===p[0]?'on':''}">${p[1]}</button>`).join('')}</div><label class="f" style="margin-top:8px"><span>התחלתי לצום ב-(ריק = עכשיו)</span><input type="time" id="fStart"></label><div class="btns"><button class="btn" data-a="qfast">${IC.moon} התחל צום</button></div>`}</div>`)}
+function openQWeigh(){const c=calc();openSheet(`<div class="sh-top"><button class="x" data-a="quick" aria-label="חזרה">${IC.prev}</button><h3>שקילה</h3><button class="x" data-a="close" aria-label="סגירה">${IC.x}</button></div><p class="muted" style="margin-top:0">מומלץ להישקל בבוקר, אחרי שירותים ולפני אוכל.</p><div class="step"><input type="number" id="qwIn" inputmode="decimal" step="0.1" value="${r1(c.w)}" aria-label="משקל בק״ג"><button class="btn" data-a="qweigh" style="width:auto;flex:none">שמור</button></div>`)}
+
 function viewAwards(){const lv=level(),st=streak();const got=BADGES.filter(b=>S.badges[b[0]]).length;
  const medal=(on,i)=>`<svg viewBox="0 0 60 60"><path d="M20 4h8l4 14-8 4zM40 4h-8l-4 14 8 4z" fill="${on?['#e8484a','#3a9cf5','#7cc63e'][i%3]:'#bbb'}"/><circle cx="30" cy="36" r="18" fill="${on?'#f5b82e':'#ccc'}"/><circle cx="30" cy="36" r="13" fill="${on?'#ffd66b':'#ddd'}"/><path d="M30 28l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="${on?'#e2601a':'#aaa'}"/></svg>`;
  return `<div class="hero"><div class="top"><h1>ההישגים שלי</h1></div><div class="lvl" style="margin-top:14px"><div style="width:96px;flex:none">${avoki(st>=3?'wow':'happy')}</div>
@@ -10052,7 +10068,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=24;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=25;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10267,6 +10283,11 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  homeOk:b=>confirmHome(b.dataset.add==='1'),homeNo:()=>{HM.res=null;closeSheet();toast('לא נרשם. מחר זה היום שלך!')},
  homeBeat:()=>{SND.beat?beatStop():beatStart();showHome()},homeEnd:()=>finishHome(false),box:openBox,journey:openJourney,
  wear:b=>{if(b.dataset.a!=='wear')return;S.acc=b.dataset.id||null;saveState();render();toast(S.acc?'אבוקי התלבש!':'אבוקי בלי אביזרים')},
+ quick:openQuick,qweighO:openQWeigh,
+ qwater:b=>{act.water(b);const day=getDayLocal(V.date),e=$('#qwv');if(e)e.textContent=(day.water||0).toLocaleString('he-IL')+' / '+waterGoal().toLocaleString('he-IL')+' מ״ל'},
+ qplan:b=>{S.fast.plan=+b.dataset.h;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
+ qfast:()=>{const v=($('#sheetIn #fStart')||{}).value||'';document.querySelectorAll('#fStart').forEach(x=>x.value=v);act.fastStart();closeSheet()},qfastEnd:()=>{closeSheet();act.fastEnd()},
+ qweigh:()=>{const w=+$('#qwIn').value;if(!(w>30&&w<350))return toast('משקל לא תקין');const t=today(),ws=wSorted().filter(x=>x.d<t),pv=ws[ws.length-1];S.weights=S.weights.filter(x=>x.d!==t);S.weights.push({d:t,w});award('wt:'+t,20,'שקילה');const fm=fitCheck();saveState();checkBadges();closeSheet();render();toast('נשמר: '+r1(w)+' ק״ג'+(pv?' · '+sgn(w-pv.w)+' מהשקילה הקודמת':''));if(fm)setTimeout(()=>showUndoMsg(fm),2400)},
  free:()=>{FR.retro=0;openFree()},freeRetro:()=>{FR.retro=1;openFree()},fmode:b=>{FR.retro=+b.dataset.r;if(!FR.retro&&S.free)return openFreeLive();openFree()},freeSave:freeSave,
  fday:b=>{FR.cfg.d=b.dataset.d;const i=$('#fdate');if(i)i.value=b.dataset.d;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},fcat:b=>{FR.cat=b.dataset.c;FR.q='';const q=$('#fq');if(q)q.value='';document.querySelectorAll('#fchips .chip').forEach(x=>x.classList.toggle('on',x===b));renderFList()},
  fpick:b=>openFreeCfg(b.dataset.id),flvl:b=>{FR.cfg.lvl=+b.dataset.i;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},
