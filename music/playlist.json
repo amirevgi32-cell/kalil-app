@@ -1,31 +1,223 @@
 {
- "updated": "2026-11-25b",
+ "updated": "2026-11-25c",
  "rotateDays": 3,
- "workoutPerRotation": 12,
+ "workoutPerRotation": 16,
  "bg": [
   {
-   "f": "soft-gold-sky",
-   "t": "Soft Gold Sky"
+   "f": "2-am-debug-loop",
+   "t": "2 AM Debug Loop"
   },
   {
-   "f": "window-seat-daydream",
-   "t": "Window Seat Daydream"
+   "f": "3-am-echoes",
+   "t": "3 AM Echoes"
   },
   {
-   "f": "porchlight-golden-hour",
-   "t": "Porchlight Golden Hour"
+   "f": "a-taste-of-spring",
+   "t": "A Taste of Spring"
+  },
+  {
+   "f": "after-school-rain",
+   "t": "After School Rain"
+  },
+  {
+   "f": "almost-floating",
+   "t": "Almost Floating"
+  },
+  {
+   "f": "amber-sidewalks",
+   "t": "Amber Sidewalks"
+  },
+  {
+   "f": "amber-windowpane",
+   "t": "Amber Windowpane"
+  },
+  {
+   "f": "antenna-after-midnight",
+   "t": "Antenna After Midnight"
+  },
+  {
+   "f": "ashes-in-the-coffee-cup",
+   "t": "Ashes in the Coffee Cup"
+  },
+  {
+   "f": "aurora-on-mute",
+   "t": "Aurora on Mute"
+  },
+  {
+   "f": "autumn-on-the-window-glass",
+   "t": "Autumn on the Window Glass"
+  },
+  {
+   "f": "blinds-and-headlights",
+   "t": "Blinds and Headlights"
+  },
+  {
+   "f": "blue-below-the-surface",
+   "t": "Blue Below the Surface"
+  },
+  {
+   "f": "breezy-afternoon-terrace",
+   "t": "Breezy Afternoon Terrace"
+  },
+  {
+   "f": "brushstrokes-and-rain",
+   "t": "Brushstrokes and Rain"
+  },
+  {
+   "f": "burnt-sunset-groove",
+   "t": "Burnt Sunset Groove"
+  },
+  {
+   "f": "butter-and-windowlight",
+   "t": "Butter and Windowlight"
+  },
+  {
+   "f": "candlelit-at-70-bpm",
+   "t": "Candlelit at 70 BPM"
+  },
+  {
+   "f": "cathedral-hiss",
+   "t": "Cathedral Hiss"
+  },
+  {
+   "f": "chapter-by-lamplight",
+   "t": "Chapter By Lamplight"
+  },
+  {
+   "f": "coffee-ring-notebook",
+   "t": "Coffee Ring Notebook"
+  },
+  {
+   "f": "continue-screen-dreams",
+   "t": "Continue Screen Dreams"
+  },
+  {
+   "f": "cursor-after-midnight",
+   "t": "Cursor After Midnight"
+  },
+  {
+   "f": "deep-space-loop",
+   "t": "Deep Space Loop"
+  },
+  {
+   "f": "dog-eared-pages",
+   "t": "Dog Eared Pages"
+  },
+  {
+   "f": "dusk-between-stoops",
+   "t": "Dusk Between Stoops"
+  },
+  {
+   "f": "dust-and-hardcovers",
+   "t": "Dust and Hardcovers"
+  },
+  {
+   "f": "dust-in-the-curtains",
+   "t": "Dust in the Curtains"
+  },
+  {
+   "f": "dust-on-the-morning-keys",
+   "t": "Dust on the Morning Keys"
+  },
+  {
+   "f": "dust-on-the-needle",
+   "t": "Dust on the Needle"
+  },
+  {
+   "f": "dusty-jukebox-heart",
+   "t": "Dusty Jukebox Heart"
+  },
+  {
+   "f": "electric-puddles",
+   "t": "Electric Puddles"
+  },
+  {
+   "f": "elevator-to-the-moon",
+   "t": "Elevator To the Moon"
+  },
+  {
+   "f": "empty-street-static",
+   "t": "Empty Street Static"
   },
   {
    "f": "first-coffee-thoughts",
    "t": "First Coffee Thoughts"
   },
   {
+   "f": "glow-on-the-overpass",
+   "t": "Glow on the Overpass"
+  },
+  {
+   "f": "grandmas-kitchen-on-sunday",
+   "t": "Grandmas Kitchen on Sunday"
+  },
+  {
+   "f": "half-empty-coupe",
+   "t": "Half Empty Coupe"
+  },
+  {
+   "f": "harbor-before-words",
+   "t": "Harbor Before Words"
+  },
+  {
+   "f": "headlights-on-the-divider",
+   "t": "Headlights on the Divider"
+  },
+  {
+   "f": "last-call-in-c-minor",
+   "t": "Last Call in C Minor"
+  },
+  {
+   "f": "linen-and-limoncello",
+   "t": "Linen and Limoncello"
+  },
+  {
+   "f": "midnight-amber-room",
+   "t": "Midnight Amber Room"
+  },
+  {
+   "f": "mirrorball-slow-roll",
+   "t": "Mirrorball Slow Roll"
+  },
+  {
+   "f": "motel-soul-radio",
+   "t": "Motel Soul Radio"
+  },
+  {
    "f": "pancakes-in-the-sun",
    "t": "Pancakes in the Sun"
   },
   {
+   "f": "peach-cobbler-static",
+   "t": "Peach Cobbler Static"
+  },
+  {
+   "f": "porchlight-golden-hour",
+   "t": "Porchlight Golden Hour"
+  },
+  {
+   "f": "sidewalk-slow-jam",
+   "t": "Sidewalk Slow Jam"
+  },
+  {
+   "f": "smoke-in-the-orange-sky",
+   "t": "Smoke in the Orange Sky"
+  },
+  {
+   "f": "soft-gold-sky",
+   "t": "Soft Gold Sky"
+  },
+  {
    "f": "sunrise-stretch-flow",
    "t": "Sunrise Stretch Flow"
+  },
+  {
+   "f": "sunset-offbeat",
+   "t": "Sunset Offbeat"
+  },
+  {
+   "f": "window-seat-daydream",
+   "t": "Window Seat Daydream"
   }
  ],
  "workout": [
@@ -144,6 +336,90 @@
   {
    "f": "x-d63123",
    "t": "Power Mix 29"
+  },
+  {
+   "f": "x-088c78",
+   "t": "Power Mix 30"
+  },
+  {
+   "f": "x-3dfe33",
+   "t": "Power Mix 31"
+  },
+  {
+   "f": "x-4818ca",
+   "t": "Power Mix 32"
+  },
+  {
+   "f": "x-587c74",
+   "t": "Power Mix 33"
+  },
+  {
+   "f": "x-74f0cf",
+   "t": "Power Mix 34"
+  },
+  {
+   "f": "x-89630b",
+   "t": "Power Mix 35"
+  },
+  {
+   "f": "x-9822a1",
+   "t": "Power Mix 36"
+  },
+  {
+   "f": "x-a68c26",
+   "t": "Power Mix 37"
+  },
+  {
+   "f": "x-ab023b",
+   "t": "Power Mix 38"
+  },
+  {
+   "f": "x-basement-groove-86",
+   "t": "Basement Groove 86"
+  },
+  {
+   "f": "x-d24b2f",
+   "t": "Power Mix 40"
+  },
+  {
+   "f": "x-e0ec39",
+   "t": "Power Mix 41"
+  },
+  {
+   "f": "x-f23d9e",
+   "t": "Power Mix 42"
+  },
+  {
+   "f": "x-th-daybreak",
+   "t": "Tanner Helland – Daybreak"
+  },
+  {
+   "f": "x-th-deeper",
+   "t": "Tanner Helland – Deeper"
+  },
+  {
+   "f": "x-th-defiance",
+   "t": "Tanner Helland – Defiance"
+  },
+  {
+   "f": "x-th-destiny",
+   "t": "Tanner Helland – Destiny"
+  },
+  {
+   "f": "x-th-faith",
+   "t": "Tanner Helland – Faith"
+  },
+  {
+   "f": "x-th-syntheticity",
+   "t": "Tanner Helland – Syntheticity"
+  },
+  {
+   "f": "x-th-thugs",
+   "t": "Tanner Helland – Thugs"
+  },
+  {
+   "f": "x-th-unknown",
+   "t": "Tanner Helland – Unknown"
   }
  ]
 }
