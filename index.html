@@ -245,6 +245,12 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .dsrow{padding:9px 0;border-bottom:1px solid var(--line)}.dsweek{display:flex;gap:6px;align-items:flex-end;height:140px;padding-top:6px}.dsweek div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px}.dsweek i{width:70%;border-radius:8px 8px 3px 3px;display:block}
 .tipc{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,#fff7ec,#fff);border-color:rgba(255,183,77,.45)}.tipi{font-size:34px;line-height:1;flex:none;width:52px;height:52px;border-radius:16px;background:#fff1dc;display:grid;place-items:center}
 .tipn{margin-top:6px;font:inherit;font-size:13px;font-weight:700;color:var(--mango-d);background:none;min-height:36px;padding:0}
+.chatlog{display:flex;flex-direction:column;gap:10px;min-height:46vh;padding:4px 0 8px}.chatwel{text-align:center;padding:8px 0}.chatwel .chip{font-size:13px}
+.msg{display:flex;gap:8px;align-items:flex-end;max-width:92%}.msg.u{align-self:flex-start;flex-direction:row-reverse}.msg.a{align-self:flex-end}
+html[dir=rtl] .msg.u{align-self:flex-start}.mav{width:34px;height:34px;flex:none}.mav svg{width:34px;height:34px}
+.bub{padding:10px 13px;border-radius:18px;line-height:1.55;font-size:15px}.msg.u .bub{background:var(--mango);color:#fff;border-end-start-radius:6px}.msg.a .bub{background:var(--card2,#f1f6f4);border:1px solid var(--line);border-end-end-radius:6px}
+.chatin{position:sticky;bottom:0;display:flex;gap:8px;align-items:flex-end;background:var(--bg,#fff);padding-top:8px}.chatin textarea{flex:1;resize:none;min-height:48px;max-height:120px}
+.dots{display:inline-flex;gap:4px}.dots i{width:7px;height:7px;border-radius:50%;background:var(--mute);animation:bob 1s infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
 .qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
@@ -9427,7 +9433,7 @@ function viewToday(){const day=getDayLocal(V.date),c=calc(),t=dayTotals(day),ex=
  const msg=!t.n?`${greet()} ${esc(S.profile.name)}! מה אכלנו היום?`:over?'עברנו קצת את התקציב. זה בסדר, מחר יום חדש, בלי רגשות אשמה.':pct>.85?'כמעט סגרנו את היום! נשאר מקום לנשנוש קטן וחכם.':`מעולה! נשארו לך ${r0(left)} קק״ל. ממשיכים ככה.`;
  const mt={p:B*.3/4,c:B*.4/4,f:B*.3/9};const mac=(n,v,g,col)=>`<div class="mac"><small>${n}</small><b>${r0(v)}</b><span class="small muted"> / ${r0(g)} ג׳</span><div class="bar"><i style="width:${Math.min(100,v/g*100)}%;background:${col};color:${col}"></i></div></div>`;
  const ds=dayScore(day);
- return `<div class="hero"><div class="top"><h1>קליל</h1><span class="chipf" style="margin:0" title="ימים ברצף">${IC.fire} ${streak()}</span><button class="ib" data-a="tab" data-t="awards" aria-label="הישגים">${IC.trophy}</button><button class="ib" data-a="music" aria-label="${S.set.music?'כבה מוזיקה':'הפעל מוזיקה'}" style="color:${S.set.music?'var(--mango-d)':'var(--mute)'}">${S.set.music?IC.note:IC.noteOff}</button><button class="ib" data-a="profile" aria-label="פרופיל">${IC.user}</button></div>
+ return `<div class="hero"><div class="top"><h1>קליל</h1><span class="chipf" style="margin:0" title="ימים ברצף">${IC.fire} ${streak()}</span><button class="ib" data-a="chat" aria-label="שאל את אבוקי">${IC.chat}</button><button class="ib" data-a="tab" data-t="awards" aria-label="הישגים">${IC.trophy}</button><button class="ib" data-a="music" aria-label="${S.set.music?'כבה מוזיקה':'הפעל מוזיקה'}" style="color:${S.set.music?'var(--mango-d)':'var(--mute)'}">${S.set.music?IC.note:IC.noteOff}</button><button class="ib" data-a="profile" aria-label="פרופיל">${IC.user}</button></div>
 <div class="datebar"><button class="ib" data-a="day" data-n="-1" aria-label="יום קודם">${IC.prev}</button><span>${isT?'היום, ':''}${heDate(V.date)}</span><button class="ib" data-a="day" data-n="1" aria-label="יום הבא" ${isT?'disabled style="opacity:.3"':''}>${IC.next}</button>${isT?'':'<button class="chipf" data-a="goToday" style="margin:0">להיום</button>'}</div>
 <div class="ringwrap"><div class="side"><b>${r0(t.k)}</b>נאכל</div><div class="ring"><svg viewBox="0 0 100 100"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ec4a0"/><stop offset="1" stop-color="#7dd35a"/></linearGradient></defs><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="9"/>
 <circle class="glow" cx="50" cy="50" r="${R}" fill="none" style="color:${over?'#ff8a65':'#2ec4a0'};transition:stroke-dasharray .8s cubic-bezier(.2,1.2,.4,1)" stroke="${over?'#ff8a65':'url(#rg)'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C*pct} ${C}" transform="rotate(-90 50 50)"/></svg>
@@ -9532,6 +9538,37 @@ const DTIPS=[
 ['😊','תהיה נחמד לעצמך','מעידה זה חלק מהדרך. מי שמצליח הוא מי שחוזר מהר, לא מי שלא מועד אף פעם.']];
 function tipIdx(){const d=Math.floor(pd(today()).getTime()/864e5);return ((d%DTIPS.length)+DTIPS.length+(V.tipOff||0))%DTIPS.length}
 function tipCard(){const t=DTIPS[tipIdx()];return `<div class="card tipc"><div class="tipi">${t[0]}</div><div style="flex:1;min-width:0"><div class="small" style="color:var(--mango-d);font-weight:800">${V.tipOff?'עוד טיפ':'הטיפ של היום'}</div><b style="font-size:17px">${t[1]}</b><p class="small" style="margin:4px 0 0;line-height:1.55">${t[2]}</p><button class="tipn" data-a="tipNext">עוד טיפ ←</button></div></div>`}
+/* ===== צ׳אט עם אבוקי ===== */
+const CH={busy:false,ctl:null};
+const CHQ=['למה אני הולך הרבה לשירותים אחרי ששתיתי הרבה?','מה כדאי לאכול בערב?','כמה מים באמת צריך?','איך לשבור צום נכון?','למה המשקל עלה היום?','מה לאכול לפני אימון?'];
+function chatCtx(){const p=S.profile,c=calc(),day=getDayLocal(today()),t=dayTotals(day),F=S.fast;
+ return `פרטי המשתמש: ${p.name}, ${p.sex==='m'?'גבר':'אישה'} בן ${p.age}, גובה ${p.h} ס״מ, משקל נוכחי ${r1(c.w)} ק״ג (התחיל ב-${r1(p.w0)}), יעד ${r1(p.goal)} ק״ג. עובד במשרד.
+היום עד עכשיו: אכל ${r0(t.k)} מתוך תקציב ${r0(c.budget+exKcal(day))} קק״ל, חלבון ${r0(t.p)} ג׳, שתה ${r0(day.water||0)} מ״ל (יעד ${r0(waterGoal())}), ${(day.steps||0)} צעדים, ${day.ex.length?'התאמן: '+day.ex.map(e=>e.n+' '+e.min+' דק׳').join(', '):'עוד לא התאמן'}. ${F.start?`נמצא בצום כבר ${r1(fastElapsed())} שעות מתוך ${F.plan}.`:''}
+מה אכל היום: ${MEALS.map(([m,n])=>day.meals[m].length?n+': '+day.meals[m].map(e=>e.n).join(', '):'').filter(Boolean).join(' | ')||'עוד לא נרשם'}.`}
+function openChat(){if(!S.profile)return openProfile();S.chat=S.chat||[];
+ openSheet(`<div class="sh-top"><h3>שאל את אבוקי</h3>${S.chat.length?`<button class="chip" data-a="chatClr" style="margin-inline-start:auto">שיחה חדשה</button>`:''}<button class="x" data-a="close" aria-label="סגירה">${IC.x}</button></div>
+<div id="chatLog" class="chatlog"></div><div class="chatin"><textarea id="chatIn" rows="1" placeholder="שאל כל שאלה על תזונה, כושר, צום, הגוף..." maxlength="600"></textarea><button class="btn" data-a="chatSend" aria-label="שלח" style="width:auto;flex:none;padding:0 16px">שלח</button></div>
+<p class="small muted" style="margin:6px 0 0;text-align:center">אבוקי נותן מידע כללי ואינו מחליף רופא.</p>`);chatRender()}
+function chatRender(){const el=$('#chatLog');if(!el)return;const L=S.chat||[];
+ el.innerHTML=(L.length?'':`<div class="chatwel"><div style="width:90px;margin:0 auto">${avoki('happy')}</div><p style="margin:6px 0">היי ${esc(S.profile.name)}! אני מכיר את היום שלך: מה אכלת, כמה שתית וכמה הלכת. על מה תרצה לשאול?</p><div class="chips" style="flex-wrap:wrap;justify-content:center">${CHQ.map(q=>`<button class="chip" data-a="chatQ" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div></div>`)
+ +L.map(m=>`<div class="msg ${m.r}">${m.r==='a'?`<span class="mav">${avoki('happy')}</span>`:''}<div class="bub">${esc(m.t).replace(/\n/g,'<br>')}</div></div>`).join('')
+ +(CH.busy?`<div class="msg a"><span class="mav">${avoki('wow')}</span><div class="bub"><span class="dots"><i></i><i></i><i></i></span></div></div>`:'');
+ el.scrollTop=el.scrollHeight;const sh=$('#sheetIn');if(sh)sh.scrollTop=sh.scrollHeight}
+async function chatSend(q){q=(q||'').trim();if(!q||CH.busy)return;S.chat=S.chat||[];S.chat.push({r:'u',t:q.slice(0,600)});S.chat=S.chat.slice(-40);saveState();const inp=$('#chatIn');if(inp)inp.value='';
+ let sample=null;try{sample=window.claude&&claude.use?await claude.use('sample'):null}catch(e){}
+ if(!sample){const key=ls.get('kl_key');if(!key){S.chat.push({r:'a',t:'כדי שאוכל לענות צריך לחבר את ה-AI: הזן מפתח API במסך הצילום ("צלם צלחת"), ואז חזור לכאן.'});saveState();chatRender();return}sample={json:(p,o)=>apiJson(p,o,key)}}
+ CH.busy=true;chatRender();CH.ctl=new AbortController();
+ const hist=S.chat.slice(-12).map(m=>(m.r==='u'?'משתמש: ':'אבוקי: ')+m.t).join('\n');
+ const prompt=`אתה "אבוקי", המאמן האישי החם והמצחיק באפליקציית ההרזיה "קליל". אתה עונה בעברית פשוטה, קצרה ומעשית (עד 120 מילים, אפשר נקודות קצרות), בגובה העיניים ובלי להטיף.
+אתה מומחה לתזונה, כושר, צום לסירוגין, שינה, שתייה ותהליכים בגוף. הסבר "למה" בצורה פשוטה, ותן המלצה פרקטית אחת לפחות. השתמש בנתונים של המשתמש כשזה רלוונטי.
+בשאלות רפואיות: תן מידע כללי בלבד. אם יש סימני אזהרה (כאב, דם, חום, צמא קיצוני יחד עם השתנה מרובה, סחרחורת, כאבים בחזה, ירידה חדה בלי הסבר) — אמור בבירור לפנות לרופא. אל תאבחן ואל תמליץ על תרופות או מינונים.
+${chatCtx()}
+השיחה עד עכשיו:
+${hist}
+החזר JSON בלבד: {"a":"התשובה שלך"}`;
+ try{const r=await sample.json(prompt,{signal:CH.ctl.signal});const a=String(r&&(r.a||r.answer)||'').trim()||'לא הצלחתי לנסח תשובה. נסה לשאול שוב.';S.chat.push({r:'a',t:a.slice(0,2000)})}
+ catch(e){const c=e&&e.code;if(c!=='cancelled')S.chat.push({r:'a',t:c==='rate_limited'?'יותר מדי שאלות ברגע אחד. נסה שוב עוד רגע.':c==='bad_key'?'מפתח ה-API לא תקין.':'לא הצלחתי להתחבר כרגע. בדוק אינטרנט ונסה שוב.'})}
+ CH.busy=false;S.chat=S.chat.slice(-40);saveState();chatRender()}
 function greet(){const h=new Date().getHours();return h<11?'בוקר טוב':h<17?'צהריים טובים':h<21?'ערב טוב':'לילה טוב'}
 function mealCard(day,m,n){const it=day.meals[m],r=scoreItems(it,m),t=sum(it);
  if(!it.length)return `<div class="card meal mini"><h2>${n}<span class="sp"></span><button class="mb" data-a="add" data-m="${m}" aria-label="הוסף ל${n}">${IC.plus}</button><button class="mb" data-a="photo" data-m="${m}" aria-label="צלם ${n}">${IC.cam}</button><button class="mb" data-a="copy" data-m="${m}" aria-label="כמו אתמול" title="כמו אתמול">${IC.copy}</button></h2></div>`;
@@ -9646,7 +9683,7 @@ function openQuick(){if(!S.profile)return openProfile();const day=getDayLocal(V.
  openSheet(`${shTop('מה מוסיפים?')}<div class="qgrid">
 ${tile('add',IC.plus,'מאכל','חיפוש במאגר','var(--mango)')}${tile('photo',IC.cam,'צלם ארוחה','ה-AI יחשב','var(--mango)')}
 ${tile('freeRetro',IC.pen,'אימון שביצעתי','היום או לפני','var(--pink)')}${tile('free',IC.play,S.free?'לאימון הפעיל':'התחל אימון',S.free?'האימון רץ עכשיו':'קלוריות בלייב','var(--pink)')}
-${tile('homeSetup',IC.foot,'צעדה בבית','עד 8,000 צעדים','var(--pink)')}${tile('qweighO',IC.chart,'שקילה','עכשיו '+r1(c.w)+' ק״ג','var(--lime)')}</div>
+${tile('homeSetup',IC.foot,'צעדה בבית','עד 8,000 צעדים','var(--pink)')}${tile('qweighO',IC.chart,'שקילה','עכשיו '+r1(c.w)+' ק״ג','var(--lime)')}</div><button class="qtile" data-a="chat" style="--qc:var(--gold);width:100%;margin-top:10px;flex-direction:row;min-height:64px;gap:12px;justify-content:flex-start;padding:10px 14px"><span class="qi">${IC.chat}</span><span style="display:flex;flex-direction:column;text-align:right"><b>שאל את אבוקי</b><small>כל שאלה על תזונה, כושר, צום והגוף</small></span></button>
 <h2 style="margin:16px 0 6px;font-size:17px">אימונים מוצעים לך</h2><div class="sgrow">${wkSugg(false).slice(0,7).map(x=>`<button class="sgc" data-a="${x.a}" ${x.id?`data-id="${x.id}"`:''} ${x.tt?`data-t="${x.tt}"`:''} style="--qc:${x.col}"><span class="sgi">${x.ic}</span><b>${x.t}</b><small>${x.sub}</small></button>`).join('')}</div>
 <div class="card qcard" style="margin:12px 0 0"><h2 style="margin-bottom:6px"><span style="color:#3a9cf5">${IC.drop}</span> מים<span class="sp"></span><span class="small muted" id="qwv" style="white-space:nowrap">${(day.water||0).toLocaleString('he-IL')} / ${waterGoal().toLocaleString('he-IL')} מ״ל</span></h2>
 <div class="btns" style="margin-top:4px"><button class="btn ghost" data-a="qwater" data-ml="250">+ כוס 250</button><button class="btn ghost" data-a="qwater" data-ml="500">+ בקבוק 500</button><button class="btn ghost" data-a="qwater" data-ml="-250" aria-label="הורד 250" style="flex:.45">−</button></div></div>
@@ -10189,7 +10226,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=35;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=36;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10418,7 +10455,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  homeOk:b=>confirmHome(b.dataset.add==='1'),homeNo:()=>{HM.res=null;closeSheet();toast('לא נרשם. מחר זה היום שלך!')},
  homeBeat:()=>{SND.beat?beatStop():beatStart();showHome()},homeEnd:()=>finishHome(false),box:openBox,journey:openJourney,
  wear:b=>{if(b.dataset.a!=='wear')return;S.acc=b.dataset.id||null;saveState();render();toast(S.acc?'אבוקי התלבש!':'אבוקי בלי אביזרים')},
- quick:openQuick,tipNext:b=>{V.tipOff=(V.tipOff||0)+1;sfx('tap');const c=b.closest('.tipc');if(c)c.outerHTML=tipCard()},updLater:()=>{const i=UPD.info;if(i)UPD.later=i.html+'/'+i.apk;closeSheet()},dscore:openDScore,updNow:()=>{const i=UPD.info;if(!i)return;try{sessionStorage.setItem('kl_new',i.notes||'')}catch(_){}const g=$('#updGo');if(g)g.innerHTML='<div class="spin" style="margin:10px auto"></div><p class="muted" style="text-align:center">מוריד ומעדכן...</p>';if(i.apk>appVer().apk)act.updApk();else act.updHtml()},fdo:b=>{FR.retro=+b.dataset.r;FR.q='';if(!FR.retro&&S.free)return openFreeLive();if(!FR.retro)wkPreview();openFreeCfg(b.dataset.id,b.dataset.sp?{sp:+b.dataset.sp}:null)},fq2:b=>{FR.q='';openFreeCfg(b.dataset.id)},mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
+ quick:openQuick,chat:openChat,chatSend:()=>chatSend(($('#chatIn')||{}).value),chatQ:b=>chatSend(b.dataset.q),chatClr:()=>{S.chat=[];saveState();openChat()},tipNext:b=>{V.tipOff=(V.tipOff||0)+1;sfx('tap');const c=b.closest('.tipc');if(c)c.outerHTML=tipCard()},updLater:()=>{const i=UPD.info;if(i)UPD.later=i.html+'/'+i.apk;closeSheet()},dscore:openDScore,updNow:()=>{const i=UPD.info;if(!i)return;try{sessionStorage.setItem('kl_new',i.notes||'')}catch(_){}const g=$('#updGo');if(g)g.innerHTML='<div class="spin" style="margin:10px auto"></div><p class="muted" style="text-align:center">מוריד ומעדכן...</p>';if(i.apk>appVer().apk)act.updApk();else act.updHtml()},fdo:b=>{FR.retro=+b.dataset.r;FR.q='';if(!FR.retro&&S.free)return openFreeLive();if(!FR.retro)wkPreview();openFreeCfg(b.dataset.id,b.dataset.sp?{sp:+b.dataset.sp}:null)},fq2:b=>{FR.q='';openFreeCfg(b.dataset.id)},mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
  qwater:b=>{act.water(b);const day=getDayLocal(V.date),e=$('#qwv');if(e)e.textContent=(day.water||0).toLocaleString('he-IL')+' / '+waterGoal().toLocaleString('he-IL')+' מ״ל'},
  qplan:b=>{S.fast.plan=+b.dataset.h;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
  qfast:()=>{const v=($('#sheetIn #fStart')||{}).value||'';document.querySelectorAll('#fStart').forEach(x=>x.value=v);act.fastStart();closeSheet()},qfastEnd:()=>{closeSheet();act.fastEnd()},
@@ -10506,7 +10543,7 @@ document.addEventListener('input',e=>{const t=e.target;if(t.id==='fminIn'&&FR.cf
 document.addEventListener('change',e=>{if(e.target.id==='exT')exPv()});
 $('#lbl').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(f)scanLabel(f)});
 $('#pic').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;AI.file=f;if(AI.url)URL.revokeObjectURL(AI.url);AI.url=URL.createObjectURL(f);e.target.value='';runAI(true)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();if(e.key==='Enter'&&!e.shiftKey&&e.target&&e.target.id==='chatIn'){e.preventDefault();chatSend(e.target.value)}});
 setInterval(()=>{if(S.free){const c=$('#frChip');if(c)c.textContent=fmtHMS(freeSec())}if(S.act){const t=fmtHMS(actElapsed());const a1=$('#actChip');if(a1)a1.textContent=t;const a2=$('#actChip2');if(a2)a2.textContent=t}},1000);
 setInterval(()=>{if(!S.fast||!S.fast.start)return;const h=fastElapsed(),g=S.fast.plan;const a=$('#fT');if(a)a.textContent=fmtH(h);const r=$('#fR');if(r)r.textContent=h>=g?'יעד הושג!':'נותרו '+fmtH(g-h);
  const c=$('#fChip');if(c)c.textContent=fmtH(h);const arc=$('#fArc');if(arc){const C=2*Math.PI*46;arc.setAttribute('stroke-dasharray',C*Math.min(1,h/g)+' '+C)}const st=stageAt(h);const fn=$('#fNext');if(fn&&STAGES[st+1])fn.textContent=fmtH(STAGES[st+1][0]-h);if(V.st!=null&&st>V.st){toast('שלב חדש בצום: '+STAGES[st][1]+'!');sfx('coin');if(V.tab==='fast')render()}V.st=st},1000);
