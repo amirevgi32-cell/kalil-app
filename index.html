@@ -9353,7 +9353,8 @@ function welcome(){return `<div class="hero" style="padding-bottom:40px;text-ali
 <li><i class="g1">✓</i>שיעור יומי קצר עם חידון: מים, צום, שובע ועוד</li><li><i class="g1">✓</i>טיימר צום לסירוגין: 12:12, 14:10, 16:8, 18:6, 20:4, 23:1</li><li><i class="g1">✓</i>מד צעדים, מוזיקה נעימה וצלילים</li><li><i class="g1">✓</i>בקבוק מים שמתמלא, משימות יומיות, נקודות, רמות והישגים</li></ul>
 <button class="btn full" data-a="profile">בוא נתחיל</button></div>${credit()}</div>`}
 function credit(){return `<p class="credit">פותח ע״י <b>עמיר איבגי</b> למטרתו האישית</p>`}
-function waterGoal(){return Math.min(4000,Math.max(2000,Math.round(curW()*35/250)*250))}
+function waterAuto(){return Math.min(3000,Math.max(2000,Math.round(curW()*30/250)*250))}
+function waterGoal(){return S.set&&S.set.water?S.set.water:waterAuto()}
 function lessonFor(d){const x=pd(d),doy=Math.floor((x-new Date(x.getFullYear(),0,0))/864e5);return LESSONS[doy%LESSONS.length]}
 function quests(day,d){const t=dayTotals(day);const q=[['רשום ארוחה',t.n>0],['הגע ליעד המים',(day.water||0)>=waterGoal()],['קרא את שיעור היום וענה',S.lessons[d]!=null],...(fitToday()!=='r'&&d===today()?[['בצע את אימון ה'+FTYPE[fitToday()][0]+' ('+sessMin(fitToday(),fitLv())+' דק׳)',fitDone(d,fitToday())]]:[]),['הגע ל-'+stepGoal().toLocaleString('he-IL')+' צעדים',(day.steps||0)>=stepGoal()],['ארוחה עם ציון 70+',MEALS.some(([m])=>{const r=scoreItems(day.meals[m],m);return r&&r.s>=70})]];
  if(S.fast.on)q.push(['השלם צום של '+S.fast.plan+' שעות',S.fast.hist.some(h=>ymd(new Date(h.e))===d&&h.h>=h.g)]);return q}
@@ -9390,7 +9391,7 @@ ${STAGES[st+1]?`<div class="nxst">השלב הבא: <b>${STAGES[st+1][1]}</b> ב�
 <div class="card"><h2>חשוב לדעת</h2><p class="small muted" style="margin:0">צום לסירוגין לא מתאים בהריון ובהנקה, מתחת לגיל 18, למי שיש לו היסטוריה של הפרעות אכילה, או למי שמטופל בתרופות לסוכרת בלי אישור רופא. מרגישים סחרחורת או חולשה? מפסיקים ואוכלים.</p></div>${credit()}</div>`}
 function waterCard(day){const g=waterGoal(),ml=day.water||0,p=Math.min(1,ml/g),top=Math.round(22+150*(1-p));
  const msg=p>=1?'יעד המים הושלם! הגוף שלך מודה לך.':p>=.5?'יותר מחצי הדרך. ממשיכים ללגום!':'כל כוס מקרבת אותך ליעד.';const B='M38 8h34v18c0 6 18 10 18 26v110a12 12 0 0 1-12 12H32a12 12 0 0 1-12-12V52c0-16 18-20 18-26z';
- return `<div class="card" style="border-color:rgba(74,168,255,.4)"><h2 style="color:var(--blue)">מים<span class="sp"></span><span class="small muted">יעד ${(g/1000).toFixed(2).replace(/0$/,'')} ליטר</span></h2>
+ return `<div class="card" style="border-color:rgba(74,168,255,.4)"><h2 style="color:var(--blue)">מים<span class="sp"></span><button class="chip" data-a="waterGoalSet" style="min-height:34px;font-size:13px">יעד ${(g/1000).toFixed(2).replace(/0$/,'').replace(/\.0$/,'')} ליטר ✎</button></h2>
 <div class="bottle"><svg viewBox="0 0 110 180" aria-hidden="true"><defs><clipPath id="bc"><path d="${B}"/></clipPath><linearGradient id="wgr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4aa8ff"/><stop offset="1" stop-color="#2f7de0"/></linearGradient></defs>
 <g clip-path="url(#bc)"><rect width="110" height="180" fill="rgba(74,168,255,.07)"/><g style="transform:translateY(${top}px);transition:transform .9s cubic-bezier(.2,1.4,.4,1)"><path class="wave" d="M0 6q10-8 20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0V200H0z" fill="url(#wgr)"/></g>
 <circle cx="42" cy="150" r="3" fill="rgba(255,255,255,.45)"/><circle cx="66" cy="132" r="2" fill="rgba(255,255,255,.45)"/></g>
@@ -9915,7 +9916,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=20;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=21;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10142,6 +10143,10 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  plFeel:b=>{logWorkout(PL_.type,b.dataset.f);closeSheet();render();toast(b.dataset.f==='hard'?'נרשם. נשמור על הקצב.':b.dataset.f==='easy'?'מעולה! בשקילה הבאה נשקול לעלות רמה':'אימון נרשם. כל הכבוד!')},
  fitLvl:b=>{S.fit.level=Math.min(8,Math.max(1,fitLv()+ +b.dataset.d));S.fit.lvlAt=today();saveState();render();toast('רמת אימון: '+fitLv())},
  splashGo:hideSplash,
+ waterGoalSet:()=>{const cur=S.set.water||0,auto=waterAuto();openSheet(`${shTop('יעד שתייה יומי')}<p style="margin-top:0">כמה מים נוח לך לשתות ביום? אפשר להתחיל נמוך ולעלות בהדרגה.</p>
+<div class="seg" style="flex-direction:column">${[[0,'אוטומטי לפי המשקל ('+(auto/1000)+' ליטר)'],[1500,'1.5 ליטר, התחלה עדינה'],[2000,'2 ליטר'],[2500,'2.5 ליטר'],[3000,'3 ליטר'],[3500,'3.5 ליטר']].map(([v,n])=>`<button data-a="waterGoalPick" data-v="${v}" class="${cur===v?'on':''}" style="min-height:50px">${n}</button>`).join('')}</div>
+<p class="small muted">כ-20% מהנוזלים מגיעים מהאוכל (פירות, ירקות, מרק). תה, קפה ומים מוגזים נחשבים גם הם לשתייה, ולכן הם נספרים כאן כמים.</p>`)},
+ waterGoalPick:b=>{S.set.water=+b.dataset.v||0;saveState();closeSheet();render();toast('יעד המים: '+(waterGoal()/1000)+' ליטר')},
  goToday:()=>{V.date=today();render()},tell:()=>{if(!S.profile)return openProfile();openPhoto(null,true)},
  undo:()=>{const f=UNDO.fn;UNDO.fn=null;$('#undo').classList.add('hide');if(f){f();toast('שוחזר')}},
  label:()=>$('#lbl').click(),
