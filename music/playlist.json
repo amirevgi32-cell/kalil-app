@@ -1,0 +1,97 @@
+{
+ "updated": "2026-11-25",
+ "rotateDays": 3,
+ "workoutPerRotation": 8,
+ "bg": [
+  {
+   "f": "soft-gold-sky",
+   "t": "Soft Gold Sky"
+  },
+  {
+   "f": "window-seat-daydream",
+   "t": "Window Seat Daydream"
+  },
+  {
+   "f": "porchlight-golden-hour",
+   "t": "Porchlight Golden Hour"
+  },
+  {
+   "f": "first-coffee-thoughts",
+   "t": "First Coffee Thoughts"
+  },
+  {
+   "f": "pancakes-in-the-sun",
+   "t": "Pancakes in the Sun"
+  },
+  {
+   "f": "sunrise-stretch-flow",
+   "t": "Sunrise Stretch Flow"
+  }
+ ],
+ "workout": [
+  {
+   "f": "x-076c1d",
+   "t": "Power Mix 01"
+  },
+  {
+   "f": "x-0edd59",
+   "t": "Power Mix 02"
+  },
+  {
+   "f": "x-261059",
+   "t": "Power Mix 03"
+  },
+  {
+   "f": "x-2b35cc",
+   "t": "Power Mix 04"
+  },
+  {
+   "f": "x-30db57",
+   "t": "Power Mix 05"
+  },
+  {
+   "f": "x-485c23",
+   "t": "Power Mix 06"
+  },
+  {
+   "f": "x-49e672",
+   "t": "Power Mix 07"
+  },
+  {
+   "f": "x-4a2653",
+   "t": "Power Mix 08"
+  },
+  {
+   "f": "x-5c72fc",
+   "t": "Power Mix 09"
+  },
+  {
+   "f": "x-6f85ef",
+   "t": "Power Mix 10"
+  },
+  {
+   "f": "x-7a7fe2",
+   "t": "Power Mix 11"
+  },
+  {
+   "f": "x-bd4dd8",
+   "t": "Power Mix 12"
+  },
+  {
+   "f": "x-cb39d4",
+   "t": "Power Mix 13"
+  },
+  {
+   "f": "x-cbab25",
+   "t": "Power Mix 14"
+  },
+  {
+   "f": "x-challenge",
+   "t": "Power Mix 15"
+  },
+  {
+   "f": "x-d63123",
+   "t": "Power Mix 16"
+  }
+ ]
+}
