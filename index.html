@@ -196,6 +196,10 @@ ul.why li i{flex:none;min-width:24px;height:24px;border-radius:12px;display:grid
 .mbox{width:90px;height:90px;margin:0 auto 10px}.mbox svg{width:100%;height:100%}
 .shake{animation:shk .5s ease-in-out infinite}@keyframes shk{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
 .jlist{position:relative;padding-inline-start:4px}.jst{display:flex;gap:12px;padding:8px 0;opacity:.5}.jst.ok{opacity:1}.jd{width:16px;height:16px;border-radius:50%;background:var(--line);flex:none;margin-top:3px;border:3px solid #fff;box-shadow:0 0 0 2px var(--line)}.jst.ok .jd{background:var(--mango);box-shadow:0 0 0 2px var(--mango)}.jst.now .jd{background:var(--pink);box-shadow:0 0 0 2px var(--pink);animation:pulse 1.4s infinite}
+.nowst{background:linear-gradient(135deg,#fff0f5,#fff 60%);border-color:rgba(255,138,101,.45)}
+.nxst{margin-top:10px;background:var(--card2);border-radius:12px;padding:8px 12px;font-size:14px}
+details.stage{display:block;padding:8px 0;opacity:1}details.stage summary{display:flex;gap:10px;align-items:flex-start;cursor:pointer;list-style:none;min-height:44px}details.stage summary::-webkit-details-marker{display:none}
+details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .hide{display:none!important}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -9194,7 +9198,13 @@ LESSONS.push({g:'כושר',t:'חזרה לכושר אחרי הפסקה',b:['אח�
 {g:'כושר',t:'למה כוח ואירובי ביחד',b:['אירובי, כמו הליכה, שורף קלוריות בזמן הפעילות ומחזק את הלב.','אימון כוח בונה שריר, ושריר שורף אנרגיה גם במנוחה ושומר על הגוף כשמורידים משקל.','השילוב של שניהם מוריד יותר שומן ושומר יותר שריר מכל אחד לבד.'],q:'מה היתרון המיוחד של אימון כוח בדיאטה?',o:['שורף הכי הרבה קלוריות בזמן האימון','שומר על השריר ועל חילוף החומרים','מחליף שתייה','אין יתרון'],a:1,x:'הוא שומר על השריר, ולכן חילוף החומרים לא יורד.'},
 {g:'הרגלים',t:'ארוחת פינוק: מותר?',b:['ארוחת פינוק מתוכננת פעם בשבוע יכולה לעזור להתמיד, כי הדיאטה לא מרגישה כמו עונש.','הכלל: ארוחה אחת ולא יום שלם, בכמות שהוגדרה מראש, ונהנים בלי רגשות אשמה.','ארוחה של כ-800 קק״ל פעם בשבוע כמעט לא משפיעה על הירידה, כל עוד שאר השבוע מתנהל כרגיל.'],q:'מה הכלל החשוב בארוחת פינוק?',o:['יום שלם של חופש','ארוחה אחת, מתוכננת ובכמות מוגדרת','לפצות בצום של יומיים','לאכול עד שמרגישים רע'],a:1,x:'ארוחה אחת, מתוכננת ובכמות מוגדרת, ואז חוזרים לשגרה.'});
 const FPLANS=[[12,'12:12','מתחילים'],[14,'14:10','קליל'],[16,'16:8','הכי פופולרי'],[18,'18:6','מתקדמים'],[20,'20:4','לוחמים'],[23,'23:1','ארוחה אחת']];
-const STAGES=[[0,'עיכול','הגוף עדיין משתמש באנרגיה מהארוחה האחרונה.'],[4,'האינסולין יורד','הסוכר והאינסולין מתייצבים, והגוף מתחיל לפנות למאגרים.'],[12,'מעבר לשומן','מאגרי הגליקוגן מצטמצמים והגוף משתמש יותר בשומן כדלק.'],[16,'שריפת שומן מוגברת','רמת הקטונים בדם מתחילה לעלות בהדרגה.'],[18,'קטוזיס קל','אצל רבים הקטונים כבר עולים בבירור. שתה הרבה מים.'],[24,'צום ארוך','צום של יותר מיממה רק בתיאום עם רופא.']];
+const STAGES=[[0,'עיכול וספיגה','הגוף מעכל את הארוחה האחרונה.','הסוכר והאינסולין בדם עולים, והגוף אוגר את האנרגיה מהארוחה: חלק בכבד ובשרירים (גליקוגן) וחלק כשומן.','שלב רגיל לגמרי. מעכשיו רק מים, תה או קפה שחור.'],
+[4,'האינסולין יורד','הגוף עובר לאנרגיה מהמאגרים.','אחרי 3–5 שעות הארוחה מתעכלת והאינסולין יורד. הגוף מתחיל למשוך אנרגיה מהגליקוגן שבכבד. אינסולין נמוך הוא האות שמאפשר לתאי השומן לשחרר שומן.','כל שעה מכאן היא שעה שבה הגוף לא אוגר, אלא משתמש במה שיש.'],
+[8,'גלי רעב','רעב מגיע בגלים, ועובר.','הורמון הרעב, גרלין, עולה בשעות שבהן אתה רגיל לאכול, אבל יורד שוב לבד תוך כ-20 דקות, גם בלי אוכל. אחרי שבוע–שבועיים של צום קבוע הגוף מתרגל והגלים נחלשים.','גל רעב? שתה כוס מים או תה, זוז קצת, וחכה 20 דקות. הוא יעבור.'],
+[12,'מעבר לשומן','הגוף מגביר שריפת שומן.','מאגרי הגליקוגן בכבד מצטמצמים, והגוף מגביר פירוק שומן (ליפוליזה). חומצות שומן הופכות לדלק עיקרי של השרירים והלב.','זה השלב שבשבילו צמים: הגוף שורף את המאגרים של עצמו.'],
+[16,'קטונים בעלייה','הכבד מייצר קטונים מהשומן.','הכבד הופך חלק מהשומן לקטונים, דלק חלופי שגם המוח יודע להשתמש בו. רבים מדווחים בשלב הזה על ריכוז טוב ועל פחות רעב.','הגעת ל-16 שעות! הגוף עובד בשבילך.'],
+[18,'קטוזיס קל','הקטונים ממשיכים לעלות.','רמת הקטונים ממשיכה לעלות. גם הורמון הגדילה עולה בזמן צום, והוא עוזר לגוף לשמור על השרירים בזמן שהוא משתמש בשומן.','שתה הרבה מים, ושמור על מלח ומינרלים בארוחה הבאה.'],
+[24,'צום ארוך','מעבר ליממה: רק בתיאום עם רופא.','הקטונים ממשיכים לעלות. בבעלי חיים צום ארוך מגביר "ניקוי" תאי שנקרא אוטופגיה, אבל בבני אדם עוד לא ברור מתי זה קורה ובאיזו מידה.','צום ארוך הוא לא חובה. רוב התועלת מגיעה מהקביעות של צום יומי קצר.']];
 const WMSG=['גלאגלאג!','הכליות מוחאות כפיים','לגימה של אלופים','הגוף אומר תודה','עוד כוס, עוד ניצחון'];
 
 /* ===== כלי עזר ===== */
@@ -9339,8 +9349,12 @@ ${on?`<p style="text-align:center;margin:8px 0 0">סיום מתוכנן: <b>${hm
 :`<label class="f" style="max-width:260px;margin:10px auto 0;text-align:center"><span>התחלתי לצום בשעה</span><input type="time" id="fStart" value="${hm(new Date())}"></label><div class="btns"><button class="btn full" data-a="fastStart">${IC.moon}התחל צום</button></div>`}</div>
 <div class="wrap"><div class="card"><h2>בחר תוכנית</h2><div class="seg">${FPLANS.map(([x,n,d])=>`<button data-a="fplan" data-h="${x}" class="${g===x?'on':''}"><b>${n}</b><br><span class="small">${d}</span></button>`).join('')}</div>
 ${g>=20?'<p class="small" style="color:var(--gold);margin-bottom:0">תוכנית מתקדמת. מתאימה רק למי שכבר מורגל ב-16:8, ובהתייעצות עם רופא אם יש בעיה רפואית.</p>':''}</div>
-<div class="card"><h2>מה קורה בגוף${on?' עכשיו':''}</h2>${STAGES.map((s,i)=>`<div class="stage ${on&&i<st?'on':''} ${on&&i===st?'now':''}"><span class="sd"></span><div><b>${s[1]}</b> <span class="small muted">· מ-${s[0]} שעות</span><div class="small muted">${s[2]}</div></div></div>`).join('')}
-<p class="small muted" style="margin-bottom:0">הזמנים משוערים ומשתנים מאדם לאדם. בזמן הצום שותים הרבה מים.</p></div>
+${on?`<div class="card nowst"><span class="tag" style="background:var(--pink2);color:var(--pink)">עכשיו בגוף שלך · ${r1(h)} שעות</span><h2 style="font-size:26px;margin:8px 0 4px">${STAGES[st][1]}</h2><p style="margin:0 0 8px;font-size:16px">${STAGES[st][3]}</p><p style="margin:0;color:var(--mango-d);font-weight:700">${STAGES[st][4]}</p>
+${STAGES[st+1]?`<div class="nxst">השלב הבא: <b>${STAGES[st+1][1]}</b> בעוד <b id="fNext" dir="ltr">${fmtH(STAGES[st+1][0]-h)}</b></div>`:''}</div>`:''}
+<div class="card"><h2>מה קורה בגוף בזמן צום</h2><p class="small muted" style="margin-top:0">לחץ על שלב כדי לקרוא עליו.</p>${STAGES.map((x,i)=>`<details class="stage ${on&&i<st?'on':''} ${on&&i===st?'now':''}" ${on&&i===st?'open':''}><summary><span class="sd"></span><span><b>${x[1]}</b> <span class="small muted">· מ-${x[0]} שעות</span><br><span class="small muted">${x[2]}</span></span></summary><p class="small" style="margin:6px 0 0 0;padding-inline-start:24px">${x[3]}</p><p class="small" style="margin:4px 0 0;padding-inline-start:24px;color:var(--mango-d);font-weight:700">${x[4]}</p></details>`).join('')}
+<p class="small muted" style="margin-bottom:0">הזמנים משוערים ומשתנים מאדם לאדם, לפי מה שאכלת, כמה זזת וכמה אתה רגיל לצום.</p></div>
+<div class="card"><h2>טיפים לעבור את הצום בכיף</h2><ul class="why" style="margin:0"><li><i class="g1">1</i><span><b>מים, מים, מים:</b> מים, סודה, תה וקפה שחור בלי סוכר מותרים, ומשתיקים רעב.</span></li><li><i class="g1">2</i><span><b>תכנן שהשינה תהיה בתוך הצום:</b> 8 שעות שינה הן חצי מצום 16:8.</span></li><li><i class="g1">3</i><span><b>גל רעב עובר תוך כ-20 דקות:</b> כוס מים והליכה קצרה.</span></li><li><i class="g1">4</i><span><b>שבירת צום חכמה:</b> חלבון וירקות קודם, לא מתוקים. ככה הרעב לא מתפוצץ.</span></li><li><i class="g1">5</i><span><b>הקשב לגוף:</b> סחרחורת או חולשה? מפסיקים ואוכלים, וזה בסדר.</span></li></ul></div>
+<div class="card"><h2>מה המדע אומר, בכנות</h2><p style="margin:0">צום לסירוגין מוריד במשקל בעיקר כי קל יותר לאכול פחות כשחלון האכילה מוגדר. במחקרים הירידה במשקל דומה לדיאטה רגילה, ולעיתים יש שיפור ברגישות לאינסולין. היתרון הגדול שלו הוא המבנה הברור שקל להתמיד בו, וההתמדה היא מה שמוריד קילוגרמים.</p></div>
 <div class="card"><h2>הצומות האחרונים</h2>${F.hist.length?`<div class="week">${F.hist.slice(0,7).reverse().map(x=>`<div class="col"><span style="color:var(--ink);font-weight:700">${r1(x.h)}</span><i style="height:${Math.min(1,x.h/24)*100}px;${x.h>=x.g?'background:var(--lime)':'background:var(--pink)'}"></i>${heDate(ymd(new Date(x.e)),{weekday:'narrow'})}</div>`).join('')}</div><p class="small muted" style="margin:6px 0 0">ליים = הגעת ליעד · ורוד = צום קצר יותר</p>`:'<div class="empty">עוד לא סיימת צום. הראשון תמיד הכי מרגש!</div>'}</div>
 <div class="card"><h2>חשוב לדעת</h2><p class="small muted" style="margin:0">צום לסירוגין לא מתאים בהריון ובהנקה, מתחת לגיל 18, למי שיש לו היסטוריה של הפרעות אכילה, או למי שמטופל בתרופות לסוכרת בלי אישור רופא. מרגישים סחרחורת או חולשה? מפסיקים ואוכלים.</p></div>${credit()}</div>`}
 function waterCard(day){const g=waterGoal(),ml=day.water||0,p=Math.min(1,ml/g),top=Math.round(22+150*(1-p));
@@ -9855,7 +9869,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=16;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=17;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10112,7 +10126,7 @@ $('#pic').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 setInterval(()=>{if(S.act){const t=fmtHMS(actElapsed());const a1=$('#actChip');if(a1)a1.textContent=t;const a2=$('#actChip2');if(a2)a2.textContent=t}},1000);
 setInterval(()=>{if(!S.fast||!S.fast.start)return;const h=fastElapsed(),g=S.fast.plan;const a=$('#fT');if(a)a.textContent=fmtH(h);const r=$('#fR');if(r)r.textContent=h>=g?'יעד הושג!':'נותרו '+fmtH(g-h);
- const c=$('#fChip');if(c)c.textContent=fmtH(h);const arc=$('#fArc');if(arc){const C=2*Math.PI*46;arc.setAttribute('stroke-dasharray',C*Math.min(1,h/g)+' '+C)}const st=stageAt(h);if(V.tab==='fast'&&V.st!=null&&st!==V.st)render();V.st=st},1000);
+ const c=$('#fChip');if(c)c.textContent=fmtH(h);const arc=$('#fArc');if(arc){const C=2*Math.PI*46;arc.setAttribute('stroke-dasharray',C*Math.min(1,h/g)+' '+C)}const st=stageAt(h);const fn=$('#fNext');if(fn&&STAGES[st+1])fn.textContent=fmtH(STAGES[st+1][0]-h);if(V.st!=null&&st>V.st){toast('שלב חדש בצום: '+STAGES[st][1]+'!');sfx('coin');if(V.tab==='fast')render()}V.st=st},1000);
 window.__back=()=>{if($('#sheet').classList.contains('open')){closeSheet();return true}if(V.tab!=='today'){V.tab='today';render();return true}return false};
 render();
 }
