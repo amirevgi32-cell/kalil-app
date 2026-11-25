@@ -10131,16 +10131,16 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=33;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=34;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
-function updCard(){if(!isApk())return `<div class="card"><h2>עדכונים</h2><p class="small muted" style="margin:0">הגרסה בתוך Claude מתעדכנת אוטומטית. גרסת תוכן ${APPV}.</p></div>`;
+function updCard(){if(!isApk())return `<div class="card"><h2>עדכונים</h2><p class="small muted" style="margin:0">הגרסה בתוך Claude מתעדכנת אוטומטית.</p></div>`;
  const v=appVer(),i=UPD.info;let body='';
  if(UPD.st==='checking')body='<div class="spin" style="margin:10px auto"></div><p class="small muted" style="text-align:center">בודק עדכונים...</p>';
  else if(UPD.st==='dl')body='<div class="spin" style="margin:10px auto"></div><p class="small muted" style="text-align:center">מוריד עדכון...</p>';
  else if(UPD.st==='err')body=`<p class="small" style="color:var(--red)">לא הצלחתי לבדוק עדכונים (ניסיתי 3 שרתים). אם האינטרנט תקין, ייתכן ש-GitHub חוסם זמנית בגלל עומס בדיקות מאותה רשת. נסה בעוד כמה דקות או דרך Wi-Fi אחר.</p><details class="small muted"><summary>פרטים טכניים</summary><div dir="ltr" style="word-break:break-all">${(UPD.errs||[]).map(x=>String(x).replace(/[<>&]/g,'')).join('<br>')}</div></details>`;
- else if(i&&i.apk>v.apk)body=`<p style="margin:0 0 6px"><b>גרסת אפליקציה חדשה זמינה (${esc(i.name||'')})</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updApk">הורד והתקן</button></div><p class="small muted" style="margin:6px 0 0">בפעם הראשונה אנדרואיד יבקש לאשר התקנה מ"קליל". הנתונים נשמרים.</p>`;
+ else if(i&&i.apk>v.apk)body=`<p style="margin:0 0 6px"><b>גרסת אפליקציה חדשה זמינה</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updApk">הורד והתקן</button></div><p class="small muted" style="margin:6px 0 0">בפעם הראשונה אנדרואיד יבקש לאשר התקנה מ"קליל". הנתונים נשמרים.</p>`;
  else if(i&&i.html>Math.min(v.html,APPV))body=`<p style="margin:0 0 6px"><b>עדכון חדש זמין</b></p>${i.notes?`<p class="small muted" style="margin:0">${esc(i.notes)}</p>`:''}<div class="btns"><button class="btn lime full" data-a="updHtml">עדכן עכשיו (כמה שניות)</button></div>`;
  else if(i)body='<p class="small" style="color:var(--mango-d);margin:0">יש לך את הגרסה האחרונה.</p>';
  return `<div class="card" id="updCard"><h2>עדכונים</h2>${body}<div class="btns"><button class="btn ghost full" data-a="updCheck">חפש עדכון</button></div></div>`}
