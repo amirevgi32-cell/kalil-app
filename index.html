@@ -202,7 +202,7 @@ details.stage{display:block;padding:8px 0;opacity:1}details.stage summary{displa
 details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .pkrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.pkrow .chip{font-size:13px;min-height:36px}
 .splash{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-start;justify-content:center;background:linear-gradient(160deg,#2ec4a0 0%,#5fd3b0 40%,#ffb199 100%);color:#fff;overflow-x:hidden;overflow-y:auto;transition:opacity .5s,transform .5s;padding:calc(20px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom))}
-.splash.out{opacity:0;transform:scale(1.08);pointer-events:none}
+.splash.out{opacity:0;transform:scale(1.06);pointer-events:none;transition:opacity .3s,transform .3s}
 .sp-in{position:relative;text-align:center;max-width:420px;width:100%;margin:auto}
 .sp-avo{width:min(170px,44vw);margin:0 auto;animation:spDrop .9s cubic-bezier(.2,1.6,.4,1) both,bob 2.6s 1s ease-in-out infinite;filter:drop-shadow(0 14px 18px rgba(0,0,0,.18))}
 @keyframes spDrop{from{transform:translateY(-120px) scale(.4) rotate(-20deg);opacity:0}}
@@ -11289,7 +11289,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=44;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=45;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11629,16 +11629,17 @@ function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');i
  const pad=sp.querySelector('.ppad');pad.innerHTML=[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>k===''?'<span></span>':`<button data-k="${k}" aria-label="${k==='⌫'?'מחק':k}">${k}</button>`).join('');
  let code='';const dots=()=>document.querySelectorAll('#pdots i').forEach((d,i)=>d.classList.toggle('on',i<code.length));
  const H=x=>{let h=5381;for(const ch of x)h=((h<<5)+h+ch.charCodeAt(0))|0;return h};
- pad.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.stopPropagation();try{navigator.vibrate&&navigator.vibrate(15)}catch(_){}const k=b.dataset.k;
+ let lastT=0;const onKey=e=>{const b=e.target.closest('button');if(!b)return;e.preventDefault();e.stopPropagation();if(Date.now()-lastT<60&&e.type==='click')return;lastT=Date.now();try{navigator.vibrate&&navigator.vibrate(15)}catch(_){}const k=b.dataset.k;
   if(k==='⌫')code=code.slice(0,-1);else if(code.length<4)code+=k;dots();
-  if(code.length===4){if(H(code)===H('88'+'60')){setTimeout(hideSplash,180)}else{const d=$('#pdots');d.classList.remove('bad');void d.offsetWidth;d.classList.add('bad');sfx('del');setTimeout(()=>{code='';dots()},450)}}});
+  if(code.length===4){if(H(code)===H('88'+'60')){hideSplash()}else{const d=$('#pdots');d.classList.remove('bad');void d.offsetWidth;d.classList.add('bad');sfx('del');setTimeout(()=>{code='';dots()},450)}}};pad.addEventListener('pointerdown',onKey);pad.addEventListener('click',e=>{e.preventDefault();e.stopPropagation()});
+ document.addEventListener('keydown',e=>{if(!$('#splash'))return;const k=e.key==='Backspace'?'⌫':e.key;const b=pad.querySelector(`button[data-k="${k}"]`);if(b)onKey({target:b,type:'key',preventDefault(){},stopPropagation(){}})});
  try{if(sessionStorage.getItem('kl_in')==='1'){sessionStorage.removeItem('kl_in');sp.remove()}}catch(_){}}
 initSplash();
 {const f=$('#chatFab .cfa');if(f)f.innerHTML=avoki('happy')}
 window.__kl=()=>({S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
-function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),550)}
+function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
 window.__back=()=>{if($('#splash'))return false;if($('#sheet').classList.contains('open')){closeSheet();return true}if(V.tab!=='today'){V.tab='today';render();return true}return false};
 render();
 }
