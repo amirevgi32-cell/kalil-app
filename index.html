@@ -9532,14 +9532,21 @@ function synthStart(){const c=ac();if(!c||SND.music)return;const out=c.createGai
  sched();SND.music={timer:setInterval(sched,500),out}}
 function synthStop(){const m=SND.music;if(!m)return;SND.music=null;clearInterval(m.timer);try{m.out.gain.linearRampToValueAtTime(0,SND.ctx.currentTime+.6)}catch(e){}setTimeout(()=>{try{m.out.disconnect()}catch(e){}},1200)}
 const TRACKS=[['soft-gold-sky','Soft Gold Sky'],['window-seat-daydream','Window Seat Daydream'],['porchlight-golden-hour','Porchlight Golden Hour'],['first-coffee-thoughts','First Coffee Thoughts'],['pancakes-in-the-sun','Pancakes in the Sun'],['sunrise-stretch-flow','Sunrise Stretch Flow']];
-const MUS={el:null,i:Math.floor(Math.random()*6),on:false,fail:0};
+const MUS={el:null,i:0,on:false,fail:0,q:[],cur:null};
+const PLM={bg:TRACKS.map(t=>({f:t[0],t:t[1]})),wk:Array.from({length:16},(_,i)=>null),rot:3,per:8,ok:false};
+function rngS(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuf(a,r){a=a.slice();r=r||Math.random;for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function loadPlaylist(){if(PLM.ok||!(window.KalilNative&&KalilNative.appVersion))return;try{fetch('https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/music/playlist.json?t='+Date.now()).then(r=>r.json()).then(j=>{if(j.bg&&j.bg.length)PLM.bg=j.bg;if(j.workout&&j.workout.length)PLM.wk=j.workout;PLM.rot=j.rotateDays||3;PLM.per=j.workoutPerRotation||8;PLM.ok=true;S.plCache=j;saveState()}).catch(()=>{})}catch(e){}}
+function wkSet(){const wk=(PLM.ok?PLM.wk:((S.plCache&&S.plCache.workout)||[])).filter(Boolean);if(!wk.length)return[];const k=Math.floor(Date.now()/864e5/PLM.rot);return shuf(wk,rngS(k*7919)).slice(0,Math.min(PLM.per,wk.length))}
+function nextOf(q,list,last){if(!q.length){q.push(...shuf(list));if(q.length>1&&q[0].f===last)q.push(q.shift())}return q.shift()}
+setTimeout(loadPlaylist,1500);
 function realMusic(){try{return !!(window.KalilNative&&KalilNative.appVersion)&&!S.set.synth}catch(e){return false}}
-function realPlay(){if(!MUS.el){MUS.el=new Audio();MUS.el.preload='auto';MUS.el.volume=.35;MUS.el.onended=()=>{MUS.i=(MUS.i+1)%TRACKS.length;realPlay()};
-  MUS.el.onerror=()=>{MUS.fail++;if(MUS.fail>=2){MUS.on=false;synthStart()}else{MUS.i=(MUS.i+1)%TRACKS.length;realPlay()}}}
- const t=TRACKS[MUS.i];MUS.el.src='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/music/'+t[0]+'.mp3';MUS.on=true;const p=MUS.el.play();if(p&&p.catch)p.catch(()=>{})}
+function realPlay(){if(!MUS.el){MUS.el=new Audio();MUS.el.preload='auto';MUS.el.volume=.35;MUS.el.onended=()=>realPlay();
+  MUS.el.onerror=()=>{MUS.fail++;if(MUS.fail>=3){MUS.on=false;synthStart()}else realPlay()}}
+ const t=nextOf(MUS.q,PLM.bg,MUS.cur&&MUS.cur.f);MUS.cur=t;MUS.el.src='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/music/'+t.f+'.mp3';MUS.on=true;const p=MUS.el.play();if(p&&p.catch)p.catch(()=>{})}
 function musicStart(){if(realMusic()){if(MUS.on){try{MUS.el.play()}catch(e){}return}MUS.fail=0;realPlay()}else synthStart()}
 function musicStop(){if(MUS.el&&MUS.on){MUS.on=false;try{MUS.el.pause()}catch(e){}}synthStop()}
-function musicNext(){if(!MUS.el||!MUS.on)return;MUS.i=(MUS.i+1)%TRACKS.length;realPlay();toast('מתנגן: '+TRACKS[MUS.i][1])}
+function musicNext(){if(WM.on){wPlay();toast('מתנגן: '+(WM.cur?WM.cur.t:''));return}if(!MUS.el||!MUS.on)return;realPlay();toast('מתנגן: '+(MUS.cur?MUS.cur.t:''))}
 window.__pause=()=>{try{WM.el&&WM.on&&WM.el.pause()}catch(e){}try{SND.ctx&&SND.ctx.suspend()}catch(e){}try{MUS.el&&MUS.on&&MUS.el.pause()}catch(e){}};window.__resume=()=>{try{WM.el&&WM.on&&WM.el.play()}catch(e){}try{SND.ctx&&SND.music&&SND.ctx.resume()}catch(e){}try{if(MUS.el&&MUS.on&&S.set.music)MUS.el.play()}catch(e){}};
 document.addEventListener('visibilitychange',()=>{document.hidden?window.__pause():window.__resume()});
 document.addEventListener('pointerdown',function once(){document.removeEventListener('pointerdown',once,true);if(S.set.music)musicStart()},true);
@@ -9712,7 +9719,7 @@ ${rows.map(([m,n])=>`<button class="hopt ${H.min===m?'on':''}" data-a="hMin" dat
  :hasNative()?'<p class="small muted" style="margin:4px 0 6px">כדי לספור כל צעד אמיתי, צריך לאשר לקליל גישה לחיישן הצעדים.</p><button class="btn full" data-a="stepPerm">הפעל ספירה מדויקת</button>'
  :'<p class="small muted" style="margin:4px 0 0">הצעדים נספרים לפי תנועת הטלפון. שים אותו בכיס או החזק אותו ביד.</p>'}
 <label class="small" style="display:flex;gap:8px;align-items:center;margin-top:6px;min-height:40px"><input type="checkbox" id="hTime" ${(S.homePref||{}).mode==='time'?'checked':''} style="width:22px;height:22px"> הטלפון לא עליי (ספירה משוערת שמרנית: כ-80 צעדים בדקה)</label></div>
-<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:10px;min-height:40px"><input type="checkbox" id="hBeat" ${H.beat?'checked':''} style="width:22px;height:22px"> ${(window.KalilNative&&KalilNative.appVersion&&!S.set.synth)?'מוזיקת אימון אנרגטית (פאנק ו-groove)':'ביט שמכתיב קצב טוב (100 צעדים בדקה)'}</label>
+<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:10px;min-height:40px"><input type="checkbox" id="hBeat" ${H.beat?'checked':''} style="width:22px;height:22px"> ${(window.KalilNative&&KalilNative.appVersion&&!S.set.synth)?'מוזיקת אימון מקפיצה (מתחלפת כל 3 ימים)':'ביט שמכתיב קצב טוב (100 צעדים בדקה)'}</label>
 <div class="btns"><button class="btn full hbtn" data-a="homeGo">${IC.play} יאללה!</button></div>`)}
 const TIME_F=.8;const HM={seg:[],i:0,left:0,run:false,t:0,steps:0,base:-1,fact:0,bonus:false,mode:'time',mot:0,last:0,idle:0};
 const PED={on:false,f:9.8,up:false,t:0,ok:false};
@@ -9780,10 +9787,11 @@ function openJourney(){const km=journeyKm(),at=journeyAt(km);openSheet(`${shTop(
 <div class="jlist">${JOURNEY.map((j,i)=>`<div class="jst ${i<=at?'ok':''} ${i===at?'now':''}"><span class="jd"></span><div><b>${j[0]}</b> <span class="small muted">· ${j[1]} ק״מ</span>${i<=at?`<div class="small">${j[2]}</div>`:i===at+1?`<div class="small" style="color:var(--pink)">עוד ${r1(j[1]-km)} ק״מ</div>`:''}</div></div>`).join('')}</div><p class="small muted">המרחקים משוערים, בערך לאורך הכביש.</p>`)}
 /* ביט */
 const WTRACKS=[['w-cassette-basement-bounce','Cassette Basement Bounce'],['w-summer-curbside-glow','Summer Curbside Glow'],['w-block-party-slow-jam','Block Party Slow Jam'],['w-neon-on-the-diner-floor','Neon on the Diner Floor'],['w-roller-rink-reverie','Roller Rink Reverie']];
-const WM={el:null,i:Math.floor(Math.random()*5),on:false,fail:0};
-function wPlay(){if(!WM.el){WM.el=new Audio();WM.el.preload='auto';WM.el.volume=.55;WM.el.onended=()=>{WM.i=(WM.i+1)%WTRACKS.length;wPlay()};
-  WM.el.onerror=()=>{WM.fail++;if(WM.fail>=2){WM.on=false;SND.beat=null;beatSynth()}else{WM.i=(WM.i+1)%WTRACKS.length;wPlay()}}}
- WM.el.src='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/music/'+WTRACKS[WM.i][0]+'.mp3';WM.on=true;const p=WM.el.play();if(p&&p.catch)p.catch(()=>{})}
+const WM={el:null,on:false,fail:0,q:[],cur:null};
+function wPlay(){if(!WM.el){WM.el=new Audio();WM.el.preload='auto';WM.el.volume=.6;WM.el.onended=()=>wPlay();
+  WM.el.onerror=()=>{WM.fail++;if(WM.fail>=3){WM.on=false;SND.beat=null;beatSynth()}else wPlay()}}
+ let set=wkSet();if(!set.length)set=WTRACKS.map(t=>({f:t[0],t:t[1]}));if(WM.setKey!==set.map(x=>x.f).join()){WM.setKey=set.map(x=>x.f).join();WM.q=[]}
+ const t=nextOf(WM.q,set,WM.cur&&WM.cur.f);WM.cur=t;WM.el.src='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/music/'+t.f+'.mp3';WM.on=true;const p=WM.el.play();if(p&&p.catch)p.catch(()=>{})}
 function beatStart(){if(SND.beat)return;if(realMusic()){if(MUS.on||SND.music){musicStop();SND.mres=1}WM.fail=0;SND.beat={real:1};wPlay();return}beatSynth()}
 function beatSynth(){const c=ac();if(!c||SND.beat)return;const out=c.createGain();out.gain.value=.5;out.connect(c.destination);const nb=c.createBuffer(1,c.sampleRate*.05,c.sampleRate),dt=nb.getChannelData(0);for(let i=0;i<dt.length;i++)dt[i]=(Math.random()*2-1)*(1-i/dt.length);
  const bpm=100,b=60/bpm;let next=c.currentTime+.1,n=0;const BASS=[65.41,65.41,87.31,98];
@@ -9916,7 +9924,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=21;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=22;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10031,7 +10039,7 @@ ${S.profile?`<label class="f"><span>משקל התחלתי (ממנו נמדדת �
 <label class="f"><span>יעד צעדים יומי</span><select name="sg">${[5000,6000,7000,8000,10000,12000,15000].map(v=>`<option value="${v}" ${v===S.set.stepGoal?'selected':''}>${v.toLocaleString('he-IL')}</option>`).join('')}</select></label>
 <label class="f"><span>יום ארוחת הפינוק</span><select name="cd">${DAYN.map((n,i)=>`<option value="${i}" ${i===S.cheat.day?'selected':''}>${n}</option>`).join('')}</select></label>
 <label class="f"><span>צלילים ומוזיקה</span><div class="seg"><button type="button" data-a="musTog" class="${S.set.music?'on':''}">מוזיקת רקע</button><button type="button" data-a="sfxTog" class="${S.set.sfx?'on':''}">צלילי פעולות</button></div></label>
-${(window.KalilNative&&KalilNative.appVersion)?`<label class="f"><span>סוג המוזיקה</span><div class="seg"><button type="button" data-a="synthTog" class="${!S.set.synth?'on':''}">Lo-fi אמיתי (6 שירים)</button><button type="button" data-a="synthTog" class="${S.set.synth?'on':''}">מנגינה מסונתזת</button></div></label><div class="btns" style="margin-top:6px"><button type="button" class="btn ghost" data-a="musicNext">השיר הבא</button></div><p class="small muted" style="margin:4px 0 0">ברקע: 6 שירי Lo-fi רגועים. באימונים: 5 שירי groove אנרגטיים. מקור: Open Lo-Fi (רישיון CC0, נחלת הכלל). השירים נטענים מהאינטרנט, ובלי חיבור מתנגנת המנגינה המסונתזת.</p>`:''}
+${(window.KalilNative&&KalilNative.appVersion)?`<label class="f"><span>סוג המוזיקה</span><div class="seg"><button type="button" data-a="synthTog" class="${!S.set.synth?'on':''}">Lo-fi אמיתי (6 שירים)</button><button type="button" data-a="synthTog" class="${S.set.synth?'on':''}">מנגינה מסונתזת</button></div></label><div class="btns" style="margin-top:6px"><button type="button" class="btn ghost" data-a="musicNext">השיר הבא</button></div><p class="small muted" style="margin:4px 0 0">ברקע: שירי Lo-fi רגועים. באימונים: ${wkSet().length||8} שירים אנרגטיים מתוך מאגר של ${(PLM.ok?PLM.wk:((S.plCache&&S.plCache.workout)||[])).filter(Boolean).length||16}. הסט מתחלף כל ${PLM.rot} ימים, ותמיד בסדר אקראי. מקור: Open Lo-Fi (רישיון CC0, נחלת הכלל). השירים נטענים מהאינטרנט, ובלי חיבור מתנגנת המנגינה המסונתזת.</p>`:''}
 <p id="perr" class="small" style="color:var(--red)"></p><button class="btn full" type="submit">${S.profile?'שמירה':'יאללה, מתחילים'}</button></form>${credit()}`);
  $('#pf').addEventListener('submit',ev=>{ev.preventDefault();const f=new FormData(ev.target),g=k=>{const b=document.querySelector(`[data-g="${k}"] .on`);return b?b.dataset.v:null};
   const np={name:String(f.get('name')).trim()||'חבר',sex:g('sex')||'m',age:+f.get('age'),h:+f.get('h'),goal:+f.get('goal'),act:+f.get('act'),pace:+(g('pace')||.5)};const w=+f.get('w');
@@ -10110,7 +10118,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  pkgAdd:openPkgForm,pkgAI:pkgAI,pkgName:b=>{const i=$('#pkN');if(i){i.value=b.dataset.n;const g=$('#pkG');if(g)g.focus()}},
  pkgSave:()=>{const n=($('#pkN').value||'').trim().slice(0,20),g=+$('#pkG').value;if(!n||!(g>0))return toast('צריך שם ומשקל');S.pkg=S.pkg||{};(S.pkg[A.food.id]=S.pkg[A.food.id]||[]).push([n,g]);saveState();toast('נשמר: '+n+' '+r0(g)+' גרם');const k='my'+(S.pkg[A.food.id].length-1);openFood(A.food.id,A.edit);const u=units(A.food).find(x=>x.k===k);if(u){A.unit=u;A.qty=1;$('#qty').value=1;document.querySelectorAll('#useg button').forEach(x=>x.classList.toggle('on',x.dataset.k===k));renderQ();preview()}},
  pkgDel:b=>{const my=(S.pkg||{})[A.food.id];if(!my)return;my.splice(+b.dataset.i,1);saveState();openFood(A.food.id,A.edit);openPkgForm()},
- music:()=>{if(S.set.music&&MUS.on&&MUS.el){S.set.music=false;musicStop();saveState();render();toast('מוזיקה כובתה');return}S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();render();toast(S.set.music?(realMusic()?'מתנגן: '+TRACKS[MUS.i][1]:'מוזיקה הופעלה'):'מוזיקה כובתה')},
+ music:()=>{if(S.set.music&&MUS.on&&MUS.el){S.set.music=false;musicStop();saveState();render();toast('מוזיקה כובתה');return}S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();render();toast(S.set.music?(realMusic()?'מוזיקה הופעלה · סדר אקראי':'מוזיקה הופעלה'):'מוזיקה כובתה')},
  musicNext:musicNext,
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  sfxTog:()=>{S.set.sfx=!S.set.sfx;saveState();toast(S.set.sfx?'צלילים הופעלו':'צלילים כובו');openProfile()},
