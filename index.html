@@ -235,6 +235,11 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .aiok{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:12px;padding:10px;border-radius:16px;background:var(--lime2);color:#3f8a24;text-align:center}.aiok svg{display:none}.aiok b{font-size:17px}
 .aiop h2{display:flex;align-items:center;gap:8px}.aiop h2 svg{width:44px;height:44px;flex:none}.aili{display:flex;gap:8px;padding:5px 0;line-height:1.45}.aili span{flex:none;font-weight:800}
 .aifix{margin-top:10px}.aifix summary{cursor:pointer;font-weight:700;color:var(--mango-d);min-height:44px;display:flex;align-items:center}
+.sgi{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.sgi svg{width:21px;height:21px}
+.fpick .sgi{margin-inline-end:10px}.sgrow{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x mandatory}
+.sgc{flex:0 0 150px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);font:inherit;color:var(--ink);text-align:right;min-height:118px}
+.sgc b{font-size:14.5px;line-height:1.25}.sgc small{font-size:11.5px;color:var(--mute);line-height:1.3}
+.seg button svg{width:18px;height:18px;vertical-align:-3px;margin-inline-end:4px}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
 .qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
@@ -9558,6 +9563,7 @@ function openQuick(){if(!S.profile)return openProfile();const day=getDayLocal(V.
 ${tile('add',IC.plus,'מאכל','חיפוש במאגר','var(--mango)')}${tile('photo',IC.cam,'צלם ארוחה','ה-AI יחשב','var(--mango)')}
 ${tile('freeRetro',IC.pen,'אימון שביצעתי','היום או לפני','var(--pink)')}${tile('free',IC.play,S.free?'לאימון הפעיל':'התחל אימון',S.free?'האימון רץ עכשיו':'קלוריות בלייב','var(--pink)')}
 ${tile('homeSetup',IC.foot,'צעדה בבית','עד 8,000 צעדים','var(--pink)')}${tile('qweighO',IC.chart,'שקילה','עכשיו '+r1(c.w)+' ק״ג','var(--lime)')}</div>
+<h2 style="margin:16px 0 6px;font-size:17px">אימונים מוצעים לך</h2><div class="sgrow">${wkSugg(false).slice(0,7).map(x=>`<button class="sgc" data-a="${x.a}" ${x.id?`data-id="${x.id}"`:''} ${x.tt?`data-t="${x.tt}"`:''} style="--qc:${x.col}"><span class="sgi">${x.ic}</span><b>${x.t}</b><small>${x.sub}</small></button>`).join('')}</div>
 <div class="card qcard" style="margin:12px 0 0"><h2 style="margin-bottom:6px"><span style="color:#3a9cf5">${IC.drop}</span> מים<span class="sp"></span><span class="small muted" id="qwv" style="white-space:nowrap">${(day.water||0).toLocaleString('he-IL')} / ${waterGoal().toLocaleString('he-IL')} מ״ל</span></h2>
 <div class="btns" style="margin-top:4px"><button class="btn ghost" data-a="qwater" data-ml="250">+ כוס 250</button><button class="btn ghost" data-a="qwater" data-ml="500">+ בקבוק 500</button><button class="btn ghost" data-a="qwater" data-ml="-250" aria-label="הורד 250" style="flex:.45">−</button></div></div>
 <div class="card qcard" style="margin:12px 0 0"><h2 style="margin-bottom:6px"><span style="color:#7a6cf0">${IC.moon}</span> צום לסירוגין</h2>${F.start?`<p style="margin:0">אתה בצום כבר <b>${fmtH(fh)}</b> מתוך ${F.plan} שעות${fh>=F.plan?' · <b style="color:var(--lime)">היעד הושג!</b>':''}</p><div class="btns"><button class="btn" data-a="qfastEnd">סיים צום</button><button class="btn ghost" data-a="tab" data-t="fast">למסך הצום</button></div>`
@@ -9912,10 +9918,22 @@ function freeMET(c){const a=FACT.find(x=>x[0]===c.id);if(!a)return 4;const v=c.s
 function epocF(c){const a=FACT.find(x=>x[0]===c.id),m=freeMET(c);let f=m<4?.03:m<6?.05:m<8?.07:m<10?.10:.13;if(a&&a[5])f+=.03;if(a&&a[2]==='str'&&c.lvl>=2)f+=.02;return f}
 function netRate(c){return Math.max(0,freeMET(c)-1)*curW()/3600}
 function paceTxt(k){if(!(k>0))return'–';const p=60/k;return Math.floor(p)+':'+String(Math.round((p%1)*60)).padStart(2,'0')}
-const FR={cat:'run',q:'',cfg:null};
+/* ===== אימונים מוצעים ===== */
+function wkSugg(retro){const L=fitLv(),out=[],td=FWEEK[new Date().getDay()],did=S.fit.log.some(z=>z.d===today()&&z.t!=='r');
+ const rec=Object.entries(S.freeLast||{}).filter(([id])=>FACT.some(a=>a[0]===id)).sort((a,b)=>(b[1].t||0)-(a[1].t||0)).slice(0,4).map(([id,v])=>{const a=FACT.find(x=>x[0]===id);return{a:'fq2',id,ic:IC.play,t:a[1],sub:'שוב, כמו בפעם הקודמת · '+(v.min||30)+' דק׳',col:'var(--pink)'}});
+ if(retro){const base=[['bw','אימון כוח מהתוכנית'],['walk','הליכה'],['hiit','HIIT'],['tabata','טאבאטה'],['stretch','מתיחות'],['run','ריצה']].filter(([id])=>!rec.some(r=>r.id===id)).map(([id,t])=>({a:'fq2',id,ic:IC.pen,t,sub:(FACT.find(x=>x[0]===id)||[])[6]||'',col:'var(--mango)'}));return rec.concat(base)}
+ if(td!=='r')out.push({a:'fitGo',tt:td,ic:IC.star,t:'האימון של היום: '+FTYPE[td][0],sub:(did?'כבר בוצע היום ✓ · ':'')+sessMin(td,L)+' דק׳ · רמה '+L,col:'var(--lime)'});
+ ['s','c'].filter(x=>x!==td).forEach(x=>out.push({a:'fitGo',tt:x,ic:IC.play,t:FTYPE[x][0]+' מהתוכנית',sub:sessMin(x,L)+' דק׳ · '+FTYPE[x][1],col:'var(--lime)'}));
+ out.push({a:'homeSetup',ic:IC.foot,t:'צעדה בבית',sub:'עד 8,000 צעדים, מול הטלוויזיה',col:'var(--pink)'});
+ out.push({a:'tabata',ic:IC.fire,t:'טאבאטה משלך',sub:(S.tab&&S.tab.ex?S.tab.ex.length:4)+' תרגילים · '+fmtS(tbTotal(S.tab||tbDef()))+' דק׳',col:'var(--pink)'});
+ out.push({a:'fitGo',tt:'r',ic:IC.moon,t:'מתיחות ושחרור',sub:'5 דק׳ · מצוין אחרי יום במשרד',col:'var(--blue)'});
+ return out.concat(rec)}
+function suggRow(x){return `<button class="food fpick" data-a="${x.a}" ${x.id?`data-id="${x.id}"`:''} ${x.tt?`data-t="${x.tt}"`:''} style="border-bottom:1px solid var(--line)"><span class="sgi" style="--qc:${x.col}">${x.ic}</span><span class="nm"><b>${x.t}</b><small>${x.sub}</small></span></button>`}
+
+const FR={cat:'sug',q:'',cfg:null};
 function openFree(){if(S.free&&!FR.retro)return openFreeLive();if(!FR.retro)wkPreview();FR.cfg=null;openSheet(`${shTop(FR.retro?'הוספת אימון שביצעת':'אימון חופשי')}<div class="seg" style="margin-bottom:8px"><button data-a="fmode" data-r="0" class="${FR.retro?'':'on'}">${IC.play} אימון עכשיו</button><button data-a="fmode" data-r="1" class="${FR.retro?'on':''}">${IC.pen} כבר ביצעתי</button></div><p class="muted" style="margin-top:0">${FR.retro?'בחר את הפעילות שעשית, את היום, כמה זמן ובאיזו עצימות, והיא תיכנס ליומן עם הקלוריות והאפטר-ברנר.':'בחר פעילות, קבע קצב או עצימות וזמן, ותראה קלוריות בזמן אמת ואת האפטר-ברנר.'}</p>
-<input type="search" id="fq" placeholder="חפש: ריצה, משקולות, שחייה, פאדל..." autocomplete="off"><div class="chips" id="fchips">${FCATS.map(([k,n])=>`<button class="chip ${FR.cat===k&&!FR.q?'on':''}" data-a="fcat" data-c="${k}">${n}</button>`).join('')}</div><div id="flist"></div>`);renderFList()}
-function renderFList(){const el=$('#flist');if(!el)return;const q=norm(FR.q||'');const L=FACT.filter(a=>q?norm(a[1]).includes(q):a[2]===FR.cat);
+<input type="search" id="fq" placeholder="חפש: ריצה, משקולות, שחייה, פאדל..." autocomplete="off"><div class="chips" id="fchips"><button class="chip ${FR.cat==='sug'&&!FR.q?'on':''}" data-a="fcat" data-c="sug">⭐ מומלצים לך</button>${FCATS.map(([k,n])=>`<button class="chip ${FR.cat===k&&!FR.q?'on':''}" data-a="fcat" data-c="${k}">${n}</button>`).join('')}</div><div id="flist"></div>`);renderFList()}
+function renderFList(){const el=$('#flist');if(!el)return;const q=norm(FR.q||'');if(!q&&FR.cat==='sug'){el.innerHTML=wkSugg(FR.retro).map(suggRow).join('');return}const L=FACT.filter(a=>q?norm(a[1]).includes(q):a[2]===FR.cat);
  el.innerHTML=L.map(a=>`<button class="food fpick" data-a="fpick" data-id="${a[0]}" style="border-bottom:1px solid var(--line)"><span class="nm"><b>${a[1]}</b><small>${a[6]}</small></span><span class="small" style="color:var(--pink);white-space:nowrap">${a[3]==='fixed'?'≈'+r0(Math.max(0,a[4]-1)*curW()*.5)+' קק״ל ל-30 ד׳':'לפי קצב'}</span></button>`).join('')||'<div class="empty">לא נמצא.</div>'}
 function openFreeCfg(id){const a=FACT.find(x=>x[0]===id);const last=(S.freeLast||{})[id]||{};const c=FR.cfg={d:today(),id,sp:last.sp||(a[3]==='run'?9:a[3]==='walk'?5:a[3]==='bike'?18:0),inc:last.inc||(id==='incl'?6:0),lvl:last.lvl!=null?last.lvl:1,min:last.min||30};
  const sp=a[3]!=='fixed',inc=id==='tread'||id==='incl'||id==='walk';
@@ -9931,11 +9949,11 @@ function freePrev(){const c=FR.cfg,el=$('#fprev');if(!c||!el)return;const m=free
  el.innerHTML=`<div class="small muted">${FR.retro?'חישוב ל-':'צפי ל-'}${c.min} דקות · עוצמה ${r1(m)} MET</div><div style="display:flex;justify-content:center;gap:22px;align-items:flex-end;margin-top:6px"><div><div class="kbig" style="font-size:42px">${r0(net)}</div><div class="small muted">קק״ל באימון</div></div><div style="font:26px var(--disp);color:var(--mute)">+</div><div><div class="kbig" style="font-size:42px;color:var(--pink)">${r0(ep)}</div><div class="small muted">אפטר-ברנר</div></div></div>${FR.cfg.sp&&FACT.find(x=>x[0]===c.id)[3]!=='fixed'?`<div class="small muted" style="margin-top:6px">מרחק צפוי: ${r1(c.sp*c.min/60)} ק״מ</div>`:''}<div class="small muted" style="margin-top:4px">קלוריות מעבר לשריפה במנוחה, לפי המשקל שלך (${r1(curW())} ק״ג)</div>`}
 let FRT=0;
 function freeSave(){const c=FR.cfg;if(!c)return;const d=c.d||today();if(d>today())return toast('אי אפשר להוסיף אימון עתידי');if(!(c.min>=1))return toast('כמה דקות התאמנת?');
- const a=FACT.find(x=>x[0]===c.id),net=netRate(c)*c.min*60,ep=net*epocF(c),km=a[3]!=='fixed'?c.sp*c.min/60:0;S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min};
+ const a=FACT.find(x=>x[0]===c.id),net=netRate(c)*c.min*60,ep=net*epocF(c),km=a[3]!=='fixed'?c.sp*c.min/60:0;S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min,t:Date.now()};
  const day=getDayLocal(d);day.ex.push({n:a[1]+(km?' · '+r1(km)+' ק״מ':' · '+FLVL[c.lvl][1]),min:c.min,k:net+ep});
  if(c.min>=10)S.fit.log.push({d,t:a[2]==='str'?'s':'c',feel:'ok',lvl:fitLv(),min:c.min});award('x:'+d,10,'אימון');saveDay(d);checkBadges();saveState();
  sfx('coin');closeSheet();render();toast(`נוסף ל${d===today()?'היום':heDate(d,{day:'numeric',month:'numeric'})}: ${a[1]} · ${r0(net+ep)} קק״ל (כולל ${r0(ep)} אפטר-ברנר)`)}
-function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0};saveState();if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
+function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min,t:Date.now()};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0};saveState();if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
 function freeAccum(){const f=S.free;if(!f||!f.run)return;const now=Date.now(),dt=Math.min(6*3600,(now-f.last)/1000);f.kc+=netRate(f.cfg)*dt;const a=FACT.find(x=>x[0]===f.cfg.id);if(a&&a[3]!=='fixed')f.km+=f.cfg.sp*dt/3600;f.last=now}
 function freeSec(){const f=S.free;return f?(f.acc+(f.run?Date.now()-f.run:0))/1000:0}
 function openFreeLive(){clearInterval(FRT);const f=S.free;if(!f)return openFree();const a=FACT.find(x=>x[0]===f.cfg.id),sp=a[3]!=='fixed';
@@ -10085,7 +10103,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=29;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=30;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10310,12 +10328,12 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  homeOk:b=>confirmHome(b.dataset.add==='1'),homeNo:()=>{HM.res=null;closeSheet();toast('לא נרשם. מחר זה היום שלך!')},
  homeBeat:()=>{SND.beat?beatStop():beatStart();showHome()},homeEnd:()=>finishHome(false),box:openBox,journey:openJourney,
  wear:b=>{if(b.dataset.a!=='wear')return;S.acc=b.dataset.id||null;saveState();render();toast(S.acc?'אבוקי התלבש!':'אבוקי בלי אביזרים')},
- quick:openQuick,mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
+ quick:openQuick,fq2:b=>{FR.q='';openFreeCfg(b.dataset.id)},mtog:b=>{const m=b.dataset.m;V.mx=V.mx||{};V.mx[m]=!V.mx[m];sfx('tap');const day=getDayLocal(V.date),w=b.closest('.mrow');w.outerHTML=mealRow(day,m,MEALS.find(x=>x[0]===m)[1])},qweighO:openQWeigh,
  qwater:b=>{act.water(b);const day=getDayLocal(V.date),e=$('#qwv');if(e)e.textContent=(day.water||0).toLocaleString('he-IL')+' / '+waterGoal().toLocaleString('he-IL')+' מ״ל'},
  qplan:b=>{S.fast.plan=+b.dataset.h;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
  qfast:()=>{const v=($('#sheetIn #fStart')||{}).value||'';document.querySelectorAll('#fStart').forEach(x=>x.value=v);act.fastStart();closeSheet()},qfastEnd:()=>{closeSheet();act.fastEnd()},
  qweigh:()=>{const w=+$('#qwIn').value;if(!(w>30&&w<350))return toast('משקל לא תקין');const t=today(),ws=wSorted().filter(x=>x.d<t),pv=ws[ws.length-1];S.weights=S.weights.filter(x=>x.d!==t);S.weights.push({d:t,w});award('wt:'+t,20,'שקילה');const fm=fitCheck();saveState();checkBadges();closeSheet();render();toast('נשמר: '+r1(w)+' ק״ג'+(pv?' · '+sgn(w-pv.w)+' מהשקילה הקודמת':''));if(fm)setTimeout(()=>showUndoMsg(fm),2400)},
- free:()=>{FR.retro=0;openFree()},freeRetro:()=>{FR.retro=1;openFree()},fmode:b=>{FR.retro=+b.dataset.r;if(!FR.retro&&S.free)return openFreeLive();openFree()},freeSave:freeSave,
+ free:()=>{FR.retro=0;openFree()},freeRetro:()=>{FR.retro=1;openFree()},fmode:b=>{FR.retro=+b.dataset.r;if(!FR.retro&&S.free)return openFreeLive();openFree()},freeSave:freeSave,fback:()=>openFree(),
  fday:b=>{FR.cfg.d=b.dataset.d;const i=$('#fdate');if(i)i.value=b.dataset.d;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},fcat:b=>{FR.cat=b.dataset.c;FR.q='';const q=$('#fq');if(q)q.value='';document.querySelectorAll('#fchips .chip').forEach(x=>x.classList.toggle('on',x===b));renderFList()},
  fpick:b=>openFreeCfg(b.dataset.id),flvl:b=>{FR.cfg.lvl=+b.dataset.i;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},
  fmin:b=>{FR.cfg.min=+b.dataset.m;const mi=$('#fminIn');if(mi)mi.value=b.dataset.m;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},freeStart:freeStart,
