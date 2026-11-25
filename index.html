@@ -251,6 +251,10 @@ html[dir=rtl] .msg.u{align-self:flex-start}.mav{width:34px;height:34px;flex:none
 .bub{padding:10px 13px;border-radius:18px;line-height:1.55;font-size:15px}.msg.u .bub{background:var(--mango);color:#fff;border-end-start-radius:6px}.msg.a .bub{background:var(--card2,#f1f6f4);border:1px solid var(--line);border-end-end-radius:6px}
 .chatin{position:sticky;bottom:0;display:flex;gap:8px;align-items:flex-end;background:var(--bg,#fff);padding-top:8px}.chatin textarea{flex:1;resize:none;min-height:48px;max-height:120px}
 .dots{display:inline-flex;gap:4px}.dots i{width:7px;height:7px;border-radius:50%;background:var(--mute);animation:bob 1s infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+.bubchat{width:100%;font:inherit;color:inherit;cursor:pointer;text-align:right}.bubhint{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:12.5px;font-weight:700;color:var(--mango-d)}.bubhint svg{width:15px;height:15px}
+.chatfab{position:fixed;left:12px;bottom:calc(80px + env(safe-area-inset-bottom));z-index:19;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:#fff;border:2px solid var(--mango);box-shadow:0 6px 16px rgba(46,196,160,.35);font:inherit;padding:0;animation:cfin .5s ease}
+.chatfab .cfa{width:38px;height:40px;display:block}.chatfab .cfa svg{width:38px;height:40px}.chatfab b{position:absolute;top:-8px;right:-6px;background:var(--pink);color:#fff;font-size:11px;border-radius:999px;padding:1px 6px;line-height:1.5}
+@keyframes cfin{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}body.sheet-open .chatfab{display:none}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
 .qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
@@ -259,6 +263,7 @@ html[dir=rtl] .msg.u{align-self:flex-start}.mav{width:34px;height:34px;flex:none
 </head>
 <body>
 <div class="app" id="app"></div>
+<button class="chatfab" data-a="chat" aria-label="שאל את אבוקי" id="chatFab"><span class="cfa"></span><b>שאל</b></button>
 <nav class="tabs"><div class="in">
  <button class="tab on" data-a="tab" data-t="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>היום</button>
  <button class="tab" data-a="tab" data-t="fast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 15A8 8 0 0 1 9 4a8 8 0 1 0 11 11z"/></svg>צום</button>
@@ -9440,7 +9445,7 @@ function viewToday(){const day=getDayLocal(V.date),c=calc(),t=dayTotals(day),ex=
 <div class="c"><span class="big" style="color:${over?'var(--pink)':'var(--ink)'}">${r0(Math.abs(left))}</span><span class="lbl">${over?'קק״ל מעל':'קק״ל נותרו'}</span></div></div><div class="side"><b>${r0(ex)}</b>פעילות</div></div>
 ${S.free?`<div style="text-align:center"><button class="chipf" data-a="free" style="background:var(--pink2)">${IC.fire} אימון פעיל · <span id="frChip" dir="ltr">${fmtHMS(freeSec())}</span></button></div>`:''}${S.act?`<div style="text-align:center"><button class="chipf" data-a="tracker" style="background:var(--lime2);color:#4f9a2e;border-color:#bfe5a8">פעילות פעילה · <span id="actChip" dir="ltr">${fmtHMS(actElapsed())}</span></button></div>`:''}<div style="text-align:center"><button class="chipf stpill" data-a="stepsGo">${IC.foot} <b id="heroSt">${(day.steps||0).toLocaleString('he-IL')}</b>&nbsp;/ ${stepGoal().toLocaleString('he-IL')} צעדים${isT&&stepSrc()!=='ידני'?' · '+stepSrc():''}</button></div>
 ${S.fast.start?`<div style="text-align:center"><button class="chipf" data-a="tab" data-t="fast">${IC.moon} בצום · <span id="fChip" dir="ltr">${fmtH(fastElapsed())}</span></button></div>`:''}
-${dsChip()}<div class="bubble">${avoki(mood)}<span>${msg}</span></div></div>
+${dsChip()}<button class="bubble bubchat" data-a="chat" aria-label="שאל את אבוקי">${avoki(mood)}<span style="flex:1;text-align:right">${msg}<small class="bubhint">${IC.chat} יש לך שאלה? לחץ ושאל אותי</small></span></button></div>
 <div class="wrap"><div class="quick"><button class="qa" data-a="photo" style="color:var(--pink)">${IC.cam}<span>צלם צלחת</span></button><button class="qa" data-a="tell" style="color:var(--gold)">${IC.chat}<span>ספר מה אכלת</span></button><button class="qa" data-a="water" data-ml="250" style="color:var(--blue)">${IC.drop}<span>שתיתי כוס</span></button><button class="qa" data-a="tab" data-t="fast" style="color:var(--lime)">${IC.moon}<span>${S.fast.start?'בצום':'התחל צום'}</span></button></div>
 ${mealsBlock(day)}${isT?tipCard():''}${isT?homeCard():''}<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
 <div class="btns"><button class="btn ghost" data-a="weekGo">${IC.chart} סיכום שבועי</button><button class="btn ghost" data-a="calGo">${IC.cal} לוח חודשי</button></div>
@@ -10226,7 +10231,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=36;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=37;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -10558,6 +10563,7 @@ function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');i
   if(code.length===4){if(H(code)===H('88'+'60')){setTimeout(hideSplash,180)}else{const d=$('#pdots');d.classList.remove('bad');void d.offsetWidth;d.classList.add('bad');sfx('del');setTimeout(()=>{code='';dots()},450)}}});
  try{if(sessionStorage.getItem('kl_in')==='1'){sessionStorage.removeItem('kl_in');sp.remove()}}catch(_){}}
 initSplash();
+{const f=$('#chatFab .cfa');if(f)f.innerHTML=avoki('happy')}
 window.__kl=()=>({S,getDayLocal,today,buildTabata,lockApp});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
