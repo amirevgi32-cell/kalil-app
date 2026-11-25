@@ -9495,7 +9495,7 @@ function sfx(k){if(!S.set.sfx)return;const c=ac();if(!c)return;const t=c.current
  else if(k==='del'){tone(420,t,.12,'sine',.12);tone(300,t+.07,.18,'sine',.1)}
  else if(k==='tap'){tone(1250,t,.04,'sine',.035)}
  else if(k==='fast'){tone(392,t,.4,'triangle',.1);tone(523.25,t+.15,.5,'triangle',.1)}}
-function musicStart(){const c=ac();if(!c||SND.music)return;const out=c.createGain();out.gain.setValueAtTime(0,c.currentTime);out.gain.linearRampToValueAtTime(.55,c.currentTime+3);
+function synthStart(){const c=ac();if(!c||SND.music)return;const out=c.createGain();out.gain.setValueAtTime(0,c.currentTime);out.gain.linearRampToValueAtTime(.55,c.currentTime+3);
  const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1600;const dl=c.createDelay();dl.delayTime.value=.42;const fb=c.createGain();fb.gain.value=.28;
  dl.connect(fb);fb.connect(dl);lp.connect(out);lp.connect(dl);dl.connect(out);out.connect(c.destination);
  const CH=[[261.63,329.63,392,493.88],[220,261.63,329.63,392],[174.61,220,261.63,329.63],[196,246.94,293.66,392]],PEN=[523.25,587.33,659.25,783.99,880,1046.5];
@@ -9503,8 +9503,17 @@ function musicStart(){const c=ac();if(!c||SND.music)return;const out=c.createGai
  const sched=()=>{while(next<c.currentTime+2){const ch=CH[bar%4];ch.forEach(f=>tone(f,next,beat*4.2,'triangle',.028,lp,.5));tone(ch[0]/2,next,beat*4,'sine',.07,lp,.05);
   for(let i=0;i<8;i++)if(Math.random()<.5)tone(PEN[Math.random()*PEN.length|0],next+i*beat/2,beat*1.2,'sine',.035,lp,.02);next+=beat*4;bar++}};
  sched();SND.music={timer:setInterval(sched,500),out}}
-function musicStop(){const m=SND.music;if(!m)return;SND.music=null;clearInterval(m.timer);try{m.out.gain.linearRampToValueAtTime(0,SND.ctx.currentTime+.6)}catch(e){}setTimeout(()=>{try{m.out.disconnect()}catch(e){}},1200)}
-window.__pause=()=>{try{SND.ctx&&SND.ctx.suspend()}catch(e){}};window.__resume=()=>{try{SND.ctx&&SND.music&&SND.ctx.resume()}catch(e){}};
+function synthStop(){const m=SND.music;if(!m)return;SND.music=null;clearInterval(m.timer);try{m.out.gain.linearRampToValueAtTime(0,SND.ctx.currentTime+.6)}catch(e){}setTimeout(()=>{try{m.out.disconnect()}catch(e){}},1200)}
+const TRACKS=[['soft-gold-sky','Soft Gold Sky'],['window-seat-daydream','Window Seat Daydream'],['porchlight-golden-hour','Porchlight Golden Hour'],['first-coffee-thoughts','First Coffee Thoughts'],['pancakes-in-the-sun','Pancakes in the Sun'],['sunrise-stretch-flow','Sunrise Stretch Flow']];
+const MUS={el:null,i:Math.floor(Math.random()*6),on:false,fail:0};
+function realMusic(){try{return !!(window.KalilNative&&KalilNative.appVersion)&&!S.set.synth}catch(e){return false}}
+function realPlay(){if(!MUS.el){MUS.el=new Audio();MUS.el.preload='auto';MUS.el.volume=.35;MUS.el.onended=()=>{MUS.i=(MUS.i+1)%TRACKS.length;realPlay()};
+  MUS.el.onerror=()=>{MUS.fail++;if(MUS.fail>=2){MUS.on=false;synthStart()}else{MUS.i=(MUS.i+1)%TRACKS.length;realPlay()}}}
+ const t=TRACKS[MUS.i];MUS.el.src='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/music/'+t[0]+'.mp3';MUS.on=true;const p=MUS.el.play();if(p&&p.catch)p.catch(()=>{})}
+function musicStart(){if(realMusic()){if(MUS.on){try{MUS.el.play()}catch(e){}return}MUS.fail=0;realPlay()}else synthStart()}
+function musicStop(){if(MUS.el&&MUS.on){MUS.on=false;try{MUS.el.pause()}catch(e){}}synthStop()}
+function musicNext(){if(!MUS.el||!MUS.on)return;MUS.i=(MUS.i+1)%TRACKS.length;realPlay();toast('מתנגן: '+TRACKS[MUS.i][1])}
+window.__pause=()=>{try{WM.el&&WM.on&&WM.el.pause()}catch(e){}try{SND.ctx&&SND.ctx.suspend()}catch(e){}try{MUS.el&&MUS.on&&MUS.el.pause()}catch(e){}};window.__resume=()=>{try{WM.el&&WM.on&&WM.el.play()}catch(e){}try{SND.ctx&&SND.music&&SND.ctx.resume()}catch(e){}try{if(MUS.el&&MUS.on&&S.set.music)MUS.el.play()}catch(e){}};
 document.addEventListener('visibilitychange',()=>{document.hidden?window.__pause():window.__resume()});
 document.addEventListener('pointerdown',function once(){document.removeEventListener('pointerdown',once,true);if(S.set.music)musicStart()},true);
 /* ===== צעדים ===== */
@@ -9628,7 +9637,7 @@ function updTracker(){const a=S.act;if(!a||!$('#tkT')){clearInterval(TRK);return
  $('#tkT').textContent=fmtHMS(st.sec);$('#tkP').style.width=Math.min(100,st.sec/tg*100)+'%';$('#tkL').textContent=st.sec>=tg?'הגעת ליעד! אפשר להמשיך או לסיים':'נותרו '+fmtHMS(tg-st.sec)+(a.run?'':' · מושהה');
  $('#tkS').textContent=ACTT[a.ti][2]?st.steps.toLocaleString('he-IL'):'–';$('#tkSL').textContent=st.est?'צעדים (משוער)':'צעדים';$('#tkD').textContent=st.km?r1(st.km)+' ק״מ':'–';$('#tkK').textContent=r0(st.kcal);$('#tkPc').textContent=st.pace?fmtS(st.pace*60):'–';
  if(st.sec>=tg&&!a.hit){a.hit=1;saveState();sfx('win');toast('הגעת ליעד של '+a.target+' דקות!')}}
-function endTracker(save){const a=S.act;if(!a)return;clearInterval(TRK);const st=actStats(),T=ACTT[a.ti];S.act=null;
+function endTracker(save){const a=S.act;if(!a)return;clearInterval(TRK);beatStop();const st=actStats(),T=ACTT[a.ti];S.act=null;
  if(save&&st.sec>=60){const d=today(),day=getDayLocal(d),min=Math.round(st.sec/60);day.ex.push({n:T[0]+(st.km?' · '+r1(st.km)+' ק״מ':''),min,k:st.kcal});
   if(st.est&&st.steps){recompSteps(day);day.stepsMan=Math.max(day.stepsMan||0,day.stepsNat||0)+st.steps;recompSteps(day);stepsReached(d,day)}
   if(T[2]&&min>=10)S.fit.log.push({d,t:'c',feel:'ok',lvl:fitLv(),min});award('x:'+d,10,'אימון');award('tk:'+d+':'+a.start,15,'פעילות נשמרה');saveDay(d);checkBadges();
@@ -9676,7 +9685,7 @@ ${rows.map(([m,n])=>`<button class="hopt ${H.min===m?'on':''}" data-a="hMin" dat
  :hasNative()?'<p class="small muted" style="margin:4px 0 6px">כדי לספור כל צעד אמיתי, צריך לאשר לקליל גישה לחיישן הצעדים.</p><button class="btn full" data-a="stepPerm">הפעל ספירה מדויקת</button>'
  :'<p class="small muted" style="margin:4px 0 0">הצעדים נספרים לפי תנועת הטלפון. שים אותו בכיס או החזק אותו ביד.</p>'}
 <label class="small" style="display:flex;gap:8px;align-items:center;margin-top:6px;min-height:40px"><input type="checkbox" id="hTime" ${(S.homePref||{}).mode==='time'?'checked':''} style="width:22px;height:22px"> הטלפון לא עליי (ספירה משוערת שמרנית: כ-80 צעדים בדקה)</label></div>
-<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:10px;min-height:40px"><input type="checkbox" id="hBeat" ${H.beat?'checked':''} style="width:22px;height:22px"> ביט שמכתיב קצב טוב (100 צעדים בדקה)</label>
+<label class="small" style="display:flex;gap:8px;align-items:center;margin-top:10px;min-height:40px"><input type="checkbox" id="hBeat" ${H.beat?'checked':''} style="width:22px;height:22px"> ${(window.KalilNative&&KalilNative.appVersion&&!S.set.synth)?'מוזיקת אימון אנרגטית (פאנק ו-groove)':'ביט שמכתיב קצב טוב (100 צעדים בדקה)'}</label>
 <div class="btns"><button class="btn full hbtn" data-a="homeGo">${IC.play} יאללה!</button></div>`)}
 const TIME_F=.8;const HM={seg:[],i:0,left:0,run:false,t:0,steps:0,base:-1,fact:0,bonus:false,mode:'time',mot:0,last:0,idle:0};
 const PED={on:false,f:9.8,up:false,t:0,ok:false};
@@ -9702,7 +9711,7 @@ function showHome(){const s=HM.seg[HM.i],nx=HM.seg[HM.i+1],tot=HM.seg.reduce((a,
 <div class="bar" style="height:8px;margin:12px 0 4px"><i id="hP" style="width:${done/tot*100}%;background:var(--mango);color:var(--mango)"></i></div>
 <div class="small muted" style="display:flex;justify-content:space-between"><span>היום אחרי האימון: <b id="hDay">${((day.steps||0)+Math.round(HM.steps)).toLocaleString('he-IL')}</b> / ${stepGoal().toLocaleString('he-IL')}</span><span>${HM.bonus?'נקודות כפולות!':''}</span></div>
 <div class="hfact" id="hF">${HFACTS[HM.fact%HFACTS.length]}</div>
-<div class="btns"><button class="btn" data-a="homePause" id="hPB">${HM.run?'השהה':'המשך'}</button><button class="btn ghost" data-a="homeBeat">${SND.beat?'כבה ביט':'הפעל ביט'}</button><button class="btn lime" data-a="homeEnd">סיים</button></div>`)}
+<div class="btns"><button class="btn" data-a="homePause" id="hPB">${HM.run?'השהה':'המשך'}</button><button class="btn ghost" data-a="homeBeat">${SND.beat?'כבה מוזיקה':'הפעל מוזיקה'}</button><button class="btn lime" data-a="homeEnd">סיים</button></div>`)}
 function homeTick(){if(!$('#hT')){return}if(!HM.run)return;const s=HM.seg[HM.i];HM.left--;
  const n=sensorNow();if(HM.base>=0&&n>=HM.base)HM.sens=n-HM.base;
  if(HM.mode==='sensor')HM.steps=HM.sens;else if(HM.mode==='motion')HM.steps=HM.mot;else HM.steps+=s.m[3]*TIME_F/60;
@@ -9743,12 +9752,18 @@ function openBox(){if(!HM.box)return;HM.box=false;const b=$('#mbox');if(b)b.clas
 function openJourney(){const km=journeyKm(),at=journeyAt(km);openSheet(`${shTop('המסע: ממטולה לאילת')}<p class="muted" style="margin-top:0">כל צעד שאתה עושה, בבית, בעבודה או בהליכה, מקדם אותך לאורך הארץ. עד עכשיו: <b>${r1(km)} ק״מ</b> מתוך ${JOURNEY[JOURNEY.length-1][1]}.</p>
 <div class="jlist">${JOURNEY.map((j,i)=>`<div class="jst ${i<=at?'ok':''} ${i===at?'now':''}"><span class="jd"></span><div><b>${j[0]}</b> <span class="small muted">· ${j[1]} ק״מ</span>${i<=at?`<div class="small">${j[2]}</div>`:i===at+1?`<div class="small" style="color:var(--pink)">עוד ${r1(j[1]-km)} ק״מ</div>`:''}</div></div>`).join('')}</div><p class="small muted">המרחקים משוערים, בערך לאורך הכביש.</p>`)}
 /* ביט */
-function beatStart(){const c=ac();if(!c||SND.beat)return;const out=c.createGain();out.gain.value=.5;out.connect(c.destination);const nb=c.createBuffer(1,c.sampleRate*.05,c.sampleRate),dt=nb.getChannelData(0);for(let i=0;i<dt.length;i++)dt[i]=(Math.random()*2-1)*(1-i/dt.length);
+const WTRACKS=[['w-cassette-basement-bounce','Cassette Basement Bounce'],['w-summer-curbside-glow','Summer Curbside Glow'],['w-block-party-slow-jam','Block Party Slow Jam'],['w-neon-on-the-diner-floor','Neon on the Diner Floor'],['w-roller-rink-reverie','Roller Rink Reverie']];
+const WM={el:null,i:Math.floor(Math.random()*5),on:false,fail:0};
+function wPlay(){if(!WM.el){WM.el=new Audio();WM.el.preload='auto';WM.el.volume=.55;WM.el.onended=()=>{WM.i=(WM.i+1)%WTRACKS.length;wPlay()};
+  WM.el.onerror=()=>{WM.fail++;if(WM.fail>=2){WM.on=false;SND.beat=null;beatSynth()}else{WM.i=(WM.i+1)%WTRACKS.length;wPlay()}}}
+ WM.el.src='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/music/'+WTRACKS[WM.i][0]+'.mp3';WM.on=true;const p=WM.el.play();if(p&&p.catch)p.catch(()=>{})}
+function beatStart(){if(SND.beat)return;if(realMusic()){if(MUS.on||SND.music){musicStop();SND.mres=1}WM.fail=0;SND.beat={real:1};wPlay();return}beatSynth()}
+function beatSynth(){const c=ac();if(!c||SND.beat)return;const out=c.createGain();out.gain.value=.5;out.connect(c.destination);const nb=c.createBuffer(1,c.sampleRate*.05,c.sampleRate),dt=nb.getChannelData(0);for(let i=0;i<dt.length;i++)dt[i]=(Math.random()*2-1)*(1-i/dt.length);
  const bpm=100,b=60/bpm;let next=c.currentTime+.1,n=0;const BASS=[65.41,65.41,87.31,98];
  const kick=t=>{const o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+.12);g.gain.setValueAtTime(.7,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(out);o.start(t);o.stop(t+.2)};
  const hat=t=>{const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=nb;f.type='highpass';f.frequency.value=6000;g.gain.value=.25;s.connect(f);f.connect(g);g.connect(out);s.start(t)};
  const sch=()=>{while(next<c.currentTime+.6){kick(next);hat(next+b/2);if(n%2===0)tone(BASS[(n>>2)%4],next,b*.9,'triangle',.12,out);if(n%8===4)tone(523.25,next,b*.5,'sine',.05,out);next+=b;n++}};sch();SND.beat={t:setInterval(sch,200),out};if(SND.music){musicStop();SND.mres=1}}
-function beatStop(){const m=SND.beat;if(!m)return;SND.beat=null;clearInterval(m.t);try{m.out.gain.linearRampToValueAtTime(0,SND.ctx.currentTime+.4)}catch(e){}setTimeout(()=>{try{m.out.disconnect()}catch(e){}},800);if(SND.mres&&S.set.music){SND.mres=0;musicStart()}}
+function beatStop(){if(WM.on){WM.on=false;try{WM.el.pause()}catch(e){}}const m=SND.beat;if(!m)return;SND.beat=null;if(m.real){if(SND.mres&&S.set.music){SND.mres=0;musicStart()}return}clearInterval(m.t);try{m.out.gain.linearRampToValueAtTime(0,SND.ctx.currentTime+.4)}catch(e){}setTimeout(()=>{try{m.out.disconnect()}catch(e){}},800);if(SND.mres&&S.set.music){SND.mres=0;musicStart()}}
 
 /* ===== כושר ===== */
 const FX={chair:['קימה מכיסא','שב על קצה כיסא יציב, רגליים ברוחב האגן. קום בלי עזרת הידיים ושב לאט חזרה.','ירכיים וישבן: השרירים הגדולים בגוף, ששורפים הכי הרבה אנרגיה.'],
@@ -9803,7 +9818,7 @@ function buildSession(t){const L=fitLv(),P=FLV[L],st=[];
  for(let r=1;r<=P.r;r++){P.x.forEach(([id,v,timed])=>{const e=FX[id];st.push({n:e[0],d:e[1],b:e[2],rep:timed?0:v,sec:timed?v:0,k:'ex',fig:id,lbl:'סבב '+r+' מתוך '+P.r,side:id==='lunge'})});if(r<P.r)st.push({n:'מנוחה',d:'שותים מים ונושמים. הסבב הבא מתחיל עוד רגע.',sec:P.rest,k:'rest',fig:'breathe'})}
  STRETCH.slice(0,3).forEach(s=>st.push({n:'מתיחה: '+s[0],d:s[1],sec:s[2],k:'str',fig:s[3]}));return st}
 const PL_={st:[],i:0,left:0,run:false,t:0,type:'s'};
-function openWorkout(t){PL_.type=t;PL_.st=buildSession(t);PL_.i=0;PL_.run=false;clearInterval(PL_.t);PL_.left=PL_.st[0].sec||0;showStep()}
+function openWorkout(t){if(S.set.music)beatStart();PL_.on=1;PL_.type=t;PL_.st=buildSession(t);PL_.i=0;PL_.run=false;clearInterval(PL_.t);PL_.left=PL_.st[0].sec||0;showStep()}
 function beep(hi){if(!S.set.sfx)return;const c=ac();if(!c)return;tone(hi?1046.5:784,c.currentTime,.18,'sine',.2)}
 function showStep(){const s=PL_.st[PL_.i];if(!s)return finishWorkout();const tot=PL_.st.length,L=fitLv();
  const nxt=PL_.st[PL_.i+1];const col=s.k==='rest'?'var(--blue)':s.k==='fast'?'var(--pink)':s.k==='warm'||s.k==='cool'?'var(--gold)':'var(--mango-d)';
@@ -9819,7 +9834,7 @@ ${nxt?`<p class="small muted" style="text-align:center">הבא: ${nxt.n}${nxt.re
 const fmtS=x=>{x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+String(x%60).padStart(2,'0')};
 function runTimer(){clearInterval(PL_.t);PL_.t=setInterval(()=>{if(!PL_.run)return;PL_.left--;const el=$('#plT');if(el)el.textContent=fmtS(PL_.left);if(PL_.left<=3&&PL_.left>0)beep(false);
  if(PL_.left<=0){beep(true);clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()}},1000)}
-function finishWorkout(){clearInterval(PL_.t);PL_.run=false;openSheet(`${shTop('כל הכבוד!')}<div style="text-align:center"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">סיימת את האימון!</h2><p class="muted">איך הרגיש? זה עוזר לי להתאים את הרמה.</p></div>
+function finishWorkout(){clearInterval(PL_.t);PL_.run=false;if(PL_.on){PL_.on=0;beatStop()}openSheet(`${shTop('כל הכבוד!')}<div style="text-align:center"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">סיימת את האימון!</h2><p class="muted">איך הרגיש? זה עוזר לי להתאים את הרמה.</p></div>
 <div class="seg" style="margin-top:10px"><button data-a="plFeel" data-f="easy">קל מדי</button><button data-a="plFeel" data-f="ok">בדיוק</button><button data-a="plFeel" data-f="hard">קשה מדי</button></div>`);confetti()}
 function logWorkout(t,feel){const d=today(),L=fitLv(),min=t==='t'?Math.round(PL_.st.reduce((a,x)=>a+(x.sec||0),0)/60):sessMin(t,L),met=t==='t'?7:t==='s'?3.8:t==='c'?(L>=7?5.5:4.3):2.3;
  S.fit.log.push({d,t,feel,lvl:L,min});S.fit.log=S.fit.log.slice(-300);const day=getDayLocal(d);day.ex.push({n:FTYPE[t][1]+' (רמה '+L+')',min,k:met*curW()*min/60});
@@ -9874,7 +9889,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=18;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=19;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -9897,7 +9912,7 @@ setTimeout(()=>{if(isApk()&&S.lastUpdCheck!==today()){S.lastUpdCheck=today();sav
 
 /* ===== גיליונות ===== */
 function openSheet(h){$('#sheetIn').innerHTML=h;$('#sheet').classList.add('open');$('#sheetIn').scrollTop=0}
-function closeSheet(){try{pedStop()}catch(e){}try{if(HM.run||HM.t){clearInterval(HM.t);HM.t=0;HM.run=false;beatStop()}}catch(e){}try{clearInterval(PL_.t);PL_.run=false}catch(e){}$('#sheet').classList.remove('open');$('#sheetIn').innerHTML='';AI.ctl&&AI.ctl.abort()}
+function closeSheet(){try{if(PL_.on){PL_.on=0;beatStop()}}catch(e){}try{pedStop()}catch(e){}try{if(HM.run||HM.t){clearInterval(HM.t);HM.t=0;HM.run=false;beatStop()}}catch(e){}try{clearInterval(PL_.t);PL_.run=false}catch(e){}$('#sheet').classList.remove('open');$('#sheetIn').innerHTML='';AI.ctl&&AI.ctl.abort()}
 const shTop=t=>`<div class="sh-top"><h3>${t}</h3><button class="x" data-a="close" aria-label="סגירה">${IC.x}</button></div>`;
 const A={meal:'b',cat:'',q:'',food:null,unit:null,qty:1,tray:[],edit:null};
 function guessMeal(){const h=new Date().getHours();return h<11?'b':h<16?'l':h<21?'d':'s'}
@@ -9989,6 +10004,7 @@ ${S.profile?`<label class="f"><span>משקל התחלתי (ממנו נמדדת �
 <label class="f"><span>יעד צעדים יומי</span><select name="sg">${[5000,6000,7000,8000,10000,12000,15000].map(v=>`<option value="${v}" ${v===S.set.stepGoal?'selected':''}>${v.toLocaleString('he-IL')}</option>`).join('')}</select></label>
 <label class="f"><span>יום ארוחת הפינוק</span><select name="cd">${DAYN.map((n,i)=>`<option value="${i}" ${i===S.cheat.day?'selected':''}>${n}</option>`).join('')}</select></label>
 <label class="f"><span>צלילים ומוזיקה</span><div class="seg"><button type="button" data-a="musTog" class="${S.set.music?'on':''}">מוזיקת רקע</button><button type="button" data-a="sfxTog" class="${S.set.sfx?'on':''}">צלילי פעולות</button></div></label>
+${(window.KalilNative&&KalilNative.appVersion)?`<label class="f"><span>סוג המוזיקה</span><div class="seg"><button type="button" data-a="synthTog" class="${!S.set.synth?'on':''}">Lo-fi אמיתי (6 שירים)</button><button type="button" data-a="synthTog" class="${S.set.synth?'on':''}">מנגינה מסונתזת</button></div></label><div class="btns" style="margin-top:6px"><button type="button" class="btn ghost" data-a="musicNext">השיר הבא</button></div><p class="small muted" style="margin:4px 0 0">ברקע: 6 שירי Lo-fi רגועים. באימונים: 5 שירי groove אנרגטיים. מקור: Open Lo-Fi (רישיון CC0, נחלת הכלל). השירים נטענים מהאינטרנט, ובלי חיבור מתנגנת המנגינה המסונתזת.</p>`:''}
 <p id="perr" class="small" style="color:var(--red)"></p><button class="btn full" type="submit">${S.profile?'שמירה':'יאללה, מתחילים'}</button></form>${credit()}`);
  $('#pf').addEventListener('submit',ev=>{ev.preventDefault();const f=new FormData(ev.target),g=k=>{const b=document.querySelector(`[data-g="${k}"] .on`);return b?b.dataset.v:null};
   const np={name:String(f.get('name')).trim()||'חבר',sex:g('sex')||'m',age:+f.get('age'),h:+f.get('h'),goal:+f.get('goal'),act:+f.get('act'),pace:+(g('pace')||.5)};const w=+f.get('w');
@@ -10067,7 +10083,9 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  pkgAdd:openPkgForm,pkgAI:pkgAI,pkgName:b=>{const i=$('#pkN');if(i){i.value=b.dataset.n;const g=$('#pkG');if(g)g.focus()}},
  pkgSave:()=>{const n=($('#pkN').value||'').trim().slice(0,20),g=+$('#pkG').value;if(!n||!(g>0))return toast('צריך שם ומשקל');S.pkg=S.pkg||{};(S.pkg[A.food.id]=S.pkg[A.food.id]||[]).push([n,g]);saveState();toast('נשמר: '+n+' '+r0(g)+' גרם');const k='my'+(S.pkg[A.food.id].length-1);openFood(A.food.id,A.edit);const u=units(A.food).find(x=>x.k===k);if(u){A.unit=u;A.qty=1;$('#qty').value=1;document.querySelectorAll('#useg button').forEach(x=>x.classList.toggle('on',x.dataset.k===k));renderQ();preview()}},
  pkgDel:b=>{const my=(S.pkg||{})[A.food.id];if(!my)return;my.splice(+b.dataset.i,1);saveState();openFood(A.food.id,A.edit);openPkgForm()},
- music:()=>{S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();render();toast(S.set.music?'מוזיקה הופעלה':'מוזיקה כובתה')},
+ music:()=>{if(S.set.music&&MUS.on&&MUS.el){S.set.music=false;musicStop();saveState();render();toast('מוזיקה כובתה');return}S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();render();toast(S.set.music?(realMusic()?'מתנגן: '+TRACKS[MUS.i][1]:'מוזיקה הופעלה'):'מוזיקה כובתה')},
+ musicNext:musicNext,
+ synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  sfxTog:()=>{S.set.sfx=!S.set.sfx;saveState();toast(S.set.sfx?'צלילים הופעלו':'צלילים כובו');openProfile()},
  musTog:()=>{S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();openProfile()},
  hcConnect:()=>{try{KalilNative.hcRequest()}catch(e){}},hcSettings:()=>{try{KalilNative.hcSettings()}catch(e){}},hcSync:()=>{syncSteps();toast('מסנכרן עם Samsung Health...');setTimeout(()=>{syncSteps();renderDiag()},2500)},
@@ -10086,7 +10104,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  wear:b=>{if(b.dataset.a!=='wear')return;S.acc=b.dataset.id||null;saveState();render();toast(S.acc?'אבוקי התלבש!':'אבוקי בלי אביזרים')},
  tracker:openTracker,tabata:openTabata,
  trkT:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{ti:+b.dataset.i});openTracker()},trkM:b=>{S.actPref=Object.assign(S.actPref||{ti:1,min:30},{min:+b.dataset.m});openTracker()},
- trkStart:()=>{const p=S.actPref||{ti:1,min:30};S.act={ti:p.ti,target:p.min,start:Date.now(),acc:0,run:Date.now(),base:sensorNow()};saveState();sfx('fast');openTracker();render()},
+ trkStart:()=>{if(S.set.music)beatStart();const p=S.actPref||{ti:1,min:30};S.act={ti:p.ti,target:p.min,start:Date.now(),acc:0,run:Date.now(),base:sensorNow()};saveState();sfx('fast');openTracker();render()},
  trkPause:()=>{const a=S.act;if(!a)return;if(a.run){a.acc+=Date.now()-a.run;a.run=null}else a.run=Date.now();saveState();const b=$('#tkPB');if(b)b.textContent=a.run?'השהה':'המשך'},
  trkEnd:()=>endTracker(true),trkCancel:()=>endTracker(false),
  tbx:b=>{const T=S.tab,k=b.dataset.k,d=+b.dataset.d,st={work:5,rest:5,rounds:1,sets:1,setRest:15}[k],lim={work:[10,60],rest:[5,60],rounds:[2,12],sets:[1,4],setRest:[15,180]}[k];T[k]=Math.min(lim[1],Math.max(lim[0],T[k]+d*st));saveState();openTabata()},
