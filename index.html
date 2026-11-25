@@ -1057,7 +1057,14 @@ function renderDiag(){const el=$('#diag');if(!el||!window.KalilNative||!KalilNat
 function nativeBest(){let n=-1;try{if(hasNative()&&nativePerm())n=Math.max(n,KalilNative.steps())}catch(e){}try{if(hcOn()&&KalilNative.hcSteps)n=Math.max(n,KalilNative.hcSteps())}catch(e){}return n}
 function syncSteps(){if(!S.profile||!window.KalilNative)return;try{if(hcOn())KalilNative.hcRefresh()}catch(e){}const n=nativeBest();if(n>=0)setSteps(Math.max(n,getDayLocal(today()).stepsMan||0));renderDiag()}
 setInterval(()=>{if(!document.hidden)syncSteps()},15000);setTimeout(syncSteps,1200);document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(syncSteps,500)});
-window.__stepsOk=()=>{syncSteps();render()};window.__diag=renderDiag;
+window.__stepsOk=()=>{syncSteps();render();if(hcAvail())setTimeout(()=>{if(hcOn()){closeSheet();render();toast('מחובר ל-Samsung Health! הצעדים יתעדכנו אוטומטית');sfx('win');setTimeout(syncSteps,1500)}else toast('ההרשאה לא אושרה. אפשר לאשר בהגדרות Health Connect')},300)};
+function openHcSetup(){S.hcAsked=today();saveState();openSheet(`${shTop('חיבור ל-Samsung Health')}<div style="width:110px;margin:0 auto">${avoki('wow')}</div>
+<p style="font-size:17px;text-align:center;margin:6px 0 14px">כדי שהצעדים יתעדכנו לבד במסך הראשי, צריך לאשר חיבור פעם אחת.</p>
+<div class="card" style="margin-top:0"><ul class="why" style="margin:0"><li><i class="g1">1</i><span>לחץ <b>"חבר עכשיו"</b> ואשר ל"קליל" לקרוא <b>צעדים</b>.</span></li>
+<li><i class="g1">2</i><span>ב-Samsung Health: <b>הגדרות ← Health Connect</b>, וודא ש-Samsung Health מורשה <b>לכתוב צעדים</b>.</span></li>
+<li><i class="g1">3</i><span>חזור לקליל. הצעדים יופיעו תוך כמה שניות ויתעדכנו מעצמם.</span></li></ul></div>
+<div class="btns"><button class="btn full" data-a="hcConnect">חבר עכשיו</button></div><div class="btns"><button class="btn ghost" data-a="hcSettings">הגדרות Health Connect</button><button class="btn ghost" data-a="close">אחר כך</button></div>`)}
+setTimeout(()=>{try{if(S.profile&&hcAvail()&&!hcOn()&&(!S.hcAsked||diffDays(S.hcAsked,today())>=3)&&!$('#sheet').classList.contains('open'))openHcSetup()}catch(e){}},2500);window.__diag=renderDiag;
 
 const UNDO={fn:null,t:0};function showUndoMsg(txt){UNDO.fn=null;$('#undoT').textContent=txt;$('#undo').querySelector('button').classList.add('hide');$('#undo').classList.remove('hide');clearTimeout(UNDO.t);UNDO.t=setTimeout(()=>{$('#undo').classList.add('hide');$('#undo').querySelector('button').classList.remove('hide')},7000)}
 function showUndo(txt,fn){UNDO.fn=fn;$('#undo').querySelector('button').classList.remove('hide');$('#undoT').textContent=txt;$('#undo').classList.remove('hide');clearTimeout(UNDO.t);UNDO.t=setTimeout(()=>{$('#undo').classList.add('hide');UNDO.fn=null},6000)}
@@ -1276,7 +1283,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=8;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=9;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
