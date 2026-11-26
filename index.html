@@ -264,7 +264,7 @@ html[dir=rtl] .msg.u{align-self:flex-start}.mav{width:34px;height:34px;flex:none
 @keyframes cfin{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}body.sheet-open .chatfab{display:none}
 .mymus{white-space:nowrap;position:fixed;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:60;background:#1db954;color:#fff;border-radius:999px;padding:10px 18px;font:inherit;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.25);animation:cfin .4s ease}
 .eatrow{margin-top:12px;padding:10px 12px;border-radius:14px;background:var(--card2,rgba(0,0,0,.03));border:1px solid var(--line)}.eatrow .seg button{font-size:13px;padding:8px 4px}
-.mtime{font-size:12px;font-weight:800;color:var(--mango-d);background:var(--mango2);border-radius:999px;padding:0 7px;white-space:nowrap}.mtime.pl{color:#fff;background:var(--pink)}.pdfb{margin-inline-start:8px;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:3px 10px;font:inherit;font-size:12.5px;font-weight:800;color:var(--ink,inherit);cursor:pointer;min-height:32px}.mtrow{display:flex;align-items:center;gap:6px;margin:-2px 12px 8px;padding:3px 10px;border:0;border-radius:999px;background:var(--mango2);color:var(--mango-d);font:inherit;font-size:13px;font-weight:800;width:max-content;max-width:calc(100% - 24px);cursor:pointer}.mtrow span{font-weight:600;opacity:.75;text-decoration:underline}.mtrow.pl{background:var(--pink);color:#fff}.mtrow.no{background:transparent;color:var(--mute);border:1.5px dashed var(--line,#ccc)}
+.mtime{font-size:12px;font-weight:800;color:var(--mango-d);background:var(--mango2);border-radius:999px;padding:0 7px;white-space:nowrap}.mtime.pl{color:#fff;background:var(--pink)}.shrow{display:flex;gap:6px;margin:-4px 0 4px}.pdfb{flex:none;white-space:nowrap;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:3px 10px;font:inherit;font-size:12.5px;font-weight:800;color:var(--ink,inherit);cursor:pointer;min-height:32px}.mtrow{display:flex;align-items:center;gap:6px;margin:-2px 12px 8px;padding:3px 10px;border:0;border-radius:999px;background:var(--mango2);color:var(--mango-d);font:inherit;font-size:13px;font-weight:800;width:max-content;max-width:calc(100% - 24px);cursor:pointer}.mtrow span{font-weight:600;opacity:.75;text-decoration:underline}.mtrow.pl{background:var(--pink);color:#fff}.mtrow.no{background:transparent;color:var(--mute);border:1.5px dashed var(--line,#ccc)}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
 .qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
@@ -9486,8 +9486,29 @@ function exportPdf(ds){ds=ds||V.date||today();const h=pdfHtml(ds),nm='קליל-�
  if(window.KalilNative&&KalilNative.printHtml){try{KalilNative.printHtml(h,nm);toast('בחר "שמור כ־PDF" במסך ההדפסה');return}catch(e){}}
  if(window.KalilNative){toast('צריך לעדכן את האפליקציה (עדכון APK) כדי לייצא PDF');try{updCheck&&updCheck(1)}catch(e){}return}
  const f=document.createElement('iframe');f.style.cssText='position:fixed;width:0;height:0;border:0;left:-9999px';document.body.appendChild(f);f.contentDocument.open();f.contentDocument.write(h);f.contentDocument.close();setTimeout(()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){toast('לא הצלחתי לפתוח הדפסה')}setTimeout(()=>f.remove(),60000)},400)}
+function shareText(ds,ai){const day=getDayLocal(ds),c=calc(),t=dayTotals(day),B=c.budget+exKcal(day)+cheatBonus(ds),p=S.profile||{},f=x=>r0(x).toLocaleString('he-IL'),IC_={b:'🍳',l:'🍽️',d:'🌙',s:'🍎'};
+ let L=[`🥗 מה אכלתי · ${heDate(ds,{weekday:'long',day:'numeric',month:'numeric'})}`,''];
+ MEALS.forEach(([m,n])=>{const it=day.meals[m]||[];if(!it.length)return;const s=sum(it),ats=it.filter(e=>e.at).map(e=>e.at),mt=ats.length?hhmm(Math.min(...ats)):'';
+  L.push(`${IC_[m]} *${n}*${mt?` (${it.some(e=>e.plan)?'מתוכנן ':''}${mt})`:''} · ${f(s.k)} קק״ל`);it.forEach(e=>L.push(`• ${e.n} – ${uLabel(e.q,e.un,e.u)} – ${f(e.k)} קק״ל`));L.push('')});
+ if(!t.n)L.push('עוד לא נרשמו ארוחות.','');
+ L.push(`📊 סה״כ ${f(t.k)} מתוך ${f(B)} קק״ל`,`חלבון ${f(t.p)} ג׳ · פחמימה ${f(t.c)} ג׳ · שומן ${f(t.f)} ג׳ · סיבים ${f(t.fi)} ג׳`);
+ const x=[];if(day.water)x.push(`💧 ${f(day.water)} מ״ל מים`);if(day.steps)x.push(`👣 ${f(day.steps)} צעדים`);(day.ex||[]).forEach(e=>x.push(`🏃 ${e.n} ${e.min} דק׳`));if(x.length)L.push(x.join(' · '));
+ try{const r=dScore(ds);if(t.n)L.push(`⭐ ציון יומי ${r.s}`)}catch(e){}
+ if(ai){const pre=`אני מנסה לרדת במשקל ואשמח לחוות דעת תזונאית קצרה וכנה על היום שלי.\nפרטים: ${p.sex==='f'?'אישה':'גבר'}${p.age?`, גיל ${p.age}`:''}${p.h?`, גובה ${p.h} ס״מ`:''}, משקל נוכחי ${curW()} ק״ג${p.goal?`, יעד ${p.goal} ק״ג`:''}. תקציב יומי ${f(B)} קק״ל.${S.fast&&S.fast.start?' אני כרגע בצום.':''}\nתגיד לי: מה היה טוב, מה כדאי לשפר, אם החלבון והסיבים מספיקים, ומה מומלץ לאכול בהמשך היום כדי להשלים אותו טוב.\n\n`;return pre+L.join('\n')}
+ L.push('','— נשלח מקליל 🥑');return L.join('\n')}
+function openShare(){const ds=V.date||today();const has=!!(aiKey&&aiKey())||!!(window.claude&&claude.use);
+ openSheet(`<h2>שיתוף מה שאכלתי</h2><p class="small muted" style="margin:0 0 10px">${heDate(ds)}</p>
+<div class="btns" style="flex-direction:column;gap:8px">
+<button class="btn full" data-a="shWa" style="background:#25D366;color:#fff">🟢 שלח בוואטסאפ</button>
+<button class="btn ghost full" data-a="shAi">🤖 שלח למודל AI לניתוח</button>
+<button class="btn ghost full" data-a="shAvo">🥑 חוות דעת מאבוקי${has?'':' (דורש חיבור)'}</button>
+<button class="btn ghost full" data-a="shCopy">📋 העתק טקסט</button></div>
+<p class="small muted" style="margin-top:10px">ב"מודל AI" נשלח הטקסט יחד עם הפרטים שלך (משקל, יעד, תקציב) ובקשה לחוות דעת. בוחרים מהרשימה את אפליקציית הבינה שמותקנת אצלך (ChatGPT, Claude, Gemini).</p>`)}
+function shareOut(txt){if(window.KalilNative&&KalilNative.shareText){try{KalilNative.shareText(txt);return true}catch(e){}}if(navigator.share){navigator.share({text:txt}).catch(()=>{});return true}return false}
+function copyTxt(txt){try{navigator.clipboard.writeText(txt).then(()=>toast('הועתק ✓'),()=>fallbackCopy(txt))}catch(e){fallbackCopy(txt)}}
+function fallbackCopy(txt){const a=document.createElement('textarea');a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('הועתק ✓')}catch(e){toast('לא הצלחתי להעתיק')}a.remove()}
 function mealsBlock(day){const tot=MEALS.reduce((a,[m])=>a+sum(day.meals[m]).k,0);
- return `<div class="card meal mlist"><h2>הארוחות של היום<span class="sp"></span><span class="kc">${r0(tot)} קק״ל</span><button class="pdfb" data-a="pdf" aria-label="ייצוא התפריט של היום כ-PDF">📄 PDF</button></h2>${MEALS.map(([m,n])=>mealRow(day,m,n)).join('')}</div>`}
+ return `<div class="card meal mlist"><h2>הארוחות של היום<span class="sp"></span><span class="kc">${r0(tot)} קק״ל</span></h2><div class="shrow"><button class="pdfb" data-a="share" aria-label="שיתוף מה שאכלתי">📤 שיתוף</button><button class="pdfb" data-a="pdf" aria-label="ייצוא התפריט של היום כ-PDF">📄 PDF</button></div>${MEALS.map(([m,n])=>mealRow(day,m,n)).join('')}</div>`}
 function mealRow(day,m,n){const it=day.meals[m],r=it.length?scoreItems(it,m):null,t=sum(it),open=!!(V.mx&&V.mx[m]);
  const ats=it.filter(e=>e.at).map(e=>e.at),mt=ats.length?hhmm(Math.min(...ats)):'',pl=it.some(e=>e.plan),names=it.map(e=>e.n).join(' · ');
  const stk=r?(r.cheat?`<span class="sticker s g2" style="font-size:11px">פינוק</span>`:`<span class="sticker s ${grade(r.s)[1]}">${r.s}</span>`):'';
@@ -10642,7 +10663,7 @@ function chatRender(){const el=$('#chatLog');if(!el)return;const L=S.chat||[];
  +L.map((m,i)=>`<div class="msg ${m.r}">${m.r==='a'?`<span class="mav">${avoki('happy')}</span>`:''}<div class="bub">${esc(m.t).replace(/\n/g,'<br>')}</div></div>${m.s&&m.s.length&&i===L.length-1?`<div class="chips chsug">${m.s.map(q=>`<button class="chip" data-a="chatQ" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`:''}`).join('')
  +(CH.busy?`<div class="msg a"><span class="mav">${avoki('wow')}</span><div class="bub"><span class="dots"><i></i><i></i><i></i></span></div></div>`:'');
  const sh=$('#sheetIn'),last=L[L.length-1],ms=el.querySelectorAll('.msg');if(sh){if(last&&last.r==='a'&&!CH.busy&&ms.length>1){const m=ms[ms.length-1];sh.scrollTop=Math.max(0,m.offsetTop-80)}else sh.scrollTop=sh.scrollHeight}}
-async function chatSend(q){q=(q||'').trim();if(!q||CH.busy)return;S.chat=S.chat||[];S.chat.push({r:'u',t:q.slice(0,600)});S.chat=S.chat.slice(-40);saveState();const inp=$('#chatIn');if(inp)inp.value='';
+async function chatSend(q){q=(q||'').trim();if(!q||CH.busy)return;S.chat=S.chat||[];S.chat.push({r:'u',t:q.slice(0,2500)});S.chat=S.chat.slice(-40);saveState();const inp=$('#chatIn');if(inp)inp.value='';
  const kb=kbAnswer(q,CH.lastT);if(kb.t)CH.lastT=kb.t;let sample=null;
  try{sample=window.claude&&claude.use?await claude.use('sample'):null}catch(e){}if(!sample){const key=aiKey();if(key)sample=aiSampler(key)}
  if(!sample){CH.busy=true;chatRender();await new Promise(r=>setTimeout(r,450+Math.random()*350));CH.busy=false;S.chat.push({r:'a',t:kb.a,s:kb.sug||[]});S.chat=S.chat.slice(-40);saveState();chatRender();return}
@@ -11389,7 +11410,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=58;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=59;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11617,6 +11638,11 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  musicNext:musicNext,
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  pdf:()=>exportPdf(V.date),
+ share:()=>openShare(),
+ shWa:()=>{const t=shareText(V.date||today());closeSheet();const a=document.createElement('a');a.href='https://wa.me/?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()},
+ shAi:()=>{const t=shareText(V.date||today(),1);closeSheet();if(!shareOut(t)){copyTxt(t);toast(window.KalilNative?'הטקסט הועתק – עדכן את האפליקציה לשיתוף ישיר, או הדבק באפליקציית הבינה':'הטקסט הועתק – הדבק אותו בצ׳אט של הבינה')}},
+ shCopy:()=>{copyTxt(shareText(V.date||today()));closeSheet()},
+ shAvo:()=>{const has=!!(aiKey&&aiKey())||!!(window.claude&&claude.use);closeSheet();if(!has){toast('צריך לחבר בינה קודם');try{openAIConnect()}catch(e){}return}const t=shareText(V.date||today(),1);openChat();setTimeout(()=>chatSend(t),250)},
  tapS:b=>{S.set.tapS=b.dataset.k;saveState();document.querySelectorAll('[data-a=tapS]').forEach(x=>x.classList.toggle('on',x===b));sfx('tap')},
  sfxTog:()=>{S.set.sfx=!S.set.sfx;saveState();toast(S.set.sfx?'צלילים הופעלו':'צלילים כובו');openProfile()},
  musTog:()=>{S.set.music=!S.set.music;S.set.music?musicStart():musicStop();saveState();openProfile()},
@@ -11741,7 +11767,7 @@ function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');i
 initSplash();
 setTimeout(()=>{try{const d=today();if(S.fixC!==d&&d==='2026-11-26'){S.fixC=d;const L=S.fit.log.filter(z=>z.d===d&&z.t==='c'&&!z.as);if(L.length){const day=getDayLocal(d);if(!day.autoC){const st=Math.round(L.reduce((a,z)=>a+(z.min||15),0)*95);recompSteps(day);day.stepsExtra=(day.stepsExtra||0)+st;day.autoC=1;recompSteps(day);saveDay(d);render();setTimeout(()=>showUndoMsg('הוספתי '+st.toLocaleString('he-IL')+' צעדים מהאימון האירובי של הבוקר 👟'),1500)}}saveState()}}catch(e){}},2500);
 {const f=$('#chatFab .cfa');if(f)f.innerHTML=avoki('happy')}
-window.__kl=()=>({pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
+window.__kl=()=>({shareText,pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
 function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;const until=Date.now()+700,blk=e=>{if(Date.now()<until){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}};['click','pointerup','mouseup','touchend'].forEach(t=>document.addEventListener(t,blk,true));setTimeout(()=>['click','pointerup','mouseup','touchend'].forEach(t=>document.removeEventListener(t,blk,true)),750);sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
