@@ -1,7 +1,7 @@
 {
- "html": 59,
+ "html": 60,
  "apk": 11,
  "name": "1.9.1",
- "notes": "חדש: כפתור \"📤 שיתוף\" בכרטיס הארוחות – שליחת מה שאכלת בוואטסאפ, למודל AI (ChatGPT / Claude / Gemini) לחוות דעת, לאבוקי, או העתקה. בנוסף ייצוא PDF של היום.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/49d06356c32901201b30ef1c89da1564ce2f3927/index.html"
+ "notes": "עדכון קטן: הגילוי הנאות במסך הכניסה כולל עכשיו את האחים – דודו, שלומי וסנדי.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/dd2ddffc43320f615556582fac89d2c2fea2affb/index.html"
 }
