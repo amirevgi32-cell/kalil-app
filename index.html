@@ -284,7 +284,7 @@ html[dir=rtl] .msg.u{align-self:flex-start}.mav{width:34px;height:34px;flex:none
 <div class="sheet" id="sheet"><div class="sheet-in" id="sheetIn"></div></div>
 <div id="splash" class="splash" role="dialog" aria-label="מסך פתיחה"><div class="sp-bg"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <div class="sp-in"><div class="sp-avo" id="spAvo"></div><h1 class="sp-title"><span>ק</span><span>ל</span><span>י</span><span>ל</span></h1><p class="sp-sub">הדרך הקלילה ליעד</p><p class="sp-hi" id="spHi"></p>
-<div class="sp-card"><b>גילוי נאות</b><p>האפליקציה פותחה ע״י <b>עמיר איבגי</b> ונועדה <b>לשימושו האישי בלבד</b>. אם היא הגיעה אליך, היא אינה מיועדת לשימושך, והמפתח אינו נושא באחריות לכל שימוש בה או לתוצאותיו.<br>המידע בה כללי, ואינו מחליף ייעוץ רפואי, תזונתי או אימוני מקצועי.</p></div>
+<div class="sp-card"><b>גילוי נאות</b><p>האפליקציה פותחה ע״י <b>עמיר איבגי</b> ונועדה <b>לשימושו האישי ולשימוש אחיו – דודו, שלומי וסנדי – בלבד</b>. אם היא הגיעה למישהו אחר, היא אינה מיועדת לשימושו, והמפתח אינו נושא באחריות לכל שימוש בה או לתוצאותיו.<br>המידע בה כללי, ואינו מחליף ייעוץ רפואי, תזונתי או אימוני מקצועי.</p></div>
 <div class="pin" id="pin"><div class="pdots" id="pdots"><i></i><i></i><i></i><i></i></div><div class="ppad"></div></div></div></div>
 <div class="toast" id="toast"></div>
 <canvas id="cf"></canvas>
@@ -11410,7 +11410,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=59;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=60;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
