@@ -1,7 +1,7 @@
 {
- "html": 57,
- "apk": 9,
- "name": "1.8",
- "notes": "צליל לחיצה חדש – בועה עדינה. בפרופיל ← צלילים אפשר לבחור צליל לחיצה מתוך 6 (בועה, טוק רך, עדין, גומי, קליק, זכוכית) או בלי. כל הקשה משמיעה אותו.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/0d289dfa8d5379531daf3d452df41d4a6b833083/index.html"
+ "html": 58,
+ "apk": 10,
+ "name": "1.9",
+ "notes": "חדש: ייצוא התפריט של היום ל-PDF – כפתור \"📄 PDF\" בכרטיס הארוחות. כולל ארוחות, שעות, כמויות, ערכים תזונתיים, מים, צעדים, אימונים וציון יומי. נבחר יום אחר בלוח – ייוצא היום הזה.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/4f110df1bdacdc122f8bd3b54d353f8b6829c279/index.html"
 }
