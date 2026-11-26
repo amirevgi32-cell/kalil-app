@@ -1,1 +1,7 @@
-{"html": 54, "apk": 9, "name": "1.8", "notes": "שעת אכילה לכל ארוחה: השעה מופיעה ליד שם הארוחה במסך הראשי, וכפתור 🕐 ליד כל ארוחה משנה את השעה של כל הארוחה", "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/f584af7fe1abf0d555f79c11b0524e4a19594367/index.html"}
+{
+ "html": 55,
+ "apk": 9,
+ "name": "1.8",
+ "notes": "שעת האכילה מופיעה עכשיו בשורה מתחת לכל ארוחה – לחיצה עליה משנה את השעה. ארוחה בלי שעה מציגה \"הוסף שעת אכילה\".",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/8648d123b6b56baa2c173e3ce54b071c82310cf6/index.html"
+}
