@@ -9480,6 +9480,8 @@ function dScore(d){const day=getDayLocal(d),c=calc(),t=dayTotals(day),B=c.budget
   ['צעדים',sr,sr<1?`עוד ${(sg-(day.steps||0)).toLocaleString('he-IL')} צעדים`:'יעד הצעדים הושג'],
   ['אימון',did||rest?1:0,did?'התאמנת היום':rest?'יום מנוחה מתוכנן, נחשב כבוצע':'אימון של 10 דקות ומעלה']];
  R.forEach((x,i)=>P.push([x[0],Math.round(x[1]*W[i]),W[i],x[2]]));
+ {const F=S.fast,pn=g=>(FPLANS.find(x=>x[0]===g)||[0,g+' שעות'])[1],ok=F.hist.find(x=>x.h>=x.g&&ymd(new Date(x.e))===d),live=isT&&F.start&&fastElapsed()>=F.plan;
+  P.push(['צום',ok||live?10:0,10,ok?`צום ${pn(ok.g)} הושלם`:live?`השלמת ${pn(F.plan)}! הצום עדיין פעיל`:isT&&F.start?`בצום עכשיו: עוד ${r1(F.plan-fastElapsed())} שעות להשלמת ${pn(F.plan)}`:`צום מוצלח לפי התוכנית שבחרת (${pn(F.plan)}) = 10 נקודות`])}
  let s=P.reduce((a,x)=>a+x[1],0);s=inB?Math.min(100,s):Math.min(79,s);return{s,P,inB,empty:!t.n&&!day.water&&!day.steps&&!day.ex.length}}
 function dsChip(){const r=dScore(V.date);return `<button class="dschip" data-a="dscore" aria-label="ציון יומי ${r.s}, פירוט"><span class="sticker s ${grade(r.s)[1]}">${r.s}</span><span><b>ציון יומי</b><small>${grade(r.s)[0]}</small></span></button>`}
 function openDScore(){const d=V.date,r=dScore(d),isT=d===today();const days=Array.from({length:7},(_,i)=>addDays(d,i-6)).filter(x=>x>=((S.profile&&S.profile.start)||'0'));
@@ -9488,7 +9490,7 @@ function openDScore(){const d=V.date,r=dScore(d),isT=d===today();const days=Arra
 ${r.P.map(([n,g,m,tip])=>`<div class="dsrow"><div style="display:flex;justify-content:space-between"><b>${n}</b><span class="small"><b>${g}</b> / ${m}</span></div><div class="bar" style="height:8px;margin:5px 0"><i style="width:${g/m*100}%;background:${g>=m?'var(--lime)':g>=m/2?'var(--gold)':'var(--pink)'}"></i></div><div class="small muted">${esc(tip)}</div></div>`).join('')}
 ${isT&&best.length?`<div class="card" style="background:var(--mango2);border:0;margin-top:12px"><b>הכי קל להעלות את הציון עכשיו:</b><div class="small" style="margin-top:4px">${best.slice(0,2).map(x=>'• '+esc(x[3])).join('<br>')}</div></div>`:''}
 ${hist.length>1?`<h2 style="margin:16px 0 6px">7 הימים האחרונים</h2><div class="dsweek">${hist.map(h=>`<div><span class="small"><b>${h.e?'–':h.s}</b></span><i style="height:${h.e?2:Math.max(4,h.s)}%;background:${h.s>=70?'var(--lime)':h.s>=40?'var(--gold)':'var(--pink)'}"></i><small>${heDate(h.d,{weekday:'narrow'})}</small></div>`).join('')}</div>${hv.length?`<p class="small muted">ממוצע: ${r0(hv.reduce((a,h)=>a+h.s,0)/hv.length)}${hv.length<hist.length?' (בלי ימים שלא נרשם בהם כלום)':''}</p>`:''}`:''}
-<p class="small muted">${r.inB?'כל עוד אתה בתקציב הקלוריות הציון הוא לפחות 80. את 20 הנקודות הנוספות מקבלים על איכות הארוחות, חלבון, מים, צעדים ואימון.':'כשנמצאים בתקציב הקלוריות, הציון מתחיל מ-80. מעל התקציב הציון נשאר מתחת ל-80, וצעדים, אימון, מים ואיכות הארוחות עדיין מוסיפים נקודות.'}</p>`)}
+<p class="small muted">${r.inB?'כל עוד אתה בתקציב הקלוריות הציון הוא לפחות 80. את הנקודות הנוספות מקבלים על איכות הארוחות, חלבון, מים, צעדים, אימון וצום מוצלח (עד 100).':'כשנמצאים בתקציב הקלוריות, הציון מתחיל מ-80. מעל התקציב הציון נשאר מתחת ל-80, וצעדים, אימון, מים, צום ואיכות הארוחות עדיין מוסיפים נקודות.'}</p>`)}
 /* ===== טיפ יומי ===== */
 const DTIPS=[
 ['🥗','חצי צלחת ירקות','מלא חצי צלחת בירקות לפני שאתה שם את השאר. ככה אוכלים יותר נפח בפחות קלוריות.'],
@@ -9884,7 +9886,7 @@ ${x.fast}`},
 • תזוז: הליכה משפחתית בשבת.`},
 {t:'איך עובד הציון היומי',k:['ציון','ציון יומי','איך מחושב','נקודות'],a:`הציון היומי באפליקציה:
 • כל עוד אתה בתקציב הקלוריות, הציון לפחות 80.
-• את 20 הנקודות הנוספות מקבלים על איכות הארוחות, חלבון, מים, צעדים ואימון.
+• את הנקודות הנוספות מקבלים על איכות הארוחות, חלבון, מים, צעדים, אימון וצום מוצלח (עד 100).
 • מעל התקציב הציון נשאר מתחת ל-80.
 • לחיצה על הציון במסך הראשי מראה מה הכי קל לשפר עכשיו.`},
 {t:'סטרס ולחץ',k:['בלחץ','לחץ בעבודה','לחוץ בעבודה','סטרס','לחץ נפשי','מתח','חרדה','רגוע','להירגע','נשימות','מדיטציה','לחוץ','לחוצה','לחוצ','עצבני'],a:`סטרס מעלה את הורמון הקורטיזול, וזה מגביר תיאבון (בעיקר למתוק ושמן) ופוגע בשינה.
@@ -11214,6 +11216,16 @@ function buildSession(t){const L=fitLv(),P=FLV[L],st=[];
  STRETCH.slice(0,3).forEach(s=>st.push({n:'מתיחה: '+s[0],d:s[1],sec:s[2],k:'str',fig:s[3]}));return st}
 const PL_={st:[],i:0,left:0,run:false,t:0,type:'s'};
 function openWorkout(t){if(S.set.music)beatStart();PL_.on=1;PL_.type=t;PL_.st=buildSession(t);PL_.i=0;PL_.run=false;clearInterval(PL_.t);PL_.left=PL_.st[0].sec||0;showStep()}
+function openPreview(t){const L=fitLv(),P=FLV[L],st=buildSession(t),H={warm:'חימום',ex:'תרגילים · '+P.r+' סבבים'+(P.r>1?' · '+P.rest+' שנ׳ מנוחה ביניהם':''),str:'מתיחות',main:'האימון',fast:'האימון',cool:'שחרור'};
+ const strip=n=>n.replace(/^(חימום|מתיחה|שחרור): /,'');const amt=s=>s.rep?s.rep+(s.side?' לכל רגל':' חזרות'):fmtS(s.sec);
+ const ivs=st.filter(s=>s.k==='fast'),row=(n,a)=>`<div style="display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(128,128,128,.18)"><span style="flex:1">${n}</span><b class="small" style="white-space:nowrap;direction:ltr">${a}</b></div>`;
+ let h='',last='',ivDone=0,rested=0;
+ st.forEach(s=>{if(s.k==='rest'){rested=1;return}if(s.k==='ex'&&rested)return;const sec=H[s.k]||'';
+  if(sec!==last){h+=`<div class="small" style="color:var(--mango-d);font-weight:700;margin:14px 0 2px">${sec}</div>`;last=sec}
+  if(ivs.length&&(s.k==='fast'||s.k==='main')){if(ivDone++)return;const w=st.find(x=>x.k==='main');h+=row(ivs.length+' פעמים: דקה '+strip(ivs[0].n.split(' · ')[0])+' + '+strip(w.n),'1:00 + '+fmtS(w.sec));return}
+  h+=row(strip(s.n),amt(s))});
+ openSheet(`${shTop(FTYPE[t][0]+' · רמה '+L)}<p class="muted" style="margin-top:0">${FTYPE[t][1]} · כ-${sessMin(t,L)} דקות</p>${h}
+<div class="btns" style="margin-top:18px"><button class="btn full" data-a="fitStart" data-t="${t}">התחל אימון</button></div>`)}
 function beep(hi){if(!S.set.sfx)return;const c=ac();if(!c)return;tone(hi?1046.5:784,c.currentTime,.18,'sine',.2)}
 function showStep(){const s=PL_.st[PL_.i];if(!s)return finishWorkout();const tot=PL_.st.length,L=fitLv();
  const nxt=PL_.st[PL_.i+1];const col=s.k==='rest'?'var(--blue)':s.k==='fast'?'var(--pink)':s.k==='warm'||s.k==='cool'?'var(--gold)':'var(--mango-d)';
@@ -11560,7 +11572,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  tbRm:b=>{const id=b.dataset.id;S.myEx=(S.myEx||[]).filter(x=>x.id!==id);S.tab.ex=S.tab.ex.filter(x=>x!==id);saveState();openTabata()},
  tbGentle:()=>{Object.assign(S.tab,{work:20,rest:20,rounds:6,sets:1,setRest:60,ex:['chair','wallpu','bridge','calf']});saveState();openTabata()},
  tbStart:()=>{if(!S.tab.ex.length)return toast('בחר לפחות תרגיל אחד');saveState();openWorkout('t')},
- fitGo:b=>openWorkout(b.dataset.t),plNext:()=>{clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()},
+ fitGo:b=>openPreview(b.dataset.t),fitStart:b=>openWorkout(b.dataset.t),plNext:()=>{clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()},
  plToggle:()=>{PL_.run=!PL_.run;const b=$('#plTog');if(b)b.textContent=PL_.run?'השהה':'המשך';if(PL_.run)runTimer();else clearInterval(PL_.t)},
  plFeel:b=>{logWorkout(PL_.type,b.dataset.f);closeSheet();render();toast(b.dataset.f==='hard'?'נרשם. נשמור על הקצב.':b.dataset.f==='easy'?'מעולה! בשקילה הבאה נשקול לעלות רמה':'אימון נרשם. כל הכבוד!')},
  fitLvl:b=>{S.fit.level=Math.min(8,Math.max(1,fitLv()+ +b.dataset.d));S.fit.lvlAt=today();saveState();render();toast('רמת אימון: '+fitLv())},
