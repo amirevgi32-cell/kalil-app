@@ -1,7 +1,7 @@
 {
- "html": 58,
- "apk": 10,
- "name": "1.9",
- "notes": "חדש: ייצוא התפריט של היום ל-PDF – כפתור \"📄 PDF\" בכרטיס הארוחות. כולל ארוחות, שעות, כמויות, ערכים תזונתיים, מים, צעדים, אימונים וציון יומי. נבחר יום אחר בלוח – ייוצא היום הזה.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/4f110df1bdacdc122f8bd3b54d353f8b6829c279/index.html"
+ "html": 59,
+ "apk": 11,
+ "name": "1.9.1",
+ "notes": "חדש: כפתור \"📤 שיתוף\" בכרטיס הארוחות – שליחת מה שאכלת בוואטסאפ, למודל AI (ChatGPT / Claude / Gemini) לחוות דעת, לאבוקי, או העתקה. בנוסף ייצוא PDF של היום.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/49d06356c32901201b30ef1c89da1564ce2f3927/index.html"
 }
