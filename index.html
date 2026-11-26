@@ -239,7 +239,7 @@ details.stage:not(.on):not(.now) .sd{background:var(--line)}
 .mtog .kc{font-weight:800;white-space:nowrap}.mtog .chev svg{width:18px;height:18px;color:var(--mute);transform:rotate(-90deg);transition:transform .2s}.mrow.open .chev svg{transform:rotate(90deg)}
 .mb.sm{width:38px;height:38px;border-radius:12px;flex:none}.mb.sm svg{width:20px;height:20px}.mbody{padding:0 0 8px;animation:pop .25s ease}.mtog .sticker.s{flex:none}
 .aiok{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:12px;padding:10px;border-radius:16px;background:var(--lime2);color:#3f8a24;text-align:center}.aiok svg{display:none}.aiok b{font-size:17px}
-.aiop h2{display:flex;align-items:center;gap:8px}.aiop h2 svg{width:44px;height:44px;flex:none}.aili{display:flex;gap:8px;padding:5px 0;line-height:1.45}.aili span{flex:none;font-weight:800}
+.aiop h2{display:flex;align-items:center;gap:8px}.aiop h2 svg{width:44px;height:44px;flex:none}.aili{display:flex;gap:8px;padding:5px 0;line-height:1.45}.aili>span:first-child{flex:none;font-weight:800}.aili>span+span{flex:1;min-width:0}
 .aifix{margin-top:10px}.aifix summary{cursor:pointer;font-weight:700;color:var(--mango-d);min-height:44px;display:flex;align-items:center}
 .sgi{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.sgi svg{width:21px;height:21px}
 .fpick .sgi{margin-inline-end:10px}.sgrow{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x mandatory}
@@ -10636,6 +10636,39 @@ ${hist}
  try{const r=await sample.json(prompt,{signal:CH.ctl.signal});const a=String(r&&(r.a||r.answer)||'').trim()||'לא הצלחתי לנסח תשובה. נסה לשאול שוב.';S.chat.push({r:'a',t:a.slice(0,2000)})}
  catch(e){const c=e&&e.code;if(c!=='cancelled'){const k=CH.kb||kbAnswer(q,CH.lastT);S.chat.push({r:'a',t:(c==='rate_limited'?'(ה-AI עמוס כרגע, אז עניתי מהמאגר)\n\n':c==='bad_key'?'(מפתח ה-AI לא תקין, אז עניתי מהמאגר)\n\n':'(אין חיבור ל-AI כרגע, אז עניתי מהמאגר)\n\n')+k.a,s:k.sug||[]})}}
  CH.busy=false;S.chat=S.chat.slice(-40);saveState();chatRender()}
+/* ===== סיום צום: חוות דעת ===== */
+function fastWorkouts(s,e){const out=[];[ymd(new Date(s)),ymd(new Date(e))].filter((v,i,a)=>a.indexOf(v)===i).forEach(d=>{(getDayLocal(d).ex||[]).forEach(x=>{if(x.at&&x.at>=s-5*60000&&x.at<=e+60000)out.push(x)})});return out}
+function fastFinish(why){const F=S.fast;if(!F.start)return;const h=fastElapsed();if(h<.05){F.start=null;saveState();render();return}
+ const ent={s:F.start,e:Date.now(),h:r1(h),g:F.plan};F.hist.unshift(ent);F.hist=F.hist.slice(0,60);const prev=F.start;F.start=null;FX_.undo={prev,why};
+ if(h>=F.plan){award('fd:'+today(),25,'צום הושלם!');confetti()}saveState();checkBadges();saveState();render();setTimeout(()=>openFastReview(ent,why),why==='food'?450:0)}
+const FX_={undo:null};
+function openFastReview(ent,why){const h=ent.h,g=ent.g,ok=h>=g,pn=(FPLANS.find(x=>x[0]===g)||[0,g+':'+(24-g)])[1],wk=fastWorkouts(ent.s,ent.e);
+ const reached=STAGES.filter(s=>s[0]>0&&h>=s[0]),next=STAGES.find(s=>s[0]>h&&s[0]<=24),fatH=Math.max(0,h-12);
+ const op=ok?(h>=g+4?`עמדת ביעד ואפילו הוספת ${r1(h-g)} שעות. כל הכבוד! אין צורך להאריך יותר מזה באופן קבוע: היתרון העיקרי כבר הושג, והכי חשוב זה לאכול טוב בחלון האכילה.`:`צום ${pn} מלא, בדיוק לפי התוכנית. זה בדיוק הקצב שבונה הרגל: הגוף מתרגל, הרעב נרגע, ובחלון של ${24-g} שעות קל יותר להישאר בתקציב.`)
+  :h>=12?`צמת ${r1(h)} שעות, ועדיין הגעת לשלב שבו הגוף מגביר שריפת שומן. לא הגעת ליעד של ${g} שעות הפעם, וזה בסדר גמור. מחר ננסה שוב. טיפ: ארוחה אחרונה עשירה בחלבון ובסיבים מקלה על השעות האחרונות.`
+  :`צמת ${r1(h)} שעות. גם זה מועיל: נתת לגוף הפסקה מעיכול והאינסולין ירד. אם היה קשה, אפשר להתחיל מתוכנית קלה יותר, כמו 12:12 או 14:10, ולהתקדם בהדרגה.`;
+ openSheet(`${shTop(ok?'הצום הושלם!':'הצום הסתיים')}<div style="text-align:center"><div style="width:110px;margin:0 auto">${avoki(ok?'wow':'happy')}</div>
+<h2 style="font:26px var(--disp);margin:4px 0">${ok?'🎉 השלמת צום '+pn+'!':'צמת '+r1(h)+' שעות'}</h2><div class="small muted">${why==='food'?'הצום הסתיים כשרשמת אוכל':'סיימת את הצום'} · ${r1(h)} מתוך ${g} שעות</div></div>
+<div class="bar" style="height:10px;margin:12px 0"><i style="width:${Math.min(100,h/g*100)}%;background:${ok?'var(--lime)':'var(--gold)'}"></i></div>
+${ok?`<div class="card" style="margin:8px 0;background:var(--lime2);border:0;text-align:center"><b>+10 נקודות בציון היומי</b> · +25 נקודות ניסיון</div>`:''}
+<div class="card aiop"><h2 style="margin-bottom:6px">${avoki('happy')}<span>חוות הדעת של אבוקי</span></h2><p style="margin:0">${op}</p></div>
+<h2 style="margin:14px 0 6px">מה הגוף שלך השיג בצום</h2>
+${reached.length?reached.map(s=>`<div class="aili"><span style="color:var(--lime)">✓</span><span><b>${s[0]} שעות: ${s[1]}</b><br><span class="small">${s[2]} ${s[3].split('.').slice(0,2).join('.')}.</span></span></div>`).join(''):`<div class="aili"><span>•</span><span class="small">הגוף סיים לעכל והתחיל לעבור לאנרגיה מהמאגרים.</span></div>`}
+${fatH>0?`<p class="small" style="margin:8px 0 0">🔥 בערך <b>${r1(fatH)} שעות</b> היית בשלב של שריפת שומן מוגברת.</p>`:''}
+${next&&!ok?`<p class="small muted" style="margin:6px 0 0">עוד ${r1(next[0]-h)} שעות והיית מגיע לשלב "${next[1]}".</p>`:''}
+${wk.length?`<div class="card" style="margin-top:12px;border-color:rgba(255,138,101,.45)"><h2 style="margin-bottom:6px">🏃 התאמנת בזמן הצום</h2><div class="small" style="margin-bottom:6px">${wk.map(x=>esc(x.n)+' · '+x.min+' דק׳').join('<br>')}</div>
+<div class="aili"><span style="color:var(--lime)">✓</span><span class="small"><b>יותר שומן כדלק:</b> כשהאינסולין נמוך ומאגרי הסוכר בכבד מצטמצמים, השרירים משתמשים באחוז גבוה יותר של שומן בזמן האימון.</span></div>
+<div class="aili"><span style="color:var(--lime)">✓</span><span class="small"><b>רגישות לאינסולין:</b> אימון, ובמיוחד הליכה ואירובי, עוזר לשרירים לקלוט סוכר טוב יותר. אחרי הצום הגוף מנצל את הארוחה הבאה בצורה יעילה יותר.</span></div>
+<div class="aili"><span style="color:var(--lime)">✓</span><span class="small"><b>גמישות מטבולית:</b> הגוף מתרגל לעבור בקלות בין סוכר לשומן כמקור אנרגיה, וזה עוזר להרגיש פחות התקפי רעב.</span></div>
+<div class="aili"><span style="color:var(--gold)">💡</span><span class="small">חשוב לדעת: מה שקובע בירידה במשקל הוא הסיכום של כל היום. אחרי אימון בצום, כדאי לשבור את הצום בארוחה עם חלבון (25–40 גרם) תוך שעה-שעתיים, כדי לשמור על השריר, ולשתות הרבה.</span></div></div>`:''}
+<div class="card" style="margin-top:12px"><b>🍽️ שבירת צום חכמה</b><div class="small" style="margin-top:4px">כוס-שתיים מים, ואז ארוחה עם חלבון וירקות, ופחמימה מלאה במידה. לאכול לאט: תחושת השובע מגיעה אחרי כ-20 דקות.</div></div>
+<div class="btns" style="margin-top:12px"><button class="btn full" data-a="close">מעולה, תודה!</button></div>
+${why==='food'?`<button class="btn ghost full" data-a="fastUndo" style="margin-top:8px">זה לא שבר את הצום (קפה/מים) · המשך לצום</button>`:''}`)}
+function fastAskEnd(){const F=S.fast,h=fastElapsed(),pn=(FPLANS.find(x=>x[0]===F.plan)||[0,F.plan+' שעות'])[1];
+ openSheet(`${shTop('רשמת אוכל בזמן צום')}<div style="text-align:center"><div style="width:96px;margin:0 auto">${avoki('happy')}</div><p style="font-size:17px">אתה בצום ${pn} כבר <b>${r1(h)} שעות</b>.<br>עוד ${r1(F.plan-h)} שעות להשלמת היעד.</p><p class="small muted">האוכל נרשם. לסיים עכשיו את הצום?</p></div>
+<div class="btns"><button class="btn full" data-a="fastFoodEnd">כן, סיים את הצום</button></div><div class="btns"><button class="btn ghost full" data-a="close">לא, זה לא שבר את הצום (קפה/מים)</button></div>`)}
+function fastOnFood(entries){try{const F=S.fast;if(!F.start||V.date!==today())return;const k=entries.reduce((a,e)=>a+(e.k||0),0);if(k<15)return;const h=fastElapsed();if(h<.5)return;
+ setTimeout(()=>{if(!S.fast.start)return;if(h>=F.plan)fastFinish('food');else fastAskEnd()},450)}catch(e){}}
 function greet(){const h=new Date().getHours();return h<11?'בוקר טוב':h<17?'צהריים טובים':h<21?'ערב טוב':'לילה טוב'}
 function mealCard(day,m,n){const it=day.meals[m],r=scoreItems(it,m),t=sum(it);
  if(!it.length)return `<div class="card meal mini"><h2>${n}<span class="sp"></span><button class="mb" data-a="add" data-m="${m}" aria-label="הוסף ל${n}">${IC.plus}</button><button class="mb" data-a="photo" data-m="${m}" aria-label="צלם ${n}">${IC.cam}</button><button class="mb" data-a="copy" data-m="${m}" aria-label="כמו אתמול" title="כמו אתמול">${IC.copy}</button></h2></div>`;
@@ -10945,7 +10978,7 @@ function updTracker(){const a=S.act;if(!a||!$('#tkT')){clearInterval(TRK);return
  $('#tkS').textContent=ACTT[a.ti][2]?st.steps.toLocaleString('he-IL'):'–';$('#tkSL').textContent=st.est?'צעדים (משוער)':'צעדים';$('#tkD').textContent=st.km?r1(st.km)+' ק״מ':'–';$('#tkK').textContent=r0(st.kcal);$('#tkPc').textContent=st.pace?fmtS(st.pace*60):'–';
  if(st.sec>=tg&&!a.hit){a.hit=1;saveState();sfx('win');toast('הגעת ליעד של '+a.target+' דקות!')}}
 function endTracker(save){const a=S.act;if(!a)return;clearInterval(TRK);beatStop();const st=actStats(),T=ACTT[a.ti];S.act=null;
- if(save&&st.sec>=60){const d=today(),day=getDayLocal(d),min=Math.round(st.sec/60);day.ex.push({n:T[0]+(st.km?' · '+r1(st.km)+' ק״מ':''),min,k:st.kcal});
+ if(save&&st.sec>=60){const d=today(),day=getDayLocal(d),min=Math.round(st.sec/60);day.ex.push({n:T[0]+(st.km?' · '+r1(st.km)+' ק״מ':''),min,k:st.kcal,at:Date.now()});
   if(st.est&&st.steps){recompSteps(day);day.stepsMan=Math.max(day.stepsMan||0,day.stepsNat||0)+st.steps;recompSteps(day);stepsReached(d,day)}
   if(T[2]&&min>=10)S.fit.log.push({d,t:'c',feel:'ok',lvl:fitLv(),min});award('x:'+d,10,'אימון');award('tk:'+d+':'+a.start,15,'פעילות נשמרה');saveDay(d);checkBadges();
   openSheet(`${shTop('סיכום פעילות')}<div style="text-align:center"><div style="width:110px;margin:0 auto">${avoki('wow')}</div><h2 style="font:26px var(--disp);margin:6px 0">${T[0]} · ${fmtHMS(st.sec)}</h2></div><div class="statgrid"><div class="stat"><small>צעדים${st.est?' (משוער)':''}</small><b>${st.steps.toLocaleString('he-IL')}</b></div><div class="stat"><small>מרחק</small><b>${r1(st.km)} ק״מ</b></div><div class="stat"><small>קלוריות</small><b>${r0(st.kcal)}</b></div><div class="stat"><small>קצב</small><b>${st.pace?fmtS(st.pace*60):'–'}</b></div></div><p class="small muted">הפעילות נוספה ליומן של היום${st.est&&st.steps?', והצעדים נוספו למונה':''}.</p><button class="btn full" data-a="close">מעולה</button>`);confetti()}
@@ -11054,7 +11087,7 @@ ${HM.res.sens>steps*.3?`<p class="small" style="color:var(--pink);text-align:cen
 <div class="btns"><button class="btn ghost" data-a="homeOk" data-add="0">ביצעתי, כבר נספר בטלפון</button><button class="btn ghost" data-a="homeNo" style="color:var(--red)">לא ביצעתי</button></div>`}`)}
 function confirmHome(add){const r=HM.res;if(!r)return;HM.res=null;const{secs,steps,full}=r,min=Math.round(secs/60),d=today(),day=getDayLocal(d),km0=journeyKm(),at0=journeyAt(km0),h=hs();
  recompSteps(day);if(add){day.stepsExtra=(day.stepsExtra||0)+steps;recompSteps(day)}
- day.ex.push({n:'צעדה בבית'+(add?' · '+steps.toLocaleString('he-IL')+' צעדים':''),min,k:0});stepsReached(d,day);
+ day.ex.push({n:'צעדה בבית'+(add?' · '+steps.toLocaleString('he-IL')+' צעדים':''),min,k:0,at:Date.now()});stepsReached(d,day);
  if(min>=10)S.fit.log.push({d,t:'c',feel:'ok',lvl:fitLv(),min});h.n++;h.days[d]=1;const mult=HM.bonus?2:1;award('hw:'+d+':'+h.n,20*mult,HM.bonus?'אתגר הושלם! נקודות כפולות':'צעדה הושלמה');if(HM.bonus)h.chal=null;
  const c=CHALS[Math.floor(Math.random()*CHALS.length)];h.chal={d:addDays(d,1),t:c[0]};saveDay(d);checkBadges();
  const km1=journeyKm(),at1=journeyAt(km1),nx=JOURNEY[at1+1];HM.box=true;saveState();render();
@@ -11163,7 +11196,7 @@ function freeTick(){const f=S.free;if(!f||!$('#flT')){clearInterval(FRT);return}
  if(s>=f.cfg.min*60&&!f.hit){f.hit=1;sfx('win');toast('הגעת לזמן שתכננת! אפשר להמשיך או לסיים');saveState()}if(Math.floor(s)%20===0)saveState()}
 function freeEnd(save){const f=S.free;if(!f)return;clearInterval(FRT);freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id),ep=f.kc*epocF(f.cfg),min=Math.round(s/60);S.free=null;beatStop();
  let SR=null;if(save&&s>=60&&(f.st||0)>=30)SR=addAutoSteps(f.st,f.nat0);
- if(save&&s>=60){const d=today(),day=getDayLocal(d);day.ex.push({n:a[1]+(a[3]!=='fixed'?' · '+r1(f.km)+' ק״מ':' · '+FLVL[f.cfg.lvl][1]),min,k:f.kc+ep});
+ if(save&&s>=60){const d=today(),day=getDayLocal(d);day.ex.push({n:a[1]+(a[3]!=='fixed'?' · '+r1(f.km)+' ק״מ':' · '+FLVL[f.cfg.lvl][1]),min,k:f.kc+ep,at:Date.now()});
   if(min>=10)S.fit.log.push({d,t:a[2]==='str'?'s':'c',feel:'ok',lvl:fitLv(),min});award('x:'+d,10,'אימון');award('fr:'+d+':'+f.start,20,'אימון הושלם');saveDay(d);checkBadges();
   openSheet(`${shTop('סיכום אימון')}<div style="text-align:center"><div style="width:110px;margin:0 auto">${avoki('wow')}</div><h2 style="font:26px var(--disp);margin:4px 0">${a[1]} · ${fmtHMS(s)}</h2></div>
 <div class="statgrid"><div class="stat"><small>נשרף באימון</small><b>${r0(f.kc)} קק״ל</b></div><div class="stat"><small>אפטר-ברנר (EPOC)</small><b style="color:var(--pink)">+${r0(ep)} קק״ל</b></div><div class="stat"><small>סה״כ נוסף לתקציב</small><b>${r0(f.kc+ep)} קק״ל</b></div><div class="stat"><small>${a[3]!=='fixed'?'מרחק':'עצימות'}</small><b>${a[3]!=='fixed'?r1(f.km)+' ק״מ':FLVL[f.cfg.lvl][1]}</b></div></div>
@@ -11257,7 +11290,7 @@ function finishWorkout(){clearInterval(PL_.t);PL_.run=false;if(PL_.on){PL_.on=0;
  openSheet(`${shTop('כל הכבוד!')}<div style="text-align:center"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">סיימת את האימון!</h2>${SR?`<div class="card" style="margin:8px 0;background:var(--mango2);border:0"><b>👟 ${SR.est.toLocaleString('he-IL')} צעדים באימון</b><div class="small" style="margin-top:2px">${SR.add?`נוספו ${SR.add.toLocaleString('he-IL')} צעדים למונה היומי`:'הכל כבר נספר בטלפון'}${SR.meas?` · ${SR.meas.toLocaleString('he-IL')} כבר נספרו בטלפון, אז לא ספרתי אותם פעמיים`:''}</div><div class="small muted" style="margin-top:2px">חישוב לפי הזמן שבאמת התאמנת וקצב צעידה סביר (כ-90–110 צעדים לדקה בהליכה)</div></div>`:''}<p class="muted">איך הרגיש? זה עוזר לי להתאים את הרמה.</p></div>
 <div class="seg" style="margin-top:10px"><button data-a="plFeel" data-f="easy">קל מדי</button><button data-a="plFeel" data-f="ok">בדיוק</button><button data-a="plFeel" data-f="hard">קשה מדי</button></div>`);confetti()}
 function logWorkout(t,feel){const d=today(),L=fitLv(),min=t==='t'?Math.round(PL_.st.reduce((a,x)=>a+(x.sec||0),0)/60):sessMin(t,L),met=t==='t'?7:t==='s'?3.8:t==='c'?(L>=7?5.5:4.3):2.3;
- S.fit.log.push(Object.assign({d,t,feel,lvl:L,min},PL_.lastSteps?{as:1}:{}));PL_.lastSteps=null;S.fit.log=S.fit.log.slice(-300);const day=getDayLocal(d);day.ex.push({n:FTYPE[t][1]+' (רמה '+L+')',min,k:met*curW()*min/60});
+ S.fit.log.push(Object.assign({d,t,feel,lvl:L,min},PL_.lastSteps?{as:1}:{}));PL_.lastSteps=null;S.fit.log=S.fit.log.slice(-300);const day=getDayLocal(d);day.ex.push({n:FTYPE[t][1]+' (רמה '+L+')',min,k:met*curW()*min/60,at:Date.now()});
  award('fw:'+d+t,25,'אימון הושלם!');award('x:'+d,10,'אימון');saveDay(d);checkBadges();saveState()}
 function fitCheck(){const L=fitLv(),n=fitWeekCount(),last=S.fit.log.filter(x=>x.t!=='r').slice(-2),since=S.fit.lvlAt?diffDays(S.fit.lvlAt,today()):99;
  if(last.length===2&&last.every(x=>x.feel==='hard')&&L>1){S.fit.level=L-1;S.fit.lvlAt=today();return `האימונים הרגישו קשים, אז ירדנו לרמה ${L-1}. אין בושה. בונים בסיס.`}
@@ -11314,7 +11347,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=50;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=51;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11417,7 +11450,7 @@ ${edit?`<button class="btn ghost full" type="button" data-a="delCustom" style="m
  $('#cf2').addEventListener('submit',ev=>{ev.preventDefault();const F=new FormData(ev.target),num=k=>Math.max(0,+F.get(k)||0);const nf={id:edit?edit.id:'c'+Date.now(),n:String(F.get('n')).trim().slice(0,60),cat:F.get('cat'),k:num('k'),p:num('p'),c:num('c'),f:num('f'),fi:num('fi'),s:num('s'),cup:0,pc:num('pc'),pcn:String(F.get('pcn')||'').trim().slice(0,20)};
   if(edit){const i=S.custom.findIndex(x=>x.id===edit.id);if(i>=0)S.custom[i]=nf;toast('המאכל עודכן')}else S.custom.push(nf);saveState();checkBadges();openFood(nf.id)})}
 function addEntries(m,entries){sfx('pop');const day=getDayLocal(V.date);entries.forEach(e=>{day.meals[m].push(e);if(e.fid){S.recent=[e.fid].concat(S.recent.filter(x=>x!==e.fid)).slice(0,30)}if(!S.uniq.includes(e.n))S.uniq.push(e.n)});
- award('m:'+V.date+m,10,'ארוחה נרשמה');const r=scoreItems(day.meals[m],m);if(r&&!r.cheat&&r.s>=70)award('g:'+V.date+m,15,'ארוחה מעולה');if(r&&r.s>=90)S.aw.a90=1;saveDay(V.date);checkBadges();saveState()}
+ award('m:'+V.date+m,10,'ארוחה נרשמה');fastOnFood(entries);const r=scoreItems(day.meals[m],m);if(r&&!r.cheat&&r.s>=70)award('g:'+V.date+m,15,'ארוחה מעולה');if(r&&r.s>=90)S.aw.a90=1;saveDay(V.date);checkBadges();saveState()}
 function openScore(m){const day=getDayLocal(V.date),r=scoreItems(day.meals[m],m);if(!r)return;openSheet(shTop(MEALS.find(x=>x[0]===m)[1])+scoreBlock(r))}
 function scoreBlock(r){if(r.cheat)return `<div style="display:flex;align-items:center;gap:14px"><div class="sticker g2" style="width:84px;height:84px;font-size:20px">פינוק</div><div><div style="font-size:22px;font-weight:800">ארוחת פינוק</div><div class="muted small">${r0(r.t.k)} קק״ל · לא נספרת בציון היומי</div></div></div><ul class="why">${r.good.concat(r.bad).map(x=>`<li><i class="g1">✓</i><span>${x}</span></li>`).join('')}</ul>`;const g=grade(r.s);return `<div style="display:flex;align-items:center;gap:14px"><div class="sticker ${g[1]}" style="width:84px;height:84px;font-size:30px">${r.s}</div><div><div style="font-size:24px;font-weight:800">${g[0]}</div><div class="muted small">${r0(r.t.k)} קק״ל · ח ${r0(r.t.p)} · פ ${r0(r.t.c)} · ש ${r0(r.t.f)} · סיבים ${r1(r.t.fi)}</div></div></div>
 ${(()=>{const b=benefits(r.items||[]);return b.length?`<h4 style="margin:16px 0 0">מה טוב בה לגוף</h4><ul class="why">${b.map(x=>`<li><i class="g2">+</i><span>${esc(x)}</span></li>`).join('')}</ul>`:''})()}
@@ -11619,10 +11652,9 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  fplan:b=>{S.fast.plan=+b.dataset.h;S.fast.on=true;saveState();render()},
  fastStart:()=>{const v=($('#fStart')||{}).value;const d=new Date();if(v){const[H,M]=v.split(':').map(Number);d.setHours(H,M,0,0);if(d>new Date())d.setDate(d.getDate()-1)}
   sfx('fast');S.fast.start=d.getTime();S.fast.on=true;saveState();render();toast('הצום התחיל! בהצלחה');try{navigator.vibrate&&navigator.vibrate([30,60,30])}catch(e){}},
- fastEnd:()=>{const h=fastElapsed(),F=S.fast;if(h<.05){F.start=null;saveState();render();return}F.hist.unshift({s:F.start,e:Date.now(),h:r1(h),g:F.plan});F.hist=F.hist.slice(0,60);F.start=null;
-  if(h>=F.plan){award('fd:'+today(),25,'צום הושלם!');confetti()}else toast('צמת '+r1(h)+' שעות. כל שעה נחשבת!');saveState();checkBadges();saveState();render()},
+ fastEnd:()=>fastFinish('manual'),fastFoodEnd:()=>{closeSheet();fastFinish('food')},fastUndo:()=>{const u=FX_.undo;if(!u)return closeSheet();S.fast.start=u.prev;S.fast.hist.shift();FX_.undo=null;saveState();closeSheet();render();toast('הצום ממשיך 💪')},
  exAdd:openEx,exq:b=>{const el=$('#exM');el.value=Math.max(5,(+el.value||0)+ +b.dataset.d);exPv()},
- exSave:()=>{const t=EXS[+$('#exT').value],m=+$('#exM').value||0;if(m<=0)return;const day=getDayLocal(V.date);day.ex.push({n:t[0],min:m,k:t[1]*curW()*m/60});award('x:'+V.date,10,'אימון');saveDay(V.date);checkBadges();closeSheet();render()},
+ exSave:()=>{const t=EXS[+$('#exT').value],m=+$('#exM').value||0;if(m<=0)return;const day=getDayLocal(V.date);day.ex.push({n:t[0],min:m,k:t[1]*curW()*m/60,at:Date.now()});award('x:'+V.date,10,'אימון');saveDay(V.date);checkBadges();closeSheet();render()},
  exDel:b=>{const day=getDayLocal(V.date);day.ex.splice(+b.dataset.i,1);saveDay(V.date);render()},
  weigh:()=>{const w=+$('#wIn').value;if(!(w>30&&w<350))return toast('משקל לא תקין');const t=today();S.weights=S.weights.filter(x=>x.d!==t);S.weights.push({d:t,w});award('wt:'+t,20,'שקילה');const fm=fitCheck();saveState();checkBadges();saveState();render();{const ws=wSorted(),i=ws.findIndex(x=>x.d===t),pv=i>0?ws[i-1]:null;toast('נשמר: '+r1(w)+' ק״ג'+(pv?' · '+sgn(w-pv.w)+' מהשקילה הקודמת':''))}if(fm)setTimeout(()=>showUndoMsg(fm),2400)},
  pick1:b=>b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)),
