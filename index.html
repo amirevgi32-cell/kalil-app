@@ -11138,8 +11138,9 @@ function freeSave(){const c=FR.cfg;if(!c)return;const d=c.d||today();if(d>today(
  const day=getDayLocal(d);day.ex.push({n:a[1]+(km?' · '+r1(km)+' ק״מ':' · '+FLVL[c.lvl][1]),min:c.min,k:net+ep});
  if(c.min>=10)S.fit.log.push({d,t:a[2]==='str'?'s':'c',feel:'ok',lvl:fitLv(),min:c.min});award('x:'+d,10,'אימון');saveDay(d);checkBadges();saveState();
  sfx('coin');closeSheet();render();toast(`נוסף ל${d===today()?'היום':heDate(d,{day:'numeric',month:'numeric'})}: ${a[1]} · ${r0(net+ep)} קק״ל (כולל ${r0(ep)} אפטר-ברנר)`)}
-function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min,t:Date.now()};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0};saveState();if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
-function freeAccum(){const f=S.free;if(!f||!f.run)return;const now=Date.now(),dt=Math.min(6*3600,(now-f.last)/1000);f.kc+=netRate(f.cfg)*dt;const a=FACT.find(x=>x[0]===f.cfg.id);if(a&&a[3]!=='fixed')f.km+=f.cfg.sp*dt/3600;f.last=now}
+function freeSPM(c){const a=FACT.find(x=>x[0]===c.id);if(!a)return 0;if(a[3]==='walk')return Math.min(125,Math.max(85,70+8*c.sp));if(a[3]==='run')return Math.min(175,Math.max(140,150+2*(c.sp-8)));return {nordic:105,hike:100,stairs:60,zumba:40,dance:40,step:50,basket:40,soccer:60,tennis:35,padel:30}[c.id]||0}
+function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min,t:Date.now()};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0,st:0,nat0:natNow()};saveState();if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
+function freeAccum(){const f=S.free;if(!f||!f.run)return;const now=Date.now(),dt=Math.min(6*3600,(now-f.last)/1000);f.kc+=netRate(f.cfg)*dt;f.st=(f.st||0)+freeSPM(f.cfg)*dt/60;const a=FACT.find(x=>x[0]===f.cfg.id);if(a&&a[3]!=='fixed')f.km+=f.cfg.sp*dt/3600;f.last=now}
 function freeSec(){const f=S.free;return f?(f.acc+(f.run?Date.now()-f.run:0))/1000:0}
 function openFreeLive(){clearInterval(FRT);const f=S.free;if(!f)return openFree();const a=FACT.find(x=>x[0]===f.cfg.id),sp=a[3]!=='fixed';
  openSheet(`<div class="sh-top"><h3>${a[1]}</h3><button class="x" data-a="close" aria-label="מזער">${IC.x}</button></div>
@@ -11152,14 +11153,15 @@ ${sp?`<label class="f"><span>מהירות עכשיו: <b id="flspv">${r1(f.cfg.s
  freeTick();FRT=setInterval(freeTick,1000)}
 function freeTick(){const f=S.free;if(!f||!$('#flT')){clearInterval(FRT);return}freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id);
  $('#flT').textContent=fmtHMS(s);$('#flP').style.width=Math.min(100,s/(f.cfg.min*60)*100)+'%';$('#flK').textContent=r0(f.kc);$('#flE').textContent='+'+r0(f.kc*epocF(f.cfg));$('#flR').textContent=r1(netRate(f.cfg)*60);
- $('#flD').textContent=a[3]!=='fixed'?r1(f.km)+' ק״מ':r1(freeMET(f.cfg))+' MET';
+ $('#flD').textContent=(a[3]!=='fixed'?r1(f.km)+' ק״מ':r1(freeMET(f.cfg))+' MET')+(freeSPM(f.cfg)?' · 👟 '+r0(f.st||0).toLocaleString('he-IL'):'');
  if(s>=f.cfg.min*60&&!f.hit){f.hit=1;sfx('win');toast('הגעת לזמן שתכננת! אפשר להמשיך או לסיים');saveState()}if(Math.floor(s)%20===0)saveState()}
 function freeEnd(save){const f=S.free;if(!f)return;clearInterval(FRT);freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id),ep=f.kc*epocF(f.cfg),min=Math.round(s/60);S.free=null;beatStop();
+ let SR=null;if(save&&s>=60&&(f.st||0)>=30)SR=addAutoSteps(f.st,f.nat0);
  if(save&&s>=60){const d=today(),day=getDayLocal(d);day.ex.push({n:a[1]+(a[3]!=='fixed'?' · '+r1(f.km)+' ק״מ':' · '+FLVL[f.cfg.lvl][1]),min,k:f.kc+ep});
   if(min>=10)S.fit.log.push({d,t:a[2]==='str'?'s':'c',feel:'ok',lvl:fitLv(),min});award('x:'+d,10,'אימון');award('fr:'+d+':'+f.start,20,'אימון הושלם');saveDay(d);checkBadges();
   openSheet(`${shTop('סיכום אימון')}<div style="text-align:center"><div style="width:110px;margin:0 auto">${avoki('wow')}</div><h2 style="font:26px var(--disp);margin:4px 0">${a[1]} · ${fmtHMS(s)}</h2></div>
 <div class="statgrid"><div class="stat"><small>נשרף באימון</small><b>${r0(f.kc)} קק״ל</b></div><div class="stat"><small>אפטר-ברנר (EPOC)</small><b style="color:var(--pink)">+${r0(ep)} קק״ל</b></div><div class="stat"><small>סה״כ נוסף לתקציב</small><b>${r0(f.kc+ep)} קק״ל</b></div><div class="stat"><small>${a[3]!=='fixed'?'מרחק':'עצימות'}</small><b>${a[3]!=='fixed'?r1(f.km)+' ק״מ':FLVL[f.cfg.lvl][1]}</b></div></div>
-<p class="small muted">האפטר-ברנר ימשיך בשעות הקרובות, ולכן הוא נכלל כבר עכשיו. כל המספרים הם הערכה לפי מחקרים וטבלאות מקובלות.</p><button class="btn full" data-a="close">מעולה</button>`);confetti()}
+${SR?`<div class="card" style="margin:8px 0;background:var(--mango2);border:0"><b>👟 ${SR.est.toLocaleString('he-IL')} צעדים באימון</b><div class="small">${SR.add?`נוספו ${SR.add.toLocaleString('he-IL')} צעדים למונה היומי`:'הכל כבר נספר בטלפון'}${SR.meas?` · ${SR.meas.toLocaleString('he-IL')} כבר נספרו בטלפון ולא נספרו פעמיים`:''}</div></div>`:''}<p class="small muted">האפטר-ברנר ימשיך בשעות הקרובות, ולכן הוא נכלל כבר עכשיו. כל המספרים הם הערכה לפי מחקרים וטבלאות מקובלות.</p><button class="btn full" data-a="close">מעולה</button>`);confetti()}
  else closeSheet();saveState();render()}
 
 /* ===== כושר ===== */
@@ -11214,8 +11216,6 @@ function buildSession(t){const L=fitLv(),P=FLV[L],st=[];
  WARM.forEach(w=>st.push({n:'חימום: '+w[0],d:w[1],sec:w[2],k:'warm',fig:w[3]}));
  for(let r=1;r<=P.r;r++){P.x.forEach(([id,v,timed])=>{const e=FX[id];st.push({n:e[0],d:e[1],b:e[2],rep:timed?0:v,sec:timed?v:0,k:'ex',fig:id,lbl:'סבב '+r+' מתוך '+P.r,side:id==='lunge'})});if(r<P.r)st.push({n:'מנוחה',d:'שותים מים ונושמים. הסבב הבא מתחיל עוד רגע.',sec:P.rest,k:'rest',fig:'breathe'})}
  STRETCH.slice(0,3).forEach(s=>st.push({n:'מתיחה: '+s[0],d:s[1],sec:s[2],k:'str',fig:s[3]}));return st}
-const PL_={st:[],i:0,left:0,run:false,t:0,type:'s'};
-function openWorkout(t){if(S.set.music)beatStart();PL_.on=1;PL_.type=t;PL_.st=buildSession(t);PL_.i=0;PL_.run=false;clearInterval(PL_.t);PL_.left=PL_.st[0].sec||0;showStep()}
 function openPreview(t){const L=fitLv(),P=FLV[L],st=buildSession(t),H={warm:'חימום',ex:'תרגילים · '+P.r+' סבבים'+(P.r>1?' · '+P.rest+' שנ׳ מנוחה ביניהם':''),str:'מתיחות',main:'האימון',fast:'האימון',cool:'שחרור'};
  const strip=n=>n.replace(/^(חימום|מתיחה|שחרור): /,'');const amt=s=>s.rep?s.rep+(s.side?' לכל רגל':' חזרות'):fmtS(s.sec);
  const ivs=st.filter(s=>s.k==='fast'),row=(n,a)=>`<div style="display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid rgba(128,128,128,.18)"><span style="flex:1">${n}</span><b class="small" style="white-space:nowrap;direction:ltr">${a}</b></div>`;
@@ -11226,6 +11226,12 @@ function openPreview(t){const L=fitLv(),P=FLV[L],st=buildSession(t),H={warm:'ח�
   h+=row(strip(s.n),amt(s))});
  openSheet(`${shTop(FTYPE[t][0]+' · רמה '+L)}<p class="muted" style="margin-top:0">${FTYPE[t][1]} · כ-${sessMin(t,L)} דקות</p>${h}
 <div class="btns" style="margin-top:18px"><button class="btn full" data-a="fitStart" data-t="${t}">התחל אימון</button></div>`)}
+const PL_={st:[],i:0,left:0,run:false,t:0,type:'s'};
+const SPM={walk:{warm:90,cool:85,main:100,fast:110},run:{fast:140},march:95,highmarch:105,runspot:130,buttkick:105,sidestep:85,kneetw:60};
+function stepCad(s){if(!s||s.k==='rest'||s.rep)return 0;const f=s.fig;if(f==='walk')return SPM.walk[s.k]||95;if(f==='run')return SPM.run.fast;return typeof SPM[f]==='number'?SPM[f]:0}
+function natNow(){const d=getDayLocal(today());return d.stepsNat||0}
+function addAutoSteps(est,nat0){const d=today(),day=getDayLocal(d);const meas=Math.max(0,(day.stepsNat||0)-(nat0||0));const add=Math.max(0,Math.round(est-meas));recompSteps(day);if(add>0){day.stepsExtra=(day.stepsExtra||0)+add;recompSteps(day)}saveDay(d);return{add,meas,est:Math.round(est)}}
+function openWorkout(t){PL_.act={};PL_.nat0=natNow();if(S.set.music)beatStart();PL_.on=1;PL_.type=t;PL_.st=buildSession(t);PL_.i=0;PL_.run=false;clearInterval(PL_.t);PL_.left=PL_.st[0].sec||0;showStep()}
 function beep(hi){if(!S.set.sfx)return;const c=ac();if(!c)return;tone(hi?1046.5:784,c.currentTime,.18,'sine',.2)}
 function showStep(){const s=PL_.st[PL_.i];if(!s)return finishWorkout();const tot=PL_.st.length,L=fitLv();
  const nxt=PL_.st[PL_.i+1];const col=s.k==='rest'?'var(--blue)':s.k==='fast'?'var(--pink)':s.k==='warm'||s.k==='cool'?'var(--gold)':'var(--mango-d)';
@@ -11239,12 +11245,13 @@ ${nxt?`<p class="small muted" style="text-align:center">הבא: ${nxt.n}${nxt.re
 <p class="small muted" style="text-align:center;margin-top:10px">כאב בחזה, סחרחורת או קוצר נשימה חריג? עוצרים מיד.</p>`);
  if(!s.rep&&PL_.run)runTimer()}
 const fmtS=x=>{x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+String(x%60).padStart(2,'0')};
-function runTimer(){clearInterval(PL_.t);PL_.t=setInterval(()=>{if(!PL_.run)return;PL_.left--;const el=$('#plT');if(el)el.textContent=fmtS(PL_.left);if(PL_.left<=3&&PL_.left>0)beep(false);
+function runTimer(){clearInterval(PL_.t);PL_.t=setInterval(()=>{if(!PL_.run)return;PL_.left--;PL_.act=PL_.act||{};PL_.act[PL_.i]=(PL_.act[PL_.i]||0)+1;const el=$('#plT');if(el)el.textContent=fmtS(PL_.left);if(PL_.left<=3&&PL_.left>0)beep(false);
  if(PL_.left<=0){beep(true);clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()}},1000)}
-function finishWorkout(){clearInterval(PL_.t);PL_.run=false;if(PL_.on){PL_.on=0;beatStop()}openSheet(`${shTop('כל הכבוד!')}<div style="text-align:center"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">סיימת את האימון!</h2><p class="muted">איך הרגיש? זה עוזר לי להתאים את הרמה.</p></div>
+function finishWorkout(){clearInterval(PL_.t);PL_.run=false;if(PL_.on){PL_.on=0;beatStop()}let est=0;Object.entries(PL_.act||{}).forEach(([i,sec])=>{est+=sec/60*stepCad(PL_.st[i])});PL_.act={};let SR=null;if(est>=30){SR=addAutoSteps(est,PL_.nat0);PL_.lastSteps=SR}
+ openSheet(`${shTop('כל הכבוד!')}<div style="text-align:center"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">סיימת את האימון!</h2>${SR?`<div class="card" style="margin:8px 0;background:var(--mango2);border:0"><b>👟 ${SR.est.toLocaleString('he-IL')} צעדים באימון</b><div class="small" style="margin-top:2px">${SR.add?`נוספו ${SR.add.toLocaleString('he-IL')} צעדים למונה היומי`:'הכל כבר נספר בטלפון'}${SR.meas?` · ${SR.meas.toLocaleString('he-IL')} כבר נספרו בטלפון, אז לא ספרתי אותם פעמיים`:''}</div><div class="small muted" style="margin-top:2px">חישוב לפי הזמן שבאמת התאמנת וקצב צעידה סביר (כ-90–110 צעדים לדקה בהליכה)</div></div>`:''}<p class="muted">איך הרגיש? זה עוזר לי להתאים את הרמה.</p></div>
 <div class="seg" style="margin-top:10px"><button data-a="plFeel" data-f="easy">קל מדי</button><button data-a="plFeel" data-f="ok">בדיוק</button><button data-a="plFeel" data-f="hard">קשה מדי</button></div>`);confetti()}
 function logWorkout(t,feel){const d=today(),L=fitLv(),min=t==='t'?Math.round(PL_.st.reduce((a,x)=>a+(x.sec||0),0)/60):sessMin(t,L),met=t==='t'?7:t==='s'?3.8:t==='c'?(L>=7?5.5:4.3):2.3;
- S.fit.log.push({d,t,feel,lvl:L,min});S.fit.log=S.fit.log.slice(-300);const day=getDayLocal(d);day.ex.push({n:FTYPE[t][1]+' (רמה '+L+')',min,k:met*curW()*min/60});
+ S.fit.log.push(Object.assign({d,t,feel,lvl:L,min},PL_.lastSteps?{as:1}:{}));PL_.lastSteps=null;S.fit.log=S.fit.log.slice(-300);const day=getDayLocal(d);day.ex.push({n:FTYPE[t][1]+' (רמה '+L+')',min,k:met*curW()*min/60});
  award('fw:'+d+t,25,'אימון הושלם!');award('x:'+d,10,'אימון');saveDay(d);checkBadges();saveState()}
 function fitCheck(){const L=fitLv(),n=fitWeekCount(),last=S.fit.log.filter(x=>x.t!=='r').slice(-2),since=S.fit.lvlAt?diffDays(S.fit.lvlAt,today()):99;
  if(last.length===2&&last.every(x=>x.feel==='hard')&&L>1){S.fit.level=L-1;S.fit.lvlAt=today();return `האימונים הרגישו קשים, אז ירדנו לרמה ${L-1}. אין בושה. בונים בסיס.`}
@@ -11301,7 +11308,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=48;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=49;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11647,8 +11654,9 @@ function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');i
  document.addEventListener('keydown',e=>{if(!$('#splash'))return;const k=e.key==='Backspace'?'⌫':e.key;const b=pad.querySelector(`button[data-k="${k}"]`);if(b)onKey({target:b,type:'key',preventDefault(){},stopPropagation(){}})});
  try{if(sessionStorage.getItem('kl_in')==='1'){sessionStorage.removeItem('kl_in');sp.remove()}}catch(_){}}
 initSplash();
+setTimeout(()=>{try{const d=today();if(S.fixC!==d&&d==='2026-11-26'){S.fixC=d;const L=S.fit.log.filter(z=>z.d===d&&z.t==='c'&&!z.as);if(L.length){const day=getDayLocal(d);if(!day.autoC){const st=Math.round(L.reduce((a,z)=>a+(z.min||15),0)*95);recompSteps(day);day.stepsExtra=(day.stepsExtra||0)+st;day.autoC=1;recompSteps(day);saveDay(d);render();setTimeout(()=>showUndoMsg('הוספתי '+st.toLocaleString('he-IL')+' צעדים מהאימון האירובי של הבוקר 👟'),1500)}}saveState()}}catch(e){}},2500);
 {const f=$('#chatFab .cfa');if(f)f.innerHTML=avoki('happy')}
-window.__kl=()=>({S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB});
+window.__kl=()=>({S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
 function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;const until=Date.now()+700,blk=e=>{if(Date.now()<until){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}};['click','pointerup','mouseup','touchend'].forEach(t=>document.addEventListener(t,blk,true));setTimeout(()=>['click','pointerup','mouseup','touchend'].forEach(t=>document.removeEventListener(t,blk,true)),750);sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
