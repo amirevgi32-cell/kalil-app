@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eefaf6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="קליל">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>קליל – ירידה במשקל</title>
 
 <style>@font-face{font-family:'Rubik';src:url(fonts/rubik-hebrew-400-normal.woff2) format('woff2');font-weight:400 500;font-display:swap}@font-face{font-family:'Rubik';src:url(fonts/rubik-latin-400-normal.woff2) format('woff2');font-weight:400 500;font-display:swap}@font-face{font-family:'Rubik';src:url(fonts/rubik-hebrew-700-normal.woff2) format('woff2');font-weight:600 800;font-display:swap}@font-face{font-family:'Rubik';src:url(fonts/rubik-latin-700-normal.woff2) format('woff2');font-weight:600 800;font-display:swap}@font-face{font-family:'Secular One';src:url(fonts/secular-one-hebrew-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}@font-face{font-family:'Secular One';src:url(fonts/secular-one-latin-400-normal.woff2) format('woff2');font-weight:400;font-display:swap}
@@ -11005,7 +11011,7 @@ const TIME_F=.8;const HM={seg:[],i:0,left:0,run:false,t:0,steps:0,base:-1,fact:0
 const PED={on:false,f:9.8,up:false,t:0,ok:false};
 function pedH(e){const a=e.accelerationIncludingGravity;if(!a||a.x==null)return;PED.ok=true;const m=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);PED.f=PED.f*.8+m*.2;const now=Date.now();
  if(!PED.up&&PED.f>11.2&&now-PED.t>280){PED.up=true;PED.t=now;if(HM.run&&HM.mode==='motion')HM.mot++}else if(PED.up&&PED.f<10.2)PED.up=false}
-function pedStart(){if(PED.on)return;PED.on=true;try{window.addEventListener('devicemotion',pedH)}catch(e){}}
+function pedStart(){if(PED.on)return;PED.on=true;try{if(window.DeviceMotionEvent&&typeof DeviceMotionEvent.requestPermission==='function'){DeviceMotionEvent.requestPermission().then(r=>{if(r==='granted')window.addEventListener('devicemotion',pedH);else toast('בלי הרשאת תנועה הצעדים יחושבו לפי זמן')}).catch(()=>{})}else window.addEventListener('devicemotion',pedH)}catch(e){}}
 function pedStop(){PED.on=false;try{window.removeEventListener('devicemotion',pedH)}catch(e){}}
 function stepMode(){if(hasNative()&&nativePerm())return 'sensor';return (S.homePref&&S.homePref.mode==='time')?'time':'motion'}
 function buildHome(min){const seed=pd(today()).getDate(),mv=HMOVES.slice(seed%3).concat(HMOVES.slice(0,seed%3)),seg=[];
@@ -11308,7 +11314,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=49;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=50;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
