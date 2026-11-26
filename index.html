@@ -11289,7 +11289,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=45;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=46;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11639,7 +11639,7 @@ initSplash();
 window.__kl=()=>({S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
-function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
+function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;const until=Date.now()+700,blk=e=>{if(Date.now()<until){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}};['click','pointerup','mouseup','touchend'].forEach(t=>document.addEventListener(t,blk,true));setTimeout(()=>['click','pointerup','mouseup','touchend'].forEach(t=>document.removeEventListener(t,blk,true)),750);sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
 window.__back=()=>{if($('#splash'))return false;if($('#sheet').classList.contains('open')){closeSheet();return true}if(V.tab!=='today'){V.tab='today';render();return true}return false};
 render();
 }
