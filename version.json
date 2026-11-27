@@ -1,7 +1,7 @@
 {
- "html": 60,
+ "html": 61,
  "apk": 11,
  "name": "1.9.1",
- "notes": "עדכון קטן: הגילוי הנאות במסך הכניסה כולל עכשיו את האחים – דודו, שלומי וסנדי.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/dd2ddffc43320f615556582fac89d2c2fea2affb/index.html"
+ "notes": "בעיגול הצום יש עכשיו נקודות לכל שלב – לחיצה על נקודה מראה מה קורה בגוף, כמה התקדמת בשלב, מתי מגיע הבא, והתקדמות הצום כולו.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/cbb97398429df2ed8faab4f51d3e771a05ded4c2/index.html"
 }
