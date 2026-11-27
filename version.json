@@ -1,7 +1,7 @@
 {
- "html": 61,
+ "html": 62,
  "apk": 11,
  "name": "1.9.1",
- "notes": "בעיגול הצום יש עכשיו נקודות לכל שלב – לחיצה על נקודה מראה מה קורה בגוף, כמה התקדמת בשלב, מתי מגיע הבא, והתקדמות הצום כולו.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/cbb97398429df2ed8faab4f51d3e771a05ded4c2/index.html"
+ "notes": "חדש: תמונות התקדמות 📸 – בלשונית מטרות. כל יום שישי תזכורת במסך הראשי לצלם, עם המשקל של אותו יום, גלריה והשוואת לפני/אחרי. התמונות נשמרות רק בטלפון.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/a3b070986c440ebf3e654345f8d3424c93909444/index.html"
 }
