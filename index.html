@@ -9546,16 +9546,20 @@ ${L.length?`<div class="phstrip" data-a="body">${L.slice(-4).map(p=>`<div class=
 function fridayCard(){if(PH.list==null){phAll().then(()=>{if(V.tab==='today')render()}).catch(()=>{});return ''}
  const dw=new Date().getDay();if((dw!==5&&dw!==6)||phThisWeek())return '';
  return `<div class="card frib"><div class="tipi">📸</div><div style="flex:1;min-width:0"><b style="font-size:17px">${dw===5?'יום שישי – זמן לתמונת התקדמות':'עוד לא צילמת תמונה השבוע'}</b><div class="small muted">אותו מקום, אותה תאורה, אותה תנוחה. שנייה אחת.</div></div><button class="btn sm" data-a="bodySnap">צלם</button></div>`}
+function phSaveOne(p){const nm='kalil_'+p.d+'_'+r1(p.w)+'kg_'+String(p.id).slice(-4)+'.jpg',b64=p.img.split(',')[1];
+ if(window.KalilNative&&KalilNative.saveImage){try{return KalilNative.saveImage(b64,nm)}catch(e){return 'err'}}
+ if(window.KalilNative)return 'old';const a=document.createElement('a');a.href=p.img;a.download=nm;document.body.appendChild(a);a.click();a.remove();return 'ok'}
+function phSaveMsg(r,n){toast(r==='ok'?(n>1?`✓ ${n} תמונות נשמרו בגלריה, בתיקייה "קליל"`:'✓ נשמר בגלריה, בתיקייה "קליל"'):r==='perm'?'אשר גישה לאחסון ולחץ שוב':r==='old'?'צריך לעדכן את האפליקציה (עדכון APK) כדי לשמור בגלריה':'לא הצלחתי לשמור')}
 function openBody(){const L=PH.list;if(!L){phAll().then(openBody);return}
  openSheet(`${shTop('תמונות התקדמות')}${L.length?`<p class="small muted" style="margin:0 0 8px">לחץ על תמונה להגדלה. לבחירת שתיים להשוואה – לחץ "השווה" ואז על שתי תמונות.</p>
-<div class="btns" style="margin:0 0 10px"><button class="btn sm" data-a="bodySnap">📸 צלם</button><button class="btn sm ghost ${PH.pick?'on':''}" data-a="bodyPick">${PH.pick?'בחר עוד תמונה…':'השווה'}</button></div>
+<div class="btns" style="margin:0 0 10px"><button class="btn sm" data-a="bodySnap">📸 צלם</button><button class="btn sm ghost" data-a="bodySaveAll">⬇️ שמור הכל בגלריה</button><button class="btn sm ghost ${PH.pick?'on':''}" data-a="bodyPick">${PH.pick?'בחר עוד תמונה…':'השווה'}</button></div>
 <div class="phgrid">${L.slice().reverse().map(p=>`<button class="ph ${PH.pick&&PH.pick===p.id?'sel':''}" data-a="bodyOne" data-id="${p.id}"><img src="${p.img}" alt=""><span>${heDate(p.d,{day:'numeric',month:'short'})} · ${r1(p.w)} ק״ג</span></button>`).join('')}</div>`
  :`<p>עוד אין תמונות. צלם את הראשונה עכשיו – זו תהיה תמונת ה"לפני" שלך.</p><div class="btns"><button class="btn full" data-a="bodySnap">📸 צלם תמונה ראשונה</button></div>`}
 <div class="card" style="margin-top:12px"><b>טיפים לתמונה טובה</b><ul class="small" style="margin:6px 0 0;padding-inline-start:18px"><li>אותו מקום ואותה תאורה בכל פעם.</li><li>מול מראה או עם טיימר, מאותו מרחק.</li><li>אותם בגדים צמודים (או בלי חולצה).</li><li>חזית אחת וצד אחד – הצד מראה הכי טוב את הבטן.</li><li>בבוקר, לפני אוכל, כמו בשקילה.</li></ul></div>`)}
 function openBodyOne(id){const L=PH.list||[],i=L.findIndex(p=>p.id===id),p=L[i];if(!p)return;const f=L[0],dw=r1(p.w-f.w);
  openSheet(`${shTop(heDate(p.d,{weekday:'long',day:'numeric',month:'long',year:'numeric'}))}<img src="${p.img}" class="phbig" alt="">
 <p style="text-align:center;margin:8px 0"><b>${r1(p.w)} ק״ג</b>${i>0?` · <span style="color:var(--lime)"><bdi dir="ltr">${dw<=0?'':'+'}${dw}</bdi> ק״ג מהתמונה הראשונה</span>`:' · התמונה הראשונה'}</p>
-<div class="btns">${i>0?`<button class="btn ghost" data-a="bodyCmp" data-x="${f.id}" data-y="${p.id}">השווה לראשונה</button>`:''}<button class="btn ghost" data-a="body">חזרה</button><button class="btn ghost" data-a="bodyDel" data-id="${p.id}" style="color:var(--pink)">מחק</button></div>`)}
+<div class="btns">${i>0?`<button class="btn ghost" data-a="bodyCmp" data-x="${f.id}" data-y="${p.id}">השווה לראשונה</button>`:''}<button class="btn ghost" data-a="body">חזרה</button><button class="btn ghost" data-a="bodySave" data-id="${p.id}">⬇️ שמור בגלריה</button><button class="btn ghost" data-a="bodyDel" data-id="${p.id}" style="color:var(--pink)">מחק</button></div>`)}
 function openBodyCmp(x,y){const L=PH.list||[];let a=L.find(p=>p.id===+x),b=L.find(p=>p.id===+y);if(!a||!b)return;if(a.d>b.d)[a,b]=[b,a];const dw=r1(b.w-a.w),dd=diffDays(a.d,b.d);
  openSheet(`${shTop('לפני / אחרי')}<div class="phcmp"><figure><img src="${a.img}" alt=""><figcaption>${heDate(a.d,{day:'numeric',month:'short',year:'2-digit'})}<br><b>${r1(a.w)} ק״ג</b></figcaption></figure><figure><img src="${b.img}" alt=""><figcaption>${heDate(b.d,{day:'numeric',month:'short',year:'2-digit'})}<br><b>${r1(b.w)} ק״ג</b></figcaption></figure></div>
 <div class="goalhero" style="margin-top:10px;text-align:center"><div class="d"><bdi dir="ltr">${dw<=0?'':'+'}${dw}</bdi> ק״ג</div><div class="small">ב־${dd} ימים${dd>=7?` · ${r1(dd/7)} שבועות`:''}</div></div>
@@ -11463,7 +11467,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=62;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=63;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11696,6 +11700,8 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  bodyOne:b=>{const id=+b.dataset.id;if(PH.pick){const x=PH.pick;PH.pick=null;if(x!==id)return openBodyCmp(x,id)}if(PH.pick===0){PH.pick=id;return openBody()}openBodyOne(id)},
  bodyPick:()=>{PH.pick=PH.pick==null?0:null;openBody();if(PH.pick===0)toast('בחר תמונה ראשונה')},
  bodyCmp:b=>openBodyCmp(b.dataset.x,b.dataset.y),
+ bodySave:b=>{const p=(PH.list||[]).find(x=>x.id===+b.dataset.id);if(p)phSaveMsg(phSaveOne(p),1)},
+ bodySaveAll:()=>{const L=PH.list||[];let r='ok',n=0;for(const p of L){r=phSaveOne(p);if(r!=='ok')break;n++}phSaveMsg(r,n)},
  bodyDel:b=>{if(!b.dataset.ok){b.dataset.ok=1;b.textContent='בטוח? לחץ שוב';return}phDel(+b.dataset.id).then(phAll).then(()=>{render();openBody();toast('נמחקה')})},
  share:()=>openShare(),
  shWa:()=>{const t=shareText(V.date||today());closeSheet();const a=document.createElement('a');a.href='https://wa.me/?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()},
@@ -11826,7 +11832,7 @@ function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');i
 initSplash();
 setTimeout(()=>{try{const d=today();if(S.fixC!==d&&d==='2026-11-26'){S.fixC=d;const L=S.fit.log.filter(z=>z.d===d&&z.t==='c'&&!z.as);if(L.length){const day=getDayLocal(d);if(!day.autoC){const st=Math.round(L.reduce((a,z)=>a+(z.min||15),0)*95);recompSteps(day);day.stepsExtra=(day.stepsExtra||0)+st;day.autoC=1;recompSteps(day);saveDay(d);render();setTimeout(()=>showUndoMsg('הוספתי '+st.toLocaleString('he-IL')+' צעדים מהאימון האירובי של הבוקר 👟'),1500)}}saveState()}}catch(e){}},2500);
 {const f=$('#chatFab .cfa');if(f)f.innerHTML=avoki('happy')}
-window.__kl=()=>({PH,phAll,phPut,shareText,pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
+window.__kl=()=>({phSaveOne,PH,phAll,phPut,shareText,pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
 function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;const until=Date.now()+700,blk=e=>{if(Date.now()<until){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}};['click','pointerup','mouseup','touchend'].forEach(t=>document.addEventListener(t,blk,true));setTimeout(()=>['click','pointerup','mouseup','touchend'].forEach(t=>document.removeEventListener(t,blk,true)),750);sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
