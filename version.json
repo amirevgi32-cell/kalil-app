@@ -1,7 +1,7 @@
 {
- "html": 62,
- "apk": 11,
- "name": "1.9.1",
- "notes": "חדש: תמונות התקדמות 📸 – בלשונית מטרות. כל יום שישי תזכורת במסך הראשי לצלם, עם המשקל של אותו יום, גלריה והשוואת לפני/אחרי. התמונות נשמרות רק בטלפון.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/a3b070986c440ebf3e654345f8d3424c93909444/index.html"
+ "html": 63,
+ "apk": 12,
+ "name": "1.9.2",
+ "notes": "חדש: שמירת תמונות התקדמות בגלריה – כפתור \"שמור בגלריה\" בכל תמונה ו\"שמור הכל בגלריה\". התמונות נכנסות לתיקייה \"קליל\" בתמונות.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/85e84f8d72bead7b6326f9b3c40bd50378af3729/index.html"
 }
