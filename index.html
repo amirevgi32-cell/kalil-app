@@ -153,6 +153,10 @@ ul.why li i{flex:none;min-width:24px;height:24px;border-radius:12px;display:grid
 .opt{display:block;width:100%;text-align:start;padding:12px 14px;border-radius:14px;background:var(--card2);border:2px solid var(--line);margin-top:8px;font-weight:500;min-height:48px}
 .opt.ok{border-color:var(--lime);background:var(--lime2)}.opt.no{border-color:var(--red);background:var(--red2)}
 .fring{position:relative;width:min(260px,70vw);aspect-ratio:1;margin:8px auto 0}
+.phstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:4px;cursor:pointer}.ph{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:3/4;background:#eef3f2;border:0;padding:0}.ph img{width:100%;height:100%;object-fit:cover;display:block}.ph span{position:absolute;inset:auto 0 0 0;background:linear-gradient(transparent,rgba(0,0,0,.65));color:#fff;font-size:11px;font-weight:700;padding:10px 4px 4px;text-align:center}
+.phgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ph.sel{outline:3px solid var(--mango);outline-offset:2px}.phbig{width:100%;max-height:62vh;object-fit:contain;border-radius:14px;background:#000}
+.phcmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}.phcmp figure{margin:0}.phcmp img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px}.phcmp figcaption{text-align:center;font-size:13px;margin-top:4px}
+.frib{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#fff4e8,#e8faf4)}
 .fdot{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;border:2.5px solid #fff;background:#e9efee;color:#55625f;font:800 11.5px/1 var(--body,inherit);display:grid;place-items:center;padding:0;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.18);z-index:2}
 .fdot.ok{background:linear-gradient(135deg,#ff8a65,#2ec4a0);color:#fff}.fdot.now{background:#ff8a65;color:#fff;animation:fdp 1.6s ease-in-out infinite}
 @keyframes fdp{0%,100%{box-shadow:0 0 0 0 rgba(255,138,101,.55)}50%{box-shadow:0 0 0 8px rgba(255,138,101,0)}}
@@ -293,7 +297,7 @@ html[dir=rtl] .msg.u{align-self:flex-start}.mav{width:34px;height:34px;flex:none
 <div class="pin" id="pin"><div class="pdots" id="pdots"><i></i><i></i><i></i><i></i></div><div class="ppad"></div></div></div></div>
 <div class="toast" id="toast"></div>
 <canvas id="cf"></canvas>
-<input type="file" id="pic" accept="image/*" capture="environment" class="hide"><input type="file" id="lbl" accept="image/*" class="hide"><div id="undo" class="undo hide"><span id="undoT"></span><button data-a="undo">ביטול</button></div>
+<input type="file" id="pic" accept="image/*" capture="environment" class="hide"><input type="file" id="lbl" accept="image/*" class="hide"><input type="file" id="bpic" accept="image/*" class="hide"><div id="undo" class="undo hide"><span id="undoT"></span><button data-a="undo">ביטול</button></div>
 <script>
 {
 /* ===== מאגר מאכלים: שם|קטגוריה|קק"ל|חלבון|פחמימה|שומן|סיבים|סוכר (ל-100 גרם)|גרם לכוס|גרם ליחידה|שם יחידה ===== */
@@ -9472,7 +9476,7 @@ ${S.free?`<div style="text-align:center"><button class="chipf" data-a="free" sty
 ${S.fast.start?`<div style="text-align:center"><button class="chipf" data-a="tab" data-t="fast">${IC.moon} בצום · <span id="fChip" dir="ltr">${fmtH(fastElapsed())}</span></button></div>`:''}
 ${dsChip()}<button class="bubble bubchat" data-a="chat" aria-label="שאל את אבוקי">${avoki(mood)}<span style="flex:1;text-align:right">${msg}<small class="bubhint">${IC.chat} יש לך שאלה? לחץ ושאל אותי</small></span></button></div>
 <div class="wrap"><div class="quick"><button class="qa" data-a="photo" style="color:var(--pink)">${IC.cam}<span>צלם צלחת</span></button><button class="qa" data-a="tell" style="color:var(--gold)">${IC.chat}<span>ספר מה אכלת</span></button><button class="qa" data-a="water" data-ml="250" style="color:var(--blue)">${IC.drop}<span>שתיתי כוס</span></button><button class="qa" data-a="tab" data-t="fast" style="color:var(--lime)">${IC.moon}<span>${S.fast.start?'בצום':'התחל צום'}</span></button></div>
-${mealsBlock(day)}${isT?tipCard():''}${isT?homeCard():''}<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
+${isT?fridayCard():''}${mealsBlock(day)}${isT?tipCard():''}${isT?homeCard():''}<div class="macros" style="margin-top:14px">${mac('חלבון',t.p,mt.p,'var(--lime)')}${mac('פחמימה',t.c,mt.c,'var(--gold)')}${mac('שומן',t.f,mt.f,'var(--pink)')}</div>
 <div class="btns"><button class="btn ghost" data-a="weekGo">${IC.chart} סיכום שבועי</button><button class="btn ghost" data-a="calGo">${IC.cal} לוח חודשי</button></div>
 ${stepsCard(day)}
 ${isT?questCard(day)+cheatCard()+lessonCard():''}
@@ -9522,6 +9526,40 @@ function openShare(){const ds=V.date||today();const has=!!(aiKey&&aiKey())||!!(w
 function shareOut(txt){if(window.KalilNative&&KalilNative.shareText){try{KalilNative.shareText(txt);return true}catch(e){}}if(navigator.share){navigator.share({text:txt}).catch(()=>{});return true}return false}
 function copyTxt(txt){try{navigator.clipboard.writeText(txt).then(()=>toast('הועתק ✓'),()=>fallbackCopy(txt))}catch(e){fallbackCopy(txt)}}
 function fallbackCopy(txt){const a=document.createElement('textarea');a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('הועתק ✓')}catch(e){toast('לא הצלחתי להעתיק')}a.remove()}
+/* ===== תמונות גוף (נשמרות רק בטלפון, IndexedDB) ===== */
+const PH={db:null,list:null,cmp:null};
+function phDB(){return PH.db?Promise.resolve(PH.db):new Promise((ok,no)=>{try{const r=indexedDB.open('kl_photos',1);r.onupgradeneeded=()=>r.result.createObjectStore('p',{keyPath:'id'});r.onsuccess=()=>{PH.db=r.result;ok(PH.db)};r.onerror=()=>no(r.error)}catch(e){no(e)}})}
+function phTx(mode,fn){return phDB().then(db=>new Promise((ok,no)=>{const t=db.transaction('p',mode),s=t.objectStore('p'),r=fn(s);t.oncomplete=()=>ok(r&&r.result);t.onerror=()=>no(t.error)}))}
+function phAll(){return phTx('readonly',s=>s.getAll()).then(a=>{PH.list=(a||[]).sort((x,y)=>x.d<y.d?-1:x.d>y.d?1:x.id-y.id);return PH.list})}
+const phPut=r=>phTx('readwrite',s=>s.put(r)).then(()=>{PH.list=null}),phDel=id=>phTx('readwrite',s=>s.delete(id)).then(()=>{PH.list=null});
+function wAt(d){const w=S.weights.filter(x=>x.d<=d).sort((a,b)=>a.d<b.d?-1:1);return w.length?w[w.length-1].w:S.profile.w0}
+function friOf(d){const x=pd(d);x.setDate(x.getDate()-((x.getDay()+2)%7));return ymd(x)}
+function phThisWeek(){return (PH.list||[]).some(p=>p.d>=friOf(today()))}
+async function bodyShrink(f){const bm=await createImageBitmap(f);const sc=Math.min(1,1100/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*sc);c.height=Math.round(bm.height*sc);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.8)}
+async function bodySave(f){try{const img=await bodyShrink(f),d=today();await phPut({id:Date.now(),d,w:wAt(d),img});await phAll();sfx('pop');toast('📸 התמונה נשמרה');if(!S.aw['ph:'+friOf(d)]&&pd(d).getDay()===5)award('ph:'+friOf(d),10,'תמונת התקדמות של יום שישי');render();openBody()}catch(e){toast('לא הצלחתי לשמור את התמונה')}}
+function bodyCard(){const L=PH.list;if(!L){phAll().then(()=>{const el=$('#bodyCard');if(el)el.outerHTML=bodyCard()}).catch(()=>{});return '<div id="bodyCard"></div>'}
+ const last=L[L.length-1],first=L[0];
+ return `<div class="card" id="bodyCard"><h2>📸 תמונות התקדמות<span class="sp"></span><span class="small muted">${L.length} תמונות</span></h2>
+${L.length?`<div class="phstrip" data-a="body">${L.slice(-4).map(p=>`<div class="ph"><img src="${p.img}" alt=""><span>${heDate(p.d,{day:'numeric',month:'numeric'})} · ${r1(p.w)}</span></div>`).join('')}</div>`:'<p class="small muted" style="margin:0 0 6px">כל יום שישי תמונה אחת. בעוד כמה חודשים תראה את השינוי שהמראה לא מראה מיום ליום.</p>'}
+<div class="btns"><button class="btn full" data-a="bodySnap">📸 צלם תמונה</button>${L.length>1?`<button class="btn ghost" data-a="bodyCmp" data-x="${first.id}" data-y="${last.id}">לפני / אחרי</button>`:''}${L.length?`<button class="btn ghost" data-a="body">כל התמונות</button>`:''}</div>
+<p class="small muted" style="margin:8px 0 0">🔒 התמונות נשמרות רק בטלפון שלך, לא בגיבוי ולא בשום שרת.</p></div>`}
+function fridayCard(){if(PH.list==null){phAll().then(()=>{if(V.tab==='today')render()}).catch(()=>{});return ''}
+ const dw=new Date().getDay();if((dw!==5&&dw!==6)||phThisWeek())return '';
+ return `<div class="card frib"><div class="tipi">📸</div><div style="flex:1;min-width:0"><b style="font-size:17px">${dw===5?'יום שישי – זמן לתמונת התקדמות':'עוד לא צילמת תמונה השבוע'}</b><div class="small muted">אותו מקום, אותה תאורה, אותה תנוחה. שנייה אחת.</div></div><button class="btn sm" data-a="bodySnap">צלם</button></div>`}
+function openBody(){const L=PH.list;if(!L){phAll().then(openBody);return}
+ openSheet(`${shTop('תמונות התקדמות')}${L.length?`<p class="small muted" style="margin:0 0 8px">לחץ על תמונה להגדלה. לבחירת שתיים להשוואה – לחץ "השווה" ואז על שתי תמונות.</p>
+<div class="btns" style="margin:0 0 10px"><button class="btn sm" data-a="bodySnap">📸 צלם</button><button class="btn sm ghost ${PH.pick?'on':''}" data-a="bodyPick">${PH.pick?'בחר עוד תמונה…':'השווה'}</button></div>
+<div class="phgrid">${L.slice().reverse().map(p=>`<button class="ph ${PH.pick&&PH.pick===p.id?'sel':''}" data-a="bodyOne" data-id="${p.id}"><img src="${p.img}" alt=""><span>${heDate(p.d,{day:'numeric',month:'short'})} · ${r1(p.w)} ק״ג</span></button>`).join('')}</div>`
+ :`<p>עוד אין תמונות. צלם את הראשונה עכשיו – זו תהיה תמונת ה"לפני" שלך.</p><div class="btns"><button class="btn full" data-a="bodySnap">📸 צלם תמונה ראשונה</button></div>`}
+<div class="card" style="margin-top:12px"><b>טיפים לתמונה טובה</b><ul class="small" style="margin:6px 0 0;padding-inline-start:18px"><li>אותו מקום ואותה תאורה בכל פעם.</li><li>מול מראה או עם טיימר, מאותו מרחק.</li><li>אותם בגדים צמודים (או בלי חולצה).</li><li>חזית אחת וצד אחד – הצד מראה הכי טוב את הבטן.</li><li>בבוקר, לפני אוכל, כמו בשקילה.</li></ul></div>`)}
+function openBodyOne(id){const L=PH.list||[],i=L.findIndex(p=>p.id===id),p=L[i];if(!p)return;const f=L[0],dw=r1(p.w-f.w);
+ openSheet(`${shTop(heDate(p.d,{weekday:'long',day:'numeric',month:'long',year:'numeric'}))}<img src="${p.img}" class="phbig" alt="">
+<p style="text-align:center;margin:8px 0"><b>${r1(p.w)} ק״ג</b>${i>0?` · <span style="color:var(--lime)"><bdi dir="ltr">${dw<=0?'':'+'}${dw}</bdi> ק״ג מהתמונה הראשונה</span>`:' · התמונה הראשונה'}</p>
+<div class="btns">${i>0?`<button class="btn ghost" data-a="bodyCmp" data-x="${f.id}" data-y="${p.id}">השווה לראשונה</button>`:''}<button class="btn ghost" data-a="body">חזרה</button><button class="btn ghost" data-a="bodyDel" data-id="${p.id}" style="color:var(--pink)">מחק</button></div>`)}
+function openBodyCmp(x,y){const L=PH.list||[];let a=L.find(p=>p.id===+x),b=L.find(p=>p.id===+y);if(!a||!b)return;if(a.d>b.d)[a,b]=[b,a];const dw=r1(b.w-a.w),dd=diffDays(a.d,b.d);
+ openSheet(`${shTop('לפני / אחרי')}<div class="phcmp"><figure><img src="${a.img}" alt=""><figcaption>${heDate(a.d,{day:'numeric',month:'short',year:'2-digit'})}<br><b>${r1(a.w)} ק״ג</b></figcaption></figure><figure><img src="${b.img}" alt=""><figcaption>${heDate(b.d,{day:'numeric',month:'short',year:'2-digit'})}<br><b>${r1(b.w)} ק״ג</b></figcaption></figure></div>
+<div class="goalhero" style="margin-top:10px;text-align:center"><div class="d"><bdi dir="ltr">${dw<=0?'':'+'}${dw}</bdi> ק״ג</div><div class="small">ב־${dd} ימים${dd>=7?` · ${r1(dd/7)} שבועות`:''}</div></div>
+<div class="btns"><button class="btn ghost full" data-a="body">חזרה לכל התמונות</button></div>`)}
 function mealsBlock(day){const tot=MEALS.reduce((a,[m])=>a+sum(day.meals[m]).k,0);
  return `<div class="card meal mlist"><h2>הארוחות של היום<span class="sp"></span><span class="kc">${r0(tot)} קק״ל</span></h2><div class="shrow"><button class="pdfb" data-a="share" aria-label="שיתוף מה שאכלתי">📤 שיתוף</button><button class="pdfb" data-a="pdf" aria-label="ייצוא התפריט של היום כ-PDF">📄 PDF</button></div>${MEALS.map(([m,n])=>mealRow(day,m,n)).join('')}</div>`}
 function mealRow(day,m,n){const it=day.meals[m],r=it.length?scoreItems(it,m):null,t=sum(it),open=!!(V.mx&&V.mx[m]);
@@ -10763,7 +10801,7 @@ ${eta2?`<div class="small" style="margin-top:8px;opacity:.85">לפי השקיל�
 <div class="card"><h2>התקציב שלי</h2><div class="statgrid"><div class="stat"><small>תקציב יומי</small><b>${c.budget} קק״ל</b></div><div class="stat"><small>שריפה יומית משוערת</small><b>${r0(c.tdee)} קק״ל</b></div>
 <div class="stat"><small>חילוף חומרים במנוחה</small><b>${r0(c.bmr)} קק״ל</b></div><div class="stat"><small>BMI</small><b>${r1(c.bmi)}</b> <span class="small muted">${bmiTxt}</span></div></div>
 ${c.floored?`<p class="small muted">התקציב לא יורד מתחת ל-${p.sex==='m'?1500:1200} קק״ל ביום, כדי לשמור על בריאות ואנרגיה. לכן הקצב בפועל איטי מעט מהקצב שבחרת.</p>`:''}<p class="small muted">חישוב לפי נוסחת מיפלין–סן ז׳ור. כל קילו שומן ≈ 7,700 קק״ל.</p></div>
-${weekCard()}${monthCard()}
+${bodyCard()}${weekCard()}${monthCard()}
 <div class="card"><h2>הישגים ורמות</h2><div class="btns"><button class="btn ghost" data-a="tab" data-t="awards">${IC.trophy}לכל ההישגים</button></div></div>${updCard()}<div class="card"><h2>גיבוי</h2><p class="small muted" style="margin-top:0">${db?'הנתונים נשמרים בענן בחשבון שלך ומסתנכרנים בין מכשירים.':'הנתונים נשמרים במכשיר הזה.'} אפשר גם להעתיק גיבוי.</p>
 <div class="btns"><button class="btn ghost" data-a="backup">גיבוי ושחזור</button></div></div>${credit()}</div>`}
 function monthCard(){const t=today(),base=pd(t);base.setDate(1);base.setMonth(base.getMonth()+(V.mo||0));const y=base.getFullYear(),mo=base.getMonth(),n=new Date(y,mo+1,0).getDate(),lead=base.getDay(),c=calc();
@@ -11425,7 +11463,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=61;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=62;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11654,6 +11692,11 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  pdf:()=>exportPdf(V.date),
  fStage:b=>openFStage(b.dataset.i),
+ body:()=>{PH.pick=null;openBody()},bodySnap:()=>{V.ext=Date.now();try{$('#bpic').click()}catch(e){}},
+ bodyOne:b=>{const id=+b.dataset.id;if(PH.pick){const x=PH.pick;PH.pick=null;if(x!==id)return openBodyCmp(x,id)}if(PH.pick===0){PH.pick=id;return openBody()}openBodyOne(id)},
+ bodyPick:()=>{PH.pick=PH.pick==null?0:null;openBody();if(PH.pick===0)toast('בחר תמונה ראשונה')},
+ bodyCmp:b=>openBodyCmp(b.dataset.x,b.dataset.y),
+ bodyDel:b=>{if(!b.dataset.ok){b.dataset.ok=1;b.textContent='בטוח? לחץ שוב';return}phDel(+b.dataset.id).then(phAll).then(()=>{render();openBody();toast('נמחקה')})},
  share:()=>openShare(),
  shWa:()=>{const t=shareText(V.date||today());closeSheet();const a=document.createElement('a');a.href='https://wa.me/?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()},
  shAi:()=>{const t=shareText(V.date||today(),1);closeSheet();if(!shareOut(t)){copyTxt(t);toast(window.KalilNative?'הטקסט הועתק – עדכן את האפליקציה לשיתוף ישיר, או הדבק באפליקציית הבינה':'הטקסט הועתק – הדבק אותו בצ׳אט של הבינה')}},
@@ -11764,7 +11807,7 @@ document.addEventListener('input',e=>{const t=e.target;if(t.id==='eatT'){A.atStr
  else if(t.dataset.ai!=null){const x=AI.items[+t.dataset.ai];if(x){x.g=Math.max(1,+t.value||1);clearTimeout(renderAI.t);renderAI.t=setTimeout(()=>{const pos=t.dataset.ai;renderAI();const el=document.querySelector(`[data-ai="${pos}"]`);if(el){el.focus();const v=el.value;el.value='';el.value=v}},700)}}});
 document.addEventListener('change',e=>{if(e.target.id==='exT')exPv()});
 $('#lbl').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(f)scanLabel(f)});
-$('#pic').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;AI.file=f;if(AI.url)URL.revokeObjectURL(AI.url);AI.url=URL.createObjectURL(f);e.target.value='';runAI(true)});
+$('#bpic').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(f)bodySave(f)});$('#pic').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;AI.file=f;if(AI.url)URL.revokeObjectURL(AI.url);AI.url=URL.createObjectURL(f);e.target.value='';runAI(true)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();if(e.key==='Enter'&&!e.shiftKey&&e.target&&e.target.id==='chatIn'){e.preventDefault();chatSend(e.target.value)}});
 setInterval(()=>{if(S.free){const c=$('#frChip');if(c)c.textContent=fmtHMS(freeSec())}if(S.act){const t=fmtHMS(actElapsed());const a1=$('#actChip');if(a1)a1.textContent=t;const a2=$('#actChip2');if(a2)a2.textContent=t}},1000);
 setInterval(()=>{if(!S.fast||!S.fast.start)return;const h=fastElapsed(),g=S.fast.plan;const a=$('#fT');if(a)a.textContent=fmtH(h);const r=$('#fR');if(r)r.textContent=h>=g?'יעד הושג!':'נותרו '+fmtH(g-h);
@@ -11783,7 +11826,7 @@ function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');i
 initSplash();
 setTimeout(()=>{try{const d=today();if(S.fixC!==d&&d==='2026-11-26'){S.fixC=d;const L=S.fit.log.filter(z=>z.d===d&&z.t==='c'&&!z.as);if(L.length){const day=getDayLocal(d);if(!day.autoC){const st=Math.round(L.reduce((a,z)=>a+(z.min||15),0)*95);recompSteps(day);day.stepsExtra=(day.stepsExtra||0)+st;day.autoC=1;recompSteps(day);saveDay(d);render();setTimeout(()=>showUndoMsg('הוספתי '+st.toLocaleString('he-IL')+' צעדים מהאימון האירובי של הבוקר 👟'),1500)}}saveState()}}catch(e){}},2500);
 {const f=$('#chatFab .cfa');if(f)f.innerHTML=avoki('happy')}
-window.__kl=()=>({shareText,pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
+window.__kl=()=>({PH,phAll,phPut,shareText,pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
 function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;const until=Date.now()+700,blk=e=>{if(Date.now()<until){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}};['click','pointerup','mouseup','touchend'].forEach(t=>document.addEventListener(t,blk,true));setTimeout(()=>['click','pointerup','mouseup','touchend'].forEach(t=>document.removeEventListener(t,blk,true)),750);sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
