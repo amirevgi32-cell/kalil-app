@@ -153,6 +153,11 @@ ul.why li i{flex:none;min-width:24px;height:24px;border-radius:12px;display:grid
 .opt{display:block;width:100%;text-align:start;padding:12px 14px;border-radius:14px;background:var(--card2);border:2px solid var(--line);margin-top:8px;font-weight:500;min-height:48px}
 .opt.ok{border-color:var(--lime);background:var(--lime2)}.opt.no{border-color:var(--red);background:var(--red2)}
 .fring{position:relative;width:min(260px,70vw);aspect-ratio:1;margin:8px auto 0}
+.fdot{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;border:2.5px solid #fff;background:#e9efee;color:#55625f;font:800 11.5px/1 var(--body,inherit);display:grid;place-items:center;padding:0;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.18);z-index:2}
+.fdot.ok{background:linear-gradient(135deg,#ff8a65,#2ec4a0);color:#fff}.fdot.now{background:#ff8a65;color:#fff;animation:fdp 1.6s ease-in-out infinite}
+@keyframes fdp{0%,100%{box-shadow:0 0 0 0 rgba(255,138,101,.55)}50%{box-shadow:0 0 0 8px rgba(255,138,101,0)}}
+.fsbar{height:12px;border-radius:99px;background:rgba(47,58,61,.08);overflow:hidden;margin:6px 0 4px}.fsbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ff8a65,#2ec4a0)}
+.fsnav{display:flex;gap:8px;margin-top:12px}.fsnav button{flex:1}
 .fring svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .fring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
 .fring .t{font:clamp(36px,11vw,48px)/1 var(--disp);direction:ltr}
@@ -9415,12 +9420,22 @@ function fastElapsed(){return S.fast.start?Math.max(0,(Date.now()-S.fast.start)/
 function fmtH(h){const s=Math.floor(h*3600);return String(Math.floor(s/3600)).padStart(2,'0')+':'+String(Math.floor(s/60)%60).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
 function stageAt(h){return STAGES.reduce((a,s,i)=>h>=s[0]?i:a,0)}
 const hm=d=>d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+function openFStage(i){i=Math.max(0,Math.min(STAGES.length-1,+i));const F=S.fast,on=!!F.start,h=fastElapsed(),g=F.plan,x=STAGES[i],nx=STAGES[i+1],st=stageAt(h),at=t=>{const d=new Date(F.start+t*36e5);return hm(d)+(d.toDateString()!==new Date().toDateString()?(d<new Date()?' (אתמול)':' (מחר)'):'')};
+ let stat='';
+ if(on){if(i<st)stat=`<div class="chipf" style="background:var(--lime2,#e3f7ef);color:var(--lime)">✓ עברת את השלב הזה · התחיל ב־${at(x[0])}</div>`;
+  else if(i===st){const end=nx?Math.min(nx[0],Math.max(g,nx[0])):null,pr=nx?(h-x[0])/(nx[0]-x[0]):1;stat=`<div class="chipf" style="background:#fff1e3;color:#b5651d">● אתה בשלב הזה עכשיו · מ־${at(x[0])}</div>${nx?`<div class="small muted" style="margin-top:10px">התקדמות בשלב · עד "${nx[1]}"</div><div class="fsbar"><i style="width:${r0(pr*100)}%"></i></div><div class="small"><b>${r0(pr*100)}%</b> · השלב הבא בעוד <b dir="ltr">${fmtH(nx[0]-h)}</b> (ב־${at(nx[0])})</div>`:''}`}
+  else stat=`<div class="chipf" style="background:var(--mango2)">⏳ עוד <b dir="ltr">${fmtH(x[0]-h)}</b> · בשעה ${at(x[0])}</div>`;
+  stat+=`<div class="small muted" style="margin-top:12px">התקדמות הצום כולו · ${r1(h)} מתוך ${g} שעות</div><div class="fsbar"><i style="width:${r0(Math.min(1,h/g)*100)}%"></i></div>${x[0]>g?`<p class="small" style="color:var(--gold)">השלב הזה מעבר ליעד שלך (${g} שעות).</p>`:''}`}
+ else stat=`<div class="chipf" style="background:var(--mango2)">מתחיל אחרי ${x[0]} שעות צום</div>`;
+ openSheet(`${shTop('שלבי הצום')}<span class="tag">שלב ${i+1} מתוך ${STAGES.length} · מ־${x[0]} שעות</span><h2 style="font:26px/1.2 var(--disp);margin:10px 0 6px">${x[1]}</h2>${stat}
+<p style="font-size:16.5px;margin:14px 0 8px">${x[3]}</p><p style="margin:0;color:var(--mango-d);font-weight:700">💡 ${x[4]}</p>
+<div class="fsnav">${i>0?`<button class="btn ghost" data-a="fStage" data-i="${i-1}">→ ${STAGES[i-1][1]}</button>`:''}${nx?`<button class="btn ghost" data-a="fStage" data-i="${i+1}">${nx[1]} ←</button>`:''}</div>`)}
 function viewFast(){const F=S.fast,on=!!F.start,h=fastElapsed(),g=F.plan,p=Math.min(1,h/g),R=46,C=2*Math.PI*R,st=stageAt(h);
  const NP=on?nextPlanned():null;const endT=on?new Date(F.start+g*36e5):null,done=F.hist.filter(x=>x.h>=x.g).length,pl=FPLANS.find(x=>x[0]===g)||FPLANS[2];
  return `<div class="hero"><div class="top"><h1>צום לסירוגין</h1><span class="chipf" style="margin:0">${IC.moon} ${done} צומות</span></div>
 ${NP?`<div class="chipf" style="margin:6px auto 0;background:var(--mango2)">🍽️ הארוחה הבאה מתוכננת ל-${hhmm(NP.at)} · ${r1((NP.at-F.start)/36e5)} שעות צום${(NP.at-F.start)/36e5>=g?' ✓':''}</div>`:''}<div class="fring"><svg viewBox="0 0 100 100"><defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a65"/><stop offset="1" stop-color="#2ec4a0"/></linearGradient></defs><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="7"/>
 <circle id="fArc" cx="50" cy="50" r="${R}" fill="none" stroke="url(#fg)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 50 50)" style="filter:drop-shadow(0 0 5px #ff8a65)"/>
-${STAGES.slice(1).filter(s=>s[0]<g).map(s=>{const a=s[0]/g*2*Math.PI-Math.PI/2;return `<circle cx="${r1(50+R*Math.cos(a))}" cy="${r1(50+R*Math.sin(a))}" r="2.4" fill="#fff" opacity="${on&&h>=s[0]?1:.45}"/>`}).join('')}</svg>
+</svg>${STAGES.map((s,i)=>[s,i]).filter(([s])=>s[0]<g).map(([s,i])=>{const a=s[0]/g*2*Math.PI-Math.PI/2,cls=on?(i===st?'now':h>=s[0]?'ok':''):'';return `<button class="fdot ${cls}" data-a="fStage" data-i="${i}" style="left:${r1(50+R*Math.cos(a))}%;top:${r1(50+R*Math.sin(a))}%" aria-label="${s[1]} · מ-${s[0]} שעות">${on&&h>=s[0]&&i!==st?'✓':s[0]}</button>`}).join('')}
 <div class="c">${on?`<span class="small muted">צמת כבר</span><span class="t" id="fT">${fmtH(h)}</span><span class="small" id="fR" style="color:var(--lime)">${h>=g?'יעד הושג!':'נותרו '+fmtH(g-h)}</span>`:`<span class="small muted">התוכנית שלך</span><span class="t">${pl[1]}</span><span class="small muted">${g} שעות צום</span>`}</div></div>
 ${on?`<p style="text-align:center;margin:8px 0 0">סיום מתוכנן: <b>${hm(endT)}</b>${endT.toDateString()!==new Date().toDateString()?' מחר':''} · עכשיו: <b>${STAGES[st][1]}</b></p><div class="btns"><button class="btn pink full" data-a="fastEnd">סיים צום</button></div>`
 :`<label class="f" style="max-width:260px;margin:10px auto 0;text-align:center"><span>התחלתי לצום בשעה</span><input type="time" id="fStart" value="${hm(new Date())}"></label><div class="btns"><button class="btn full" data-a="fastStart">${IC.moon}התחל צום</button></div>`}</div>
@@ -11410,7 +11425,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=60;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=61;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11638,6 +11653,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  musicNext:musicNext,
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  pdf:()=>exportPdf(V.date),
+ fStage:b=>openFStage(b.dataset.i),
  share:()=>openShare(),
  shWa:()=>{const t=shareText(V.date||today());closeSheet();const a=document.createElement('a');a.href='https://wa.me/?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()},
  shAi:()=>{const t=shareText(V.date||today(),1);closeSheet();if(!shareOut(t)){copyTxt(t);toast(window.KalilNative?'הטקסט הועתק – עדכן את האפליקציה לשיתוף ישיר, או הדבק באפליקציית הבינה':'הטקסט הועתק – הדבק אותו בצ׳אט של הבינה')}},
