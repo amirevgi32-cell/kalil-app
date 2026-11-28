@@ -9894,7 +9894,7 @@ function openFInfo(f,e){if(!f)return;let el=$('#finfo');if(!el){el=document.crea
  el.innerHTML=`<div class="fi-box" role="dialog" aria-modal="true">${fInfoHtml(f,e)}<button class="btn full" data-x="1" style="margin-top:12px">סגרי</button></div>`;el.classList.add('open');sfx('tap')}
 function entFood(e){let f=e.fid&&foodById(e.fid);if(f&&f.n!==e.n)f=null;if(!f)f=allFoods().find(x=>x.n===e.n);if(f)return f;const g=e.g||e.q||100,m=100/(g||100);return {n:e.n,cat:e.cat||'dish',k:e.k*m,p:e.p*m,c:e.c*m,f:e.f*m,fi:(e.fi||0)*m,s:(e.s||0)*m,cup:0,pc:0,pcn:''}}
 /* ===== 🔔 התראות פוש (אנדרואיד) ===== */
-const NT_DEF={steps:{on:1},water:{on:1,h:2,from:8,to:22},fast:{on:1},meals:{on:1,b:'08:30',l:'13:00',d:'19:30'},fit:{on:1,t:'18:00'},walk:{on:1}};
+const NT_DEF={tip:{on:1,t:'08:00'},imp:{on:1},steps:{on:1},water:{on:1,h:2,from:8,to:22},fast:{on:1},meals:{on:1,b:'08:30',l:'13:00',d:'19:30'},fit:{on:1,t:'18:00'},walk:{on:1}};
 function ntSet(){S.set.nt=S.set.nt||{};for(const k in NT_DEF)S.set.nt[k]=Object.assign({},NT_DEF[k],S.set.nt[k]||{});return S.set.nt}
 const ntApk=()=>!!(window.KalilNative&&KalilNative.setAlarms);
 function ntOk(){try{return KalilNative.notifOk()}catch(e){return false}}
@@ -9910,6 +9910,11 @@ function ntBuild(){const N=ntSet(),out=[],now=Date.now(),t=today(),nm=(S.profile
  const F=[];if(N.fast.on&&S.fast&&S.fast.start){const st=S.fast.start,g=S.fast.plan;if(st>now)F.push({at:st,t:'🌙 הצום התחיל',x:`יעד: ${g} שעות · סיום ב־${hhmm(st+g*36e5)}. בהצלחה!`,id:142});for(let h=4;h<=Math.max(g+8,24);h+=4){const at=st+h*36e5;if(at<=now||h>48)continue;const sg=STAGES.filter(x=>x[0]<=h).pop();
    F.push({at,t:`⏳ ${h} שעות צום${h>=g?' 🎉':''}`,x:h<g?`שלב: ${sg[1]}. עוד ${g-h} שעות ליעד (${hhmm(st+g*36e5)}).`:h===g?`הגעת ליעד ${g} שעות! ${sg[1]}. כל הכבוד.`:`עברת את היעד ב־${h-g} שעות. שלב: ${sg[1]}.`,id:140})}
   const ga=st+g*36e5;if(ga>now&&g%4)F.push({at:ga,t:`🎉 הגעת ליעד הצום – ${g} שעות!`,x:'כל הכבוד! כשתאכל, רשמי את הארוחה והצום ייסגר.',id:141})}
+ if(N.tip.on){for(let k=0;k<3;k++){const d=addDays(t,k),at=atTime(d,N.tip.t);if(at<=now)continue;const tp=DTIPS[tipIdxFor(d)];out.push({at,t:`${tp[0]} הטיפ של היום: ${tp[1]}`,x:tp[2],id:160})}}
+ if(N.imp.on){const dw0=new Date().getDay();for(let k=0;k<7;k++){const d=addDays(t,k),dw=pd(d).getDay();
+   if(dw===5){const at=atTime(d,'07:30');if(at>now)out.push({at,t:'⚖️ יום שישי – שקילה ותמונה',x:'בבוקר, אחרי שירותים ולפני אוכל. ואחר כך תמונת התקדמות 📸',id:161})}}
+  {const at=atTime(t,'21:00'),day=getDayLocal(t),n=MEALS.reduce((a,[m])=>a+(day.meals[m]||[]).length,0);if(at>now&&n<2)out.push({at,t:'📝 עוד לא רשמת את היום',x:'כמה שניות לרשום מה אכלת – ככה התקציב והציון נשארים מדויקים.',id:162})}
+  {const at=atTime(addDays(t,1),'20:30');const L=(S.weights||[]).slice().sort((a,b)=>a.d<b.d?-1:1).pop();if(L&&diffDays(L.d,addDays(t,1))>=7)out.push({at,t:'⚖️ עבר שבוע מהשקילה האחרונה',x:'מחר בבוקר – שקילה. ככה התחזית והתקציב מתעדכנים.',id:163})}}
  return {r:out.sort((a,b)=>a.at-b.at).slice(0,200),f:F}}
 let NTD=0;function ntSync(now){if(!ntApk())return;clearTimeout(NTD);NTD=setTimeout(()=>{try{const B=ntBuild();KalilNative.setAlarms('r',JSON.stringify(B.r));KalilNative.setAlarms('f',JSON.stringify(B.f))}catch(e){}},now?0:1500)}
 const liveTxt=(st,km,kc)=>`👟 ${r0(st).toLocaleString('he-IL')} צעדים${km>0?` · 📍 ${r1(km)} ק״מ`:''} · 🔥 ${r0(kc)} קק״ל`;
@@ -9939,10 +9944,10 @@ function notifBlock(){const N=ntSet(),apk=ntApk(),ok=apk&&ntOk(),tg=(k,n)=>`<but
  const old=window.KalilNative&&!KalilNative.dayNotif;
  return `<div class="f"><span>🔔 התראות לטלפון</span>${old?`<div class="fi-s bad" style="margin:0 0 8px"><b>⚠️ צריך עדכון אפליקציה</b><p>כדי לראות את שורת הצעדים והאימון בהתראות של הטלפון צריך להתקין את גרסה 1.9.4 ומעלה.</p><button type="button" class="btn full" data-a="ntUpd" style="margin-top:6px">הורידי והתקן עכשיו</button></div>`:''}${!apk?(old?'':'<p class="small muted" style="margin:0">התראות פוש זמינות באפליקציית האנדרואיד.</p>'):`
 ${ok?'':`<button type="button" class="btn full" data-a="ntAsk" style="margin-bottom:8px">אפשר התראות בטלפון</button>`}<button type="button" class="btn ghost full" data-a="pwOpen" style="margin-bottom:8px">בדיקת כל האישורים</button>
-<div class="seg wrap">${tg('steps','צעדים כל היום')}${tg('walk','סיכום אימון · כל 15 דק׳')}${tg('water','שתיית מים')}${tg('fast','צום · כל 4 שעות')}${tg('meals','ארוחות')}${tg('fit','אימון יומי')}</div>
+<div class="seg wrap">${tg('tip','טיפ יומי בבוקר')}${tg('imp','תזכורות חשובות')}${tg('steps','צעדים כל היום')}${tg('walk','סיכום אימון · כל 15 דק׳')}${tg('water','שתיית מים')}${tg('fast','צום · כל 4 שעות')}${tg('meals','ארוחות')}${tg('fit','אימון יומי')}</div>
 ${N.water.on?`<div class="nt-r">💧 כל <select class="nt-s" data-k="water" data-f="h">${[1,1.5,2,3].map(h=>`<option value="${h}" ${N.water.h==h?'selected':''}>${h}</option>`).join('')}</select> שעות, בין ${N.water.from}:00 ל־${N.water.to}:00</div>`:''}
 ${N.meals.on?`<div class="nt-r">🍽️ בוקר ${tm('meals','b',N.meals.b)} צהריים ${tm('meals','l',N.meals.l)} ערב ${tm('meals','d',N.meals.d)}</div><p class="small muted" style="margin:2px 0">תזכורת רק אם הארוחה עוד לא נרשמה.</p>`:''}
-${N.fit.on?`<div class="nt-r">💪 תזכורת אימון ב־${tm('fit','t',N.fit.t)} (רק אם עוד לא התאמנת)</div>`:''}
+${N.tip.on?`<div class="nt-r">💡 טיפ יומי ב־${tm('tip','t',N.tip.t)}</div>`:''}${N.imp.on?`<p class="small muted" style="margin:4px 0">⭐ חשובות: שקילה ותמונה בשישי, תזכורת לרשום את היום ב־21:00, ושקילה אם עבר שבוע.</p>`:''}${N.fit.on?`<div class="nt-r">💪 תזכורת אימון ב־${tm('fit','t',N.fit.t)} (רק אם עוד לא התאמנת)</div>`:''}
 ${ok?`<button type="button" class="btn ghost full" data-a="ntTest" style="margin-top:6px">שלח התראת בדיקה</button>`:''}${ok?`<button type="button" class="btn ghost full" data-a="ntShow" style="margin-top:6px">הצג עכשיו את שורת הצעדים בהתראות</button>`:''}<p class="small muted" style="margin:6px 0 0">מצב: ${ok?'✅ התראות מאושרות':'❌ התראות לא מאושרות בטלפון'} · גרסת אפליקציה ${(()=>{try{const v=KalilNative.appVersion();return typeof v==='string'&&v[0]==='{'?JSON.parse(v).name||JSON.parse(v).apk:v}catch(e){return '?'}})()}</p>`}</div>`}
 function wkBar(){let el=$('#wkbar');const f=S.free,pl=PL_.on&&PL_.st&&PL_.st.length;if(!f&&!pl){if(el)el.remove();return}
  if(!el){el=document.createElement('button');el.id='wkbar';el.addEventListener('click',()=>{if(S.free)openFreeLive();else if(PL_.on)showStep()});document.body.appendChild(el)}
@@ -10105,6 +10110,7 @@ const DTIPS=[
 ['🥙','בחוץ חכם','במסעדה: חלבון על הגריל, ירקות, ורוטב בצד. אל תתביישי לבקש שינויים.'],
 ['🍿','פופקורן במקום חטיף','קערה גדולה של פופקורן בלי חמאה היא כ-100 קק״ל. חלופה מעולה לחטיפים בערב.'],
 ['😊','תהיה נחמד לעצמך','מעידה זה חלק מהדרך. מי שמצליח הוא מי שחוזר מהר, לא מי שלא מועד אף פעם.']];
+function tipIdxFor(ds){const d=Math.floor(pd(ds).getTime()/864e5);return ((d%DTIPS.length)+DTIPS.length)%DTIPS.length}
 function tipIdx(){const d=Math.floor(pd(today()).getTime()/864e5);return ((d%DTIPS.length)+DTIPS.length+(V.tipOff||0))%DTIPS.length}
 function tipCard(){const t=DTIPS[tipIdx()];return `<div class="card tipc"><div class="tipi">${t[0]}</div><div style="flex:1;min-width:0"><div class="small" style="color:var(--mango-d);font-weight:800">${V.tipOff?'עוד טיפ':'הטיפ של היום'}</div><b style="font-size:17px">${t[1]}</b><p class="small" style="margin:4px 0 0;line-height:1.55">${t[2]}</p><button class="tipn" data-a="tipNext">עוד טיפ ←</button></div></div>`}
 /* ===== מאגר תשובות של אבוקי (עובד בלי אינטרנט ובלי AI) ===== */
@@ -11946,7 +11952,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=88;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=89;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
