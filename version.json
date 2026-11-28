@@ -1,7 +1,7 @@
 {
- "html": 86,
+ "html": 87,
  "apk": 16,
  "name": "1.9.6",
- "notes": "צום: אפשר לתזמן צום שמתחיל בהמשך היום, לבחור \"היום\" או \"אתמול\", לערוך את זמני הצום באמצע, ולהוסיף צום שכבר עשית. ואייקון חדש לאפליקציה 🥑",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/54a938d236d22be038c378fcc9136827b642c036/index.html"
+ "notes": "צום מתוזמן: השעון סופר לאחור עד תחילת הצום, כתוב בבירור \"צום מתוזמן\", וכשמגיעה השעה הצום מתחיל לבד עם הודעה.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/7c60a4d8807407d91bfa976a039ef800ccd2a1f3/index.html"
 }
