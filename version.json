@@ -1,7 +1,7 @@
 {
- "html": 79,
+ "html": 80,
  "apk": 14,
  "name": "1.9.4",
- "notes": "בשיתוף \"מה אכלתי\" נוספו המשקל של אותו יום, הצעדים והשריפה באימונים. בשליחה למודל AI נוספה גם ההוצאה האנרגטית המשוערת ובקשה לחשב את המאזן הקלורי של היום.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/7018b7b78992a202fa8dab7cdad3d2ff17f62042/index.html"
+ "notes": "בהליכה האוטומטית מוצג עכשיו כמה צעדים החיישן ספר באימון, כדי לראות שהכל נמדד.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/dcc2cb0432f708405d3c378269ae200ecb7a5f94/index.html"
 }
