@@ -1,7 +1,7 @@
 {
- "html": 91,
+ "html": 92,
  "apk": 16,
  "name": "1.9.6",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/85b304fe69d1829074d76a6c64076e906a37cac4/dorin/index.html",
- "notes": "התוספים נכנסו לסיכומים: בציון היומי ובחוות הדעת על כל ארוחה יש \"💊 התוספים\" – למה כל תוסף טוב, והאם התזמון והשילוב עם האוכל היו נכונים. גם בשליחה למודל AI."
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/6c8d7b5ebd8d577aecf70ab6e9428f5b6629a4f6/dorin/index.html",
+ "notes": "תיקון: אנזים פפאיה שנלקח בצהריים סומן בטעות \"בזמן צום\" כי עכשיו יש צום. מעכשיו הבדיקה לפי השעה שבה לקחת אותו. אותו תיקון גם בתזכורות הארוחות ובשיתוף."
 }
