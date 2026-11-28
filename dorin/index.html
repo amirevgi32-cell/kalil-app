@@ -9622,7 +9622,7 @@ function shareText(ds,ai){const day=getDayLocal(ds),c=calc(),t=dayTotals(day),B=
  L.push(`⚖️ משקל ${r1(wAt(ds))} ק״ג · 👣 ${f(day.steps||0)} צעדים${exKcal(day)?` · 🔥 ${f(exKcal(day))} קק״ל באימונים`:''}`);
  const x=[];if(day.water)x.push(`💧 ${f(day.water)} מ״ל מים`);(day.ex||[]).forEach(e=>x.push(`🏃 ${e.n} ${e.min} דק׳`));if(x.length)L.push(x.join(' · '));
  try{const r=dScore(ds);if(t.n)L.push(`⭐ ציון יומי ${r.s}`)}catch(e){}
- if(ai){const pre=`אני מנסה לרדת במשקל ואשמח לחוות דעת תזונאית קצרה וכנה על היום שלי.\nפרטים: ${p.sex==='f'?'אישה':'גבר'}${p.age?`, גיל ${p.age}`:''}${p.h?`, גובה ${p.h} ס״מ`:''}, משקל ${r1(wAt(ds))} ק״ג${p.goal?`, יעד ${p.goal} ק״ג`:''}. תקציב יומי ${f(B)} קק״ל.\nהוצאה אנרגטית משוערת: במנוחה (BMR) כ־${f(c.bmr)} קק״ל, יומית לפי רמת פעילות כ־${f(c.tdee)} קק״ל. היום הלכתי ${f(day.steps||0)} צעדים${exKcal(day)?` ושרפתי באימונים כ־${f(exKcal(day))} קק״ל`:''}.${S.fast&&S.fast.start?' אני כרגע בצום.':''}\n${(()=>{const L=[];MEALS.forEach(([m,n])=>(day.meals[m]||[]).forEach(e=>{if(e.cat==='supp')L.push(e.n+' ('+n+(e.at?' '+hhmm(e.at):'')+')')}));return L.length?'תוספים שלקחתי היום: '+L.join(', ')+'. התייחס גם לתוספים – תזמון, שילוב עם האוכל ותועלת.\n':''})()}חשב לי את המאזן הקלורי של היום (מה אכלתי מול מה שהוצאתי, כולל הצעדים והאימונים), ותגיד לי: מה היה טוב, מה כדאי לשפר, אם החלבון והסיבים מספיקים, ומה מומלץ לאכול בהמשך היום כדי להשלים אותו טוב.\n\n`;return pre+L.join('\n')}
+ if(ai){const pre=`אני מנסה לרדת במשקל ואשמח לחוות דעת תזונאית קצרה וכנה על היום שלי.\nפרטים: ${p.sex==='f'?'אישה':'גבר'}${p.age?`, גיל ${p.age}`:''}${p.h?`, גובה ${p.h} ס״מ`:''}, משקל ${r1(wAt(ds))} ק״ג${p.goal?`, יעד ${p.goal} ק״ג`:''}. תקציב יומי ${f(B)} קק״ל.\nהוצאה אנרגטית משוערת: במנוחה (BMR) כ־${f(c.bmr)} קק״ל, יומית לפי רמת פעילות כ־${f(c.tdee)} קק״ל. היום הלכתי ${f(day.steps||0)} צעדים${exKcal(day)?` ושרפתי באימונים כ־${f(exKcal(day))} קק״ל`:''}.${S.fast&&S.fast.start&&S.fast.start<=Date.now()&&ds===today()?' אני כרגע בצום.':''}\n${(()=>{const L=[];MEALS.forEach(([m,n])=>(day.meals[m]||[]).forEach(e=>{if(e.cat==='supp')L.push(e.n+' ('+n+(e.at?' '+hhmm(e.at):'')+')')}));return L.length?'תוספים שלקחתי היום: '+L.join(', ')+'. התייחס גם לתוספים – תזמון, שילוב עם האוכל ותועלת.\n':''})()}חשב לי את המאזן הקלורי של היום (מה אכלתי מול מה שהוצאתי, כולל הצעדים והאימונים), ותגיד לי: מה היה טוב, מה כדאי לשפר, אם החלבון והסיבים מספיקים, ומה מומלץ לאכול בהמשך היום כדי להשלים אותו טוב.\n\n`;return pre+L.join('\n')}
  L.push('','— נשלח מקליל 🥑');return L.join('\n')}
 function openShare(){const ds=V.date||today();const has=!!(aiKey&&aiKey())||!!(window.claude&&claude.use);
  openSheet(`<h2>שיתוף מה שאכלתי</h2><p class="small muted" style="margin:0 0 10px">${heDate(ds)}</p>
@@ -9722,7 +9722,7 @@ function suppCheck(g,meal,e){const o=[],ok=[],it=(meal||[]).filter(x=>x!==e&&x.c
  if(g.sep){const re=g.sep.includes('ברזל')?/ברזל/:/סידן|אבץ/;if((meal||[]).some(x=>x!==e&&x.cat==='supp'&&re.test(x.n)))o.push(`נלקח יחד עם ${g.sep} – עדיף להפריד ביניהם בכמה שעות.`)}
  if(g.meds&&(meal||[]).some(x=>x!==e&&x.cat==='supp'))o.push('הסיבים עלולים להפחית ספיגה של התוספים האחרים בארוחה. עדיף להפריד בשעתיים.');
  if(g.caf&&!it.length)o.push('נרשם בלי אוכל – תמצית תה ירוק עדיף רק עם ארוחה.');
- if(S.fast&&S.fast.start&&(g.fat||g.prot))o.push('את בצום – תוסף שצריך ארוחה כדאי לדחות לחלון האכילה.');
+ {const F=S.fast,at=(e&&e.at)||Date.now();if(F&&F.start&&F.start<=Date.now()&&at>=F.start&&(g.fat||g.prot))o.push('נלקח בזמן צום – תוסף שצריך ארוחה כדאי לדחות לחלון האכילה.')}
  return {o,ok}}
 function openSupp(m,i){const day=getDayLocal(V.date),meal=day.meals[m]||[],e=meal[i];if(!e)return;const g=suppInfo(e.n);
  const c=g?suppCheck(g,meal,e):{o:[],ok:[]},mn=(MEALS.find(x=>x[0]===m)||[])[1]||'';
@@ -9903,7 +9903,7 @@ function ntBuild(){const N=ntSet(),out=[],now=Date.now(),t=today(),nm=(S.profile
  if(N.water.on){const g=waterGoal();for(let k=0;k<3;k++){const d=addDays(t,k),w=k?0:(getDayLocal(d).water||0);for(let h=N.water.from;h<=N.water.to;h+=N.water.h){const at=atTime(d,h+':00');if(at<=now)continue;if(!k&&w>=g)break;
    const WX=['מים ממלאים את הקיבה ומקטינים רעב – במיוחד לפני ארוחה.','צמא מתחפש הרבה פעמים לרעב. כוס מים, ואז מחליטים.','פירוק שומן ופינוי פסולת בכליות צריכים מים.','גם 1–2% התייבשות מורידים ריכוז ואנרגיה.','שתייה קבועה מונעת אגירת נוזלים – והמשקל יציב יותר.','בצום? מים מרגיעים את גלי הרעב.'];out.push({at,t:'💧 זמן לכוס מים',x:(WX[(h+k)%WX.length])+' '+(k?`יעד: ${r1(g/1000)} ליטר.`:`שתית היום ${r1(w/1000)} מתוך ${r1(g/1000)} ליטר.`),id:110})}}}
  if(N.meals.on){for(let k=0;k<3;k++){const d=addDays(t,k),day=getDayLocal(d);[['b','ארוחת בוקר'],['l','ארוחת צהריים'],['d','ארוחת ערב']].forEach(([m,n])=>{const at=atTime(d,N.meals[m]);if(at<=now)return;if((day.meals[m]||[]).length)return;
-   out.push({at,t:`🍽️ ${n}`,x:S.fast&&S.fast.start&&at<S.fast.start+S.fast.plan*36e5?`את בצום עד ${hhmm(S.fast.start+S.fast.plan*36e5)} – ${n} תחכי לחלון האכילה.`:`זמן ל${n}. חלבון וירקות קודם – משביעים ומייצבים את הסוכר. ואל תשכח לרשום 📝`,id:120})});
+   out.push({at,t:`🍽️ ${n}`,x:S.fast&&S.fast.start&&at>=S.fast.start&&at<S.fast.start+S.fast.plan*36e5?`את בצום עד ${hhmm(S.fast.start+S.fast.plan*36e5)} – ${n} תחכי לחלון האכילה.`:`זמן ל${n}. חלבון וירקות קודם – משביעים ומייצבים את הסוכר. ואל תשכח לרשום 📝`,id:120})});
    MEALS.forEach(([m,n])=>(day.meals[m]||[]).forEach(e=>{if(e.plan&&e.at>now)out.push({at:e.at,t:'🍽️ הגיע הזמן לארוחה שתכננת',x:`${n}: ${e.n}`,id:121})}))}}
  if(N.fit.on){for(let k=0;k<3;k++){const d=addDays(t,k),at=atTime(d,N.fit.t);if(at<=now)continue;const day=getDayLocal(d);if((day.ex||[]).length||fitDone(d))continue;
    out.push({at,t:'💪 זמן לאימון',x:'עוד לא התאמנת היום. 20–30 דקות הליכה משפרות רגישות לאינסולין ומצב רוח, ואימון כוח שומר על השריר בזמן הירידה.',id:130})}}
@@ -11199,7 +11199,7 @@ ${hist}
 /* ===== שעת אכילה ומתוזמנים ===== */
 const hhmm=ts=>{const d=new Date(ts);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 function eatRow(){const t=A.atStr||'';return `<div id="eatRow" class="eatrow"><div class="small" style="font-weight:700;margin-bottom:6px">🕐 ${A.edit?'שעת אכילה'+(A.edit.e&&A.edit.e.at?' (הוזן ב-'+hhmm(A.edit.e.at)+')':''):'מתי אוכלים?'}</div><div class="seg"><button data-a="eatNow" class="${t?'':'on'}">עכשיו</button><button data-a="eatAt" data-h="1" class="">בעוד שעה</button><button data-a="eatAt" data-h="2">בעוד שעתיים</button><button data-a="eatPick" class="${t?'on':''}">${t?'🕐 '+t:'שעה אחרת'}</button></div>
-${t?`<div style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="time" id="eatT" value="${t}" style="flex:1"><span class="small muted">${eatTs(t)>Date.now()+60000?'יירשם כמתוכנן':'נאכל בשעה הזו'}</span></div>${S.fast.start&&eatTs(t)>Date.now()+60000?`<p class="small" style="margin:6px 0 0;color:var(--mango-d)">🌙 הצום ממשיך עד ${t} (${r1((eatTs(t)-S.fast.start)/36e5)} שעות צום)</p>`:''}`:''}</div>`}
+${t?`<div style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="time" id="eatT" value="${t}" style="flex:1"><span class="small muted">${eatTs(t)>Date.now()+60000?'יירשם כמתוכנן':'נאכל בשעה הזו'}</span></div>${S.fast.start&&S.fast.start<=Date.now()&&eatTs(t)>Date.now()+60000?`<p class="small" style="margin:6px 0 0;color:var(--mango-d)">🌙 הצום ממשיך עד ${t} (${r1((eatTs(t)-S.fast.start)/36e5)} שעות צום)</p>`:''}`:''}</div>`}
 function eatTs(t){if(!t)return Date.now();const[h,m]=t.split(':').map(Number);const d=pd(V.date);d.setHours(h,m,0,0);return d.getTime()}
 function eatRefresh(){const el=$('#eatRow');if(el)el.outerHTML=eatRow()}
 function applyEatAt(entries){const ts=eatTs(A.atStr),fut=A.atStr&&ts>Date.now()+60000;entries.forEach(e=>{e.at=A.atStr||V.date!==today()?ts:Date.now();if(fut)e.plan=1;else delete e.plan});A.atStr='';return entries}
@@ -11952,7 +11952,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=91;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=92;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
