@@ -10771,6 +10771,8 @@ function applyEatAt(entries){const ts=eatTs(A.atStr),fut=A.atStr&&ts>Date.now()+
 function nextPlanned(){const now=Date.now();let best=null;[today(),addDays(today(),1)].forEach(d=>{const day=getDayLocal(d);MEALS.forEach(([m,n])=>day.meals[m].forEach(e=>{if(e.plan&&e.at>now&&(!best||e.at<best.at))best={at:e.at,m:n,d}}))});return best}
 function planTick(){try{const now=Date.now(),due=[];[addDays(today(),-1),today()].forEach(d=>{const day=getDayLocal(d);let ch=0;MEALS.forEach(([m])=>day.meals[m].forEach(e=>{if(e.plan&&e.at<=now){delete e.plan;ch=1;due.push(e)}}));if(ch)saveDay(d)});
  if(due.length){render();const k=due.reduce((a,e)=>a+(e.k||0),0);toast('🍽️ הגיע זמן הארוחה המתוכננת ('+due.map(e=>e.n).slice(0,2).join(', ')+')');if(S.fast.start&&k>=15)fastOnFood(due,true)}}catch(e){}}
+function dayRoll(){const t=today();if(!V.dayNow){V.dayNow=t;return}if(t===V.dayNow)return;const was=V.dayNow;V.dayNow=t;if(V.date===was){V.date=t;try{closeSheet()}catch(e){}}try{syncSteps()}catch(e){}render();toast('🌅 יום חדש התחיל – בהצלחה היום!')}
+V.dayNow=today();setInterval(dayRoll,20000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)dayRoll()});
 setInterval(planTick,30000);setTimeout(planTick,4000);
 
 /* ===== סיום צום: חוות דעת ===== */
@@ -11490,7 +11492,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=64;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=65;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
