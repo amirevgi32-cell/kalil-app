@@ -9835,7 +9835,7 @@ function openFInfo(f,e){if(!f)return;let el=$('#finfo');if(!el){el=document.crea
  el.innerHTML=`<div class="fi-box" role="dialog" aria-modal="true">${fInfoHtml(f,e)}<button class="btn full" data-x="1" style="margin-top:12px">סגור</button></div>`;el.classList.add('open');sfx('tap')}
 function entFood(e){let f=e.fid&&foodById(e.fid);if(f&&f.n!==e.n)f=null;if(!f)f=allFoods().find(x=>x.n===e.n);if(f)return f;const g=e.g||e.q||100,m=100/(g||100);return {n:e.n,cat:e.cat||'dish',k:e.k*m,p:e.p*m,c:e.c*m,f:e.f*m,fi:(e.fi||0)*m,s:(e.s||0)*m,cup:0,pc:0,pcn:''}}
 /* ===== 🔔 התראות פוש (אנדרואיד) ===== */
-const NT_DEF={water:{on:1,h:2,from:8,to:22},fast:{on:1},meals:{on:1,b:'08:30',l:'13:00',d:'19:30'},fit:{on:1,t:'18:00'},walk:{on:1}};
+const NT_DEF={steps:{on:1},water:{on:1,h:2,from:8,to:22},fast:{on:1},meals:{on:1,b:'08:30',l:'13:00',d:'19:30'},fit:{on:1,t:'18:00'},walk:{on:1}};
 function ntSet(){S.set.nt=S.set.nt||{};for(const k in NT_DEF)S.set.nt[k]=Object.assign({},NT_DEF[k],S.set.nt[k]||{});return S.set.nt}
 const ntApk=()=>!!(window.KalilNative&&KalilNative.setAlarms);
 function ntOk(){try{return KalilNative.notifOk()}catch(e){return false}}
@@ -9872,12 +9872,14 @@ function nPlan(){if(!ntApk()||!PL_.on)return;try{const w=curW()||80,el=PL_.st.sl
   KalilNative.setAlarms('w',JSON.stringify(walkMarks({st:act,km:act*.72/1000,kc:kc0*el/60},rate,el,ti,base)))}catch(e){}}
 function nWalkOff(){if(!ntApk())return;try{KalilNative.ongoingOff();KalilNative.setAlarms('w','[]')}catch(e){}}
 document.addEventListener('change',e=>{const t=e.target;if(!t.classList)return;if(t.classList.contains('nt-t')||t.classList.contains('nt-s')){const N=ntSet();N[t.dataset.k][t.dataset.f]=t.classList.contains('nt-s')?+t.value:t.value;saveState();ntSync(1);toast('נשמר')}});
-window.__notifOk=()=>{render();if(ntOk()){ntSync(1);toast('🔔 התראות הופעלו')}};
+function dayN(){try{if(window.KalilNative&&KalilNative.dayNotif)KalilNative.dayNotif(!!ntSet().steps.on)}catch(e){}}
+setTimeout(dayN,2500);
+window.__notifOk=()=>{render();if(ntOk()){ntSync(1);dayN();toast('🔔 התראות הופעלו')}};
 function notifBlock(){const N=ntSet(),apk=ntApk(),ok=apk&&ntOk(),tg=(k,n)=>`<button type="button" data-a="ntTog" data-k="${k}" class="${N[k].on?'on':''}">${n}</button>`;
  const tm=(k,f,v)=>`<input type="time" class="nt-t" data-k="${k}" data-f="${f}" value="${v}">`;
  return `<div class="f"><span>🔔 התראות לטלפון</span>${!apk?'<p class="small muted" style="margin:0">התראות פוש זמינות באפליקציית האנדרואיד.</p>':`
 ${ok?'':`<button type="button" class="btn full" data-a="ntAsk" style="margin-bottom:8px">אפשר התראות בטלפון</button>`}
-<div class="seg wrap">${tg('walk','סיכום אימון · כל 15 דק׳')}${tg('water','שתיית מים')}${tg('fast','צום · כל 4 שעות')}${tg('meals','ארוחות')}${tg('fit','אימון יומי')}</div>
+<div class="seg wrap">${tg('steps','צעדים כל היום')}${tg('walk','סיכום אימון · כל 15 דק׳')}${tg('water','שתיית מים')}${tg('fast','צום · כל 4 שעות')}${tg('meals','ארוחות')}${tg('fit','אימון יומי')}</div>
 ${N.water.on?`<div class="nt-r">💧 כל <select class="nt-s" data-k="water" data-f="h">${[1,1.5,2,3].map(h=>`<option value="${h}" ${N.water.h==h?'selected':''}>${h}</option>`).join('')}</select> שעות, בין ${N.water.from}:00 ל־${N.water.to}:00</div>`:''}
 ${N.meals.on?`<div class="nt-r">🍽️ בוקר ${tm('meals','b',N.meals.b)} צהריים ${tm('meals','l',N.meals.l)} ערב ${tm('meals','d',N.meals.d)}</div><p class="small muted" style="margin:2px 0">תזכורת רק אם הארוחה עוד לא נרשמה.</p>`:''}
 ${N.fit.on?`<div class="nt-r">💪 תזכורת אימון ב־${tm('fit','t',N.fit.t)} (רק אם עוד לא התאמנת)</div>`:''}
@@ -11316,7 +11318,7 @@ function setSteps(n){const d=today(),day=getDayLocal(d);if(!(n>=0))return;const 
  if(V.tab==='today'&&V.date===d&&!$('#sheet').classList.contains('open'))render()}
 function pushWidget(){try{if(!window.KalilNative||!KalilNative.setWidget||!S.profile)return;const d=today(),day=getDayLocal(d),left=r0(calc().budget+exKcal(day)-dayTotals(day).k);
  KalilNative.setWidget(stepGoal(),left>=0?`נותרו ${left.toLocaleString('he-IL')} קק״ל`:`${(-left).toLocaleString('he-IL')} קק״ל מעל`)}catch(e){}}
-window.__hcSteps=n=>{setSteps(Math.max(Math.round(n),nativeBest()));renderDiag()};window.__hcErr=()=>renderDiag();
+window.__hcSteps=n=>{setSteps(Math.max(Math.round(n),nativeBest()));try{KalilNative.dayNotifRefresh&&KalilNative.dayNotifRefresh()}catch(e){}renderDiag()};window.__hcErr=()=>renderDiag();
 function stepGoal(){return S.set.stepGoal||8000}
 function baseSteps(){const a=S.profile?S.profile.act:1.375;return a<1.3?3000:a<1.45?5000:a<1.6?7000:a<1.8?9000:11000}
 function stepsKcal(day){return S.profile?Math.max(0,(day.steps||0)-baseSteps())*curW()*.0005:0}
@@ -11800,7 +11802,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=73;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=74;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -12030,7 +12032,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  pdf:()=>exportPdf(V.date),
  fStage:b=>openFStage(b.dataset.i),
- ntTog:b=>{const N=ntSet(),k=b.dataset.k;N[k].on=N[k].on?0:1;saveState();if(N[k].on&&ntApk()&&!ntOk())KalilNative.notifAsk();ntSync(1);if(k==='walk')S.free?nWalk():nWalkOff();openProfile()},
+ ntTog:b=>{const N=ntSet(),k=b.dataset.k;N[k].on=N[k].on?0:1;saveState();if(N[k].on&&ntApk()&&!ntOk())KalilNative.notifAsk();ntSync(1);if(k==='walk')S.free?nWalk():nWalkOff();if(k==='steps')dayN();openProfile()},
  ntAsk:()=>{try{KalilNative.notifAsk()}catch(e){}},
  ntTest:()=>{try{KalilNative.notifyNow('🥑 קליל','ככה ייראו ההתראות. בהצלחה היום!');toast('נשלחה התראת בדיקה')}catch(e){}},
  cMin:b=>{S.set.cMin=+b.dataset.m||0;saveState();openPreview('c')},
