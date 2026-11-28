@@ -10,3 +10,5 @@ Workout tracks `x-*.mp3`: Abstraction / Tallbeard Studios (Ben Burnes) and DJ Cr
 More background tracks from **Open Lo-Fi** (CC0). Workout track `x-basement-groove-86.mp3` from Open Lo-Fi (CC0).
 
 Workout tracks `x-th-*.mp3`: **music by Tanner Helland** (https://github.com/tannerhelland/free-music), licensed under **Creative Commons Attribution 4.0** (https://creativecommons.org/licenses/by/4.0/). Trimmed to 4 minutes and loudness-normalized.
+
+Added 2026-11-28 from **Open Lo-Fi** (CC0): exhale-the-morning, sunday-light-through-lace, morning-in-the-hiss, kettle-before-work, margin-notes-at-dusk, penciled-sunbeams.

@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25c",
+ "updated": "2026-11-28",
  "rotateDays": 3,
  "workoutPerRotation": 16,
  "bg": [
@@ -218,6 +218,30 @@
   {
    "f": "window-seat-daydream",
    "t": "Window Seat Daydream"
+  },
+  {
+   "f": "exhale-the-morning",
+   "t": "Exhale the Morning"
+  },
+  {
+   "f": "sunday-light-through-lace",
+   "t": "Sunday Light Through Lace"
+  },
+  {
+   "f": "morning-in-the-hiss",
+   "t": "Morning in the Hiss"
+  },
+  {
+   "f": "kettle-before-work",
+   "t": "Kettle Before Work"
+  },
+  {
+   "f": "margin-notes-at-dusk",
+   "t": "Margin Notes at Dusk"
+  },
+  {
+   "f": "penciled-sunbeams",
+   "t": "Penciled Sunbeams"
   }
  ],
  "workout": [
