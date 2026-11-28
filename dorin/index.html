@@ -273,7 +273,7 @@ html[dir=rtl] .msg.u{align-self:flex-start}.mav{width:34px;height:34px;flex:none
 @keyframes cfin{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}body.sheet-open .chatfab{display:none}
 .mymus{white-space:nowrap;position:fixed;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:60;background:#1db954;color:#fff;border-radius:999px;padding:10px 18px;font:inherit;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.25);animation:cfin .4s ease}
 .eatrow{margin-top:12px;padding:10px 12px;border-radius:14px;background:var(--card2,rgba(0,0,0,.03));border:1px solid var(--line)}.eatrow .seg button{font-size:13px;padding:8px 4px}
-.mtime{font-size:12px;font-weight:800;color:var(--mango-d);background:var(--mango2);border-radius:999px;padding:0 7px;white-space:nowrap}.mtime.pl{color:#fff;background:var(--pink)}.shrow{display:flex;gap:6px;margin:-4px 0 4px}.pdfb{flex:none;white-space:nowrap;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:3px 10px;font:inherit;font-size:12.5px;font-weight:800;color:var(--ink,inherit);cursor:pointer;min-height:32px}.mben{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:8px 0 4px;font-size:12.5px}.mben b{color:var(--lime);font-size:13px}.mben span{background:var(--lime2,#e3f7ef);color:#1d6b55;border-radius:99px;padding:2px 9px;font-weight:700}.mtrow{display:flex;align-items:center;gap:6px;margin:-2px 12px 8px;padding:3px 10px;border:0;border-radius:999px;background:var(--mango2);color:var(--mango-d);font:inherit;font-size:13px;font-weight:800;width:max-content;max-width:calc(100% - 24px);cursor:pointer}.mtrow span{font-weight:600;opacity:.75;text-decoration:underline}.mtrow.pl{background:var(--pink);color:#fff}.mtrow.no{background:transparent;color:var(--mute);border:1.5px dashed var(--line,#ccc)}
+.mtime{font-size:12px;font-weight:800;color:var(--mango-d);background:var(--mango2);border-radius:999px;padding:0 7px;white-space:nowrap}.mtime.pl{color:#fff;background:var(--pink)}.shrow{display:flex;gap:6px;margin:-4px 0 4px}.pdfb{flex:none;white-space:nowrap;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:3px 10px;font:inherit;font-size:12.5px;font-weight:800;color:var(--ink,inherit);cursor:pointer;min-height:32px}.sg b,.sg2 b{display:block;color:var(--lime);margin-top:6px}.sg p,.sg2 p{margin:3px 0 6px;font-size:15.5px;line-height:1.5}.sg2{margin-top:10px;padding:10px 12px;border-radius:14px;background:#f4f8f7}.sg2 p.no{color:#a5481c}.sg2 p.ok{color:#1d6b55}.sinfo{font-size:17px}.mben{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:8px 0 4px;font-size:12.5px}.mben b{color:var(--lime);font-size:13px}.mben span{background:var(--lime2,#e3f7ef);color:#1d6b55;border-radius:99px;padding:2px 9px;font-weight:700}.mtrow{display:flex;align-items:center;gap:6px;margin:-2px 12px 8px;padding:3px 10px;border:0;border-radius:999px;background:var(--mango2);color:var(--mango-d);font:inherit;font-size:13px;font-weight:800;width:max-content;max-width:calc(100% - 24px);cursor:pointer}.mtrow span{font-weight:600;opacity:.75;text-decoration:underline}.mtrow.pl{background:var(--pink);color:#fff}.mtrow.no{background:transparent;color:var(--mute);border:1.5px dashed var(--line,#ccc)}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
 .qtile:active{transform:scale(.96)}.qtile .qi{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--qc) 16%,transparent);color:var(--qc)}.qtile .qi svg{width:24px;height:24px}.qtile b{font-size:16px}.qtile small{font-size:12px;color:var(--mute)}
 .hide{display:none!important}
@@ -661,6 +661,27 @@ const RAW=`מלפפון|veg|15|0.7|3.6|0.1|0.5|1.7|120|150|מלפפון
 פסיליום (סיבים)|supp|200|1.5|85|0.5|80|0||5|כפית
 ספירולינה|supp|290|57|24|8|3.6|3||3|כפית
 כורכום (אבקה)|supp|312|9.7|67|3.3|22|3.2||3|כפית
+ליבר אפ (נטע) טיפות|supp|0|0|0|0|0|0||2.5|מנה
+ליבר אפ (נטע) כמוסות|supp|0|0|0|0|0|0||0.5|כמוסה
+אנזים פפאיה (טבליית לעיסה)|supp|370|0|90|0|0|80||1|טבליה
+ברומלאין|supp|0|0|0|0|0|0||0.5|כמוסה
+אנזימי עיכול|supp|0|0|0|0|0|0||0.5|כמוסה
+גדילן מצוי (סילימרין)|supp|0|0|0|0|0|0||0.5|כמוסה
+ארטישוק (תמצית)|supp|0|0|0|0|0|0||0.5|מנה
+תה ירוק (תמצית בכמוסה)|supp|0|0|0|0|0|0||0.5|כמוסה
+ויטמין D3 טיפות (נורמל D)|supp|0|0|0|0|0|0||0.2|מנה
+ויטמין K2|supp|0|0|0|0|0|0||0.3|כמוסה
+ויטמין B קומפלקס|supp|0|0|0|0|0|0||1|טבליה
+חומצה פולית|supp|0|0|0|0|0|0||0.3|טבליה
+סלניום|supp|0|0|0|0|0|0||0.3|טבליה
+מגנזיום ציטראט (סוכריות גומי)|supp|300|0|75|0|0|50||3|סוכריה
+כרום פיקולינט|supp|0|0|0|0|0|0||0.3|טבליה
+ברברין|supp|0|0|0|0|0|0||0.6|כמוסה
+גלוקומנן (סיבי קונג'אק)|supp|10|0|90|0|85|0||1|כמוסה
+L-קרניטין|supp|0|0|0|0|0|0||1|כמוסה
+מלטונין|supp|0|0|0|0|0|0||0.2|טבליה
+אשווגנדה|supp|0|0|0|0|0|0||0.5|כמוסה
+קואנזים Q10|supp|900|0|0|100|0|0||0.5|כמוסה
 זיתים שחורים|veg|115|0.8|6|10.7|3.2|0|135|4|זית
 צנון|veg|18|0.6|4.1|0.1|1.6|2.5|116||
 תפוח אדמה אפוי|veg|93|2.5|21|0.1|2.2|1.2|122|170|תפוח אדמה
@@ -9606,6 +9627,65 @@ function openBodyCmp(x,y){const L=PH.list||[];let a=L.find(p=>p.id===+x),b=L.fin
  openSheet(`${shTop('לפני / אחרי')}<div class="phcmp"><figure><img src="${a.img}" alt=""><figcaption>${heDate(a.d,{day:'numeric',month:'short',year:'2-digit'})}<br><b>${r1(a.w)} ק״ג</b></figcaption></figure><figure><img src="${b.img}" alt=""><figcaption>${heDate(b.d,{day:'numeric',month:'short',year:'2-digit'})}<br><b>${r1(b.w)} ק״ג</b></figcaption></figure></div>
 <div class="goalhero" style="margin-top:10px;text-align:center"><div class="d"><bdi dir="ltr">${dw<=0?'':'+'}${dw}</bdi> ק״ג</div><div class="small">ב־${dd} ימים${dd>=7?` · ${r1(dd/7)} שבועות`:''}</div></div>
 <div class="btns"><button class="btn ghost full" data-a="body">חזרה לכל התמונות</button></div>`)}
+/* ===== מדריך תוספים: למה טוב, איך לקחת, ומה עם הארוחה ===== */
+const SUPG=[
+[/ליבר אפ/,{why:'פורמולת צמחים של "נטע" לתמיכה בכבד ובהזרמת מרה (בין השאר גדילן מצוי, שורש שן הארי וארטישוק). יכול לעזור לתחושת עיכול קלה יותר.',how:'טיפות: חצי כפית ברבע כוס מים, פעמיים ביום. לפי היצרן, מעל 80 ק״ג – כפית. רחוק מהאוכל: חצי שעה לפני או שעתיים אחרי.',away:1,warn:'נוטל תרופות קבועות? להתייעץ עם רופא או רוקח – צמחי כבד עלולים להשפיע על פירוק תרופות. אינו מחליף בירור רפואי לכבד שומני.'}],
+[/פפאיה|פפאין/,{why:'פפאין – אנזים שמפרק חלבונים. עשוי להקל על נפיחות וכבדות אחרי ארוחה עשירה בחלבון.',how:'ללעוס טבליה עם הארוחה או מיד אחריה.',prot:1,warn:'טבליות לעיסה מכילות סוכר (כמה קלוריות לטבליה). לא לנוטלים מדללי דם (קומדין), ולא לאלרגיים ללטקס.'}],
+[/ברומלאין/,{why:'אנזים מאננס שמפרק חלבונים, ומשמש גם להפחתת נפיחות.',how:'לעיכול – עם הארוחה. נגד נפיחות – בין הארוחות.',prot:1,warn:'עלול להגביר דימום עם מדללי דם.'}],
+[/אנזימי עיכול/,{why:'תערובת אנזימים לפירוק חלבון, שומן ופחמימה.',how:'בתחילת הארוחה.',prot:1}],
+[/חומץ תפוחים/,{why:'כף מהולה לפני ארוחה עשויה למתן מעט את עליית הסוכר אחריה ולתרום לשובע.',how:'כף אחת בכוס מים, 10–20 דקות לפני ארוחה עם פחמימות. לשתות בקשית.',carb:1,warn:'לעולם לא בלי מים – פוגע באמייל ובוושט. לוותר אם יש צרבת או רפלוקס.'}],
+[/אומגה 3/,{why:'EPA ו־DHA – ללב, לשומני הדם ולהפחתת דלקתיות.',how:'עם ארוחה שיש בה שומן – כך נספג טוב יותר ופחות "גיהוקי דג".',fat:1,warn:'במינון גבוה עם מדללי דם – להתייעץ.'}],
+[/ויטמין D|נורמל D/,{why:'לעצמות, לשרירים ולמערכת החיסון. חוסר נפוץ מאוד, גם בישראל.',how:'עם הארוחה הגדולה ביותר, שיש בה שומן – ויטמין מסיס בשומן.',fat:1}],
+[/K2/,{why:'עוזר לכוון את הסידן לעצמות. משתלב טוב עם ויטמין D.',how:'עם ארוחה שיש בה שומן.',fat:1,warn:'לנוטלי קומדין – רק באישור רופא.'}],
+[/B12/,{why:'לאנרגיה, ליצירת דם ולמערכת העצבים. חשוב במיוחד לצמחונים ולנוטלי מטפורמין.',how:'בבוקר, עם או בלי אוכל.'}],
+[/B קומפלקס|ויטמיני B/,{why:'ויטמיני B לחילוף החומרים והאנרגיה.',how:'בבוקר עם ארוחה – בערב עלול להפריע לשינה.'}],
+[/חומצה פולית/,{why:'ליצירת תאים ודם.',how:'בכל שעה, עם מים.'}],
+[/ויטמין C/,{why:'לחיסון, לקולגן ולספיגת ברזל מהצומח.',how:'עם ארוחה. עם ברזל – משפר את ספיגתו.'}],
+[/מולטי ויטמין/,{why:'השלמת חוסרים קטנים כשהתפריט מצומצם – כמו בדיאטה.',how:'עם ארוחה שיש בה מעט שומן.',fat:1}],
+[/מגנזיום/,{why:'להרפיית שרירים, לשינה, לעצירות ולאיזון סוכר.',how:'בערב, עם אוכל או בלי. ציטראט עלול לרכך יציאות.',sep:'סידן או אבץ במינון גבוה',warn:'מחלת כליות – רק באישור רופא.'}],
+[/סידן/,{why:'לעצמות ולשיניים.',how:'עם ארוחה, עד 500 מ״ג בבת אחת.',sep:'ברזל (מפריעים זה לזה בספיגה)'}],
+[/ברזל/,{why:'להמוגלובין ולאנרגיה – רק כשיש חוסר בבדיקת דם.',how:'על קיבה ריקה או עם ויטמין C (מיץ הדרים, פלפל).',iron:1,warn:'לא לקחת בלי בדיקת דם – עודף ברזל מזיק. עלול לגרום עצירות.'}],
+[/אבץ/,{why:'לחיסון, לריפוי ולעור.',how:'עם ארוחה כדי למנוע בחילה.',sep:'ברזל וסידן'}],
+[/סלניום/,{why:'נוגד חמצון ולבלוטת התריס.',how:'עם ארוחה.',warn:'לא לעבור את המנה – עודף רעיל. 2 אגוזי ברזיל ביום נותנים כמות דומה.'}],
+[/פרוביוטיק/,{why:'חיידקים טובים למעי – בעיקר אחרי אנטיביוטיקה או בנפיחות.',how:'לפי היצרן. רוב הזנים – לפני ארוחה או איתה.'}],
+[/אלקטרוליט/,{why:'נתרן, אשלגן ומגנזיום – נגד כאבי ראש וחולשה בצום ובאימון בחום.',how:'ממיסים בכוס מים, בזמן הצום או באימון.'}],
+[/קריאטין/,{why:'מגביר כוח ועוזר לשמור על שריר באימוני כוח. מהתוספים הנחקרים והבטוחים ביותר.',how:'3–5 גרם ביום, בכל שעה. לשתות הרבה מים.',warn:'יכול להעלות 1–2 ק״ג מים בשריר בהתחלה – זה לא שומן. מחלת כליות – רק באישור רופא.'}],
+[/קולגן/,{why:'חלבון לעור, לגידים ולמפרקים – יכול לעזור לעור בזמן ירידה גדולה.',how:'בכל שעה. עם ויטמין C (פרי הדר) – לבניית קולגן.'}],
+[/אבקת חלבון/,{why:'דרך קלה להגיע ליעד החלבון ולשמור על השריר.',how:'אחרי אימון או כארוחת ביניים, במים או בחלב דל.'}],
+[/פסיליום|גלוקומנן/,{why:'סיבים מסיסים שמתנפחים בקיבה – שובע, פעילות מעיים ואיזון סוכר וכולסטרול.',how:'עם כוס מים מלאה לפחות, חצי שעה לפני ארוחה.',meds:1,warn:'בלי מספיק מים עלול לחסום. להפריד שעתיים מתרופות ותוספים אחרים.'}],
+[/ספירולינה/,{why:'חלבון, ברזל ונוגדי חמצון.',how:'בשייק או במים, עם ארוחה.'}],
+[/כורכום/,{why:'כורכומין – נוגד דלקת. נספג טוב רק עם פלפל שחור ושומן.',how:'עם ארוחה שיש בה שומן, ועם פלפל שחור (פיפרין).',fat:1,warn:'מדללי דם, אבני מרה – להתייעץ.'}],
+[/גדילן|סילימרין/,{why:'סילימרין – הצמח הנחקר ביותר לכבד.',how:'לפני הארוחה.',warn:'להתייעץ אם נוטל תרופות קבועות.'}],
+[/ארטישוק/,{why:'מעודד הפרשת מרה – עוזר לעכל ארוחות שמנות.',how:'לפני הארוחה.'}],
+[/תה ירוק \(/,{why:'קטכינים וקצת קפאין.',how:'רק עם ארוחה.',caf:1,warn:'תמצית תה ירוק על קיבה ריקה – מקרים של פגיעה בכבד. לא בזמן צום.'}],
+[/כרום/,{why:'עשוי לעזור במעט לאיזון סוכר ולהשתוקקות למתוק. ההשפעה במחקרים קטנה.',how:'עם ארוחה.',warn:'סוכרתיים על תרופות – להתייעץ.'}],
+[/ברברין/,{why:'משפר רגישות לאינסולין ושומני דם. ההשפעה על המשקל מתונה.',how:'עם ארוחה עם פחמימות, 2–3 פעמים ביום.',carb:1,warn:'מתנגש עם תרופות רבות (כולל לסוכר) – רק באישור רופא. עלול לגרום עצירות.'}],
+[/קרניטין/,{why:'מעביר שומן לשריפה בתאים. אצל רוב האנשים התוסף לא משנה הרבה.',how:'לפני אימון.'}],
+[/מלטונין/,{why:'עוזר להירדם ולסדר שעון ביולוגי.',how:'חצי שעה עד שעה לפני השינה, במינון נמוך (0.5–3 מ״ג).',warn:'עלול לגרום ישנוניות בבוקר. לא לנהוג אחריו.'}],
+[/אשווגנדה/,{why:'עשויה להפחית מתח ולשפר שינה.',how:'בערב, עם אוכל.',warn:'בעיות בלוטת התריס, תרופות הרגעה – להתייעץ.'}],
+[/Q10/,{why:'לייצור אנרגיה בתאים, בעיקר לנוטלי סטטינים.',how:'עם ארוחה שיש בה שומן.',fat:1}],
+];
+function suppInfo(n){for(const[re,g]of SUPG)if(re.test(n))return g;return null}
+function suppCheck(g,meal,e){const o=[],ok=[],it=(meal||[]).filter(x=>x!==e&&x.cat!=='supp'),t=sum(it),has=re=>it.some(x=>re.test(x.n));
+ const dairy=it.some(x=>x.cat==='dairy')||has(/חלב|גבינ|יוגורט|קוטג|לבן/),caf=has(/קפה|אספרסו|נס |תה(?! צמחים)/);
+ if(g.away&&it.length)o.push('נרשם בתוך ארוחה – עדיף לקחת אותו רחוק מהאוכל (חצי שעה לפני או שעתיים אחרי).');
+ if(g.fat){if(t.f>=7)ok.push(`בארוחה יש ${r0(t.f)} ג׳ שומן – מעולה לספיגה.`);else o.push(it.length?'בארוחה כמעט אין שומן – לספיגה טובה יותר, קחי אותו עם ארוחה שיש בה קצת שומן (ביצה, אבוקדו, טחינה, שמן זית).':'כדאי לקחת אותו עם ארוחה שיש בה קצת שומן.')}
+ if(g.prot){if(t.p>=20)ok.push(`ארוחה עם ${r0(t.p)} ג׳ חלבון – בדיוק המקום לאנזים.`);else if(it.length)o.push('האנזים עובד בעיקר על חלבון, ובארוחה הזו יש מעט חלבון.')}
+ if(g.carb){if(t.c>=25)ok.push('ארוחה עם פחמימות – כאן יש לו הכי הרבה ערך.');}
+ if(g.iron){if(dairy)o.push('יש בארוחה מוצרי חלב – הסידן מפריע לספיגת הברזל. עדיף להפריד בשעתיים.');if(caf)o.push('קפה ותה מפחיתים מאוד את ספיגת הברזל. עדיף להפריד בשעה לפחות.');if(has(/תפוז|קלמנטינ|לימון|פלפל|קיווי|תות|אשכולית|ויטמין C/))ok.push('יש בארוחה ויטמין C – משפר את ספיגת הברזל.')}
+ if(g.sep){const re=g.sep.includes('ברזל')?/ברזל/:/סידן|אבץ/;if((meal||[]).some(x=>x!==e&&x.cat==='supp'&&re.test(x.n)))o.push(`נלקח יחד עם ${g.sep} – עדיף להפריד ביניהם בכמה שעות.`)}
+ if(g.meds&&(meal||[]).some(x=>x!==e&&x.cat==='supp'))o.push('הסיבים עלולים להפחית ספיגה של התוספים האחרים בארוחה. עדיף להפריד בשעתיים.');
+ if(g.caf&&!it.length)o.push('נרשם בלי אוכל – תמצית תה ירוק עדיף רק עם ארוחה.');
+ if(S.fast&&S.fast.start&&(g.fat||g.prot))o.push('את בצום – תוסף שצריך ארוחה כדאי לדחות לחלון האכילה.');
+ return {o,ok}}
+function openSupp(m,i){const day=getDayLocal(V.date),meal=day.meals[m]||[],e=meal[i];if(!e)return;const g=suppInfo(e.n);
+ const c=g?suppCheck(g,meal,e):{o:[],ok:[]},mn=(MEALS.find(x=>x[0]===m)||[])[1]||'';
+ openSheet(`${shTop('💊 '+esc(e.n))}${g?`<div class="sg"><b>למה זה טוב</b><p>${g.why}</p><b>איך לקחת</b><p>${g.how}</p></div>
+${c.ok.length||c.o.length?`<div class="sg2"><b>ב${esc(mn)} של היום</b>${c.ok.map(x=>`<p class="ok">✅ ${x}</p>`).join('')}${c.o.map(x=>`<p class="no">⚠️ ${x}</p>`).join('')}</div>`:''}
+${g.warn?`<p class="small" style="color:var(--mango-d);margin-top:10px"><b>שימי לב:</b> ${g.warn}</p>`:''}`:`<p>אין לי עדיין מידע מפורט על התוסף הזה. אפשר לשאול את אבוקי בצ׳אט.</p>`}
+<p class="small muted" style="margin-top:10px">מידע כללי, לא ייעוץ רפואי. תוספים יכולים להשפיע על תרופות – כדאי לעדכן את הרופא או הרוקח.</p>
+<div class="btns"><button class="btn ghost" data-a="edit" data-m="${m}" data-i="${i}">עריכה</button><button class="btn" data-a="close">הבנתי</button></div>`)}
+function suppAfterAdd(m,entries){const day=getDayLocal(V.date),idx=day.meals[m].findIndex(x=>entries.includes(x)&&x.cat==='supp');if(idx<0)return;setTimeout(()=>{if(!$('#sheet.open'))openSupp(m,idx);else{const k=day.meals[m][idx].n;toast('💊 לחצי על ℹ️ ליד '+k+' לפרטים')}},450)}
 function mealsBlock(day){const tot=MEALS.reduce((a,[m])=>a+sum(day.meals[m]).k,0);
  return `<div class="card meal mlist"><h2>הארוחות של היום<span class="sp"></span><span class="kc">${r0(tot)} קק״ל</span></h2><div class="shrow"><button class="pdfb" data-a="share" aria-label="שיתוף מה שאכלתי">📤 שיתוף</button><button class="pdfb" data-a="pdf" aria-label="ייצוא התפריט של היום כ-PDF">📄 PDF</button></div>${MEALS.map(([m,n])=>mealRow(day,m,n)).join('')}</div>`}
 function mealRow(day,m,n){const it=day.meals[m],r=it.length?scoreItems(it,m):null,t=sum(it),open=!!(V.mx&&V.mx[m]);
@@ -9614,7 +9694,7 @@ function mealRow(day,m,n){const it=day.meals[m],r=it.length?scoreItems(it,m):nul
  return `<div class="mrow ${open?'open':''}"><div class="mhead"><button class="mtog" data-a="mtog" data-m="${m}" aria-expanded="${open}" aria-label="${n}, ${it.length?r0(t.k)+' קלוריות':'ריק'}"><span class="mn"><b>${n}</b><small>${it.length?esc(names):'עוד לא נרשם'}</small></span>${it.length?`<span class="kc">${r0(t.k)}</span>`:''}${stk}<span class="chev">${IC.next}</span></button>
 <button class="mb sm" data-a="add" data-m="${m}" aria-label="הוסיפי ל${n}">${IC.plus}</button><button class="mb sm" data-a="photo" data-m="${m}" aria-label="צלמי ${n}">${IC.cam}</button></div>
 ${it.length?`<button class="mtrow${pl?' pl':''}${mt?'':' no'}" data-a="mealTime" data-m="${m}" aria-label="שעת ${n}: ${mt||'לא נקבעה'}">🕐 ${mt?(pl?'מתוכנן ל־':'נאכל ב־')+mt:'הוסיפי שעת אכילה'}<span>${mt?'שינוי':''}</span></button>`:''}
-${open?`<div class="mbody">${it.length?it.map((e,i)=>`<div class="row"><button class="nm" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכת ${esc(e.n)}">${esc(e.n)}<small>${esc(uLabel(e.q,e.un,e.u))}${e.u!=='g'?` · ${r0(e.g)} ג׳`:''} · ח ${r0(e.p)} פ ${r0(e.c)} ש ${r0(e.f)}</small></button><span class="kc">${r0(e.k)}</span><button class="del" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכה">${IC.pen}</button></div>`).join(''):`<div class="empty" style="padding:8px">עוד לא נרשם כלום.</div><div class="btns"><button class="btn ghost" data-a="copy" data-m="${m}">${IC.copy} כמו אתמול</button></div>`}
+${open?`<div class="mbody">${it.length?it.map((e,i)=>`<div class="row"><button class="nm" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכת ${esc(e.n)}">${esc(e.n)}<small>${esc(uLabel(e.q,e.un,e.u))}${e.u!=='g'?` · ${r0(e.g)} ג׳`:''} · ח ${r0(e.p)} פ ${r0(e.c)} ש ${r0(e.f)}</small></button><span class="kc">${r0(e.k)}</span>${e.cat==='supp'?`<button class="del sinfo" data-a="supp" data-m="${m}" data-i="${i}" aria-label="מידע על ${esc(e.n)}">ℹ️</button>`:''}<button class="del" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכה">${IC.pen}</button></div>`).join(''):`<div class="empty" style="padding:8px">עוד לא נרשם כלום.</div><div class="btns"><button class="btn ghost" data-a="copy" data-m="${m}">${IC.copy} כמו אתמול</button></div>`}
 ${r&&r.cheat?`<button class="mscore" data-a="score" data-m="${m}" style="background:var(--lime2)"><b>ארוחת פינוק מתוכננת</b><span>נהנים בלי רגשות אשמה · חוזרים לשגרה בארוחה הבאה</span></button>`:''}${it.length&&!(r&&r.cheat)?(b=>b.length?`<div class="mben"><b>💚 מה בריא כאן</b>${b.slice(0,4).map(x=>`<span>${esc(x.split(':')[0])}</span>`).join('')}</div>`:'')(benefits(it)):''}${r&&!r.cheat?`<button class="mscore" data-a="score" data-m="${m}"><b>ציון ${r.s} · ${grade(r.s)[0]}</b><span>${esc((benefits(r.items)[0]||r.good[0]||'').split(':')[0])} · לפירוט מלא</span></button>`:''}</div>`:''}</div>`}
 /* ===== ציון יומי ===== */
 function dScore(d){const day=getDayLocal(d),c=calc(),t=dayTotals(day),B=c.budget+exKcal(day)+cheatBonus(d),isT=d===today();
@@ -10831,7 +10911,7 @@ function greet(){const h=new Date().getHours();return h<11?'בוקר טוב':h<1
 function mealCard(day,m,n){const it=day.meals[m],r=scoreItems(it,m),t=sum(it);
  if(!it.length)return `<div class="card meal mini"><h2>${n}<span class="sp"></span><button class="mb" data-a="add" data-m="${m}" aria-label="הוסיפי ל${n}">${IC.plus}</button><button class="mb" data-a="photo" data-m="${m}" aria-label="צלמי ${n}">${IC.cam}</button><button class="mb" data-a="copy" data-m="${m}" aria-label="כמו אתמול" title="כמו אתמול">${IC.copy}</button></h2></div>`;
  return `<div class="card meal"><h2>${n}<span class="sp"></span>${t.n?`<span class="kc">${r0(t.k)} קק״ל</span>`:''}${r?(r.cheat?`<button class="sticker s g2" data-a="score" data-m="${m}" style="font-size:12px" aria-label="ארוחת פינוק">פינוק</button>`:`<button class="sticker s ${grade(r.s)[1]}" data-a="score" data-m="${m}" aria-label="ציון ${r.s}, פירוט">${r.s}</button>`):''}</h2>
-${it.length?it.map((e,i)=>`<div class="row"><button class="nm" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכת ${esc(e.n)}">${esc(e.n)}<small>${esc(uLabel(e.q,e.un,e.u))}${e.u!=='g'?` · ${r0(e.g)} ג׳`:''} · ח ${r0(e.p)} פ ${r0(e.c)} ש ${r0(e.f)}</small></button><span class="kc">${r0(e.k)}</span><button class="del" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכה">${IC.pen}</button></div>`).join(''):'<div class="empty">עוד לא נרשם כלום.</div>'}
+${it.length?it.map((e,i)=>`<div class="row"><button class="nm" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכת ${esc(e.n)}">${esc(e.n)}<small>${esc(uLabel(e.q,e.un,e.u))}${e.u!=='g'?` · ${r0(e.g)} ג׳`:''} · ח ${r0(e.p)} פ ${r0(e.c)} ש ${r0(e.f)}</small></button><span class="kc">${r0(e.k)}</span>${e.cat==='supp'?`<button class="del sinfo" data-a="supp" data-m="${m}" data-i="${i}" aria-label="מידע על ${esc(e.n)}">ℹ️</button>`:''}<button class="del" data-a="edit" data-m="${m}" data-i="${i}" aria-label="עריכה">${IC.pen}</button></div>`).join(''):'<div class="empty">עוד לא נרשם כלום.</div>'}
 ${r&&r.cheat?`<button class="mscore" data-a="score" data-m="${m}" style="background:var(--lime2)"><b>ארוחת פינוק מתוכננת</b><span>נהנים בלי רגשות אשמה · חוזרים לשגרה בארוחה הבאה</span></button>`:''}${it.length&&!(r&&r.cheat)?(b=>b.length?`<div class="mben"><b>💚 מה בריא כאן</b>${b.slice(0,4).map(x=>`<span>${esc(x.split(':')[0])}</span>`).join('')}</div>`:'')(benefits(it)):''}${r&&!r.cheat?`<button class="mscore" data-a="score" data-m="${m}"><b>ציון ${r.s} · ${grade(r.s)[0]}</b><span>${esc((benefits(r.items)[0]||r.good[0]||'').split(':')[0])} · לפירוט מלא</span></button>`:''}
 <div class="btns"><button class="btn ghost" data-a="add" data-m="${m}">${IC.plus}הוסיפי</button><button class="btn ghost" data-a="photo" data-m="${m}">${IC.cam}צלמי</button>${!it.length?`<button class="btn ghost" data-a="copy" data-m="${m}">כמו אתמול</button>`:''}</div></div>`}
 
@@ -11511,7 +11591,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=66;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=67;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11614,7 +11694,7 @@ ${edit?`<button class="btn ghost full" type="button" data-a="delCustom" style="m
  $('#cf2').addEventListener('submit',ev=>{ev.preventDefault();const F=new FormData(ev.target),num=k=>Math.max(0,+F.get(k)||0);const nf={id:edit?edit.id:'c'+Date.now(),n:String(F.get('n')).trim().slice(0,60),cat:F.get('cat'),k:num('k'),p:num('p'),c:num('c'),f:num('f'),fi:num('fi'),s:num('s'),cup:0,pc:num('pc'),pcn:String(F.get('pcn')||'').trim().slice(0,20)};
   if(edit){const i=S.custom.findIndex(x=>x.id===edit.id);if(i>=0)S.custom[i]=nf;toast('המאכל עודכן')}else S.custom.push(nf);saveState();checkBadges();openFood(nf.id)})}
 function addEntries(m,entries){sfx('pop');applyEatAt(entries);const day=getDayLocal(V.date);entries.forEach(e=>{day.meals[m].push(e);if(e.fid){S.recent=[e.fid].concat(S.recent.filter(x=>x!==e.fid)).slice(0,30)}if(!S.uniq.includes(e.n))S.uniq.push(e.n)});
- award('m:'+V.date+m,10,'ארוחה נרשמה');fastOnFood(entries);const r=scoreItems(day.meals[m],m);if(r&&!r.cheat&&r.s>=70)award('g:'+V.date+m,15,'ארוחה מעולה');if(r&&r.s>=90)S.aw.a90=1;saveDay(V.date);checkBadges();saveState()}
+ award('m:'+V.date+m,10,'ארוחה נרשמה');fastOnFood(entries);const r=scoreItems(day.meals[m],m);if(r&&!r.cheat&&r.s>=70)award('g:'+V.date+m,15,'ארוחה מעולה');if(r&&r.s>=90)S.aw.a90=1;saveDay(V.date);checkBadges();saveState();try{if(entries.some(x=>x.cat==='supp'))suppAfterAdd(m,entries)}catch(e){}}
 function openScore(m){const day=getDayLocal(V.date),r=scoreItems(day.meals[m],m);if(!r)return;openSheet(shTop(MEALS.find(x=>x[0]===m)[1])+scoreBlock(r))}
 function scoreBlock(r){if(r.cheat)return `<div style="display:flex;align-items:center;gap:14px"><div class="sticker g2" style="width:84px;height:84px;font-size:20px">פינוק</div><div><div style="font-size:22px;font-weight:800">ארוחת פינוק</div><div class="muted small">${r0(r.t.k)} קק״ל · לא נספרת בציון היומי</div></div></div><ul class="why">${r.good.concat(r.bad).map(x=>`<li><i class="g1">✓</i><span>${x}</span></li>`).join('')}</ul>`;const g=grade(r.s);return `<div style="display:flex;align-items:center;gap:14px"><div class="sticker ${g[1]}" style="width:84px;height:84px;font-size:30px">${r.s}</div><div><div style="font-size:24px;font-weight:800">${g[0]}</div><div class="muted small">${r0(r.t.k)} קק״ל · ח ${r0(r.t.p)} · פ ${r0(r.t.c)} · ש ${r0(r.t.f)} · סיבים ${r1(r.t.fi)}</div></div></div>
 ${(()=>{const b=benefits(r.items||[]);return b.length?`<h4 style="margin:16px 0 0">מה טוב בה לגוף</h4><ul class="why">${b.map(x=>`<li><i class="g2">+</i><span>${esc(x)}</span></li>`).join('')}</ul>`:''})()}
@@ -11740,6 +11820,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  pdf:()=>exportPdf(V.date),
  fStage:b=>openFStage(b.dataset.i),
+ supp:b=>openSupp(b.dataset.m,+b.dataset.i),
  body:()=>{PH.pick=null;openBody()},bodySnap:()=>{V.ext=Date.now();try{$('#bpic').click()}catch(e){}},
  bodyOne:b=>{const id=+b.dataset.id;if(PH.pick){const x=PH.pick;PH.pick=null;if(x!==id)return openBodyCmp(x,id)}if(PH.pick===0){PH.pick=id;return openBody()}openBodyOne(id)},
  bodyPick:()=>{PH.pick=PH.pick==null?0:null;openBody();if(PH.pick===0)toast('בחרי תמונה ראשונה')},
