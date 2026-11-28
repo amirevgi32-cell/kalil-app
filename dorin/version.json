@@ -1,7 +1,7 @@
 {
- "html": 90,
+ "html": 91,
  "apk": 16,
  "name": "1.9.6",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/6480cde4c8fbdd6ab0c53273d1ae5895d8ce3c00/dorin/index.html",
- "notes": "הצום לא נגמר לבד – אתה מחליט. גם כשרושמים אוכל אחרי היעד, האפליקציה שואלת. ההתראות של הצום (בהתחלה וכל 4 שעות), המים, הארוחות והאימון כוללות עכשיו הסבר מה קורה בגוף ולמה זה חשוב."
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/85b304fe69d1829074d76a6c64076e906a37cac4/dorin/index.html",
+ "notes": "התוספים נכנסו לסיכומים: בציון היומי ובחוות הדעת על כל ארוחה יש \"💊 התוספים\" – למה כל תוסף טוב, והאם התזמון והשילוב עם האוכל היו נכונים. גם בשליחה למודל AI."
 }
