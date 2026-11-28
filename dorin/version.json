@@ -1,7 +1,7 @@
 {
- "html": 88,
+ "html": 89,
  "apk": 16,
  "name": "1.9.6",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/2b8edf1ed1683229e3abbc22ede3892b32670e97/dorin/index.html",
- "notes": "צום מתוזמן מתחיל לבד בשעה שקבעת – ותגיע התראה לטלפון \"🌙 הצום התחיל\" גם אם האפליקציה סגורה."
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/77363e7c85ea0a92e4b31f8d33b7136f42cfcb19/dorin/index.html",
+ "notes": "התראות חדשות: 💡 טיפ יומי בבוקר (08:00, אפשר לשנות), ⚖️ שקילה ותמונה ביום שישי בבוקר, 📝 תזכורת ב־21:00 אם עוד לא רשמת את היום, ותזכורת שקילה אם עבר שבוע. צום מתוזמן שולח \"🌙 הצום התחיל\"."
 }
