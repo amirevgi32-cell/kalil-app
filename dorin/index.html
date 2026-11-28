@@ -276,7 +276,7 @@ html[dir=rtl] .msg.u{align-self:flex-start}.mav{width:34px;height:34px;flex:none
 .mtime{font-size:12px;font-weight:800;color:var(--mango-d);background:var(--mango2);border-radius:999px;padding:0 7px;white-space:nowrap}.mtime.pl{color:#fff;background:var(--pink)}.shrow{display:flex;gap:6px;margin:-4px 0 4px}.pdfb{flex:none;white-space:nowrap;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:3px 10px;font:inherit;font-size:12.5px;font-weight:800;color:var(--ink,inherit);cursor:pointer;min-height:32px}#finfo{position:fixed;inset:0;z-index:120;background:rgba(20,30,28,.45);display:none;align-items:flex-end;justify-content:center}#finfo.open{display:flex}
 .fi-box{background:var(--card,#fff);width:100%;max-width:560px;max-height:82vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));animation:fiu .22s ease-out}@keyframes fiu{from{transform:translateY(40px);opacity:.4}}
 .fi-h{display:flex;gap:10px;align-items:flex-start}.fi-h .dot{width:14px;height:14px;border-radius:50%;margin-top:7px;flex:none}.fi-h b{font-size:19px;display:block}.fi-h small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
-.fi-s{margin-top:10px;padding:9px 12px;border-radius:14px;background:#f4f8f7}.fi-s b{display:block;font-size:14px;margin-bottom:2px}.fi-s p{margin:2px 0;font-size:15.5px;line-height:1.45}.fi-s.body{background:#eef3fb}.fi-s.body>b{color:#2d4f8a}.fi-m{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:14px}.fi-m b{display:inline!important;font-size:14px!important;margin:0!important}.fi-s.good{background:#e9f8f1}.fi-s.good b{color:#1d6b55}.fi-s.bad{background:#fff2e8}.fi-s.bad b{color:#a5481c}
+.fi-s{margin-top:10px;padding:9px 12px;border-radius:14px;background:#f4f8f7}.fi-s b{display:block;font-size:14px;margin-bottom:2px}.fi-s p{margin:2px 0;font-size:15.5px;line-height:1.45}.nt-r{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;font-size:14px}.nt-r input[type=time],.nt-r select{width:auto!important;min-width:0!important;margin:0!important;display:inline-block;flex:none;padding:4px 8px;border-radius:10px;border:1.5px solid var(--line);font:inherit;background:var(--card)}.fi-s.body{background:#eef3fb}.fi-s.body>b{color:#2d4f8a}.fi-m{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:14px}.fi-m b{display:inline!important;font-size:14px!important;margin:0!important}.fi-s.good{background:#e9f8f1}.fi-s.good b{color:#1d6b55}.fi-s.bad{background:#fff2e8}.fi-s.bad b{color:#a5481c}
 .feye{border:0;background:transparent;font-size:16px;padding:0 6px;min-width:34px;cursor:pointer;flex:none}
 .sg b,.sg2 b{display:block;color:var(--lime);margin-top:6px}.sg p,.sg2 p{margin:3px 0 6px;font-size:15.5px;line-height:1.5}.sg2{margin-top:10px;padding:10px 12px;border-radius:14px;background:#f4f8f7}.sg2 p.no{color:#a5481c}.sg2 p.ok{color:#1d6b55}.sinfo{font-size:17px}.mben{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:8px 0 4px;font-size:12.5px}.mben b{color:var(--lime);font-size:13px}.mben span{background:var(--lime2,#e3f7ef);color:#1d6b55;border-radius:99px;padding:2px 9px;font-weight:700}.mtrow{display:flex;align-items:center;gap:6px;margin:-2px 12px 8px;padding:3px 10px;border:0;border-radius:999px;background:var(--mango2);color:var(--mango-d);font:inherit;font-size:13px;font-weight:800;width:max-content;max-width:calc(100% - 24px);cursor:pointer}.mtrow span{font-weight:600;opacity:.75;text-decoration:underline}.mtrow.pl{background:var(--pink);color:#fff}.mtrow.no{background:transparent;color:var(--mute);border:1.5px dashed var(--line,#ccc)}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qtile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 8px;border-radius:18px;background:var(--card);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line);min-height:104px;font:inherit;color:var(--ink);cursor:pointer;transition:transform .12s}
@@ -9462,7 +9462,7 @@ function confetti(){sfx('win');if(matchMedia('(prefers-reduced-motion: reduce)')
  (function tick(){x.clearRect(0,0,c.width,c.height);for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);x.restore()}if(++f<110)requestAnimationFrame(tick);else x.clearRect(0,0,c.width,c.height)})()}
 
 /* ===== תצוגה ראשית ===== */
-function render(){const app=$('#app');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.t===V.tab));
+function render(){try{ntSync()}catch(e){}const app=$('#app');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.t===V.tab));
  if(!S.profile){app.innerHTML=welcome();return}
  app.innerHTML=V.tab==='today'?viewToday():V.tab==='fast'?viewFast():V.tab==='fit'?viewFit():V.tab==='goals'?viewGoals():viewAwards();if(V.tab==='goals')drawWeight()}
 function welcome(){return `<div class="hero" style="padding-bottom:40px;text-align:center"><div style="width:150px;margin:20px auto 0;animation:bob 2.6s ease-in-out infinite">${avoki('happy')}</div>
@@ -9834,6 +9834,54 @@ ${e&&e.k?`<p class="small muted" style="margin:8px 0 0">במנה שרשמת: ${r
 function openFInfo(f,e){if(!f)return;let el=$('#finfo');if(!el){el=document.createElement('div');el.id='finfo';el.addEventListener('click',ev=>{if(ev.target===el||ev.target.closest('[data-x]'))el.classList.remove('open')});document.body.appendChild(el)}
  el.innerHTML=`<div class="fi-box" role="dialog" aria-modal="true">${fInfoHtml(f,e)}<button class="btn full" data-x="1" style="margin-top:12px">סגרי</button></div>`;el.classList.add('open');sfx('tap')}
 function entFood(e){let f=e.fid&&foodById(e.fid);if(f&&f.n!==e.n)f=null;if(!f)f=allFoods().find(x=>x.n===e.n);if(f)return f;const g=e.g||e.q||100,m=100/(g||100);return {n:e.n,cat:e.cat||'dish',k:e.k*m,p:e.p*m,c:e.c*m,f:e.f*m,fi:(e.fi||0)*m,s:(e.s||0)*m,cup:0,pc:0,pcn:''}}
+/* ===== 🔔 התראות פוש (אנדרואיד) ===== */
+const NT_DEF={water:{on:1,h:2,from:8,to:22},fast:{on:1},meals:{on:1,b:'08:30',l:'13:00',d:'19:30'},fit:{on:1,t:'18:00'},walk:{on:1}};
+function ntSet(){S.set.nt=S.set.nt||{};for(const k in NT_DEF)S.set.nt[k]=Object.assign({},NT_DEF[k],S.set.nt[k]||{});return S.set.nt}
+const ntApk=()=>!!(window.KalilNative&&KalilNative.setAlarms);
+function ntOk(){try{return KalilNative.notifOk()}catch(e){return false}}
+const atTime=(d,hhmmS)=>{const[h,m]=hhmmS.split(':').map(Number);const x=pd(d);x.setHours(h,m||0,0,0);return x.getTime()};
+function ntBuild(){const N=ntSet(),out=[],now=Date.now(),t=today(),nm=(S.profile&&S.profile.name)||'';
+ if(N.water.on){const g=waterGoal();for(let k=0;k<3;k++){const d=addDays(t,k),w=k?0:(getDayLocal(d).water||0);for(let h=N.water.from;h<=N.water.to;h+=N.water.h){const at=atTime(d,h+':00');if(at<=now)continue;if(!k&&w>=g)break;
+   out.push({at,t:'💧 זמן לכוס מים',x:k?`כוס עכשיו מקרבת אותך ליעד של ${r1(g/1000)} ליטר.`:`שתית היום ${r1(w/1000)} מתוך ${r1(g/1000)} ליטר. עוד כוס?`,id:110})}}}
+ if(N.meals.on){for(let k=0;k<3;k++){const d=addDays(t,k),day=getDayLocal(d);[['b','ארוחת בוקר'],['l','ארוחת צהריים'],['d','ארוחת ערב']].forEach(([m,n])=>{const at=atTime(d,N.meals[m]);if(at<=now)return;if((day.meals[m]||[]).length)return;
+   out.push({at,t:`🍽️ ${n}`,x:S.fast&&S.fast.start&&at<S.fast.start+S.fast.plan*36e5?`את בצום עד ${hhmm(S.fast.start+S.fast.plan*36e5)} – ${n} תחכי לחלון האכילה.`:`זמן ל${n}. אל תשכח לרשום מה אכלת 📝`,id:120})});
+   MEALS.forEach(([m,n])=>(day.meals[m]||[]).forEach(e=>{if(e.plan&&e.at>now)out.push({at:e.at,t:'🍽️ הגיע הזמן לארוחה שתכננת',x:`${n}: ${e.n}`,id:121})}))}}
+ if(N.fit.on){for(let k=0;k<3;k++){const d=addDays(t,k),at=atTime(d,N.fit.t);if(at<=now)continue;const day=getDayLocal(d);if((day.ex||[]).length||fitDone(d))continue;
+   out.push({at,t:'💪 זמן לאימון',x:'עוד לא התאמנת היום. 20–30 דקות הליכה או אימון כוח מהתוכנית?',id:130})}}
+ const F=[];if(N.fast.on&&S.fast&&S.fast.start){const st=S.fast.start,g=S.fast.plan;for(let h=4;h<=Math.max(g+8,24);h+=4){const at=st+h*36e5;if(at<=now||h>48)continue;const sg=STAGES.filter(x=>x[0]<=h).pop();
+   F.push({at,t:`⏳ ${h} שעות צום${h>=g?' 🎉':''}`,x:h<g?`שלב: ${sg[1]}. עוד ${g-h} שעות ליעד (${hhmm(st+g*36e5)}).`:h===g?`הגעת ליעד ${g} שעות! ${sg[1]}. כל הכבוד.`:`עברת את היעד ב־${h-g} שעות. שלב: ${sg[1]}.`,id:140})}
+  const ga=st+g*36e5;if(ga>now&&g%4)F.push({at:ga,t:`🎉 הגעת ליעד הצום – ${g} שעות!`,x:'כל הכבוד! כשתאכל, רשמי את הארוחה והצום ייסגר.',id:141})}
+ return {r:out.sort((a,b)=>a.at-b.at).slice(0,200),f:F}}
+let NTD=0;function ntSync(now){if(!ntApk())return;clearTimeout(NTD);NTD=setTimeout(()=>{try{const B=ntBuild();KalilNative.setAlarms('r',JSON.stringify(B.r));KalilNative.setAlarms('f',JSON.stringify(B.f))}catch(e){}},now?0:1500)}
+const liveTxt=(st,km,kc)=>`👟 ${r0(st).toLocaleString('he-IL')} צעדים${km>0?` · 📍 ${r1(km)} ק״מ`:''} · 🔥 ${r0(kc)} קק״ל`;
+function walkMarks(cur,rate,sec0,title,base){const out=[];
+ for(let m=2;m<=240;m+=2){const tsec=m*60;if(tsec<=sec0)continue;const dt=tsec-sec0,at=Date.now()+dt*1000,st=cur.st+rate.st*dt,km=cur.km+rate.km*dt,kc=cur.kc+rate.kc*dt;
+  out.push({at,t:title+' פעיל',x:liveTxt(st,km,kc),o:1,b:base,id:7});
+  if(m%15===0)out.push({at:at+1500,t:`${title} · ${m>=60?Math.floor(m/60)+' ש׳'+(m%60?' '+m%60+' ד׳':''):m+' דקות'}`,x:`⏱️ ${m} דק׳ · `+liveTxt(st,km,kc),id:150})}
+ return out}
+function freeLive(){const f=S.free;if(!f)return null;const a=FACT.find(x=>x[0]===f.cfg.id);if(!a)return null;return {a,rate:{st:freeSPM(f.cfg)/60,km:a[3]!=='fixed'?f.cfg.sp/3600:0,kc:netRate(f.cfg)}}}
+function nWalk(){if(!ntApk()||!ntSet().walk.on)return;const f=S.free;if(!f){return nWalkOff()}const L=freeLive();if(!L)return;freeAccum();const sec=freeSec();
+ try{if(!f.run){KalilNative.ongoingOff();KalilNative.setAlarms('w','[]');return}const base=Date.now()-sec*1000,ti='🏃 '+L.a[1];
+  KalilNative.ongoing(ti+' פעיל',liveTxt(f.st||0,f.km||0,f.kc||0),base);
+  KalilNative.setAlarms('w',JSON.stringify(walkMarks({st:f.st||0,km:f.km||0,kc:f.kc||0},L.rate,sec,ti,base)))}catch(e){}}
+function nWalkLive(){const f=S.free;if(!f||!f.run||!ntApk()||!ntSet().walk.on)return;const L=freeLive();if(!L)return;try{KalilNative.ongoing('🏃 '+L.a[1]+' פעיל',liveTxt(f.st||0,f.km||0,f.kc||0),Date.now()-freeSec()*1000)}catch(e){}}
+function nPlan(){if(!ntApk()||!ntSet().walk.on||!PL_.on)return;try{const w=curW()||80,el=PL_.st.slice(0,PL_.i).reduce((a,x)=>a+(x.sec||0),0)+((PL_.st[PL_.i]||{}).sec||0)-PL_.left,base=Date.now()-el*1000,ti='🏃 '+FTYPE[PL_.type][0];
+  const act=Object.entries(PL_.act||{}).reduce((a,[i,sec])=>a+sec/60*stepCad(PL_.st[i]),0),kc0=(PL_.type==='c'?4.3:5)*3.5*w/200;
+  KalilNative.ongoing(ti+' פעיל',liveTxt(act,act*.72/1000,kc0*el/60),base);
+  const rate=PL_.type==='c'?{st:100/60,km:100*.72/1000/60,kc:kc0/60}:{st:0,km:0,kc:kc0/60};
+  KalilNative.setAlarms('w',JSON.stringify(walkMarks({st:act,km:act*.72/1000,kc:kc0*el/60},rate,el,ti,base)))}catch(e){}}
+function nWalkOff(){if(!ntApk())return;try{KalilNative.ongoingOff();KalilNative.setAlarms('w','[]')}catch(e){}}
+document.addEventListener('change',e=>{const t=e.target;if(!t.classList)return;if(t.classList.contains('nt-t')||t.classList.contains('nt-s')){const N=ntSet();N[t.dataset.k][t.dataset.f]=t.classList.contains('nt-s')?+t.value:t.value;saveState();ntSync(1);toast('נשמר')}});
+window.__notifOk=()=>{render();if(ntOk()){ntSync(1);toast('🔔 התראות הופעלו')}};
+function notifBlock(){const N=ntSet(),apk=ntApk(),ok=apk&&ntOk(),tg=(k,n)=>`<button type="button" data-a="ntTog" data-k="${k}" class="${N[k].on?'on':''}">${n}</button>`;
+ const tm=(k,f,v)=>`<input type="time" class="nt-t" data-k="${k}" data-f="${f}" value="${v}">`;
+ return `<div class="f"><span>🔔 התראות לטלפון</span>${!apk?'<p class="small muted" style="margin:0">התראות פוש זמינות באפליקציית האנדרואיד.</p>':`
+${ok?'':`<button type="button" class="btn full" data-a="ntAsk" style="margin-bottom:8px">אפשר התראות בטלפון</button>`}
+<div class="seg wrap">${tg('walk','אימון פעיל · כל 15 דק׳')}${tg('water','שתיית מים')}${tg('fast','צום · כל 4 שעות')}${tg('meals','ארוחות')}${tg('fit','אימון יומי')}</div>
+${N.water.on?`<div class="nt-r">💧 כל <select class="nt-s" data-k="water" data-f="h">${[1,1.5,2,3].map(h=>`<option value="${h}" ${N.water.h==h?'selected':''}>${h}</option>`).join('')}</select> שעות, בין ${N.water.from}:00 ל־${N.water.to}:00</div>`:''}
+${N.meals.on?`<div class="nt-r">🍽️ בוקר ${tm('meals','b',N.meals.b)} צהריים ${tm('meals','l',N.meals.l)} ערב ${tm('meals','d',N.meals.d)}</div><p class="small muted" style="margin:2px 0">תזכורת רק אם הארוחה עוד לא נרשמה.</p>`:''}
+${N.fit.on?`<div class="nt-r">💪 תזכורת אימון ב־${tm('fit','t',N.fit.t)} (רק אם עוד לא התאמנת)</div>`:''}
+${ok?`<button type="button" class="btn ghost full" data-a="ntTest" style="margin-top:6px">שלח התראת בדיקה</button>`:''}`}</div>`}
 function mealsBlock(day){const tot=MEALS.reduce((a,[m])=>a+sum(day.meals[m]).k,0);
  return `<div class="card meal mlist"><h2>הארוחות של היום<span class="sp"></span><span class="kc">${r0(tot)} קק״ל</span></h2><div class="shrow"><button class="pdfb" data-a="share" aria-label="שיתוף מה שאכלתי">📤 שיתוף</button><button class="pdfb" data-a="pdf" aria-label="ייצוא התפריט של היום כ-PDF">📄 PDF</button></div>${MEALS.map(([m,n])=>mealRow(day,m,n)).join('')}</div>`}
 function mealRow(day,m,n){const it=day.meals[m],r=it.length?scoreItems(it,m):null,t=sum(it),open=!!(V.mx&&V.mx[m]);
@@ -11572,7 +11620,7 @@ function freeSave(){const c=FR.cfg;if(!c)return;const d=c.d||today();if(d>today(
  if(c.min>=10)S.fit.log.push({d,t:a[2]==='str'?'s':'c',feel:'ok',lvl:fitLv(),min:c.min});award('x:'+d,10,'אימון');saveDay(d);checkBadges();saveState();
  sfx('coin');closeSheet();render();toast(`נוסף ל${d===today()?'היום':heDate(d,{day:'numeric',month:'numeric'})}: ${a[1]} · ${r0(net+ep)} קק״ל (כולל ${r0(ep)} אפטר-ברנר)`)}
 function freeSPM(c){const a=FACT.find(x=>x[0]===c.id);if(!a)return 0;if(a[3]==='walk')return Math.min(125,Math.max(85,70+8*c.sp));if(a[3]==='run')return Math.min(175,Math.max(140,150+2*(c.sp-8)));return {nordic:105,hike:100,stairs:60,zumba:40,dance:40,step:50,basket:40,soccer:60,tennis:35,padel:30}[c.id]||0}
-function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min,t:Date.now()};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0,st:0,nat0:natNow()};saveState();if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
+function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min,t:Date.now()};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0,st:0,nat0:natNow()};saveState();setTimeout(nWalk,300);if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
 function freeAccum(){const f=S.free;if(!f||!f.run)return;const now=Date.now(),dt=Math.min(6*3600,(now-f.last)/1000);f.kc+=netRate(f.cfg)*dt;f.st=(f.st||0)+freeSPM(f.cfg)*dt/60;const a=FACT.find(x=>x[0]===f.cfg.id);if(a&&a[3]!=='fixed')f.km+=f.cfg.sp*dt/3600;f.last=now}
 function freeSec(){const f=S.free;return f?(f.acc+(f.run?Date.now()-f.run:0))/1000:0}
 function openFreeLive(){clearInterval(FRT);const f=S.free;if(!f)return openFree();const a=FACT.find(x=>x[0]===f.cfg.id),sp=a[3]!=='fixed';
@@ -11587,8 +11635,8 @@ ${sp?`<label class="f"><span>מהירות עכשיו: <b id="flspv">${r1(f.cfg.s
 function freeTick(){const f=S.free;if(!f||!$('#flT')){clearInterval(FRT);return}freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id);
  $('#flT').textContent=fmtHMS(s);$('#flP').style.width=Math.min(100,s/(f.cfg.min*60)*100)+'%';$('#flK').textContent=r0(f.kc);$('#flE').textContent='+'+r0(f.kc*epocF(f.cfg));$('#flR').textContent=r1(netRate(f.cfg)*60);
  $('#flD').textContent=(a[3]!=='fixed'?r1(f.km)+' ק״מ':r1(freeMET(f.cfg))+' MET')+(freeSPM(f.cfg)?' · 👟 '+r0(f.st||0).toLocaleString('he-IL'):'');
- if(s>=f.cfg.min*60&&!f.hit){f.hit=1;sfx('win');toast('הגעת לזמן שתכננת! אפשר להמשיך או לסיים');saveState()}if(Math.floor(s)%20===0)saveState()}
-function freeEnd(save){const f=S.free;if(!f)return;clearInterval(FRT);freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id),ep=f.kc*epocF(f.cfg),min=Math.round(s/60);S.free=null;beatStop();
+ if(s>=f.cfg.min*60&&!f.hit){f.hit=1;sfx('win');toast('הגעת לזמן שתכננת! אפשר להמשיך או לסיים');saveState()}if(Math.floor(s)%20===0)saveState();if(Math.floor(s)%15===0)nWalkLive()}
+function freeEnd(save){const f=S.free;if(!f)return;nWalkOff();clearInterval(FRT);freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id),ep=f.kc*epocF(f.cfg),min=Math.round(s/60);S.free=null;beatStop();
  let SR=null;if(save&&s>=60&&(f.st||0)>=30)SR=addAutoSteps(f.st,f.nat0);
  if(save&&s>=60){const d=today(),day=getDayLocal(d);day.ex.push({n:a[1]+(a[3]!=='fixed'?' · '+r1(f.km)+' ק״מ':' · '+FLVL[f.cfg.lvl][1]),min,k:f.kc+ep,at:Date.now()});
   if(min>=10)S.fit.log.push({d,t:a[2]==='str'?'s':'c',feel:'ok',lvl:fitLv(),min});award('x:'+d,10,'אימון');award('fr:'+d+':'+f.start,20,'אימון הושלם');saveDay(d);checkBadges();
@@ -11639,10 +11687,11 @@ function fitLv(){return Math.min(8,Math.max(1,S.fit.level||1))}
 function fitToday(){return FWEEK[new Date().getDay()]}
 function fitDone(d,t){return S.fit.log.some(x=>x.d===d&&(!t||x.t===t))}
 function fitWeekCount(){const from=addDays(today(),-6);return S.fit.log.filter(x=>x.d>=from&&x.t!=='r').length}
-function sessMin(t,L){const P=FLV[L];if(t==='c')return P.c[0];if(t==='r')return 5;const ex=P.x.reduce((a,x)=>a+(x[2]?x[1]:x[1]*3.5*(x[0]==='lunge'?2:1))+15,0);return Math.round((ex*P.r+P.rest*(P.r-1)+170)/60)}
+function cDur(L){const P=FLV[L],m=+(S.set.cMin||0);if(!m||m===P.c[0])return P.c;return [m,P.c[1]?Math.round(P.c[1]*m/P.c[0]):0]}
+function sessMin(t,L){const P=FLV[L];if(t==='c')return cDur(L)[0];if(t==='r')return 5;const ex=P.x.reduce((a,x)=>a+(x[2]?x[1]:x[1]*3.5*(x[0]==='lunge'?2:1))+15,0);return Math.round((ex*P.r+P.rest*(P.r-1)+170)/60)}
 function buildSession(t){const L=fitLv(),P=FLV[L],st=[];
  if(t==='t')return buildTabata();if(t==='r'){STRETCH.forEach(s=>st.push({n:s[0],d:s[1],sec:s[2],k:'str',fig:s[3]}));return st}
- if(t==='c'){const[min,iv]=P.c;const fast=L>=7?'ריצה קלה':'הליכה מהירה מאוד';const rf=L>=7?'run':'walk';st.push({n:'חימום: הליכה רגילה',d:'מתחילים בקצב נינוח.',sec:180,k:'warm',fig:'walk'});
+ if(t==='c'){const[min,iv]=cDur(L);const fast=L>=7?'ריצה קלה':'הליכה מהירה מאוד';const rf=L>=7?'run':'walk';st.push({n:'חימום: הליכה רגילה',d:'מתחילים בקצב נינוח.',sec:180,k:'warm',fig:'walk'});
   const main=Math.max(5,min-6);if(!iv)st.push({n:'הליכה מהירה',d:'קצב שבו אפשר לדבר אבל לא לשיר. ידיים זזות, צעדים ארוכים.',sec:main*60,k:'main',fig:'walk'});
   else{const rest=Math.max(60,Math.round((main*60-iv*60)/iv));for(let i=0;i<iv;i++){st.push({n:fast+' · '+(i+1)+'/'+iv,d:'דקה אחת בקצב מהיר יותר. נושמים חזק אבל בשליטה.',sec:60,k:'fast',fig:rf});st.push({n:'הליכה מהירה',d:'חוזרים לקצב רגיל ומסדירים נשימה.',sec:rest,k:'main',fig:'walk'})}}
   st.push({n:'שחרור: הליכה איטית',d:'מורידים קצב בהדרגה.',sec:180,k:'cool',fig:'walk'});return st}
@@ -11657,7 +11706,7 @@ function openPreview(t){const L=fitLv(),P=FLV[L],st=buildSession(t),H={warm:'ח�
   if(sec!==last){h+=`<div class="small" style="color:var(--mango-d);font-weight:700;margin:14px 0 2px">${sec}</div>`;last=sec}
   if(ivs.length&&(s.k==='fast'||s.k==='main')){if(ivDone++)return;const w=st.find(x=>x.k==='main');h+=row(ivs.length+' פעמים: דקה '+strip(ivs[0].n.split(' · ')[0])+' + '+strip(w.n),'1:00 + '+fmtS(w.sec));return}
   h+=row(strip(s.n),amt(s))});
- openSheet(`${shTop(FTYPE[t][0]+' · רמה '+L)}<p class="muted" style="margin-top:0">${FTYPE[t][1]} · כ-${sessMin(t,L)} דקות</p>${h}
+ openSheet(`${shTop(FTYPE[t][0]+' · רמה '+L)}<p class="muted" style="margin-top:0">${FTYPE[t][1]} · כ-${sessMin(t,L)} דקות</p>${t==='c'?`<label class="f"><span>משך ההליכה (דקות)</span><div class="seg">${[[0,'לפי רמה · '+P.c[0]],[20],[30],[45],[60]].map(([m,n])=>`<button data-a="cMin" data-m="${m}" class="${(+(S.set.cMin||0)===m||(!S.set.cMin&&!m))?'on':''}">${n||m}</button>`).join('')}</div></label>`:''}${h}
 <div class="btns" style="margin-top:18px"><button class="btn full" data-a="fitStart" data-t="${t}">התחילי אימון</button></div>`)}
 const PL_={st:[],i:0,left:0,run:false,t:0,type:'s'};
 const SPM={walk:{warm:90,cool:85,main:100,fast:110},run:{fast:140},march:95,highmarch:105,runspot:130,buttkick:105,sidestep:85,kneetw:60};
@@ -11678,9 +11727,13 @@ ${nxt?`<p class="small muted" style="text-align:center">הבא: ${nxt.n}${nxt.re
 <p class="small muted" style="text-align:center;margin-top:10px">כאב בחזה, סחרחורת או קוצר נשימה חריג? עוצרים מיד.</p>`);
  if(!s.rep&&PL_.run)runTimer()}
 const fmtS=x=>{x=Math.max(0,Math.round(x));return Math.floor(x/60)+':'+String(x%60).padStart(2,'0')};
-function runTimer(){clearInterval(PL_.t);PL_.t=setInterval(()=>{if(!PL_.run)return;PL_.left--;PL_.act=PL_.act||{};PL_.act[PL_.i]=(PL_.act[PL_.i]||0)+1;const el=$('#plT');if(el)el.textContent=fmtS(PL_.left);if(PL_.left<=3&&PL_.left>0)beep(false);
- if(PL_.left<=0){beep(true);clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()}},1000)}
-function finishWorkout(){clearInterval(PL_.t);PL_.run=false;if(PL_.on){PL_.on=0;beatStop()}let est=0;Object.entries(PL_.act||{}).forEach(([i,sec])=>{est+=sec/60*stepCad(PL_.st[i])});PL_.act={};let SR=null;if(est>=30){SR=addAutoSteps(est,PL_.nat0);PL_.lastSteps=SR}
+function runTimer(){clearInterval(PL_.t);PL_.tLast=Date.now();PL_.t=setInterval(plTick,1000)}
+function plTick(){if(!PL_.run)return;const now=Date.now();let dt=Math.floor((now-(PL_.tLast||now))/1000);if(dt<1)return;PL_.tLast+=dt*1000;const live=dt<=2;PL_.act=PL_.act||{};
+ while(dt-->0){PL_.left--;PL_.act[PL_.i]=(PL_.act[PL_.i]||0)+1;if(live&&PL_.left<=3&&PL_.left>0)beep(false);
+  if(PL_.left<=0){if(live)beep(true);PL_.i++;const n=PL_.st[PL_.i];if(!n){clearInterval(PL_.t);return finishWorkout()}PL_.left=n.sec||0;if(n.rep){clearInterval(PL_.t);PL_.run=false;return showStep()}if(!live)continue;clearInterval(PL_.t);return showStep()}}
+ const el=$('#plT');if(el)el.textContent=fmtS(PL_.left);if(!live&&$('#plT'))showStep()}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&PL_.run)plTick();if(document.hidden){if(S.free&&S.free.run)nWalk();else if(PL_.run)nPlan();ntSync(1)}});
+function finishWorkout(){clearInterval(PL_.t);nWalkOff();PL_.run=false;if(PL_.on){PL_.on=0;beatStop()}let est=0;Object.entries(PL_.act||{}).forEach(([i,sec])=>{est+=sec/60*stepCad(PL_.st[i])});PL_.act={};let SR=null;if(est>=30){SR=addAutoSteps(est,PL_.nat0);PL_.lastSteps=SR}
  openSheet(`${shTop('כל הכבוד!')}<div style="text-align:center"><div style="width:120px;margin:0 auto">${avoki('wow')}</div><h2 style="font:28px var(--disp);margin:6px 0">סיימת את האימון!</h2>${SR?`<div class="card" style="margin:8px 0;background:var(--mango2);border:0"><b>👟 ${SR.est.toLocaleString('he-IL')} צעדים באימון</b><div class="small" style="margin-top:2px">${SR.add?`נוספו ${SR.add.toLocaleString('he-IL')} צעדים למונה היומי`:'הכל כבר נספר בטלפון'}${SR.meas?` · ${SR.meas.toLocaleString('he-IL')} כבר נספרו בטלפון, אז לא ספרתי אותם פעמיים`:''}</div><div class="small muted" style="margin-top:2px">חישוב לפי הזמן שבאמת התאמנת וקצב צעידה סביר (כ-90–110 צעדים לדקה בהליכה)</div></div>`:''}<p class="muted">איך הרגיש? זה עוזר לי להתאים את הרמה.</p></div>
 <div class="seg" style="margin-top:10px"><button data-a="plFeel" data-f="easy">קל מדי</button><button data-a="plFeel" data-f="ok">בדיוק</button><button data-a="plFeel" data-f="hard">קשה מדי</button></div>`);confetti()}
 function logWorkout(t,feel){const d=today(),L=fitLv(),min=t==='t'?Math.round(PL_.st.reduce((a,x)=>a+(x.sec||0),0)/60):sessMin(t,L),met=t==='t'?7:t==='s'?3.8:t==='c'?(L>=7?5.5:4.3):2.3;
@@ -11741,7 +11794,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=70;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=72;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -11861,6 +11914,7 @@ ${S.profile?`<label class="f"><span>משקל התחלתי (ממנו נמדדת �
 <label class="f"><span>קצב ירידה בשבוע</span><div class="seg" data-g="pace">${PACES.map(([v,n])=>`<button type="button" data-a="pick1" data-v="${v}" class="${+p.pace===v?'on':''}">${n}<br><span class="small">${v} ק״ג</span></button>`).join('')}</div></label>
 <label class="f"><span>יעד צעדים יומי</span><select name="sg">${[5000,6000,7000,8000,10000,12000,15000].map(v=>`<option value="${v}" ${v===S.set.stepGoal?'selected':''}>${v.toLocaleString('he-IL')}</option>`).join('')}</select></label>
 <label class="f"><span>יום ארוחת הפינוק</span><select name="cd">${DAYN.map((n,i)=>`<option value="${i}" ${i===S.cheat.day?'selected':''}>${n}</option>`).join('')}</select></label>
+${notifBlock()}
 <label class="f"><span>צלילים ומוזיקה</span><div class="seg"><button type="button" data-a="musTog" class="${S.set.music?'on':''}">מוזיקת רקע</button><button type="button" data-a="sfxTog" class="${S.set.sfx?'on':''}">צלילי פעולות</button></div></label>
 ${S.set.sfx?`<label class="f"><span>צליל לחיצה · הקש לשמיעה</span><div class="seg wrap">${TAPS.concat([['none','בלי']]).map(([k,n])=>`<button type="button" data-a="tapS" data-k="${k}" class="${(S.set.tapS||'bubble')===k?'on':''}">${n}</button>`).join('')}</div></label>`:''}
 ${(window.KalilNative&&KalilNative.appVersion)?`<label class="f"><span>סוג המוזיקה</span><div class="seg"><button type="button" data-a="synthTog" class="${!S.set.synth?'on':''}">Lo-fi אמיתי (6 שירים)</button><button type="button" data-a="synthTog" class="${S.set.synth?'on':''}">מנגינה מסונתזת</button></div></label><div class="btns" style="margin-top:6px"><button type="button" class="btn ghost" data-a="musicNext">השיר הבא</button></div><p class="small muted" style="margin:4px 0 0">ברקע: שירי Lo-fi רגועים. באימונים: ${wkSet().length||8} שירים אנרגטיים מתוך מאגר של ${(PLM.ok?PLM.wk:((S.plCache&&S.plCache.workout)||[])).filter(Boolean).length||16}. הסט מתחלף כל ${PLM.rot} ימים, ותמיד בסדר אקראי. מקור: Open Lo-Fi (רישיון CC0, נחלת הכלל). השירים נטענים מהאינטרנט, ובלי חיבור מתנגנת המנגינה המסונתזת.</p>`:''}
@@ -11970,6 +12024,10 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  pdf:()=>exportPdf(V.date),
  fStage:b=>openFStage(b.dataset.i),
+ ntTog:b=>{const N=ntSet(),k=b.dataset.k;N[k].on=N[k].on?0:1;saveState();if(N[k].on&&ntApk()&&!ntOk())KalilNative.notifAsk();ntSync(1);if(k==='walk')S.free?nWalk():nWalkOff();openProfile()},
+ ntAsk:()=>{try{KalilNative.notifAsk()}catch(e){}},
+ ntTest:()=>{try{KalilNative.notifyNow('🥑 קליל','ככה ייראו ההתראות. בהצלחה היום!');toast('נשלחה התראת בדיקה')}catch(e){}},
+ cMin:b=>{S.set.cMin=+b.dataset.m||0;saveState();openPreview('c')},
  supp:b=>openSupp(b.dataset.m,+b.dataset.i),
  finfo:b=>openFInfo(foodById(b.dataset.id)),
  finfoE:b=>{const e=(getDayLocal(V.date).meals[b.dataset.m]||[])[+b.dataset.i];if(e)openFInfo(entFood(e),e)},
@@ -12013,7 +12071,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  fday:b=>{FR.cfg.d=b.dataset.d;const i=$('#fdate');if(i)i.value=b.dataset.d;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},fcat:b=>{FR.cat=b.dataset.c;FR.q='';const q=$('#fq');if(q)q.value='';document.querySelectorAll('#fchips .chip').forEach(x=>x.classList.toggle('on',x===b));renderFList()},
  fpick:b=>openFreeCfg(b.dataset.id),flvl:b=>{FR.cfg.lvl=+b.dataset.i;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},
  fmin:b=>{FR.cfg.min=+b.dataset.m;const mi=$('#fminIn');if(mi)mi.value=b.dataset.m;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},freeStart:freeStart,
- freePause:()=>{const f=S.free;if(!f)return;freeAccum();if(f.run){f.acc+=Date.now()-f.run;f.run=null}else{f.run=Date.now();f.last=Date.now()}saveState();const b=$('#flPB');if(b)b.textContent=f.run?'השהה':'המשך'},
+ freePause:()=>{const f=S.free;if(!f)return;freeAccum();if(f.run){f.acc+=Date.now()-f.run;f.run=null}else{f.run=Date.now();f.last=Date.now()}saveState();nWalk();const b=$('#flPB');if(b)b.textContent=f.run?'השהה':'המשך'},
  fllvl:b=>{const f=S.free;if(!f)return;freeAccum();f.cfg.lvl=+b.dataset.i;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
  freeEnd:()=>freeEnd(true),freeCancel:()=>freeEnd(false),
  wbig:openWBig,wbR:b=>{WB.r=b.dataset.r;WB.sel=-1;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));wbDraw()},
@@ -12034,7 +12092,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  tbGentle:()=>{Object.assign(S.tab,{work:20,rest:20,rounds:6,sets:1,setRest:60,ex:['chair','wallpu','bridge','calf']});saveState();openTabata()},
  tbStart:()=>{if(!S.tab.ex.length)return toast('בחרי לפחות תרגיל אחד');saveState();openWorkout('t')},
  fitGo:b=>openPreview(b.dataset.t),fitStart:b=>openWorkout(b.dataset.t),plNext:()=>{clearInterval(PL_.t);PL_.i++;const n=PL_.st[PL_.i];if(!n)return finishWorkout();PL_.left=n.sec||0;showStep()},
- plToggle:()=>{PL_.run=!PL_.run;const b=$('#plTog');if(b)b.textContent=PL_.run?'השהה':'המשך';if(PL_.run)runTimer();else clearInterval(PL_.t)},
+ plToggle:()=>{PL_.run=!PL_.run;const b=$('#plTog');if(b)b.textContent=PL_.run?'השהה':'המשך';if(PL_.run){runTimer();nPlan()}else{clearInterval(PL_.t);nWalkOff()}},
  plFeel:b=>{logWorkout(PL_.type,b.dataset.f);closeSheet();render();toast(b.dataset.f==='hard'?'נרשם. נשמור על הקצב.':b.dataset.f==='easy'?'מעולה! בשקילה הבאה נשקול לעלות רמה':'אימון נרשם. כל הכבוד!')},
  fitLvl:b=>{S.fit.level=Math.min(8,Math.max(1,fitLv()+ +b.dataset.d));S.fit.lvlAt=today();saveState();render();toast('רמת אימון: '+fitLv())},
  splashGo:hideSplash,
@@ -12109,7 +12167,7 @@ function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');i
 initSplash();
 setTimeout(()=>{try{const d=today();if(S.fixC!==d&&d==='2026-11-26'){S.fixC=d;const L=S.fit.log.filter(z=>z.d===d&&z.t==='c'&&!z.as);if(L.length){const day=getDayLocal(d);if(!day.autoC){const st=Math.round(L.reduce((a,z)=>a+(z.min||15),0)*95);recompSteps(day);day.stepsExtra=(day.stepsExtra||0)+st;day.autoC=1;recompSteps(day);saveDay(d);render();setTimeout(()=>showUndoMsg('הוספתי '+st.toLocaleString('he-IL')+' צעדים מהאימון האירובי של הבוקר 👟'),1500)}}saveState()}}catch(e){}},2500);
 {const f=$('#chatFab .cfa');if(f)f.innerHTML=avoki('happy')}
-window.__kl=()=>({fHead,FKB,FBD,fInfoData,fBody,allFoods,phSaveOne,PH,phAll,phPut,shareText,pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
+window.__kl=()=>({openFreeCfg,freeStart,ntBuild,PL_,openWorkout,plTick,fHead,FKB,FBD,fInfoData,fBody,allFoods,phSaveOne,PH,phAll,phPut,shareText,pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
 function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;const until=Date.now()+700,blk=e=>{if(Date.now()<until){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}};['click','pointerup','mouseup','touchend'].forEach(t=>document.addEventListener(t,blk,true));setTimeout(()=>['click','pointerup','mouseup','touchend'].forEach(t=>document.removeEventListener(t,blk,true)),750);sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
