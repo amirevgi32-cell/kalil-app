@@ -9526,15 +9526,31 @@ function openFStage(i){i=Math.max(0,Math.min(STAGES.length-1,+i));const F=S.fast
  openSheet(`${shTop('שלבי הצום')}<span class="tag">שלב ${i+1} מתוך ${STAGES.length} · מ־${x[0]} שעות</span><h2 style="font:26px/1.2 var(--disp);margin:10px 0 6px">${x[1]}</h2>${stat}
 <p style="font-size:16.5px;margin:14px 0 8px">${x[3]}</p><p style="margin:0;color:var(--mango-d);font-weight:700">💡 ${x[4]}</p>
 <div class="fsnav">${i>0?`<button class="btn ghost" data-a="fStage" data-i="${i-1}">→ ${STAGES[i-1][1]}</button>`:''}${nx?`<button class="btn ghost" data-a="fStage" data-i="${i+1}">${nx[1]} ←</button>`:''}</div>`)}
+const FS={day:0};
+const dtl=ts=>{const d=new Date(ts);const z=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+'T'+z(d.getHours())+':'+z(d.getMinutes())};
+function fsHint(){const el=$('#fsHint');if(!el)return;const v=($('#fStart')||{}).value;if(!v){el.textContent='';return}const[H,M]=v.split(':').map(Number),d=new Date();d.setDate(d.getDate()-(FS.day||0));d.setHours(H,M,0,0);
+ const diff=(d-Date.now())/36e5,g=$('#fsGo');if(diff>0.01){el.textContent=`⏰ הצום יתחיל בעוד ${fmtH(diff)} ויסתיים ב־${hm(new Date(d.getTime()+S.fast.plan*36e5))}`;if(g)g.innerHTML=IC.moon+'תזמן צום'}else{el.textContent=diff<-0.02?`צמת כבר ${fmtH(-diff)} · סיום ב־${hm(new Date(d.getTime()+S.fast.plan*36e5))}`:'';if(g)g.innerHTML=IC.moon+'התחילי צום'}}
+document.addEventListener('input',e=>{if(e.target&&e.target.id==='fStart')fsHint()});
+function openFastEdit(){const F=S.fast;openSheet(`${shTop('עריכת זמני הצום')}<label class="f"><span>תחילת הצום</span><input type="datetime-local" id="feS" value="${dtl(F.start)}"></label>
+<label class="f"><span>יעד (שעות)</span><div class="seg wrap">${FPLANS.map(([x,n])=>`<button type="button" data-a="fePlan" data-h="${x}" class="${F.plan===x?'on':''}">${n}</button>`).join('')}</div></label>
+<div class="btns"><button class="btn full" data-a="fastEditSave">שמרי</button></div>`)}
+function openFastRetro(){const now=Date.now(),e0=now-2*36e5,s0=e0-S.fast.plan*36e5;openSheet(`${shTop('הוספת צום שכבר עשיתי')}<p class="small muted" style="margin-top:0">הצום יירשם בהיסטוריה, עם הנקודות וחוות הדעת.</p>
+<label class="f"><span>התחלתי לצום</span><input type="datetime-local" id="frS" value="${dtl(s0)}"></label><label class="f"><span>סיימתי (הארוחה הראשונה)</span><input type="datetime-local" id="frE" value="${dtl(e0)}"></label>
+<label class="f"><span>היעד היה</span><div class="seg wrap">${FPLANS.map(([x,n])=>`<button type="button" data-a="frPlan" data-h="${x}" class="${S.fast.plan===x?'on':''}">${n}</button>`).join('')}</div></label>
+<div class="btns"><button class="btn full" data-a="fastRetroSave">שמרי צום</button></div>`);FS.rp=S.fast.plan}
 function viewFast(){const F=S.fast,on=!!F.start,h=fastElapsed(),g=F.plan,p=Math.min(1,h/g),R=46,C=2*Math.PI*R,st=stageAt(h);
  const NP=on?nextPlanned():null;const endT=on?new Date(F.start+g*36e5):null,done=F.hist.filter(x=>x.h>=x.g).length,pl=FPLANS.find(x=>x[0]===g)||FPLANS[2];
  return `<div class="hero"><div class="top"><h1>צום לסירוגין</h1><span class="chipf" style="margin:0">${IC.moon} ${done} צומות</span></div>
 ${NP?`<div class="chipf" style="margin:6px auto 0;background:var(--mango2)">🍽️ הארוחה הבאה מתוכננת ל-${hhmm(NP.at)} · ${r1((NP.at-F.start)/36e5)} שעות צום${(NP.at-F.start)/36e5>=g?' ✓':''}</div>`:''}<div class="fring"><svg viewBox="0 0 100 100"><defs><linearGradient id="fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a65"/><stop offset="1" stop-color="#2ec4a0"/></linearGradient></defs><circle cx="50" cy="50" r="${R}" fill="none" stroke="rgba(47,58,61,.08)" stroke-width="7"/>
 <circle id="fArc" cx="50" cy="50" r="${R}" fill="none" stroke="url(#fg)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 50 50)" style="filter:drop-shadow(0 0 5px #ff8a65)"/>
 </svg>${STAGES.map((s,i)=>[s,i]).filter(([s])=>s[0]<g).map(([s,i])=>{const a=s[0]/g*2*Math.PI-Math.PI/2,cls=on?(i===st?'now':h>=s[0]?'ok':''):'';return `<button class="fdot ${cls}" data-a="fStage" data-i="${i}" style="left:${r1(50+R*Math.cos(a))}%;top:${r1(50+R*Math.sin(a))}%" aria-label="${s[1]} · מ-${s[0]} שעות">${on&&h>=s[0]&&i!==st?'✓':s[0]}</button>`}).join('')}
-<div class="c">${on?`<span class="small muted">צמת כבר</span><span class="t" id="fT">${fmtH(h)}</span><span class="small" id="fR" style="color:var(--lime)">${h>=g?'יעד הושג!':'נותרו '+fmtH(g-h)}</span>`:`<span class="small muted">התוכנית שלך</span><span class="t">${pl[1]}</span><span class="small muted">${g} שעות צום</span>`}</div></div>
-${on?`<p style="text-align:center;margin:8px 0 0">סיום מתוכנן: <b>${hm(endT)}</b>${endT.toDateString()!==new Date().toDateString()?' מחר':''} · עכשיו: <b>${STAGES[st][1]}</b></p><div class="btns"><button class="btn pink full" data-a="fastEnd">סיימי צום</button></div>`
-:`<label class="f" style="max-width:260px;margin:10px auto 0;text-align:center"><span>התחלתי לצום בשעה</span><input type="time" id="fStart" value="${hm(new Date())}"></label><div class="btns"><button class="btn full" data-a="fastStart">${IC.moon}התחילי צום</button></div>`}</div>
+<div class="c">${on&&F.start>Date.now()?`<span class="small muted">הצום יתחיל בעוד</span><span class="t">${fmtH((F.start-Date.now())/36e5)}</span><span class="small" style="color:var(--mango-d)">בשעה ${hm(new Date(F.start))}</span>`:on?`<span class="small muted">צמת כבר</span><span class="t" id="fT">${fmtH(h)}</span><span class="small" id="fR" style="color:var(--lime)">${h>=g?'יעד הושג!':'נותרו '+fmtH(g-h)}</span>`:`<span class="small muted">התוכנית שלך</span><span class="t">${pl[1]}</span><span class="small muted">${g} שעות צום</span>`}</div></div>
+${on?`<p style="text-align:center;margin:8px 0 0">סיום מתוכנן: <b>${hm(endT)}</b>${endT.toDateString()!==new Date().toDateString()?' מחר':''} · עכשיו: <b>${STAGES[st][1]}</b></p><div class="btns"><button class="btn pink full" data-a="fastEnd">${F.start>Date.now()?'בטל צום מתוזמן':'סיימי צום'}</button></div><div style="text-align:center"><button class="chipf" data-a="fastEditOpen" style="margin-top:4px">✏️ עריכת זמני הצום</button></div>`
+:`<label class="f" style="max-width:300px;margin:10px auto 0;text-align:center"><span>שעת תחילת הצום</span><input type="time" id="fStart" value="${hm(new Date())}"></label>
+<div class="seg" style="max-width:300px;margin:6px auto 0">${[['0','היום'],['1','אתמול']].map(([d,n])=>`<button type="button" data-a="fsDay" data-d="${d}" class="${(FS.day||0)==d?'on':''}">${n}</button>`).join('')}</div>
+<p class="small" id="fsHint" style="text-align:center;margin:6px 0 0;color:var(--mango-d)"></p>
+<div class="btns"><button class="btn full" data-a="fastStart" id="fsGo">${IC.moon}התחילי צום</button></div>
+<div style="text-align:center"><button class="chipf" data-a="fastRetro" style="margin-top:4px">➕ הוספת צום שכבר עשיתי</button></div>`}</div>
 <div class="wrap"><div class="card"><h2>בחרי תוכנית</h2><div class="seg">${FPLANS.map(([x,n,d])=>`<button data-a="fplan" data-h="${x}" class="${g===x?'on':''}"><b>${n}</b><br><span class="small">${d}</span></button>`).join('')}</div>
 ${g>=20?'<p class="small" style="color:var(--gold);margin-bottom:0">תוכנית מתקדמת. מתאימה רק למי שכבר מורגל ב-16:8, ובהתייעצות עם רופא אם יש בעיה רפואית.</p>':''}</div>
 ${on?`<div class="card nowst"><span class="tag" style="background:var(--pink2);color:var(--pink)">עכשיו בגוף שלך · ${r1(h)} שעות</span><h2 style="font-size:26px;margin:8px 0 4px">${STAGES[st][1]}</h2><p style="margin:0 0 8px;font-size:16px">${STAGES[st][3]}</p><p style="margin:0;color:var(--mango-d);font-weight:700">${STAGES[st][4]}</p>
@@ -11930,7 +11946,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=85;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=86;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -12160,6 +12176,14 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  pdf:()=>exportPdf(V.date),
  fStage:b=>openFStage(b.dataset.i),
+ fsDay:b=>{FS.day=+b.dataset.d;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));fsHint()},
+ fastEditOpen:()=>openFastEdit(),
+ fePlan:b=>{S.fast.plan=+b.dataset.h;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
+ fastEditSave:()=>{const v=($('#feS')||{}).value;const t=v?new Date(v).getTime():NaN;if(isNaN(t))return toast('בחרי תאריך ושעה');if(t<Date.now()-72*36e5)return toast('אפשר עד 3 ימים אחורה');S.fast.start=t;saveState();closeSheet();render();ntSync(1);toast('זמני הצום עודכנו ✓')},
+ fastRetro:()=>openFastRetro(),
+ frPlan:b=>{FS.rp=+b.dataset.h;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
+ fastRetroSave:()=>{const s1=new Date(($('#frS')||{}).value).getTime(),e1=new Date(($('#frE')||{}).value).getTime();if(isNaN(s1)||isNaN(e1))return toast('בחר שעות התחלה וסיום');if(e1<=s1)return toast('הסיום צריך להיות אחרי ההתחלה');if(e1>Date.now()+60000)return toast('הסיום לא יכול להיות בעתיד');const h=(e1-s1)/36e5;if(h>72)return toast('צום ארוך מ־72 שעות לא נרשם');
+  const F=S.fast,ent={s:s1,e:e1,h:r1(h),g:FS.rp||F.plan,retro:1};F.hist.push(ent);F.hist.sort((a,b)=>b.e-a.e);F.hist=F.hist.slice(0,60);if(h>=ent.g){award('fd:'+ymd(new Date(e1)),25,'צום הושלם!');confetti()}saveState();checkBadges();saveState();closeSheet();render();setTimeout(()=>openFastReview(ent,'manual'),300)},
  flSp:b=>{const f=S.free;if(!f)return;freeAccum();const a=FACT.find(x=>x[0]===f.cfg.id),mn=a[3]==='walk'?2:a[3]==='bike'?8:5,mx=a[3]==='walk'?8:a[3]==='bike'?40:20;f.cfg.sp=Math.min(mx,Math.max(mn,Math.round((f.cfg.sp+ +b.dataset.d)*2)/2));saveState();const v=$('#flspv');if(v)v.textContent=r1(f.cfg.sp)+' קמ״ש';const p=$('#flpace');if(p)p.textContent=paceTxt(f.cfg.sp);nWalk()},
  flAuto:(b,e)=>{e&&e.preventDefault&&e.preventDefault();const f=S.free;if(!f)return;freeAccum();if(f.auto){f.auto=0}else{const sv=freeSens();if(sv==null)return toast('אין גישה לחיישן הצעדים');f.auto=1;f.sB=sv;f.sAcc=f.st||0;f.stM=f.st||0;f.win=[[Date.now(),f.stM]]}saveState();openFreeLive()},
  wbody:()=>openWBody(),
@@ -12272,8 +12296,8 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
   document.querySelectorAll('#opts .opt').forEach((x,j)=>{x.disabled=true;if(j===L.a)x.classList.add('ok');else if(j===i)x.classList.add('no')});$('#lx').classList.remove('hide');
   if(ok){award('les:'+d,20,'תשובה נכונה!');confetti()}else award('les:'+d,5,'למדת משהו חדש');saveState();checkBadges();saveState();render()},
  fplan:b=>{S.fast.plan=+b.dataset.h;S.fast.on=true;saveState();render()},
- fastStart:()=>{const v=($('#fStart')||{}).value;const d=new Date();if(v){const[H,M]=v.split(':').map(Number);d.setHours(H,M,0,0);if(d>new Date())d.setDate(d.getDate()-1)}
-  sfx('fast');S.fast.start=d.getTime();S.fast.on=true;saveState();render();toast('הצום התחיל! בהצלחה');try{navigator.vibrate&&navigator.vibrate([30,60,30])}catch(e){}},
+ fastStart:()=>{const v=($('#fStart')||{}).value;const d=new Date();if(v){const[H,M]=v.split(':').map(Number);d.setDate(d.getDate()-(FS.day||0));d.setHours(H,M,0,0)}const fut=d.getTime()>Date.now()+60000;
+  sfx('fast');S.fast.start=d.getTime();S.fast.on=true;FS.day=0;saveState();render();toast(fut?'הצום מתוזמן ל־'+hm(d)+' ⏰':'הצום התחיל! בהצלחה');try{navigator.vibrate&&navigator.vibrate([30,60,30])}catch(e){}},
  fastEnd:()=>fastFinish('manual'),fastFoodEnd:()=>{closeSheet();fastFinish('food',FX_.endAt)},fastUndo:()=>{const u=FX_.undo;if(!u)return closeSheet();S.fast.start=u.prev;S.fast.hist.shift();FX_.undo=null;saveState();closeSheet();render();toast('הצום ממשיך 💪')},
  exAdd:openEx,exq:b=>{const el=$('#exM');el.value=Math.max(5,(+el.value||0)+ +b.dataset.d);exPv()},
  exSave:()=>{const t=EXS[+$('#exT').value],m=+$('#exM').value||0;if(m<=0)return;const day=getDayLocal(V.date);day.ex.push({n:t[0],min:m,k:t[1]*curW()*m/60,at:Date.now()});award('x:'+V.date,10,'אימון');saveDay(V.date);checkBadges();closeSheet();render()},
