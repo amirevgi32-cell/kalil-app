@@ -9551,7 +9551,7 @@ ${isT?questCard(day)+cheatCard()+lessonCard():''}
 
 ${waterCard(day)}
 <div class="card ex"><h2 style="color:var(--blue)">פעילות גופנית <span class="sp"></span><button class="btn ghost" data-a="exAdd" style="min-height:40px">${IC.plus}הוסף</button></h2>
-${day.ex.length?day.ex.map((e,i)=>`<div class="meal"><div class="row"><div class="nm">${esc(e.n)}<small>${e.min} דק׳</small></div><span class="kc">−${r0(e.k)}</span><button class="del" data-a="exDel" data-i="${i}" aria-label="מחיקה">${IC.trash}</button></div></div>`).join(''):'<div class="empty">קלוריות שתשרוף יתווספו לתקציב של היום.</div>'}</div>${credit()}</div>`}
+${day.ex.length?day.ex.map((e,i)=>`<div class="meal"><div class="row"><div class="nm">${esc(e.n)}<small>${e.min} דק׳</small></div><span class="kc">−${r0(e.k)}</span><button class="feye" data-a="exEye" data-i="${i}" aria-label="מה עבר על הגוף">👁️</button><button class="del" data-a="exDel" data-i="${i}" aria-label="מחיקה">${IC.trash}</button></div></div>`).join(''):'<div class="empty">קלוריות שתשרוף יתווספו לתקציב של היום.</div>'}</div>${credit()}</div>`}
 function pdfHtml(ds){const day=getDayLocal(ds),c=calc(),t=dayTotals(day),B=c.budget+exKcal(day)+cheatBonus(ds),p=S.profile||{},sc=(()=>{try{return dScore(ds)}catch(e){return null}})();
  const f=x=>r0(x).toLocaleString('he-IL'),scv=sc&&t.n?sc.s:'';
  const meals=MEALS.map(([m,n])=>{const it=day.meals[m]||[];if(!it.length)return '';const s=sum(it),ats=it.filter(e=>e.at).map(e=>e.at),mt=ats.length?hhmm(Math.min(...ats)):'',pl=it.some(e=>e.plan);
@@ -9946,6 +9946,18 @@ function pwAuto(n){n=n||0;if(n>90||!pwNeeded())return;const key='kl_pw',last=+(l
  if($('#splash')||$('#sheet').classList.contains('open')||(UPD.info&&UPD.info.apk>((()=>{try{const v=KalilNative.appVersion();return typeof v==='string'&&v[0]==='{'?JSON.parse(v).apk:+v}catch(e){return 99}})())))return setTimeout(()=>pwAuto(n+1),2000);
  localStorage.setItem(key,Date.now());openPerm()}
 setTimeout(pwAuto,3500);
+function exKindOf(n){const nm=String(n||'').split(' · ')[0];const a=FACT.find(x=>x[1]===nm)||FACT.find(x=>nm.includes(x[1]));
+ if(/מתיח|יוגה|פילאטיס/.test(nm))return {k:'stretch',a};if(/כוח|משקולות|משקל גוף|TRX|קטלבל|סירקט|קרוספיט/.test(nm))return {k:'strength',a};if(/HIIT|טאבאטה|אינטרוול|ספינינג|אגרוף|קיקבוקס|זומבה|קפיצה/.test(nm))return {k:'hiit',a};
+ if(a){const id=a[0],c=a[2];if(c==='str')return {k:'strength',a};if(c==='sport')return {k:'hiit',a};if(/yoga|pilat|stretch/.test(id))return {k:'stretch',a}}return {k:'cardio',a}}
+function openExBody(i){const day=getDayLocal(V.date),e=(day.ex||[])[i];if(!e)return;const K=exKindOf(e.n),T=WBT[K.k],m=+e.min||0;
+ const lab=x=>x[1]>=9999?`${x[0]}+ דק׳`:`${x[0]}–${x[1]} דק׳`,done=T.filter(x=>x[0]<m),fat=K.k==='cardio'&&m>=20,ep=K.k==='hiit'?.12:K.k==='strength'?.1:.06;
+ let el=$('#finfo');if(!el){openFInfo({n:'',k:0,p:0,c:0,f:0,fi:0,s:0,cat:'veg'});el=$('#finfo')}
+ el.innerHTML=`<div class="fi-box" role="dialog" aria-modal="true"><div class="fi-h"><span class="dot" style="background:var(--blue)"></span><div><b>👁️ ${esc(e.n)}</b><small>${m} דק׳ · 🔥 ${r0(e.k)} קק״ל${e.at?' · '+hhmm(e.at):''}</small></div></div>
+ <div class="fi-s good"><b>✅ מה השגת באימון הזה</b><p>${{cardio:`הלב והריאות עבדו ${m} דקות ברצף${fat?', ועברת את רף ה־20 דקות שבו חלק גדול מהדלק מגיע משומן':''}. השרירים משכו סוכר מהדם, ולכן גם הארוחה הבאה תשפיע פחות על הסוכר.`,strength:`השרירים קיבלו אות לבנייה ולשמירה – בדיוק מה שמונע איבוד שריר בזמן ירידה במשקל. רגישות השרירים לאינסולין גבוהה עכשיו ל־24–48 שעות.`,hiit:`פרצי מאמץ שמעלים מהר את הכושר האירובי ומפעילים אפטר־ברנר חזק במיוחד.`,stretch:`מערכת העצבים נרגעה, טווח התנועה השתפר והמתח בשרירים ירד.`}[K.k]}</p></div>
+ <div class="fi-s body"><b>🧬 השלבים שהגוף עבר</b>${done.map((x,j)=>`<p><b style="display:inline;color:#2d4f8a">${lab(x)} · ${x[2]}</b><br>${x[3]}</p>`).join('')}</div>
+ <div class="fi-s"><b>🔥 אחרי האימון (אפטר־ברנר)</b><p>הגוף ממשיך לשרוף מעט יותר מהרגיל גם אחרי הסיום – בערך ${r0(e.k*ep)} קק״ל נוספות בשעות הקרובות – כדי למלא מאגרים, לקרר את הגוף ולתקן את השרירים.</p></div>
+ <div class="fi-s"><b>💡 מה עכשיו</b><p>${{cardio:'מים, ובארוחה הבאה חלבון וירקות. הליכה קלה מחר עוזרת להתאוששות.',strength:'חלבון בארוחה הבאה (25–40 ג׳), מים ושינה טובה – שם השריר נבנה. מחר מנוחה לאותם שרירים או הליכה.',hiit:'מים, חלבון ופחמימה מלאה בארוחה הבאה. מחר אימון קל או מנוחה.',stretch:'מצוין לפני השינה. אפשר לחזור על זה כל יום.'}[K.k]}</p></div>
+ <button class="btn full" data-x="1" style="margin-top:12px">סגור</button></div>`;el.classList.add('open');sfx('tap')}
 function mealsBlock(day){const tot=MEALS.reduce((a,[m])=>a+sum(day.meals[m]).k,0);
  return `<div class="card meal mlist"><h2>הארוחות של היום<span class="sp"></span><span class="kc">${r0(tot)} קק״ל</span></h2><div class="shrow"><button class="pdfb" data-a="share" aria-label="שיתוף מה שאכלתי">📤 שיתוף</button><button class="pdfb" data-a="pdf" aria-label="ייצוא התפריט של היום כ-PDF">📄 PDF</button></div>${MEALS.map(([m,n])=>mealRow(day,m,n)).join('')}</div>`}
 function mealRow(day,m,n){const it=day.meals[m],r=it.length?scoreItems(it,m):null,t=sum(it),open=!!(V.mx&&V.mx[m]);
@@ -11874,7 +11886,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=80;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=81;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -12107,6 +12119,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  flSp:b=>{const f=S.free;if(!f)return;freeAccum();const a=FACT.find(x=>x[0]===f.cfg.id),mn=a[3]==='walk'?2:a[3]==='bike'?8:5,mx=a[3]==='walk'?8:a[3]==='bike'?40:20;f.cfg.sp=Math.min(mx,Math.max(mn,Math.round((f.cfg.sp+ +b.dataset.d)*2)/2));saveState();const v=$('#flspv');if(v)v.textContent=r1(f.cfg.sp)+' קמ״ש';const p=$('#flpace');if(p)p.textContent=paceTxt(f.cfg.sp);nWalk()},
  flAuto:(b,e)=>{e&&e.preventDefault&&e.preventDefault();const f=S.free;if(!f)return;freeAccum();if(f.auto){f.auto=0}else{const sv=freeSens();if(sv==null)return toast('אין גישה לחיישן הצעדים');f.auto=1;f.sB=sv;f.sAcc=f.st||0;f.stM=f.st||0;f.win=[[Date.now(),f.stM]]}saveState();openFreeLive()},
  wbody:()=>openWBody(),
+ exEye:b=>openExBody(+b.dataset.i),
  ntTog:b=>{const N=ntSet(),k=b.dataset.k;N[k].on=N[k].on?0:1;saveState();if(N[k].on&&ntApk()&&!ntOk())KalilNative.notifAsk();ntSync(1);if(k==='walk')S.free?nWalk():nWalkOff();if(k==='steps')dayN();openProfile()},
  ntUpd:()=>{toast('מוריד את העדכון…');try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){toast('לא הצלחתי, נסה דרך בדיקת עדכונים')}},
  pwOpen:()=>openPerm(),
