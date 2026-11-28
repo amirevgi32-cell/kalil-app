@@ -1,7 +1,7 @@
 {
- "html": 80,
+ "html": 81,
  "apk": 14,
  "name": "1.9.4",
- "notes": "בהליכה האוטומטית מוצג עכשיו כמה צעדים החיישן ספר באימון, כדי לראות שהכל נמדד.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/dcc2cb0432f708405d3c378269ae200ecb7a5f94/index.html"
+ "notes": "חדש: 👁️ ליד כל פעילות שביצעת – מה השגת באימון, כל השלבים שהגוף עבר לפי משך האימון, כמה אפטר-ברנר צפוי, ומה כדאי לעשות עכשיו להתאוששות.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/dcd5e038ccf697124540b4ac1f9093c3c4a8e6d8/index.html"
 }
