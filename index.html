@@ -9907,7 +9907,7 @@ function ntBuild(){const N=ntSet(),out=[],now=Date.now(),t=today(),nm=(S.profile
    MEALS.forEach(([m,n])=>(day.meals[m]||[]).forEach(e=>{if(e.plan&&e.at>now)out.push({at:e.at,t:'🍽️ הגיע הזמן לארוחה שתכננת',x:`${n}: ${e.n}`,id:121})}))}}
  if(N.fit.on){for(let k=0;k<3;k++){const d=addDays(t,k),at=atTime(d,N.fit.t);if(at<=now)continue;const day=getDayLocal(d);if((day.ex||[]).length||fitDone(d))continue;
    out.push({at,t:'💪 זמן לאימון',x:'עוד לא התאמנת היום. 20–30 דקות הליכה או אימון כוח מהתוכנית?',id:130})}}
- const F=[];if(N.fast.on&&S.fast&&S.fast.start){const st=S.fast.start,g=S.fast.plan;for(let h=4;h<=Math.max(g+8,24);h+=4){const at=st+h*36e5;if(at<=now||h>48)continue;const sg=STAGES.filter(x=>x[0]<=h).pop();
+ const F=[];if(N.fast.on&&S.fast&&S.fast.start){const st=S.fast.start,g=S.fast.plan;if(st>now)F.push({at:st,t:'🌙 הצום התחיל',x:`יעד: ${g} שעות · סיום ב־${hhmm(st+g*36e5)}. בהצלחה!`,id:142});for(let h=4;h<=Math.max(g+8,24);h+=4){const at=st+h*36e5;if(at<=now||h>48)continue;const sg=STAGES.filter(x=>x[0]<=h).pop();
    F.push({at,t:`⏳ ${h} שעות צום${h>=g?' 🎉':''}`,x:h<g?`שלב: ${sg[1]}. עוד ${g-h} שעות ליעד (${hhmm(st+g*36e5)}).`:h===g?`הגעת ליעד ${g} שעות! ${sg[1]}. כל הכבוד.`:`עברת את היעד ב־${h-g} שעות. שלב: ${sg[1]}.`,id:140})}
   const ga=st+g*36e5;if(ga>now&&g%4)F.push({at:ga,t:`🎉 הגעת ליעד הצום – ${g} שעות!`,x:'כל הכבוד! כשתאכל, רשום את הארוחה והצום ייסגר.',id:141})}
  return {r:out.sort((a,b)=>a.at-b.at).slice(0,200),f:F}}
@@ -11946,7 +11946,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=87;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=88;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
