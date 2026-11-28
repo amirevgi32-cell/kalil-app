@@ -1,7 +1,7 @@
 {
- "html": 82,
- "apk": 14,
- "name": "1.9.4",
- "notes": "נעילת הקוד: מעכשיו האפליקציה ננעלת רק אחרי שעתיים בלי שימוש, ולא בכל יציאה.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/c18bd7d8acffb6d0b6920f3b56e810c882a38f5f/index.html"
+ "html": 83,
+ "apk": 15,
+ "name": "1.9.5",
+ "notes": "חדש: בהליכה ובריצה הטלפון מודד עליות וירידות (בברומטר המובנה), וכל מטר עלייה מוסיף קלוריות לחישוב – גם כשהמסך נעול. העלייה המצטברת נשמרת ביומן האימון.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/c7e159dc03fedca8fe803b6cbd3424a95ee503c5/index.html"
 }
