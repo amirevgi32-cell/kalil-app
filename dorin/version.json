@@ -1,7 +1,7 @@
 {
- "html": 75,
+ "html": 76,
  "apk": 14,
  "name": "1.9.4",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/c27883f836e1a0dec9afb3f272846c40d370a744/dorin/index.html",
- "notes": "חדש: באימון יש כפתור 👁️ \"מה קורה בגוף עכשיו\" – מסביר מה קורה בגוף בכל פרק זמן של האימון (הליכה/ריצה, כוח, HIIT, מתיחות), מסמן איפה אתה עכשיו ומה מגיע בהמשך."
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/5c50e44e16931c6081a95fbc4aa6ecff79998348/dorin/index.html",
+ "notes": "בפרופיל ← התראות: מצב ההרשאה, גרסת האפליקציה, כפתור \"הצג עכשיו את שורת הצעדים\", וכפתור התקנה אם צריך עדכון אפליקציה."
 }
