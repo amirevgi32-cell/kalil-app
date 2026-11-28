@@ -9877,13 +9877,14 @@ setTimeout(dayN,2500);
 window.__notifOk=()=>{render();if(ntOk()){ntSync(1);dayN();toast('🔔 התראות הופעלו')}};
 function notifBlock(){const N=ntSet(),apk=ntApk(),ok=apk&&ntOk(),tg=(k,n)=>`<button type="button" data-a="ntTog" data-k="${k}" class="${N[k].on?'on':''}">${n}</button>`;
  const tm=(k,f,v)=>`<input type="time" class="nt-t" data-k="${k}" data-f="${f}" value="${v}">`;
- return `<div class="f"><span>🔔 התראות לטלפון</span>${!apk?'<p class="small muted" style="margin:0">התראות פוש זמינות באפליקציית האנדרואיד.</p>':`
+ const old=window.KalilNative&&!KalilNative.dayNotif;
+ return `<div class="f"><span>🔔 התראות לטלפון</span>${old?`<div class="fi-s bad" style="margin:0 0 8px"><b>⚠️ צריך עדכון אפליקציה</b><p>כדי לראות את שורת הצעדים והאימון בהתראות של הטלפון צריך להתקין את גרסה 1.9.4 ומעלה.</p><button type="button" class="btn full" data-a="ntUpd" style="margin-top:6px">הורד והתקן עכשיו</button></div>`:''}${!apk?(old?'':'<p class="small muted" style="margin:0">התראות פוש זמינות באפליקציית האנדרואיד.</p>'):`
 ${ok?'':`<button type="button" class="btn full" data-a="ntAsk" style="margin-bottom:8px">אפשר התראות בטלפון</button>`}
 <div class="seg wrap">${tg('steps','צעדים כל היום')}${tg('walk','סיכום אימון · כל 15 דק׳')}${tg('water','שתיית מים')}${tg('fast','צום · כל 4 שעות')}${tg('meals','ארוחות')}${tg('fit','אימון יומי')}</div>
 ${N.water.on?`<div class="nt-r">💧 כל <select class="nt-s" data-k="water" data-f="h">${[1,1.5,2,3].map(h=>`<option value="${h}" ${N.water.h==h?'selected':''}>${h}</option>`).join('')}</select> שעות, בין ${N.water.from}:00 ל־${N.water.to}:00</div>`:''}
 ${N.meals.on?`<div class="nt-r">🍽️ בוקר ${tm('meals','b',N.meals.b)} צהריים ${tm('meals','l',N.meals.l)} ערב ${tm('meals','d',N.meals.d)}</div><p class="small muted" style="margin:2px 0">תזכורת רק אם הארוחה עוד לא נרשמה.</p>`:''}
 ${N.fit.on?`<div class="nt-r">💪 תזכורת אימון ב־${tm('fit','t',N.fit.t)} (רק אם עוד לא התאמנת)</div>`:''}
-${ok?`<button type="button" class="btn ghost full" data-a="ntTest" style="margin-top:6px">שלח התראת בדיקה</button>`:''}`}</div>`}
+${ok?`<button type="button" class="btn ghost full" data-a="ntTest" style="margin-top:6px">שלח התראת בדיקה</button>`:''}${ok?`<button type="button" class="btn ghost full" data-a="ntShow" style="margin-top:6px">הצג עכשיו את שורת הצעדים בהתראות</button>`:''}<p class="small muted" style="margin:6px 0 0">מצב: ${ok?'✅ התראות מאושרות':'❌ התראות לא מאושרות בטלפון'} · גרסת אפליקציה ${(()=>{try{const v=KalilNative.appVersion();return typeof v==='string'&&v[0]==='{'?JSON.parse(v).name||JSON.parse(v).apk:v}catch(e){return '?'}})()}</p>`}</div>`}
 function wkBar(){let el=$('#wkbar');const f=S.free,pl=PL_.on&&PL_.st&&PL_.st.length;if(!f&&!pl){if(el)el.remove();return}
  if(!el){el=document.createElement('button');el.id='wkbar';el.addEventListener('click',()=>{if(S.free)openFreeLive();else if(PL_.on)showStep()});document.body.appendChild(el)}
  let t,x;if(f){const a=FACT.find(q=>q[0]===f.cfg.id);freeAccum();t=fmtHMS(freeSec());x=(a?a[1]:'אימון')+(f.run?'':' · מושהה')+(freeSPM(f.cfg)?' · 👟 '+r0(f.st||0).toLocaleString('he-IL'):'')+' · 🔥 '+r0(f.kc||0)}
@@ -11835,7 +11836,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=75;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=76;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -12067,7 +12068,9 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  fStage:b=>openFStage(b.dataset.i),
  wbody:()=>openWBody(),
  ntTog:b=>{const N=ntSet(),k=b.dataset.k;N[k].on=N[k].on?0:1;saveState();if(N[k].on&&ntApk()&&!ntOk())KalilNative.notifAsk();ntSync(1);if(k==='walk')S.free?nWalk():nWalkOff();if(k==='steps')dayN();openProfile()},
+ ntUpd:()=>{toast('מוריד את העדכון…');try{KalilNative.installApk(UPD_BASE+'kalil.apk')}catch(e){toast('לא הצלחתי, נסה דרך בדיקת עדכונים')}},
  ntAsk:()=>{try{KalilNative.notifAsk()}catch(e){}},
+ ntShow:()=>{const N=ntSet();N.steps.on=1;saveState();dayN();try{KalilNative.dayNotifRefresh()}catch(e){}toast('משוך את המסך למטה – השורה של קליל שם')},
  ntTest:()=>{try{KalilNative.notifyNow('🥑 קליל','ככה ייראו ההתראות. בהצלחה היום!');toast('נשלחה התראת בדיקה')}catch(e){}},
  cMin:b=>{S.set.cMin=+b.dataset.m||0;saveState();openPreview('c')},
  supp:b=>openSupp(b.dataset.m,+b.dataset.i),
