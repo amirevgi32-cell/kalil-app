@@ -1,7 +1,7 @@
 {
- "html": 64,
+ "html": 65,
  "apk": 12,
  "name": "1.9.2",
- "notes": "נוספו למאגר חמוצים ושימורים: קורנישונים במי מלח, שום כבוש, אספרגוס משומר, סלק ולפת כבושים, ארטישוק, לבבות דקל, קייפרס ועוד. החיפוש מוצא עכשיו גם ביחיד וגם ברבים.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/32c348d80d8fa783fe7962680023fdd40fd8a7c6/index.html"
+ "notes": "תיקון: בחצות האפליקציה עוברת אוטומטית ליום החדש, גם אם היא נשארה פתוחה ברקע.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/6ec86e4b76b6e636a73f47b2f52b3398ddc31ffd/index.html"
 }
