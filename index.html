@@ -9579,9 +9579,10 @@ function shareText(ds,ai){const day=getDayLocal(ds),c=calc(),t=dayTotals(day),B=
   L.push(`${IC_[m]} *${n}*${mt?` (${it.some(e=>e.plan)?'מתוכנן ':''}${mt})`:''} · ${f(s.k)} קק״ל`);it.forEach(e=>L.push(`• ${e.n} – ${uLabel(e.q,e.un,e.u)} – ${f(e.k)} קק״ל`));L.push('')});
  if(!t.n)L.push('עוד לא נרשמו ארוחות.','');
  L.push(`📊 סה״כ ${f(t.k)} מתוך ${f(B)} קק״ל`,`חלבון ${f(t.p)} ג׳ · פחמימה ${f(t.c)} ג׳ · שומן ${f(t.f)} ג׳ · סיבים ${f(t.fi)} ג׳`);
- const x=[];if(day.water)x.push(`💧 ${f(day.water)} מ״ל מים`);if(day.steps)x.push(`👣 ${f(day.steps)} צעדים`);(day.ex||[]).forEach(e=>x.push(`🏃 ${e.n} ${e.min} דק׳`));if(x.length)L.push(x.join(' · '));
+ L.push(`⚖️ משקל ${r1(wAt(ds))} ק״ג · 👣 ${f(day.steps||0)} צעדים${exKcal(day)?` · 🔥 ${f(exKcal(day))} קק״ל באימונים`:''}`);
+ const x=[];if(day.water)x.push(`💧 ${f(day.water)} מ״ל מים`);(day.ex||[]).forEach(e=>x.push(`🏃 ${e.n} ${e.min} דק׳`));if(x.length)L.push(x.join(' · '));
  try{const r=dScore(ds);if(t.n)L.push(`⭐ ציון יומי ${r.s}`)}catch(e){}
- if(ai){const pre=`אני מנסה לרדת במשקל ואשמח לחוות דעת תזונאית קצרה וכנה על היום שלי.\nפרטים: ${p.sex==='f'?'אישה':'גבר'}${p.age?`, גיל ${p.age}`:''}${p.h?`, גובה ${p.h} ס״מ`:''}, משקל נוכחי ${curW()} ק״ג${p.goal?`, יעד ${p.goal} ק״ג`:''}. תקציב יומי ${f(B)} קק״ל.${S.fast&&S.fast.start?' אני כרגע בצום.':''}\nתגיד לי: מה היה טוב, מה כדאי לשפר, אם החלבון והסיבים מספיקים, ומה מומלץ לאכול בהמשך היום כדי להשלים אותו טוב.\n\n`;return pre+L.join('\n')}
+ if(ai){const pre=`אני מנסה לרדת במשקל ואשמח לחוות דעת תזונאית קצרה וכנה על היום שלי.\nפרטים: ${p.sex==='f'?'אישה':'גבר'}${p.age?`, גיל ${p.age}`:''}${p.h?`, גובה ${p.h} ס״מ`:''}, משקל ${r1(wAt(ds))} ק״ג${p.goal?`, יעד ${p.goal} ק״ג`:''}. תקציב יומי ${f(B)} קק״ל.\nהוצאה אנרגטית משוערת: במנוחה (BMR) כ־${f(c.bmr)} קק״ל, יומית לפי רמת פעילות כ־${f(c.tdee)} קק״ל. היום הלכתי ${f(day.steps||0)} צעדים${exKcal(day)?` ושרפתי באימונים כ־${f(exKcal(day))} קק״ל`:''}.${S.fast&&S.fast.start?' אני כרגע בצום.':''}\nחשב לי את המאזן הקלורי של היום (מה אכלתי מול מה שהוצאתי, כולל הצעדים והאימונים), ותגיד לי: מה היה טוב, מה כדאי לשפר, אם החלבון והסיבים מספיקים, ומה מומלץ לאכול בהמשך היום כדי להשלים אותו טוב.\n\n`;return pre+L.join('\n')}
  L.push('','— נשלח מקליל 🥑');return L.join('\n')}
 function openShare(){const ds=V.date||today();const has=!!(aiKey&&aiKey())||!!(window.claude&&claude.use);
  openSheet(`<h2>שיתוף מה שאכלתי</h2><p class="small muted" style="margin:0 0 10px">${heDate(ds)}</p>
@@ -11863,7 +11864,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=78;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=79;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
