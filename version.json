@@ -1,7 +1,7 @@
 {
- "html": 76,
+ "html": 77,
  "apk": 14,
  "name": "1.9.4",
- "notes": "בפרופיל ← התראות: מצב ההרשאה, גרסת האפליקציה, כפתור \"הצג עכשיו את שורת הצעדים\", וכפתור התקנה אם צריך עדכון אפליקציה.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/5c50e44e16931c6081a95fbc4aa6ecff79998348/index.html"
+ "notes": "חדש: בפתיחה קופץ מסך \"כמה אישורים וזהו\" – לוחצים \"אשר הכל\" ומאשרים התראות וספירת צעדים, וכל ההתראות והשורות בטלפון מתחילות לעבוד.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/184e38731cc89a501df8401344e4a07edb148738/index.html"
 }
