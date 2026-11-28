@@ -11645,7 +11645,7 @@ function freeMET(c){const a=FACT.find(x=>x[0]===c.id);if(!a)return 4;const v=c.s
  if(a[3]==='walk')return (0.1*v+1.8*v*g+3.5)/3.5;if(a[3]==='run')return (0.2*v+0.9*v*g+3.5)/3.5;if(a[3]==='bike')return bikeMET(c.sp);return a[4]*FLVL[c.lvl][0]}
 function epocF(c){const a=FACT.find(x=>x[0]===c.id),m=freeMET(c);let f=m<4?.03:m<6?.05:m<8?.07:m<10?.10:.13;if(a&&a[5])f+=.03;if(a&&a[2]==='str'&&c.lvl>=2)f+=.02;return f}
 function netRate(c){return Math.max(0,freeMET(c)-1)*curW()/3600}
-function paceTxt(k){if(!(k>0))return'–';const p=60/k;return Math.floor(p)+':'+String(Math.round((p%1)*60)).padStart(2,'0')}
+function paceTxt(k){if(!(k>=1))return'–';const p=60/k;return Math.floor(p)+':'+String(Math.round((p%1)*60)).padStart(2,'0')}
 /* ===== אימונים מוצעים ===== */
 function wkSugg(retro){const L=fitLv(),out=[],td=FWEEK[new Date().getDay()],did=S.fit.log.some(z=>z.d===today()&&z.t!=='r');
  const rec=Object.entries(S.freeLast||{}).filter(([id])=>FACT.some(a=>a[0]===id)).sort((a,b)=>(b[1].t||0)-(a[1].t||0)).slice(0,4).map(([id,v])=>{const a=FACT.find(x=>x[0]===id);return{a:'fq2',id,ic:IC.play,t:a[1],sub:'שוב, כמו בפעם הקודמת · '+(v.min||30)+' דק׳',col:'var(--pink)'}});
@@ -11683,20 +11683,26 @@ function freeSave(){const c=FR.cfg;if(!c)return;const d=c.d||today();if(d>today(
  if(c.min>=10)S.fit.log.push({d,t:a[2]==='str'?'s':'c',feel:'ok',lvl:fitLv(),min:c.min});award('x:'+d,10,'אימון');saveDay(d);checkBadges();saveState();
  sfx('coin');closeSheet();render();toast(`נוסף ל${d===today()?'היום':heDate(d,{day:'numeric',month:'numeric'})}: ${a[1]} · ${r0(net+ep)} קק״ל (כולל ${r0(ep)} אפטר-ברנר)`)}
 function freeSPM(c){const a=FACT.find(x=>x[0]===c.id);if(!a)return 0;if(a[3]==='walk')return Math.min(125,Math.max(85,70+8*c.sp));if(a[3]==='run')return Math.min(175,Math.max(140,150+2*(c.sp-8)));return {nordic:105,hike:100,stairs:60,zumba:40,dance:40,step:50,basket:40,soccer:60,tennis:35,padel:30}[c.id]||0}
-function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min,t:Date.now()};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0,st:0,nat0:natNow()};saveState();setTimeout(nWalk,300);if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
-function freeAccum(){const f=S.free;if(!f||!f.run)return;const now=Date.now(),dt=Math.min(6*3600,(now-f.last)/1000);f.kc+=netRate(f.cfg)*dt;f.st=(f.st||0)+freeSPM(f.cfg)*dt/60;const a=FACT.find(x=>x[0]===f.cfg.id);if(a&&a[3]!=='fixed')f.km+=f.cfg.sp*dt/3600;f.last=now}
+function freeSens(){try{if(!(window.KalilNative&&KalilNative.available()&&KalilNative.hasPermission()))return null;const v=+KalilNative.steps();return isNaN(v)?null:v}catch(e){return null}}
+function strideM(a){const h=+((S.profile&&S.profile.h)||175);return h*(a&&a[3]==='run'?0.65:0.415)/100}
+function freeStart(){const c=Object.assign({},FR.cfg);S.freeLast=S.freeLast||{};S.freeLast[c.id]={sp:c.sp,inc:c.inc,lvl:c.lvl,min:c.min,t:Date.now()};S.free={cfg:c,start:Date.now(),acc:0,run:Date.now(),kc:0,last:Date.now(),km:0,st:0,nat0:natNow()};{const aa=FACT.find(x=>x[0]===c.id),sv=freeSens();if(aa&&(aa[3]==='walk'||aa[3]==='run')&&sv!=null){S.free.auto=1;S.free.sB=sv;S.free.sAcc=0;S.free.stM=0;S.free.win=[[Date.now(),0]]}}saveState();setTimeout(nWalk,300);if(S.set.music)beatStart();sfx('fast');openFreeLive();render()}
+function freeAccum(){const f=S.free;if(!f||!f.run)return;const now=Date.now(),dt=Math.min(6*3600,(now-f.last)/1000);const a=FACT.find(x=>x[0]===f.cfg.id);
+ if(f.auto){const sv=freeSens();if(sv!=null){if(sv<f.sB)f.sB=sv;const tot=f.sAcc+(sv-f.sB),add=Math.max(0,tot-(f.stM||0));f.stM=tot;f.win=(f.win||[]).filter(w=>now-w[0]<=90000);f.win.push([now,tot]);const w0=f.win[0],dT=(now-w0[0])/1000;
+   if(dt>60){f.cfg.sp=Math.min(a[3]==='run'?25:9,add*strideM(a)/1000/(dt/3600))}else if(dT>=20){const v=Math.min(a[3]==='run'?25:9,(tot-w0[1])*strideM(a)/1000/(dT/3600));f.cfg.sp=Math.round((f.cfg.sp*.5+v*.5)*10)/10}
+   f.kc+=netRate(f.cfg)*dt;f.st=tot;f.km+=add*strideM(a)/1000;f.last=now;return}}
+ f.kc+=netRate(f.cfg)*dt;f.st=(f.st||0)+freeSPM(f.cfg)*dt/60;if(a&&a[3]!=='fixed')f.km+=f.cfg.sp*dt/3600;f.last=now}
 function freeSec(){const f=S.free;return f?(f.acc+(f.run?Date.now()-f.run:0))/1000:0}
 function openFreeLive(){clearInterval(FRT);const f=S.free;if(!f)return openFree();const a=FACT.find(x=>x[0]===f.cfg.id),sp=a[3]!=='fixed';
  openSheet(`<div class="sh-top"><h3>${a[1]}</h3><button class="x" data-a="close" aria-label="מזער">${IC.x}</button></div>
 <button class="btn ghost full wbbtn" data-a="wbody">👁️ מה קורה בגוף עכשיו</button><div class="flive"><div class="small muted">זמן</div><div class="kbig" id="flT" style="font-size:58px;direction:ltr;color:var(--ink)">0:00</div><div class="bar" style="height:8px;margin:6px 0 12px"><i id="flP" style="width:0;background:var(--pink);color:var(--pink)"></i></div>
 <div class="fburn"><div><span class="flame">${IC.fire}</span><div class="kbig" id="flK" style="font-size:52px;color:var(--pink)">0</div><div class="small muted">קק״ל נשרפו עכשיו</div></div><div><div class="kbig" id="flE" style="font-size:34px;color:var(--gold)">+0</div><div class="small muted">אפטר-ברנר צפוי</div></div></div>
 <div class="statgrid" style="margin-top:12px"><div class="stat"><small>קצב שריפה</small><b id="flR">0</b> <span class="small muted">קק״ל/דקה</span></div><div class="stat"><small>${sp?'מרחק וצעדים':'עוצמה'}</small><b id="flD" style="white-space:pre-line;display:block;font-size:17px;line-height:1.35;overflow-wrap:anywhere">–</b></div></div></div>
-${sp?`<label class="f"><span>מהירות עכשיו: <b id="flspv">${r1(f.cfg.sp)} קמ״ש</b>${a[3]!=='bike'?` · קצב <b id="flpace">${paceTxt(f.cfg.sp)}</b>`:''}</span><input type="range" id="flsp" min="${a[3]==='walk'?2:a[3]==='bike'?8:5}" max="${a[3]==='walk'?8:a[3]==='bike'?40:20}" step="0.5" value="${f.cfg.sp}" style="width:100%"></label>`
+${sp?`<label class="f"><span>מהירות עכשיו: <b id="flspv">${r1(f.cfg.sp)} קמ״ש</b>${a[3]!=='bike'?` · קצב <b id="flpace">${paceTxt(f.cfg.sp)}</b>`:''}</span></label>${f.auto?`<p class="small" style="margin:-4px 0 8px;color:var(--lime)">📡 מחושב אוטומטית לפי הצעדים שלך בפועל · <a href="#" data-a="flAuto">כוון ידנית</a></p>`:`<div class="seg" style="margin:-4px 0 8px"><button type="button" data-a="flSp" data-d="-0.5">− 0.5</button><button type="button" data-a="flSp" data-d="0.5">+ 0.5</button>${(a[3]==='walk'||a[3]==='run')&&freeSens()!=null?`<button type="button" data-a="flAuto">📡 אוטומטי</button>`:''}</div>`}`
 :`<label class="f"><span>עצימות עכשיו</span><div class="seg">${FLVL.map((l,i)=>`<button data-a="fllvl" data-i="${i}" class="${f.cfg.lvl===i?'on':''}">${l[1]}</button>`).join('')}</div></label>`}
 <div class="btns"><button class="btn" data-a="freePause" id="flPB">${f.run?'השהה':'המשך'}</button><button class="btn lime" data-a="freeEnd">סיימי ושמור</button></div><button class="btn ghost full" data-a="freeCancel" style="margin-top:10px;color:var(--red)">בטל בלי לשמור</button>`);
  freeTick();FRT=setInterval(freeTick,1000)}
 function freeTick(){const f=S.free;if(!f||!$('#flT')){clearInterval(FRT);return}freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id);
- $('#flT').textContent=fmtHMS(s);$('#flP').style.width=Math.min(100,s/(f.cfg.min*60)*100)+'%';$('#flK').textContent=r0(f.kc);$('#flE').textContent='+'+r0(f.kc*epocF(f.cfg));$('#flR').textContent=r1(netRate(f.cfg)*60);
+ $('#flT').textContent=fmtHMS(s);if(f.auto){const v=$('#flspv');if(v)v.textContent=r1(f.cfg.sp)+' קמ״ש';const pz=$('#flpace');if(pz)pz.textContent=paceTxt(f.cfg.sp)}$('#flP').style.width=Math.min(100,s/(f.cfg.min*60)*100)+'%';$('#flK').textContent=r0(f.kc);$('#flE').textContent='+'+r0(f.kc*epocF(f.cfg));$('#flR').textContent=r1(netRate(f.cfg)*60);
  $('#flD').textContent=(a[3]!=='fixed'?r1(f.km)+' ק״מ':r1(freeMET(f.cfg))+' MET')+(freeSPM(f.cfg)?'\n👟 '+r0(f.st||0).toLocaleString('he-IL'):'');
  if(s>=f.cfg.min*60&&!f.hit){f.hit=1;sfx('win');toast('הגעת לזמן שתכננת! אפשר להמשיך או לסיים');saveState()}if(Math.floor(s)%20===0)saveState();if(Math.floor(s)%15===0)nWalkLive()}
 function freeEnd(save){const f=S.free;if(!f)return;nWalkOff();clearInterval(FRT);freeAccum();const s=freeSec(),a=FACT.find(x=>x[0]===f.cfg.id),ep=f.kc*epocF(f.cfg),min=Math.round(s/60);S.free=null;beatStop();
@@ -11857,7 +11863,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=77;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=78;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -12087,6 +12093,8 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  synthTog:()=>{S.set.synth=!S.set.synth;musicStop();if(S.set.music)musicStart();saveState();openProfile()},
  pdf:()=>exportPdf(V.date),
  fStage:b=>openFStage(b.dataset.i),
+ flSp:b=>{const f=S.free;if(!f)return;freeAccum();const a=FACT.find(x=>x[0]===f.cfg.id),mn=a[3]==='walk'?2:a[3]==='bike'?8:5,mx=a[3]==='walk'?8:a[3]==='bike'?40:20;f.cfg.sp=Math.min(mx,Math.max(mn,Math.round((f.cfg.sp+ +b.dataset.d)*2)/2));saveState();const v=$('#flspv');if(v)v.textContent=r1(f.cfg.sp)+' קמ״ש';const p=$('#flpace');if(p)p.textContent=paceTxt(f.cfg.sp);nWalk()},
+ flAuto:(b,e)=>{e&&e.preventDefault&&e.preventDefault();const f=S.free;if(!f)return;freeAccum();if(f.auto){f.auto=0}else{const sv=freeSens();if(sv==null)return toast('אין גישה לחיישן הצעדים');f.auto=1;f.sB=sv;f.sAcc=f.st||0;f.stM=f.st||0;f.win=[[Date.now(),f.stM]]}saveState();openFreeLive()},
  wbody:()=>openWBody(),
  ntTog:b=>{const N=ntSet(),k=b.dataset.k;N[k].on=N[k].on?0:1;saveState();if(N[k].on&&ntApk()&&!ntOk())KalilNative.notifAsk();ntSync(1);if(k==='walk')S.free?nWalk():nWalkOff();if(k==='steps')dayN();openProfile()},
  ntUpd:()=>{toast('מוריד את העדכון…');try{KalilNative.installApk(UPD_BASE+'dorin/kalil.apk')}catch(e){toast('לא הצלחתי, נסי דרך בדיקת עדכונים')}},
@@ -12144,7 +12152,7 @@ const act={tab:b=>{V.tab=b.dataset.t;render();scrollTo(0,0)},add:b=>openAdd(b.da
  fday:b=>{FR.cfg.d=b.dataset.d;const i=$('#fdate');if(i)i.value=b.dataset.d;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},fcat:b=>{FR.cat=b.dataset.c;FR.q='';const q=$('#fq');if(q)q.value='';document.querySelectorAll('#fchips .chip').forEach(x=>x.classList.toggle('on',x===b));renderFList()},
  fpick:b=>openFreeCfg(b.dataset.id),flvl:b=>{FR.cfg.lvl=+b.dataset.i;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},
  fmin:b=>{FR.cfg.min=+b.dataset.m;const mi=$('#fminIn');if(mi)mi.value=b.dataset.m;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));freePrev()},freeStart:freeStart,
- freePause:()=>{const f=S.free;if(!f)return;freeAccum();if(f.run){f.acc+=Date.now()-f.run;f.run=null}else{f.run=Date.now();f.last=Date.now()}saveState();nWalk();const b=$('#flPB');if(b)b.textContent=f.run?'השהה':'המשך'},
+ freePause:()=>{const f=S.free;if(!f)return;freeAccum();if(f.run){f.acc+=Date.now()-f.run;f.run=null;if(f.auto){f.sAcc=f.stM||0}}else{f.run=Date.now();f.last=Date.now();if(f.auto){const sv=freeSens();if(sv!=null)f.sB=sv;f.win=[[Date.now(),f.stM||0]]}}saveState();nWalk();const b=$('#flPB');if(b)b.textContent=f.run?'השהה':'המשך'},
  fllvl:b=>{const f=S.free;if(!f)return;freeAccum();f.cfg.lvl=+b.dataset.i;saveState();b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))},
  freeEnd:()=>freeEnd(true),freeCancel:()=>freeEnd(false),
  wbig:openWBig,wbR:b=>{WB.r=b.dataset.r;WB.sel=-1;b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));wbDraw()},
