@@ -1,7 +1,7 @@
 {
- "html": 87,
+ "html": 88,
  "apk": 16,
  "name": "1.9.6",
- "notes": "צום מתוזמן: השעון סופר לאחור עד תחילת הצום, כתוב בבירור \"צום מתוזמן\", וכשמגיעה השעה הצום מתחיל לבד עם הודעה.",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/7c60a4d8807407d91bfa976a039ef800ccd2a1f3/index.html"
+ "notes": "צום מתוזמן מתחיל לבד בשעה שקבעת – ותגיע התראה לטלפון \"🌙 הצום התחיל\" גם אם האפליקציה סגורה.",
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/2b8edf1ed1683229e3abbc22ede3892b32670e97/index.html"
 }
