@@ -1,7 +1,7 @@
 {
- "html": 69,
+ "html": 70,
  "apk": 12,
  "name": "1.9.2",
- "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/18891c664ecc501cf50198fb0e7f1654dcd94b3c/dorin/index.html",
- "notes": "ב־👁️ של כל מאכל נוסף \"🧬 מה זה עושה לגוף\" – הסבר מפורט על מה קורה בגוף כשאוכלים אותו, השפעה על הסוכר בדם וזמן עיכול משוער."
+ "url": "https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/f43d0e2def8165011bdaec5c7dbeaa9af04c4ea2/dorin/index.html",
+ "notes": "תיקון חשוב: לחיצה על 👁️ פתחה לפעמים מאכל אחר (למשל לימון → אבקת חלבון), וגם \"אחרונים\" הראה מאכלים לא נכונים. תוקן, והנתונים הקיימים סודרו אוטומטית. בנוסף עברתי על כל 9,000 המאכלים ודייקתי את ההסברים."
 }
