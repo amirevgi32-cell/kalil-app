@@ -9901,15 +9901,15 @@ function ntOk(){try{return KalilNative.notifOk()}catch(e){return false}}
 const atTime=(d,hhmmS)=>{const[h,m]=hhmmS.split(':').map(Number);const x=pd(d);x.setHours(h,m||0,0,0);return x.getTime()};
 function ntBuild(){const N=ntSet(),out=[],now=Date.now(),t=today(),nm=(S.profile&&S.profile.name)||'';
  if(N.water.on){const g=waterGoal();for(let k=0;k<3;k++){const d=addDays(t,k),w=k?0:(getDayLocal(d).water||0);for(let h=N.water.from;h<=N.water.to;h+=N.water.h){const at=atTime(d,h+':00');if(at<=now)continue;if(!k&&w>=g)break;
-   out.push({at,t:'💧 זמן לכוס מים',x:k?`כוס עכשיו מקרבת אותך ליעד של ${r1(g/1000)} ליטר.`:`שתית היום ${r1(w/1000)} מתוך ${r1(g/1000)} ליטר. עוד כוס?`,id:110})}}}
+   const WX=['מים ממלאים את הקיבה ומקטינים רעב – במיוחד לפני ארוחה.','צמא מתחפש הרבה פעמים לרעב. כוס מים, ואז מחליטים.','פירוק שומן ופינוי פסולת בכליות צריכים מים.','גם 1–2% התייבשות מורידים ריכוז ואנרגיה.','שתייה קבועה מונעת אגירת נוזלים – והמשקל יציב יותר.','בצום? מים מרגיעים את גלי הרעב.'];out.push({at,t:'💧 זמן לכוס מים',x:(WX[(h+k)%WX.length])+' '+(k?`יעד: ${r1(g/1000)} ליטר.`:`שתית היום ${r1(w/1000)} מתוך ${r1(g/1000)} ליטר.`),id:110})}}}
  if(N.meals.on){for(let k=0;k<3;k++){const d=addDays(t,k),day=getDayLocal(d);[['b','ארוחת בוקר'],['l','ארוחת צהריים'],['d','ארוחת ערב']].forEach(([m,n])=>{const at=atTime(d,N.meals[m]);if(at<=now)return;if((day.meals[m]||[]).length)return;
-   out.push({at,t:`🍽️ ${n}`,x:S.fast&&S.fast.start&&at<S.fast.start+S.fast.plan*36e5?`את בצום עד ${hhmm(S.fast.start+S.fast.plan*36e5)} – ${n} תחכי לחלון האכילה.`:`זמן ל${n}. אל תשכח לרשום מה אכלת 📝`,id:120})});
+   out.push({at,t:`🍽️ ${n}`,x:S.fast&&S.fast.start&&at<S.fast.start+S.fast.plan*36e5?`את בצום עד ${hhmm(S.fast.start+S.fast.plan*36e5)} – ${n} תחכי לחלון האכילה.`:`זמן ל${n}. חלבון וירקות קודם – משביעים ומייצבים את הסוכר. ואל תשכח לרשום 📝`,id:120})});
    MEALS.forEach(([m,n])=>(day.meals[m]||[]).forEach(e=>{if(e.plan&&e.at>now)out.push({at:e.at,t:'🍽️ הגיע הזמן לארוחה שתכננת',x:`${n}: ${e.n}`,id:121})}))}}
  if(N.fit.on){for(let k=0;k<3;k++){const d=addDays(t,k),at=atTime(d,N.fit.t);if(at<=now)continue;const day=getDayLocal(d);if((day.ex||[]).length||fitDone(d))continue;
-   out.push({at,t:'💪 זמן לאימון',x:'עוד לא התאמנת היום. 20–30 דקות הליכה או אימון כוח מהתוכנית?',id:130})}}
- const F=[];if(N.fast.on&&S.fast&&S.fast.start){const st=S.fast.start,g=S.fast.plan;if(st>now)F.push({at:st,t:'🌙 הצום התחיל',x:`יעד: ${g} שעות · סיום ב־${hhmm(st+g*36e5)}. בהצלחה!`,id:142});for(let h=4;h<=Math.max(g+8,24);h+=4){const at=st+h*36e5;if(at<=now||h>48)continue;const sg=STAGES.filter(x=>x[0]<=h).pop();
-   F.push({at,t:`⏳ ${h} שעות צום${h>=g?' 🎉':''}`,x:h<g?`שלב: ${sg[1]}. עוד ${g-h} שעות ליעד (${hhmm(st+g*36e5)}).`:h===g?`הגעת ליעד ${g} שעות! ${sg[1]}. כל הכבוד.`:`עברת את היעד ב־${h-g} שעות. שלב: ${sg[1]}.`,id:140})}
-  const ga=st+g*36e5;if(ga>now&&g%4)F.push({at:ga,t:`🎉 הגעת ליעד הצום – ${g} שעות!`,x:'כל הכבוד! כשתאכל, רשמי את הארוחה והצום ייסגר.',id:141})}
+   out.push({at,t:'💪 זמן לאימון',x:'עוד לא התאמנת היום. 20–30 דקות הליכה משפרות רגישות לאינסולין ומצב רוח, ואימון כוח שומר על השריר בזמן הירידה.',id:130})}}
+ const F=[];if(N.fast.on&&S.fast&&S.fast.start){const st=S.fast.start,g=S.fast.plan;if(st>now)F.push({at:st,t:'🌙 הצום התחיל',x:`יעד: ${g} שעות · סיום ב־${hhmm(st+g*36e5)}. 🧬 ${STAGES[0][3]} 💡 ${STAGES[0][4]}`,id:142});for(let h=4;h<=Math.max(g+8,24);h+=4){const at=st+h*36e5;if(at<=now||h>48)continue;const sg=STAGES.filter(x=>x[0]<=h).pop();
+   F.push({at,t:`⏳ ${h} שעות צום · ${sg[1]}${h>=g?' 🎉':''}`,x:(h<g?`עוד ${g-h} שעות ליעד (${hhmm(st+g*36e5)}).`:h===g?`הגעת ליעד ${g} שעות! כל הכבוד.`:`עברת את היעד ב־${h-g} שעות – את מחליט מתי לסיים.`)+` 🧬 ${sg[3]} 💡 ${sg[4]}`,id:140})}
+  const ga=st+g*36e5;if(ga>now&&g%4)F.push({at:ga,t:`🎉 הגעת ליעד הצום – ${g} שעות!`,x:'כל הכבוד! את מחליט מתי לסיים. כשתרשום ארוחה אשאל אם לסגור את הצום, ותקבל חוות דעת על מה שהגוף השיג.',id:141})}
  if(N.tip.on){for(let k=0;k<3;k++){const d=addDays(t,k),at=atTime(d,N.tip.t);if(at<=now)continue;const tp=DTIPS[tipIdxFor(d)];out.push({at,t:`${tp[0]} הטיפ של היום: ${tp[1]}`,x:tp[2],id:160})}}
  if(N.imp.on){const dw0=new Date().getDay();for(let k=0;k<7;k++){const d=addDays(t,k),dw=pd(d).getDay();
    if(dw===5){const at=atTime(d,'07:30');if(at>now)out.push({at,t:'⚖️ יום שישי – שקילה ותמונה',x:'בבוקר, אחרי שירותים ולפני אוכל. ואחר כך תמונת התקדמות 📸',id:161})}}
@@ -11241,10 +11241,10 @@ ${wk.length?`<div class="card" style="margin-top:12px;border-color:rgba(255,138,
 <div class="btns" style="margin-top:12px"><button class="btn full" data-a="close">מעולה, תודה!</button></div>
 ${why==='food'?`<button class="btn ghost full" data-a="fastUndo" style="margin-top:8px">זה לא שבר את הצום (קפה/מים) · המשך לצום</button>`:''}`)}
 function fastAskEnd(hh,due){const F=S.fast,h=hh||fastElapsed(),pn=(FPLANS.find(x=>x[0]===F.plan)||[0,F.plan+' שעות'])[1];
- openSheet(`${shTop(due?'הגיע זמן הארוחה המתוכננת':'רשמת אוכל בזמן צום')}<div style="text-align:center"><div style="width:96px;margin:0 auto">${avoki('happy')}</div><p style="font-size:17px">את בצום ${pn} כבר <b>${r1(h)} שעות</b>.<br>עוד ${r1(F.plan-h)} שעות להשלמת היעד.</p><p class="small muted">${due?'אכלת? אם כן, הצום מסתיים עכשיו.':'האוכל נרשם. לסיים עכשיו את הצום?'}</p></div>
+ openSheet(`${shTop(due?'הגיע זמן הארוחה המתוכננת':'רשמת אוכל בזמן צום')}<div style="text-align:center"><div style="width:96px;margin:0 auto">${avoki('happy')}</div><p style="font-size:17px">את בצום ${pn} כבר <b>${r1(h)} שעות</b>.<br>${h>=F.plan?'🎉 השלמת את היעד!':`עוד ${r1(F.plan-h)} שעות להשלמת היעד.`}</p><p class="small muted">${due?'אכלת? אם כן, הצום מסתיים עכשיו.':'האוכל נרשם. לסיים עכשיו את הצום?'}</p></div>
 <div class="btns"><button class="btn full" data-a="fastFoodEnd">כן, סיימי את הצום</button></div><div class="btns"><button class="btn ghost full" data-a="close">לא, זה לא שבר את הצום (קפה/מים)</button></div>`)}
 function fastOnFood(entries,due){try{const F=S.fast;if(!F.start)return;const real=entries.filter(e=>!e.plan&&(e.at||Date.now())>F.start);const k=real.reduce((a,e)=>a+(e.k||0),0);if(k<15)return;const at=Math.min(...real.map(e=>e.at||Date.now()),Date.now());const h=(at-F.start)/36e5;if(h<.5)return;
- setTimeout(()=>{if(!S.fast.start)return;FX_.endAt=at;if(h>=F.plan)fastFinish('food',at);else fastAskEnd(h,due)},due?0:450)}catch(e){}}
+ setTimeout(()=>{if(!S.fast.start)return;FX_.endAt=at;fastAskEnd(h,due)},due?0:450)}catch(e){}}
 function greet(){const h=new Date().getHours();return h<11?'בוקר טוב':h<17?'צהריים טובים':h<21?'ערב טוב':'לילה טוב'}
 function mealCard(day,m,n){const it=day.meals[m],r=scoreItems(it,m),t=sum(it);
  if(!it.length)return `<div class="card meal mini"><h2>${n}<span class="sp"></span><button class="mb" data-a="add" data-m="${m}" aria-label="הוסיפי ל${n}">${IC.plus}</button><button class="mb" data-a="photo" data-m="${m}" aria-label="צלמי ${n}">${IC.cam}</button><button class="mb" data-a="copy" data-m="${m}" aria-label="כמו אתמול" title="כמו אתמול">${IC.copy}</button></h2></div>`;
@@ -11952,7 +11952,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=89;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=90;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
