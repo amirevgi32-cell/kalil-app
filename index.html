@@ -11886,7 +11886,7 @@ ${used?'':`<div class="btns" style="margin-top:8px"><button class="btn" data-a="
 <p class="small muted">${'ארוחה של 600–850 קק״ל פעם בשבוע, עם תוספת של '+CHEAT_BONUS+' קק״ל באותו יום, כמעט לא משנה את הקצב: מוותרים על פחות מ-50 גרם מהירידה השבועית.'}</p>`)}
 
 /* ===== עדכונים ===== */
-const APPV=81;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
+const APPV=82;const UPD_BASE='https://raw.githubusercontent.com/amirevgi32-cell/kalil-app/main/';
 function isApk(){try{return !!(window.KalilNative&&KalilNative.appVersion)}catch(e){return false}}
 function appVer(){try{return JSON.parse(KalilNative.appVersion())}catch(e){return{apk:0,html:APPV}}}
 const UPD={st:'',info:null,quiet:false};
@@ -12268,14 +12268,18 @@ function initSplash(){const sp=$('#splash');if(!sp)return;const av=$('#spAvo');i
   if(k==='⌫')code=code.slice(0,-1);else if(code.length<4)code+=k;dots();
   if(code.length===4){if(H(code)===H('88'+'60')){hideSplash()}else{const d=$('#pdots');d.classList.remove('bad');void d.offsetWidth;d.classList.add('bad');sfx('del');setTimeout(()=>{code='';dots()},450)}}};pad.addEventListener('pointerdown',onKey);pad.addEventListener('click',e=>{e.preventDefault();e.stopPropagation()});
  document.addEventListener('keydown',e=>{if(!$('#splash'))return;const k=e.key==='Backspace'?'⌫':e.key;const b=pad.querySelector(`button[data-k="${k}"]`);if(b)onKey({target:b,type:'key',preventDefault(){},stopPropagation(){}})});
- try{if(sessionStorage.getItem('kl_in')==='1'){sessionStorage.removeItem('kl_in');sp.remove()}}catch(_){}}
+ try{if(sessionStorage.getItem('kl_in')==='1'){sessionStorage.removeItem('kl_in');sp.remove()}else if(Date.now()-(+localStorage.getItem('kl_seen')||0)<7200000&&S.profile){sp.remove()}}catch(_){}}
 initSplash();
 setTimeout(()=>{try{const d=today();if(S.fixC!==d&&d==='2026-11-26'){S.fixC=d;const L=S.fit.log.filter(z=>z.d===d&&z.t==='c'&&!z.as);if(L.length){const day=getDayLocal(d);if(!day.autoC){const st=Math.round(L.reduce((a,z)=>a+(z.min||15),0)*95);recompSteps(day);day.stepsExtra=(day.stepsExtra||0)+st;day.autoC=1;recompSteps(day);saveDay(d);render();setTimeout(()=>showUndoMsg('הוספתי '+st.toLocaleString('he-IL')+' צעדים מהאימון האירובי של הבוקר 👟'),1500)}}saveState()}}catch(e){}},2500);
 {const f=$('#chatFab .cfa');if(f)f.innerHTML=avoki('happy')}
 window.__kl=()=>({openFreeCfg,freeStart,ntBuild,PL_,openWorkout,plTick,fHead,FKB,FBD,fInfoData,fBody,allFoods,phSaveOne,PH,phAll,phPut,shareText,pdfHtml,SFXB,sfxBuf,SND,S,getDayLocal,today,buildTabata,lockApp,kbAnswer:typeof kbAnswer!=="undefined"?kbAnswer:null,kbScore,KB,PL_,finishWorkout,planTick});
+function seenNow(){try{if(!$('#splash'))localStorage.setItem('kl_seen',Date.now())}catch(e){}}
+setInterval(()=>{if(!document.hidden)seenNow()},60000);
+document.addEventListener('pointerdown',()=>{const t=+(localStorage.getItem('kl_seen')||0);if(Date.now()-t>30000)seenNow()},true);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){seenNow()}else{const t=+(localStorage.getItem('kl_seen')||0);if(t&&Date.now()-t>=7200000&&S.profile)lockApp()}});
 function lockApp(){if($('#splash')||!SPLASH_HTML)return;document.body.insertAdjacentHTML('beforeend',SPLASH_HTML);initSplash()}
 
-function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;const until=Date.now()+700,blk=e=>{if(Date.now()<until){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}};['click','pointerup','mouseup','touchend'].forEach(t=>document.addEventListener(t,blk,true));setTimeout(()=>['click','pointerup','mouseup','touchend'].forEach(t=>document.removeEventListener(t,blk,true)),750);sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
+function hideSplash(){const sp=$('#splash');if(!sp||sp.classList.contains('out'))return;try{localStorage.setItem('kl_seen',Date.now())}catch(e){}const until=Date.now()+700,blk=e=>{if(Date.now()<until){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation()}};['click','pointerup','mouseup','touchend'].forEach(t=>document.addEventListener(t,blk,true));setTimeout(()=>['click','pointerup','mouseup','touchend'].forEach(t=>document.removeEventListener(t,blk,true)),750);sp.classList.add('out');sfx('win');setTimeout(()=>sp.remove(),320)}
 window.__back=()=>{if($('#splash'))return false;if($('#sheet').classList.contains('open')){closeSheet();return true}if(V.tab!=='today'){V.tab='today';render();return true}return false};
 render();
 }
